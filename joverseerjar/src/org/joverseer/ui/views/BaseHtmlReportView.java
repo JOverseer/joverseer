@@ -132,6 +132,7 @@ public class BaseHtmlReportView extends ScalableAbstractView implements Applicat
 		case GameChangedEvent:
 			this.isReportGenerated = false; // report gets generated on focus change.
 			this.editor.setText(this.getReportContents());
+			this.editor.setCaretPosition(0);
 		}
 	}
 }

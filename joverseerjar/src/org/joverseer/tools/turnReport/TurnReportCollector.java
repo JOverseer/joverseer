@@ -1675,6 +1675,17 @@ public class TurnReportCollector {
 		}
 		return "<div style='font-family:Tahoma; font-size:11pt'><b>" + "Camps created: " + campsCreated + "<br/>" + "Gains: " + gstr + "<br/>" + "Losses: " + lstr + "<br/>" + "Tax base delta: " + taxBaseDelta + "</b></div>";
 	}
+	
+	public String getHighlights(Turn t) {
+		int natioNo = this.gameHolder.getGame().getMetadata().getNationNo();
+		String rep = "<b style='font-size:11pt'> Report Highlights</b><br/><ul><li>Next orders due on: " + t.getPlayerInfo(natioNo).getDueDate() + "</li>";
+		
+		if(t.getPlayerInfo(natioNo).isDiploDue()) rep += "<li>Diplo is due next turn</li>";
+		if(renderCharLimitSummary() != "") rep += "<li>Character limit has changed";
+		
+		rep += "</ul>";
+		return rep;
+	}
 
 	public ArrayList<BaseReportObject> filterReports(ArrayList<BaseReportObject> reports, int nationNo) {
 		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
@@ -1725,6 +1736,12 @@ public class TurnReportCollector {
 			}
 			ArrayList<BaseReportObject> reports;
 			ret += "<div style='font-family:MS Sans Serif; font-size:11pt'>";
+			try {
+				ret += getHighlights(t);
+			} catch (RuntimeException e) {
+				e.printStackTrace();
+			}
+			ret += "<br/>";
 			try {
 				reports = CollectNations(t, p);
 				ret += renderCollection("Nations", "Relation, allegiance and tax rate changes", reports);

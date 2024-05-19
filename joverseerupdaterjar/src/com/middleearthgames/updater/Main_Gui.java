@@ -100,7 +100,7 @@ public class Main_Gui extends JFrame{
                 launch();
             }
         });
-        pan2.add(launch);
+        //pan2.add(launch);
 
         cancel = new JButton("Close");
         cancel.addActionListener(new ActionListener(){

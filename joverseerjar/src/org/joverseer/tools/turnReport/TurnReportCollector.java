@@ -1680,8 +1680,8 @@ public class TurnReportCollector {
 		int natioNo = this.gameHolder.getGame().getMetadata().getNationNo();
 		String rep = "<b style='font-size:11pt'> Report Highlights</b><br/><ul><li>Next orders due on: " + t.getPlayerInfo(natioNo).getDueDate() + "</li>";
 		
-		if(t.getPlayerInfo(natioNo).isDiploDue()) rep += "<li>Diplo is due next turn</li>";
-		if(renderCharLimitSummary() != "") rep += "<li>Character limit has changed";
+		if(t.getPlayerInfo(natioNo).isDiploDue()) rep += "<li>Diplos are due next turn</li>";
+		if(renderCharLimitSummary() != "") rep += "<li>Character limit has changed</li>";
 		
 		rep += "</ul>";
 		return rep;

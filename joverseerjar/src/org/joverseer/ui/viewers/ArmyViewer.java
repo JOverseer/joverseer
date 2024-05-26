@@ -82,7 +82,7 @@ public class ArmyViewer extends ObjectViewer {
 	JTextField food;
 	JTextField travellingWith;
 	
-	boolean firstInfoField = true;
+	int infoFieldIter = 0;
 	
 	String armySizeStr;
 	String armyTypeStr;
@@ -267,14 +267,14 @@ public class ArmyViewer extends ObjectViewer {
 			this.cavStr = ""; //$NON-NLS-1$
 			cavTooltip = ""; //$NON-NLS-1$
 		} else if (isCav) {
-			this.cavStr = Messages.getString("ArmyViewer.AbbCavalry"); //$NON-NLS-1$
+			this.cavStr = Messages.getString("ArmyViewer.AbbCavalry") + " "; //$NON-NLS-1$
 			cavTooltip = Messages.getString("ArmyViewer.TreatAsCavalry"); //$NON-NLS-1$
 		} else {
-			this.cavStr = Messages.getString("ArmyViewer.AbbInfantry"); //$NON-NLS-1$
+			this.cavStr = Messages.getString("ArmyViewer.AbbInfantry") + " "; //$NON-NLS-1$
 			cavTooltip = Messages.getString("ArmyViewer.TreatAsInfantry"); //$NON-NLS-1$
 		}
 
-		this.armyInfoText.setText(this.armyTypeStr + this.cavStr + " of " + this.armySizeStr + " size.");
+		this.armyInfoText.setText(this.armyTypeStr + " " + this.cavStr + "of " + this.armySizeStr + " size.");
 		
 		if (army.getCharacters().size() > 0) {
 			this.travellingWith.setVisible(true);
@@ -289,19 +289,19 @@ public class ArmyViewer extends ObjectViewer {
 	}
 	
 	private void appendItemExtraInfo(String str) {
-		if (this.firstInfoField == true) {
+		if (this.infoFieldIter <= 5) {
 			this.extraInfo.setVisible(true);
 			this.extraInfo.setText(this.extraInfo.getText() + str);
 		}
-		if (this.firstInfoField == false) {
+		else {
 			this.extraInfo2.setVisible(true);
 			this.extraInfo2.setText(this.extraInfo2.getText() + str);
 		}
-		this.firstInfoField = !this.firstInfoField;
+		this.infoFieldIter += 1;
 	}
 	
 	private void resetExtraInfo() {
-		this.firstInfoField = true;
+		this.infoFieldIter = 0;
 		this.extraInfo2.setVisible(false);
 		this.extraInfo.setText("");	//$NON-NLS-1$
 		this.extraInfo2.setText("");	//$NON-NLS-1$

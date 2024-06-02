@@ -1,13 +1,19 @@
 package org.joverseer.ui.listviews;
 
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.FlatteningPathIterator;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,6 +63,7 @@ import org.joverseer.ui.support.controls.AutocompletionComboBox;
 import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.controls.TableUtils;
+import org.joverseer.ui.views.Messages;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
@@ -236,11 +243,27 @@ public class AdvancedArtifactListView extends BaseItemListView {
 
 			@Override
 			public JPopupMenu getPopupMenu() {
-				CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("advancedArtifactListViewCommandGroup", new Object[] { new CopyToClipboardCommand(), new ActivateEditMode(), new ClearUserInfo(), });
+				CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("advancedArtifactListViewCommandGroup", new Object[] { new CopyToClipboardCommand(), new ClearUserInfo(), });
 				return group.createPopupMenu();
 			}
 		});
 		comps.add(popupMenu);
+		JLabelButton editMode = new JLabelButton();
+		ico = new ImageIcon(imgSource.getImage("edit.image"));
+		editMode.setIcon(ico);
+		editMode.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AdvancedArtifactTableModel tableModelArt = (AdvancedArtifactTableModel) AdvancedArtifactListView.this.tableModel;
+				tableModelArt.setEditable(!tableModelArt.getEditable());
+				AdvancedArtifactListView.this.getControl().repaint();
+				
+			}
+
+		});
+		editMode.setToolTipText(Messages.getString("activateEditMode.label.tooltip"));
+		comps.add(editMode);
+;
 		return comps.toArray(new JComponent[] {});
 	}
 

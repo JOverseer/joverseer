@@ -88,6 +88,7 @@ public class ArmyViewer extends ObjectViewer {
 	String armyTypeStr;
 	String cavStr;
 	JTextField armyInfoText;
+	JTextField movementType;
 
 	ActionCommand showArmyMovementRangeAction = new ShowArmyMovementRangeAction();
 	ActionCommand showArmyMovementIgnorePopsRangeAction = new ShowArmyMovementRangeIgnorePopsAction();
@@ -153,11 +154,15 @@ public class ArmyViewer extends ObjectViewer {
 		this.extraInfo2.setPreferredSize(this.uiSizes.newDimension((this.commanderName.getFontMetrics(this.commanderName.getFont()).charWidth('M') * 20)/12, this.uiSizes.getHeight3() +2));
 		glb.nextLine();
 		
-		glb.append(this.food = new JTextField());
-		this.food.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
+		
+		glb.append(this.movementType = new JTextField());
+		this.movementType.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
+		Font fon = new Font(this.movementType.getFont().getName(),this.movementType.getFont().getStyle(),11);
+		this.movementType.setFont(fon);
+		this.movementType.setBorder(null);
+		
 		this.armyInfoText.setBorder(null);
 		this.commanderName.setBorder(null);
-		this.food.setBorder(null);
 		this.nation.setBorder(null);
 		this.extraInfo.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
 		this.extraInfo2.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
@@ -256,8 +261,7 @@ public class ArmyViewer extends ObjectViewer {
 				}
 			}
 		}
-		this.food.setText(foodStr);
-		this.food.setToolTipText(foodTooltip);
+		
 		// armyMorale.setText("M: 0");
 
 		this.cavStr = ""; //$NON-NLS-1$
@@ -274,7 +278,8 @@ public class ArmyViewer extends ObjectViewer {
 			cavTooltip = Messages.getString("ArmyViewer.TreatAsInfantry"); //$NON-NLS-1$
 		}
 
-		this.armyInfoText.setText(this.armyTypeStr + " " + this.cavStr + "of " + this.armySizeStr + " size.");
+		this.armyInfoText.setText(this.armyTypeStr + " of " + this.armySizeStr + " size.");
+		this.movementType.setText("Movement Type: " + foodStr + " " + this.cavStr);
 		
 		if (army.getCharacters().size() > 0) {
 			this.travellingWith.setVisible(true);

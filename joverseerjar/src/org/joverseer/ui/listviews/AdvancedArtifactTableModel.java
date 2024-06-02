@@ -1,5 +1,7 @@
 package org.joverseer.ui.listviews;
 
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+
 import org.joverseer.JOApplication;
 import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
@@ -17,7 +19,11 @@ import org.springframework.context.MessageSource;
 /**
  * Table model for the AdvancedArtifactListView
  * 
+ * Extended functionality to allow the user to update and edit information presented in the table,
+ * saving and managing the info accordingly
+ * 
  * @author Marios Skounakis
+ * @author Sam Terrett
  */
 public class AdvancedArtifactTableModel extends ItemTableModel {
 
@@ -108,10 +114,14 @@ public class AdvancedArtifactTableModel extends ItemTableModel {
 			ArtifactUserInfo aui = this.loadCorrsepondingAUI(aw, t);
 			aui.setOwner(v.toString());
 			
-			Character c = t.getCharByName(v.toString());
-			if (c != null) {
-				aui.setNationNo(c.getNationNo());
-				aui.setHexNo(c.getHexNo());
+			Character c = null;
+			for (int i = this.gameHolder.getGame().getCurrentTurn(); i>=0 ; i--) {
+				c = this.gameHolder.getGame().getTurn(i).getCharByName(v.toString());
+				if (c != null) {
+					if(c.getNationNo() != 0) aui.setNationNo(c.getNationNo());
+					aui.setHexNo(c.getHexNo());
+					break;
+				}
 			}
 			
 			t.getArtifactsUser().refreshItem(aui);

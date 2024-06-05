@@ -1,8 +1,5 @@
 package org.joverseer.ui.listviews;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-
-import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -12,9 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.geom.FlatteningPathIterator;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -31,10 +25,8 @@ import javax.swing.table.TableColumn;
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
 import org.joverseer.JOApplication;
 import org.joverseer.domain.Character;
-import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
@@ -42,10 +34,8 @@ import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromLocateArtifactInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromLocateArtifactTrueInfoSource;
 import org.joverseer.tools.infoCollectors.artifacts.ArtifactInfoCollector;
-import org.joverseer.tools.infoCollectors.artifacts.ArtifactUserInfo;
 import org.joverseer.tools.infoCollectors.artifacts.ArtifactWrapper;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.listviews.OrderEditorListView.OrderEditingKeyAdapter;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.HexFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
@@ -53,12 +43,6 @@ import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.listviews.filters.TurnFilter;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
-import org.joverseer.ui.orderEditor.AbstractOrderSubeditor;
-import org.joverseer.ui.orderEditor.CastLoSpellOrderSubeditor;
-import org.joverseer.ui.orderEditor.MoveArmyOrderSubeditor;
-import org.joverseer.ui.orderEditor.OrderEditor;
-import org.joverseer.ui.orderEditor.OrderEditorData;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.AutocompletionComboBox;
 import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
@@ -72,7 +56,6 @@ import org.springframework.richclient.list.ComboBoxListModelAdapter;
 import org.springframework.richclient.table.SortableTableModel;
 import org.springframework.richclient.list.SortedListModel;
 import org.springframework.binding.value.support.ListListModel;
-import org.springframework.richclient.list.ComboBoxListModelAdapter;
 
 /**
  * The advanced artifact information tab Shows ArtifactWrappers from the

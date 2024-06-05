@@ -1,9 +1,6 @@
 package org.joverseer.ui.listviews;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-
 import org.joverseer.JOApplication;
-import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.preferences.PreferenceRegistry;

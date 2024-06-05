@@ -47,7 +47,7 @@ Xfer War Mchns: Army to Army;349;TrWarMa;Other Commander Char ID / # of War Mach
 Xfer Weapons: Army to Army;351;TrWpns;Other Commander Char ID / # of each weapon type, each on a diff. line.;Automatic ;With Army
 Xfer Armor: Army to Army;353;TrArmr;Other Commander Char ID / # of each armor type, each on a different line.;Automatic ;With Army
 Xfer Troops: Army to Army;355;TrTrps;Other Commander Char ID / # of each troop type, each on a different line.;Automatic ;With Army
-Xfer Ships: Navy to Navy;357;TrShp;Other Commander Char ID / # of Warships / # of Transports transferred.;Automatic ;With Army
+Xfer Ships;357;TrShp;Other Commander Char ID / # of Warships / # of Transports transferred.;Automatic ;With Army
 Upgrade Troop Weapons;370;UpWpns;New Weapon type / # of each Troop type upgraded, each on a different line.;Automatic ;With Army
 Upgrade Troop Armor;375;UpArmr;New Armor type / # of each Troop type upgraded, each on a different line.;Automatic ;With Army
 Retire Troops;425;RtrTrps;# of each Troop type retired, each on a different line.;Automatic ;With Army

@@ -1,5 +1,7 @@
 package org.joverseer.ui.listviews;
 
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+
 import org.joverseer.JOApplication;
 import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
@@ -11,12 +13,17 @@ import org.joverseer.tools.infoCollectors.artifacts.ArtifactInfoCollector;
 import org.joverseer.tools.infoCollectors.artifacts.ArtifactUserInfo;
 import org.joverseer.tools.infoCollectors.artifacts.ArtifactWrapper;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.domain.Character;
 import org.springframework.context.MessageSource;
 
 /**
  * Table model for the AdvancedArtifactListView
  * 
+ * Extended functionality to allow the user to update and edit information presented in the table,
+ * saving and managing the info accordingly
+ * 
  * @author Marios Skounakis
+ * @author Sam Terrett
  */
 public class AdvancedArtifactTableModel extends ItemTableModel {
 
@@ -75,9 +82,6 @@ public class AdvancedArtifactTableModel extends ItemTableModel {
 	
 	@Override
 	protected Object getValueAtInternal(Object object, int i) {
-//		if (this.editMode) {
-//			return null;
-//		}
 		return super.getValueAtInternal(object, i);
 	}
 	
@@ -95,9 +99,7 @@ public class AdvancedArtifactTableModel extends ItemTableModel {
 			aui.setNumber(((Integer) v).intValue());
 			t.getArtifactsUser().refreshItem(aui);
 			
-			System.out.println("1");
 			JOApplication.publishEvent(LifecycleEventsEnum.ListviewRefreshItems, this, this);
-			System.out.println("2");
 		}else if (col == iName) {
 			if(v.toString().equals(aw.getName())) return;
 			ArtifactUserInfo aui = this.loadCorrsepondingAUI(aw, t);
@@ -111,6 +113,16 @@ public class AdvancedArtifactTableModel extends ItemTableModel {
 			if(v.toString().equals(aw.getOwner())) return;
 			ArtifactUserInfo aui = this.loadCorrsepondingAUI(aw, t);
 			aui.setOwner(v.toString());
+			
+			Character c = null;
+			for (int i = this.gameHolder.getGame().getCurrentTurn(); i>=0 ; i--) {
+				c = this.gameHolder.getGame().getTurn(i).getCharByName(v.toString());
+				if (c != null) {
+					if(c.getNationNo() != 0) aui.setNationNo(c.getNationNo());
+					aui.setHexNo(c.getHexNo());
+					break;
+				}
+			}
 			
 			t.getArtifactsUser().refreshItem(aui);
 			JOApplication.publishEvent(LifecycleEventsEnum.ListviewRefreshItems, this, this);

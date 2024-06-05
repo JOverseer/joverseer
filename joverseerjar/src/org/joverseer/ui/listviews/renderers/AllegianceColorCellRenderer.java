@@ -14,6 +14,7 @@ import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.listviews.AdvancedArtifactTableModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.SortableTableModel;
@@ -46,6 +47,14 @@ public class AllegianceColorCellRenderer extends DefaultTableCellRenderer {
         }
         int objRow = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
         Object obj = this.tableModel.getRow(objRow);
+        
+        //Colors artifact table white when editing
+        //Prob should be separate class/render but this was a workaround which cut down time to make significantly
+        if(this.canTableBeEdited()) {
+        	c.setBackground(Color.WHITE);
+        	return c;
+        }
+
         if (IBelongsToNation.class.isInstance(obj)) {
             IBelongsToNation natObj = (IBelongsToNation) obj;
             if (natObj == null || natObj.getNationNo() == null)
@@ -78,6 +87,11 @@ public class AllegianceColorCellRenderer extends DefaultTableCellRenderer {
         this.tableModel = tableModel;
     }
     
-    
+    private boolean canTableBeEdited() {
+    	if (AdvancedArtifactTableModel.class.isInstance(this.getTableModel())) {
+    		return ((AdvancedArtifactTableModel) this.getTableModel()).getEditable();
+    	}
+    	return false;
+    }
 
 }

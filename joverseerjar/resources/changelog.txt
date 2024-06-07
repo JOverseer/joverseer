@@ -1,3 +1,10 @@
+VERSION 1.18.14
+---------------
+	* Enh: Artifact Table now editable.
+	* QA: Armies in Current Hex View reformatted to be clearer.
+	* QA: Turn Report View has highlights section at top.
+	* Fix: Diplo turn number out by one, now corrected.
+
 VERSION 1.18.13
 ---------------
 	* Fix: failure importing turn XML for certain game scenarios.

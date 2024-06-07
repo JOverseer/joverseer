@@ -2,7 +2,7 @@
 <rss version="2.0">
 	<channel>
 		<title>Overseer releases</title>
-		<link>https://www.gamesystems.com/software/joverseer/feed.xml</link>
+		<link>https://www.gamesystems.com/software/joverseer/betafeed.xml</link>
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
@@ -19,6 +19,27 @@
 
 			</description>
 		</item>		
+		<item>
+			<title>1.18.14-rc2</title>
+			<pubDate>17 May 2024</pubDate>
+			<description>
+VERSION 1.18.14-rc2
+-------------------
+	* Enh: artifact table is now editable
+			</description>
+		</item>	
+		<item>
+			<title>1.18.14-rc1</title>
+			<pubDate>8 May 2024</pubDate>
+			<description>
+VERSION 1.18.14-rc1
+-------------------
+	* Fix: Added secondary artifact powers for new KS games.
+	* Fix: Added scrolling to Diplo panel.
+	* Enh: Moved some of the map options to map preferences.
+	* Enh: Reformatted Army part of Current Hex View.
+			</description>
+		</item>	
 		<item>
 			<title>1.18.12-rc3</title>
 			<pubDate>20 Mar 2024</pubDate>

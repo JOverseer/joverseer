@@ -6,6 +6,19 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
+			<item>
+			<title>1.18.14-rc3</title>
+			<pubDate>7 Jun 2024</pubDate>
+			<description>
+	VERSION 1.18.14-rc3
+    ---------------
+	* Enh: Artifact Table now editable.
+	* QA: Armies in Current Hex View reformatted to be clearer.
+	* QA: Turn Report View has highlights section at top.
+	* Fix: Diplo turn number out by one, now corrected.
+
+			</description>
+		</item>		
 		<item>
 			<title>1.18.14-rc2</title>
 			<pubDate>17 May 2024</pubDate>

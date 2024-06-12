@@ -36,6 +36,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.tools.CombatUtils;
 import org.joverseer.tools.armySizeEstimator.ArmySizeEstimate;
 import org.joverseer.tools.armySizeEstimator.ArmySizeEstimator;
+import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.tools.combatCalc.CombatArmy;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.command.range.ShowFedNavyCoastalRangeCommand;
@@ -82,12 +83,13 @@ public class ArmyViewer extends ObjectViewer {
 	JTextField food;
 	JTextField travellingWith;
 	
-	boolean firstInfoField = true;
+	int infoFieldIter = 0;
 	
 	String armySizeStr;
 	String armyTypeStr;
 	String cavStr;
 	JTextField armyInfoText;
+	JTextField movementType;
 
 	ActionCommand showArmyMovementRangeAction = new ShowArmyMovementRangeAction();
 	ActionCommand showArmyMovementIgnorePopsRangeAction = new ShowArmyMovementRangeIgnorePopsAction();
@@ -153,11 +155,15 @@ public class ArmyViewer extends ObjectViewer {
 		this.extraInfo2.setPreferredSize(this.uiSizes.newDimension((this.commanderName.getFontMetrics(this.commanderName.getFont()).charWidth('M') * 20)/12, this.uiSizes.getHeight3() +2));
 		glb.nextLine();
 		
-		glb.append(this.food = new JTextField());
-		this.food.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
+		
+		glb.append(this.movementType = new JTextField());
+		this.movementType.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
+		Font fon = new Font(this.movementType.getFont().getName(),this.movementType.getFont().getStyle(),11);
+		this.movementType.setFont(fon);
+		this.movementType.setBorder(null);
+		
 		this.armyInfoText.setBorder(null);
 		this.commanderName.setBorder(null);
-		this.food.setBorder(null);
 		this.nation.setBorder(null);
 		this.extraInfo.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
 		this.extraInfo2.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
@@ -233,12 +239,14 @@ public class ArmyViewer extends ObjectViewer {
 				
 		String foodStr = ""; //$NON-NLS-1$
 		String foodTooltip = ""; //$NON-NLS-1$
+		String foodNum = "";
 		if (army.getFood() != null) {
-			foodStr = army.getFood().toString() + " "; //$NON-NLS-1$
+			foodNum = "(" + army.getFood().toString() + " food) "; //$NON-NLS-1$
 		}
 		Boolean fed = army.computeFed();
 
 		foodStr += (fed != null && fed == true ? Messages.getString("ArmyViewer.Fed") : Messages.getString("ArmyViewer.Unfed")); //$NON-NLS-1$ //$NON-NLS-2$
+		foodStr += (foodStr == "" ? "" : " ");
 		if (fed != null && fed == true) {
 			foodTooltip = Messages.getString("ArmyViewer.TreatAsFed"); //$NON-NLS-1$
 		} else {
@@ -256,25 +264,28 @@ public class ArmyViewer extends ObjectViewer {
 				}
 			}
 		}
-		this.food.setText(foodStr);
-		this.food.setToolTipText(foodTooltip);
+		
 		// armyMorale.setText("M: 0");
 
+		String movementTypeUnit = "";
 		this.cavStr = ""; //$NON-NLS-1$
 		String cavTooltip = ""; //$NON-NLS-1$
 		Boolean isCav = army.computeCavalry();
+		
 		if (isCav == null) {
 			this.cavStr = ""; //$NON-NLS-1$
 			cavTooltip = ""; //$NON-NLS-1$
 		} else if (isCav) {
-			this.cavStr = Messages.getString("ArmyViewer.AbbCavalry"); //$NON-NLS-1$
+			this.cavStr = Messages.getString("ArmyViewer.AbbCavalry") + " "; //$NON-NLS-1$
 			cavTooltip = Messages.getString("ArmyViewer.TreatAsCavalry"); //$NON-NLS-1$
 		} else {
-			this.cavStr = Messages.getString("ArmyViewer.AbbInfantry"); //$NON-NLS-1$
+			this.cavStr = Messages.getString("ArmyViewer.AbbInfantry") + " "; //$NON-NLS-1$
 			cavTooltip = Messages.getString("ArmyViewer.TreatAsInfantry"); //$NON-NLS-1$
 		}
+		this.cavStr = this.computeMovementTypeUnit(army);
 
-		this.armyInfoText.setText(this.armyTypeStr + this.cavStr + " of " + this.armySizeStr + " size.");
+		this.armyInfoText.setText(this.armyTypeStr + " of " + this.armySizeStr + " size.");
+		this.movementType.setText("Movement Type: " + foodStr + foodNum + this.cavStr);
 		
 		if (army.getCharacters().size() > 0) {
 			this.travellingWith.setVisible(true);
@@ -288,20 +299,48 @@ public class ArmyViewer extends ObjectViewer {
 		}
 	}
 	
+	/*
+	 * Computes and returns what the movement type of the army, outputing whether it is 'Navy' 'Inf' or 'Cav
+	 */
+	private String computeMovementTypeUnit(Army a) {
+		if(a.isNavy()) {
+			HexTerrainEnum ter = this.gameHolder.getGame().getMetadata().getHex(Integer.parseInt(a.getHexNo())).getTerrain();
+			if(ter.isOpenSea()) {
+				return Messages.getString("ArmyViewer.Navy");
+			}
+			if(a.getNumberOfRequiredTransports() <= a.getElement(ArmyElementType.Transports).getNumber()) {
+				return Messages.getString("ArmyViewer.Navy");
+			}
+		}
+		String cavTooltip = ""; //$NON-NLS-1$
+		Boolean isCav = a.computeCavalry();
+		
+		if (isCav == null) {
+			cavTooltip = ""; //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		} else if (isCav) {
+			return Messages.getString("ArmyViewer.AbbCavalry") + " "; //$NON-NLS-1$
+			//cavTooltip = Messages.getString("ArmyViewer.TreatAsCavalry"); //$NON-NLS-1$
+		} else {
+			return Messages.getString("ArmyViewer.AbbInfantry") + " "; //$NON-NLS-1$
+			//cavTooltip = Messages.getString("ArmyViewer.TreatAsInfantry"); //$NON-NLS-1$
+		}
+	}
+	
 	private void appendItemExtraInfo(String str) {
-		if (this.firstInfoField == true) {
+		if (this.infoFieldIter <= 5) {
 			this.extraInfo.setVisible(true);
 			this.extraInfo.setText(this.extraInfo.getText() + str);
 		}
-		if (this.firstInfoField == false) {
+		else {
 			this.extraInfo2.setVisible(true);
 			this.extraInfo2.setText(this.extraInfo2.getText() + str);
 		}
-		this.firstInfoField = !this.firstInfoField;
+		this.infoFieldIter += 1;
 	}
 	
 	private void resetExtraInfo() {
-		this.firstInfoField = true;
+		this.infoFieldIter = 0;
 		this.extraInfo2.setVisible(false);
 		this.extraInfo.setText("");	//$NON-NLS-1$
 		this.extraInfo2.setText("");	//$NON-NLS-1$

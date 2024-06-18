@@ -33,10 +33,11 @@
 # ARTYLIST,"Type, Artifacts","Type 1 = pass to parm #, 2 = drop, 3 = find. Artifacts = param # (up to 6).  Used for manipulating multiple artifacts on a character."
 # ARTYNAME,Artifact,Artifact = param #.  Just reports the name of the artifact.
 # CHARACTER,"Char, Location, Status","Char = 0 or param # for character name, Location = 0 or param #.  Status  0 = owned, 1 = don't care, 2 = not owned, 3 = owned by friendly nation, 4 = not owned, adjacent hex, 5 = owned or dual friendly relations, 6 = owned or us friendly.  Checks to see if a character is at a location. "
-# CHARMOVE,"Location, Distance, Type","Location = param #. Distance = # hexes. Type 0 = normal check, 1 = distance only, 2 = join army, 3 = leave army, 4 = to capital, 5 = join army only (current hex).  Checks the maximum character movement for the specified target."
+# CHARMOVE,"Location, Distance, Type","Location = param #. Distance = # hexes. Type 0 = normal check, 1 = distance only, 2 = join army, 3 = leave army, 4 = to capital, 5 = join army only (current hex), 6 = join company only (current hex), 7 = leave company.  Checks the maximum character movement for the specified target."
 # COMMANDER,"Char, Location, Status, Type","Char = 0 or param #.  Location = 0 or param #.  Status is 0 - 6.  Type = 0 for army CO, 1 for navy CO, 2 for army or navy CO, 3 commander with army/navy (including CO), 4 = company, 5 any, 6 = with army, 7 = army CO or navy CO on land.  Checks to see if the character is a commander or at least with an army/navy.  "
 # COMMANDERNOT,"Char, Location, Status, Type","Char = 0 or param #.  Location = 0 or param #. Status is 0 - 6. Type = 2 for army/navy CO, 4 for company commander, 5 for either, 6 with army, not CO. Checks to make sure the character the order is for is not a commander.  "
 # COMMANDXFER,Char,Char = param #. Indicates character is transfering their army/navy or company to someone else.
+# COMPANYMOVE,"Location, Distance","Location = param #. Distance = # hexes."
 # DOCK,Type,"Type = 0 for harbor, 1 for port,  2 = harbor/port/shore, 3 = no harbor or port.  Checks to see if a harbor or port is present at the hex.  "
 # ENEMYARMY,"Location, Logic","Location = 0 or param #.  Logic = 1 for army present, 0 = not present. Checks to see if an enemy army or navy is present.  "
 # FEATURE,"Location, Direction, Type, Logic","Location = 0 or param #.  Direction = 0 for any or param #. Type = 1 (ford), 2 (bridge), 3 (deep river), 9 (deep river then road), 10 deep river or adjacent water.  Logic = 0 for exist, 1 for not.  Checks to see if the specified feature is or is not present."
@@ -443,7 +444,9 @@ BEGINRULES,,,,,,,,,,,
 750,,RANK,0,0,1,0,1,0
 755,JnCmpy,COMMANDER,1,0,5,4
 755,,COMMANDERNOT,0,0,0,5,,,,
+755,,CHARMOVE,0,0,6,
 760,LvCmpy,COMMANDERNOT,0,0,0,4,,,,
+760,,CHARMOVE,0,0,7,
 765,SplArmy,COMMANDER,0,0,0,2,,,,
 765,,COMMANDERNOT,1,0,0,5,,,,
 765,,LAND,0,,,,,,,
@@ -481,7 +484,7 @@ BEGINRULES,,,,,,,,,,,
 820,MovCmpy,COMMANDER,0,0,0,4
 820,,LAND,0,,,
 820,,LAND,1,,,
-820,,CHARMOVE,1,12,0,
+820,,COMPANYMOVE,1,12,
 810,,RANK,0,4,0,0,1,0
 825,CstMvSp,COMMANDERNOT,0,0,0,5
 825,,SPELL,1,,,

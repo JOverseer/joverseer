@@ -77,6 +77,12 @@ public class OCTreeNode extends DefaultMutableTreeNode
                     currentText = currentText + " \n";
                     currentText = currentText + army.getArmyDescription(character, 0);
                 }
+                if(Main.main.getNation().isCharacterInACompany(character.getId())) {
+                	Company comp = Main.main.getNation().findCompanyByCharacter(character.getId());
+                	if (comp != null) {
+                		currentText += " \n" + comp.getDescription(character.getName());
+                	}
+                }
                 break;
 
             case ORDER_NODE: // '\0'

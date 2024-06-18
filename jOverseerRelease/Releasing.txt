@@ -8,12 +8,12 @@ MacOS
 Linux
 
 There is a different program that installs jOverseer for each platform.
+Linux is currently not supported ... mostly because hardly any users, and supporting Flatpak, RPM, snap etc is low value, not for technical reasons.
 
 In addition, there is an latestupdate.zip which contains just the most recent changed parts, that an existing running jOverseer can download to update itself.
 The latestupdate.zip is theoretically platform independent, but in practice the MacOS version has a slightly different version of jidecommon.jar.
 
 Appveyor.com automatically builds the Windows and Linux versions when the github master branch is updated.
-Travis.com used to do the same for MacOS - but no longer.
 Appveyor is now producing the macOS .pkg file
 
 1. Bump the version in
@@ -75,12 +75,13 @@ using the target MacOSInstaller
 7.2 other tests.
 
 8. Release
-8.1 upload joverseer-setupxxxxx.exe to website
-8.2 upload the *.pkg file to website
-8.3 upload zip file for linux users?
-8.4 upload the latestupdate.zip to website
-8.5 upload the updated feed.xml
-8.6 update the middleearthgames.com/gamingsoftware website
+8.1 upload joverseer-setupxxxxx.exe to https://gamesystems.com/software/joverseer/* 
+8.2 upload the *.pkg file to https://gamesystems.com/software/joverseer/*
+8.3 upload zip file for linux users? - no longer supported
+8.4 upload the latestupdate.zip to https://gamesystems.com/software/joverseer/*
+8.5 upload the updated feed.xml or betafeed.xml if beta release.
+Note: as of March 2024, both betafeed and feed are produced, just copy the one you want to use, rather than renaming it.
+8.6 update the gamesystems.com/gamingsoftware website (John usually does this)
 8.7 update the github wiki pages.
 
 Testing
@@ -101,6 +102,11 @@ start joverseer.
 
 Remember that the updaters will not trigger until the feed.xml has a higher version number, so do that last.
 No longer true as of 1.16.3 you can manually force a check for update and force the update to happen.
+
+There is now a modification to this behaviour. To give the update process a chance to do some compatibility fixes,
+at startup, joverseer checks the 'new' version number against a saved value, the last time the update hook was run.
+If it's is different, then it knows that it is the first run after an update, and can do some special stuff.
+It then makes a note of the running version of joverseer, so that we don't run the hook again until the next update.
 
 Try running joverseer and check Help->Check for update. You should get popup window.
 If you get 'SSL Handshaking Exception' or nothing... check that the custom java runtime has the appropriate

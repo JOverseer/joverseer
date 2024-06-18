@@ -14,6 +14,7 @@
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
 		<property name="version" value="1.18.14-rc3"/>
 		<property name="buildId" value="Numenorean"/>
+
 	</bean>
 
 	<!-- JIDE specific replacement of the ApplicationLifecycleAdvisor. Specifies 

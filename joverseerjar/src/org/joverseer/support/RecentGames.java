@@ -1,6 +1,9 @@
 package org.joverseer.support;
 
+import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.prefs.Preferences;
 
 import org.joverseer.ui.JOverseerJIDEClient;
@@ -40,9 +43,9 @@ public class RecentGames {
                 	rgi.setDate("unknown");
                 }
                 
-                
                 res.add(rgi);
             }
+            Collections.sort(res, new DateStrComparator());
         }
         return res;
     }

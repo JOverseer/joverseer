@@ -123,4 +123,28 @@ public class RecentGames {
         }
                 
     }
+    
+    public class DateStrComparator implements Comparator<RecentGameInfo> {
+		@Override
+		public int compare(RecentGameInfo o1, RecentGameInfo o2) {
+			// TODO Auto-generated method stub
+			if(o2.getDate().equals("unknown")) return 1;
+			if(o1.getDate().equals("unknown")) return -1;
+			
+			String[] split1 = o1.getDate().split("\\s+");
+			String[] split2 = o2.getDate().split("\\s+");
+			
+			String o1Date = split1[2];
+			String o2Date = split2[2];
+			if (!o1Date.equals(o2Date)) return Integer.valueOf(o1Date).compareTo(Integer.valueOf(o2Date));
+			
+			o1Date = split1[0];
+			o2Date = split2[0];
+			if (!o1Date.equals(o2Date)) return Month.valueOf(o1Date).compareTo(Month.valueOf(o2Date));
+			
+			o1Date = split1[1];
+			o2Date = split2[1];
+			return Integer.valueOf(o1Date).compareTo(Integer.valueOf(o2Date));
+		}
+    }
 }

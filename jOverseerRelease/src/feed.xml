@@ -8,14 +8,21 @@
 		<language>en</language>
 		<item>
 			<title>1.18.14-rc1</title>
-			<pubDate>8 May 2024</pubDate>
+			<pubDate>20 June 2024</pubDate>
 			<description>
-VERSION 1.18.14-rc1
--------------------
-	* Fix: Added secondary artifact powers for new KS games.
-	* Fix: Added scrolling to Diplo panel.
-	* Enh: Moved some of the map options to map preferences.
-	* Enh: Reformatted Army part of Current Hex View.
+VERSION 1.18.14
+---------------
+	* Enh: Turn report view now displays double agents
+	* Enh: Toggle now allows artifacts table to be editted/not
+	* Enh: Button allows ALL artifact edits to be undone in case of error
+	* Enh: Game/Recent games display duedate of last imported results (work in progress)
+	* Enh: Advanced/Nation selection - stops you writing orders for your allies by accident (work in progress)
+	* QA: Current hex view format tweaked
+	* QA: Some map options moved to preferences
+	* QA: Diplo space now scrolls + timing error fixed
+	* QA: minor style tweaks
+	* Fix: Kinstrife default capitals added to data
+	* Fix: Artifact secondary powers now in data
 			</description>
 		</item>	
 		<item>

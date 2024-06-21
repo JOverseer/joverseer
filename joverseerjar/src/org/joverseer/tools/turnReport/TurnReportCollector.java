@@ -1681,7 +1681,7 @@ public class TurnReportCollector {
 		String rep = "<b style='font-size:11pt'> Report Highlights</b><br/><ul><li>Next orders due on: " + t.getPlayerInfo(natioNo).getDueDate() + "</li>";
 		
 		if(t.getPlayerInfo(natioNo).isDiploDue()) rep += "<li>Diplos are due next turn</li>";
-		if(renderCharLimitSummary() != "") rep += "<li>Character limit has changed</li>";
+		if(renderCharLimitSummary() != "") rep += "<li>Character limit is changing this turn. New characters can be named/recruited</li>";
 		
 		rep += "</ul>";
 		return rep;
@@ -1765,6 +1765,27 @@ public class TurnReportCollector {
 			}
 			ret += "<br/>";
 			try {
+				reports = CollectDoubleAgents(t, p);
+				ret += renderCollection("Double Agents", "All reported double agents", reports);
+			} catch (RuntimeException e) {
+				e.printStackTrace();
+			}
+			ret += "<br/>";
+			try {
+				reports = CollectDragons(t);
+				ret += renderCollection("Dragons", "Dragons in armies or pop centers", reports);
+			} catch (RuntimeException e) {
+				e.printStackTrace();
+			}
+			ret += "<br/>";
+			try {
+				reports = CollectNonFriendlyChars(t);
+				ret += renderCollection("Other Characters", "Non-friendly characters reported (excluding army commanders)", reports);
+			} catch (RuntimeException e) {
+				e.printStackTrace();
+			}
+			ret += "<br/>";
+			try {
 				reports = CollectPopCenters(t, p);
 				ret += renderCollection("Pop Centers", "New, gained, lost or changed pop centers", reports);
 				ret += renderPopsSummary(reports);
@@ -1837,29 +1858,8 @@ public class TurnReportCollector {
 			}
 			ret += "<br/>";
 			try {
-				reports = CollectDoubleAgents(t, p);
-				ret += renderCollection("Double Agents", "All reported double agents", reports);
-			} catch (RuntimeException e) {
-				e.printStackTrace();
-			}
-			ret += "<br/>";
-			try {
-				reports = CollectNonFriendlyChars(t);
-				ret += renderCollection("Other Characters", "Non-friendly characters reported (excluding army commanders)", reports);
-			} catch (RuntimeException e) {
-				e.printStackTrace();
-			}
-			ret += "<br/>";
-			try {
 				reports = collectEncounters(t);
 				ret += renderCollection("Encounters", "Encounters and encounter rumors", reports);
-			} catch (RuntimeException e) {
-				e.printStackTrace();
-			}
-			ret += "<br/>";
-			try {
-				reports = CollectDragons(t);
-				ret += renderCollection("Dragons", "Dragons in armies or pop centers", reports);
 			} catch (RuntimeException e) {
 				e.printStackTrace();
 			}

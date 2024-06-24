@@ -1,11 +1,17 @@
 package org.joverseer.support;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Month;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.Locale;
 import java.util.prefs.Preferences;
 
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.ui.JOverseerJIDEClient;
 
 /**
@@ -43,6 +49,7 @@ public class RecentGames {
                 	rgi.setDate("unknown");
                 }
                 
+                
                 res.add(rgi);
             }
             Collections.sort(res, new DateStrComparator());
@@ -53,6 +60,21 @@ public class RecentGames {
     public ArrayList<RecentGameInfo> getRecentGameInfo() {
         String rgiStr = Preferences.userNodeForPackage(JOverseerJIDEClient.class).get("recentGames", null);
         return getRecentGameInfo(rgiStr);
+    }
+    
+    public boolean shouldDeleteRecentGame(RecentGameInfo rg) {
+    	if(rg.getDate().equals("unknown")) return true;
+    	Date dateToCompare = Date.from(ZonedDateTime.now().minusMonths(1).toInstant());
+    	
+    	SimpleDateFormat formatter = new SimpleDateFormat("MMMMMMMMM dd yyyy", Locale.ENGLISH);
+
+    	try {
+			Date date = formatter.parse(rg.getDate());
+			if(date.before(dateToCompare)) return true;
+			
+		} catch (ParseException e) {}
+    	
+    	return false;
     }
     
     public String getRecentGameInfoString(ArrayList<RecentGameInfo> rgis) {
@@ -87,7 +109,17 @@ public class RecentGames {
         while (rgis.size() > this.RECENT_GAME_LIMIT) {
             rgis.remove(rgis.size() - 1);
         }
-        rgiStr = getRecentGameInfoString(rgis);
+        
+        if (PreferenceRegistry.instance().getPreferenceValue("general.autoDeleteRecentGames").equals("yes")) {
+	        ArrayList<RecentGameInfo> rgisToRemove = new ArrayList<RecentGameInfo>();
+	        for (RecentGameInfo rg : rgis) {
+	        	if(shouldDeleteRecentGame(rg)) rgisToRemove.add(rg);
+	        }
+	        rgis.removeAll(rgisToRemove);
+	        
+	        rgiStr = getRecentGameInfoString(rgis);
+        }
+        
         Preferences.userNodeForPackage(JOverseerJIDEClient.class).put("recentGames", rgiStr);
     }
     

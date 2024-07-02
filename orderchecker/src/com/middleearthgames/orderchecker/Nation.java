@@ -36,6 +36,7 @@ public class Nation
     private Vector nationsParsed;
     private Vector orderList;
     private Vector requestList;
+    private Vector companies;
     
     private int dataGameType;
 
@@ -63,6 +64,7 @@ public class Nation
         this.nationsParsed = new Vector();
         this.orderList = new Vector();
         this.requestList = new Vector();
+        this.companies = new Vector();
     }
 
     public String implementPhase(int phase, Main main)
@@ -349,7 +351,52 @@ public class Nation
 
         return null;
     }
+    
+    public Company findCompanyByCommander(String name) {
+        for(int i = 0; i < this.companies.size(); i++)
+        {
+            Company company = (Company)this.companies.get(i);
+            if(company.getCommander().equalsIgnoreCase(name))
+            {
+                return company;
+            }
+        }
 
+        return null;
+    }
+
+    public String findCompanyCommanderByCharacterWith(String name) {
+    	if (name == null) return null;
+    	int size = this.companies.size();
+    	for (int i = 0; i < size; i++) {
+    		Company c = (Company) this.companies.get(i);
+    		if(c.getCharacterIdInComp(name) != null) {
+    			return c.getCommander();
+    		}
+    	}
+    	return null;	
+    }
+    
+    public Company findCompanyByCharacterWith(String name) {
+    	return this.findCompanyByCommander(this.findCompanyCommanderByCharacterWith(name));
+    }
+    
+    public Company findCompanyByCharacter(String name) {
+    	int size = this.companies.size();
+    	for (int i = 0; i < size; i++) {
+    		Company c = (Company) this.companies.get(i);
+    		if(c.getCharacterIdInComp(name) != null) {
+    			return c;
+    		}
+    	}
+    	return null;
+    }
+    
+    public boolean isCharacterInACompany(String name) {
+    	if (this.findCompanyByCharacter(name) != null) return true;
+    	return false;
+    }
+    
     public PopCenter findPopulationCenter(int location)
     {
         int size = this.popcenters.size();
@@ -763,6 +810,14 @@ public class Nation
         this.popcenters.remove(((Object) (pc)));
     }
 
+    public void addCompany(Company comp) {
+    	this.companies.add((Object) comp);
+    }
+    
+    public void removeCompany(Company comp) {
+    	this.companies.remove((Object) comp);
+    }
+    
     public void addArmy(Army army)
     {
         this.armies.add(((Object) (army)));

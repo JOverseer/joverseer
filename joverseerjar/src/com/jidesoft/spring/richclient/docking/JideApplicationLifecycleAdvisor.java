@@ -143,6 +143,21 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 				}
 				menusEnabled = true;
 			}
+		case SaveGameEvent:
+			JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
+
+			for (int i = 0; i < menuBar.getMenuCount(); i++) {
+				// recent games
+				//TODO: I18N
+				if (menuBar.getMenu(i).getText().equals("Game")) {
+					for (int j = 0; j < menuBar.getMenu(i).getItemCount(); j++) {
+						if (menuBar.getMenu(i).getItem(j) != null && menuBar.getMenu(i).getItem(j).getText() != null && menuBar.getMenu(i).getItem(j).getText().equals("Recent Games")) {
+							menuBar.getMenu(i).getItem(j).removeAll();
+							addRecentGamesMenu((JMenu) menuBar.getMenu(i).getItem(j));
+						}
+					}
+				}
+			}
 		}
 	}
 

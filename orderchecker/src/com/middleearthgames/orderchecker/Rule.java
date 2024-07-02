@@ -253,7 +253,7 @@ public class Rule
         } else
         if(this.name.equalsIgnoreCase("CHARMOVE"))
         {
-            result = processCharacterMove();
+            result = processCharacterMove(-1, -1, -1);
         } else
         if(this.name.equalsIgnoreCase("COMMANDER"))
         {
@@ -266,6 +266,10 @@ public class Rule
         if(this.name.equalsIgnoreCase("COMMANDXFER"))
         {
             result = processCommandTransfer();
+        } else
+        if(this.name.equalsIgnoreCase("COMPANYMOVE"))
+        {
+            result = processCompanyMove();
         } else
         if(this.name.equalsIgnoreCase("DOCK"))
         {
@@ -1005,19 +1009,21 @@ public class Rule
         return null;
     }
 
-    private String processCharacterMove()
+    private String processCharacterMove(int locParam, int max, int type)
     {
-        String result = parameterCount(3, "CHARMOVE");
-        if(result != null)
-        {
-            return result;
-        }
-        int locParam = convertParameter(0);
-        int max = convertParameter(1);
-        int type = convertParameter(2);
+    	if (locParam == -1) {
+	        String result = parameterCount(3, "CHARMOVE");
+	        if(result != null)
+	        {
+	            return result;
+	        }
+	        locParam = convertParameter(0);
+	        max = convertParameter(1);
+	        type = convertParameter(2);
+    	}
         if(this.phase == 1)
         {
-            if(type < 0 || type > 5)
+            if(type < 0 || type > 7)
             {
                 return "Invalid type (" + type + ") for CHARMOVE!";
             }
@@ -1046,7 +1052,7 @@ public class Rule
             {
                 return STATE_REQ;
             }
-            if(type != 1)
+            if(type != 1 && type != 7)
             {
                 if(type != 2 && type != 5)
                 {
@@ -1073,7 +1079,7 @@ public class Rule
                     }
                 }
             }
-            if(type != 3 && type != 5)
+            if(type != 3 && type != 5 && type != 6 && type != 7)
             {
                 int location;
                 if(type == 4)
@@ -1111,10 +1117,78 @@ public class Rule
                     this.parentOrder.addInfo("Moved " + distance + plural + "to " + this.main.locationStr(location) + ".");
                 }
             }
+            if(type == 6 || type == 7) {
+            	Nation n = this.getMain().getNation();
+            	if(type == 6) {
+            		Character ch = this.parentOrder.extractCharacter(1, false);
+            		if(ch != null) {
+            			boolean success = true;
+            			
+            			if (ch.getLocation(this.parentOrder.getOrder()) != this.parentChar.getLocation(this.parentOrder.getOrder())) {
+            				this.parentOrder.addError(this.parentChar + " is not on the same hex as " + ch);
+            				success = false;
+            			}
+            			Company cJoin = n.findCompanyByCommander(ch.getName());
+            			if (cJoin.getCurrentCapacity() >= 9) {
+            				this.parentOrder.addError(ch + "s company is at maximum capacity, meaning " + this.parentChar + " couldn't join.");
+            				success = false;
+            			}
+            			
+            			if (success = true) {
+            				this.parentOrder.addInfo(this.parentChar + " joined " + ch + "s company.");
+            				cJoin.addCharacter(this.parentChar.getName());
+            			}
+            		}
+            	}
+            	else if (type == 7) {
+            		Company cLeave = n.findCompanyByCharacterWith(this.parentChar.getName());
+            		if (cLeave == null) {
+            			this.parentOrder.addError(this.parentChar + " is not in a company.");
+            		}
+            		else {
+            			this.parentOrder.addInfo(this.parentChar + " leaved " + cLeave.getCommander() + "s company.");
+            			cLeave.removeCharacter(this.parentChar.getName());
+            		}
+            		
+            	}
+            }
         }
         return null;
     }
 
+    private String processCompanyMove() {
+        String result = parameterCount(2, "COMPANYMOVE");
+        if(result != null)
+        {
+            return result;
+        }
+        int locParam = convertParameter(0);
+        int max = convertParameter(1);
+        String r = processCharacterMove(locParam, max, 0);
+        if (r == null && this.phase == 2) {
+        	int location = this.parentOrder.getParameterNumber(locParam);
+        	Nation n = this.getMain().getNation();
+        	Vector charWith = n.findCompanyByCommander(this.parentChar.getName()).getCharsWith();
+        	String chars = "";
+        	for (int i = 0; i < charWith.size(); i++) {
+        		String cName = (String) charWith.get(i);
+        		Character c = n.findCharacterByFullName(cName);
+        		c.setNewLocation(location, this.parentOrder.getOrder());
+        		
+        		if (i != 0) {
+        			if(i == charWith.size() - 1) chars += " and ";
+        			else chars += ", ";
+        		}
+        		chars += c.getName();
+        		
+        	}
+        	this.parentOrder.addInfo("The rest of the company (" + chars + ") succesfully moved with them.");
+        	
+        	return null;
+        }
+        else return r; 
+    }
+    
     private String processCommander()
     {
         String result = parameterCount(4, "COMMANDER");
@@ -2353,6 +2427,11 @@ public class Rule
                     this.parentOrder.addError(pc + " does not belong to an enemy.");
                 }
                 break;
+                
+            case 5:
+            	if(pc.getSize() == 0) {
+            		break;
+            	}
 
             case 4: // '\004'
                 if(pc.getPossibleDestruction() < this.parentOrder.getOrder())
@@ -2368,6 +2447,9 @@ public class Rule
                     this.parentOrder.addError("A population center, " + pc + ", is already here.");
                 }
                 break;
+                
+            //case 5: none or ruins
+            		
 
             case 7: // '\007'
                 if(pc.isNationsCapital(this.parentChar.getNation()))
@@ -2437,7 +2519,7 @@ public class Rule
             		}
             	}
             	break;
-            case 5: // '\005'
+            //case 5: // '\005'
             case 6: // '\006'
             default:
                 return "Invalid PC state of " + state + " for PC rule!";

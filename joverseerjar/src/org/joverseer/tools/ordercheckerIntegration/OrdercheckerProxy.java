@@ -106,7 +106,7 @@ public class OrdercheckerProxy {
 		if (!result) {
 			// maybe we're running under eclipse.
 			rules.closeFile();
-			rules = new ImportRulesCsv("bin/metadata/orderchecker/ruleset.csv", Main.main.getRuleSet());
+			rules = new ImportRulesCsv("../orderchecker/bin/metadata/orderchecker/ruleset.csv", Main.main.getRuleSet());
 			result = rules.getRules();
 			if (!result) {
 				this.displayErrorMessage("The rules file (" + this.data.getRulesPath() + ") could not be opened!");
@@ -263,6 +263,18 @@ public class OrdercheckerProxy {
 			nation.addNation(n.getName());
 		}
 		return nation;
+	}
+	
+	private static void updateCompanies(Turn t, Nation nation) {
+		for (Company comp : (ArrayList<Company>) t.getContainer(TurnElementsEnum.Company).getItems()) {
+			com.middleearthgames.orderchecker.Company c = new com.middleearthgames.orderchecker.Company(comp.getHexNo());
+			c.setCommander(comp.getCommander());
+			for (int i = 0; i < comp.getMembers().size(); i++) {
+				c.addCharacter(comp.getMembers().get(i));
+			}
+			
+			nation.addCompany(c);
+		}
 	}
 
 	private static void updatePC(Turn t,Nation nation)
@@ -444,6 +456,7 @@ public class OrdercheckerProxy {
 		updatePC(t, nation);
 		this.updateCharacters(g,t, nation);
 		updateArmies(t, nation);
+		updateCompanies(t, nation);
 
 		//ReflectionUtils.invokeMethod(data, "findGame", new Object[] { nation });
 		this.data.findGame(nation);

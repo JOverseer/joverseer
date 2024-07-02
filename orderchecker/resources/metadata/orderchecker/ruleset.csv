@@ -51,7 +51,7 @@
 # NEWCHAR,"Param, Type","Param = param # for rank(s).  Type = 0 command, 1 = agent, 2 = emissary, 3 = mage, 4 = combo.   Checks new character creation and reports extra info."
 # NONE,,Simply indicates this order has no rule checking that can take place.
 # ONERING,,Checks the victory conditions for issuing the one ring order.
-# PC,"Location, Type","Location = 0 or param #.  Type = 0 if owned, 1 owned or not hidden, 2 not owned and not hidden, 3 enemy and not hidden, 4 none, 7 = owned, not hidden, not capital, 8 = capital, 9 = any PC, 10 = owned or not hidden and friendly relations.  Checks to see if a PC is at a location."
+# PC,"Location, Type","Location = 0 or param #.  Type = 0 if owned, 1 owned or not hidden, 2 not owned and not hidden, 3 enemy and not hidden, 4 none, 5 = none or ruins, 7 = owned, not hidden, not capital, 8 = capital, 9 = any PC, 10 = owned or not hidden and friendly relations.  Checks to see if a PC is at a location."
 # PCSIZE,"Location, Type","Location = 0 or param #.  Type = 1 = C, 2 = V, 3 = T, 4 = MT, 5 =CY, 8 = T/MT/CY, 9 = MT/CY, 10 = not C.  Checks the size of the city at the given location."
 # PCSTATE,"Location, State","Location = 0 or param #.  State = 0 possibly destroyed, 1 = possibly captured, 2 = possibly influenced away.  Sets PC state information."
 # PRODUCTINFO,"Type, Loc, Prod, Amt, Units","Type 0 = transport, 1 = sell, 2 = buy.  Location = 0 (not used) or param #.  Product = param #.  Amount = param #.  Units = 0 for #, 1 = %.  Gives additional product transfer information."
@@ -358,11 +358,11 @@ BEGINRULES,,,,,,,,,,,
 550,,ENEMYARMY,0,0,,
 550,,RANK,0,2,1,0,1,0
 552,PosCmp,COMMANDER,0,0,0,2
-552,,PC,0,4,,
+552,,PC,0,5,,
 552,,ENEMYARMY,0,0,,
 552,,LAND,0,,,
 552,,RANK,0,0,30,1,1,0
-555,CreCmp,PC,0,4,,
+555,CreCmp,PC,0,5,,
 555,,LAND,0,,,
 555,,ENEMYARMY,0,0,,
 555,,RANK,0,2,30,1,1,0

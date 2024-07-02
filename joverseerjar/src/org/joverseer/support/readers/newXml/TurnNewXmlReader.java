@@ -1204,10 +1204,13 @@ public class TurnNewXmlReader implements Runnable {
 	private void updateOrdersGiven(Game game1) {
 		Container ogs = this.turnInfo.getOrdersGiven();
 		Turn t = game1.getTurn(game1.getCurrentTurn() - 1);
+
 		if (t == null)
 			return;
+		
 		for (OrdersGiven og : (ArrayList<OrdersGiven>) ogs.getItems()) {
 			Character c = t.getCharById(og.getCharacterName());
+			if (c == null) c = t.getCharById(og.getCharacterName().trim());	//Another hack as some Ids trim some don't
 			if (c != null) {
 				for (Order o : c.getOrders()) {
 					o.clear();

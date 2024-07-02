@@ -2427,6 +2427,11 @@ public class Rule
                     this.parentOrder.addError(pc + " does not belong to an enemy.");
                 }
                 break;
+                
+            case 5:
+            	if(pc.getSize() == 0) {
+            		break;
+            	}
 
             case 4: // '\004'
                 if(pc.getPossibleDestruction() < this.parentOrder.getOrder())
@@ -2442,6 +2447,9 @@ public class Rule
                     this.parentOrder.addError("A population center, " + pc + ", is already here.");
                 }
                 break;
+                
+            //case 5: none or ruins
+            		
 
             case 7: // '\007'
                 if(pc.isNationsCapital(this.parentChar.getNation()))
@@ -2511,7 +2519,7 @@ public class Rule
             		}
             	}
             	break;
-            case 5: // '\005'
+            //case 5: // '\005'
             case 6: // '\006'
             default:
                 return "Invalid PC state of " + state + " for PC rule!";

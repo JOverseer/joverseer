@@ -176,7 +176,7 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
 //                tlb1.cell(new JLabel(" ")); //DAS- I don't understand what this is doing unless to force a thick row?
 //            	tlb1.row();
                 	sub.setEditor(getEditor());
-                } while (counter < 7);
+                } while (counter < 6);
             }
 
             this.currentComp = this.components.get(1);

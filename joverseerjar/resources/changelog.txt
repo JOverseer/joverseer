@@ -1,3 +1,14 @@
+VERSION 1.18.15-rc1
+---------------
+	* Enh: Orderchecker more accurately includes and uses Companies when checking orders
+	* Enh: Recent Games Menu now sorts by orders due 
+	* Enh: Added preference (automatically on) to automatically clear old/innactive games from Recent Games Menu
+	* recent games menu now refreshes upon saving game
+	* Fixed orders not loading for sone characters after importing xml
+	* 940 412 now showing 6 artis
+	* Nation selection no longer greys out blue arrow, now disables edit order buttons
+	* Fixed comparator, character order in hex view should now ignore accents
+
 VERSION 1.18.14
 ---------------
 	* Enh: Turn report view now displays double agents

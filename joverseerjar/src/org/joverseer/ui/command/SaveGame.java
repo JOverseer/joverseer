@@ -10,7 +10,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 
 import org.joverseer.JOApplication;
+import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
@@ -71,7 +73,6 @@ public class SaveGame extends ActionCommand {
         fileChooser.setSelectedFile(new File(fname));
         if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
             BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
-
             File f = fileChooser.getSelectedFile();
             GZIPOutputStream zos;
             try {
@@ -85,18 +86,20 @@ public class SaveGame extends ActionCommand {
                     g.setParameter("selHexX", String.valueOf((int)mp.getSelectedHex().getX())); //$NON-NLS-1$
                     g.setParameter("selHexY", String.valueOf((int)mp.getSelectedHex().getY())); //$NON-NLS-1$
                 }
-
                 ObjectOutputStream out = new ObjectOutputStream(zos = new GZIPOutputStream(new FileOutputStream(f)));
-                out.writeObject(g);
-                prefs.put("saveDir", f.getParent()); //$NON-NLS-1$
+                try {
+                	out.writeObject(g);
+                	prefs.put("saveDir", f.getParent()); //$NON-NLS-1$
 
-                RecentGames rgs = new RecentGames();
-                String dueDate = g.getTurn(g.getMaxTurn()).getPlayerInfo(g.getMetadata().getNationNo()).getDueDate();
-                rgs.updateRecentGameInfoPreferenceWithGame(g.getMetadata().getGameNo(), f.getAbsolutePath(), dueDate);
-
-                zos.finish();
-                out.close();
-                BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
+                	RecentGames rgs = new RecentGames();
+                	Turn turn = g.getTurn(g.getMaxTurn());
+            		String maybeUnknownDate = PlayerInfo.getDueDateDefaulted(turn.getPlayerInfo(g.getMetadata().getNationNo()), "unknown"); 
+                	rgs.updateRecentGameInfoPreferenceWithGame(g.getMetadata().getGameNo(), f.getAbsolutePath(), maybeUnknownDate);
+                } finally {
+                	// make sure if we've opened it, and even if we get an error...
+                	zos.finish();
+                	out.close();
+                }
                 String pval = PreferenceRegistry.instance().getPreferenceValue("general.informationAfterSaveGame"); //$NON-NLS-1$
                 if (pval.equals("yes")) { //$NON-NLS-1$
 	                MessageDialog dlg = new MessageDialog(Messages.getString("SaveGame.title"), Messages.getString("SaveGame.text") + fileChooser.getSelectedFile().getCanonicalPath()); //$NON-NLS-1$ //$NON-NLS-2$
@@ -104,6 +107,7 @@ public class SaveGame extends ActionCommand {
                 }
                 this.doExecuteCompletedSave = true;
                 JOApplication.publishEvent(LifecycleEventsEnum.SaveGameEvent, g, g);
+                BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
             }
             catch (Exception exc) {
                 BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());

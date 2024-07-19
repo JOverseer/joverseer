@@ -46,9 +46,9 @@ public class RecentGames {
                 	rgi.setDate(game.substring(j+1));
                 }
                 else {
+            		//TODO: I18N
                 	rgi.setDate("unknown");
-                }
-                
+                }                
                 
                 res.add(rgi);
             }

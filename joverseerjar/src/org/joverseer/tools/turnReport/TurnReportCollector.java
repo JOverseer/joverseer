@@ -1678,10 +1678,14 @@ public class TurnReportCollector {
 	
 	public String getHighlights(Turn t) {
 		int natioNo = this.gameHolder.getGame().getMetadata().getNationNo();
-		String rep = "<b style='font-size:11pt'> Report Highlights</b><br/><ul><li>Next orders due on: " + t.getPlayerInfo(natioNo).getDueDate() + "</li>";
+		PlayerInfo pi = t.getPlayerInfo(natioNo);
+		String maybeUnknownDate = PlayerInfo.getDueDateDefaulted(pi, "unknown"); 
+		String rep = "<b style='font-size:11pt'> Report Highlights</b><br/><ul><li>Next orders due on: " + maybeUnknownDate + "</li>";
 		
-		if(t.getPlayerInfo(natioNo).isDiploDue()) rep += "<li>Diplos are due next turn</li>";
-		if(renderCharLimitSummary() != "") rep += "<li>Character limit is changing this turn. New characters can be named/recruited</li>";
+		if (pi!= null) {
+			if(t.getPlayerInfo(natioNo).isDiploDue()) rep += "<li>Diplos are due next turn</li>";
+		}
+		if (renderCharLimitSummary() != "") rep += "<li>Character limit is changing this turn. New characters can be named/recruited</li>";
 		
 		rep += "</ul>";
 		return rep;

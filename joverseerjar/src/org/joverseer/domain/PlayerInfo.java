@@ -162,4 +162,11 @@ public class PlayerInfo implements IBelongsToNation, Serializable {
 	public int[] getControlledNations() {
 		return this.controlledNations;
 	}
+	public static final String getDueDateDefaulted( PlayerInfo pi,String defaultValue) {
+		if (pi == null) {
+			return defaultValue;
+		} else {
+			return pi.getDueDate();
+		}
+	}
 }

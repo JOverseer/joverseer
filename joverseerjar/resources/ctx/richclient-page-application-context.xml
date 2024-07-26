@@ -43,6 +43,7 @@
 				<value>teamEconomyView</value>
 				<value>notesListView</value>
 				<value>turnReportView</value>
+				<value>homeView</value>
 				<value>gameEncountersReportView</value>
 				<value>orderResultsView</value>
 				<value>diploMessage</value>
@@ -1334,6 +1335,39 @@
 		</property>
 		<property name="viewClass">
 			<value> org.joverseer.ui.views.TurnReportView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>500</value>
+		</property>
+		<property name="viewGroup">
+			<value>Advanced Intel</value>
+		</property>
+		<property name="viewProperties">
+			<map>
+				<entry key="gameHolder">
+					<ref bean="gameHolder" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="homeView"
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_HIDDEN" />
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_WEST" />
+		</property>
+		<property name="initIndex">
+			<value>1</value>
+		</property>
+		<property name="viewClass">
+			<value> org.joverseer.ui.views.HomeView</value>
 		</property>
 		<property name="preferredWidth">
 			<value>650</value>

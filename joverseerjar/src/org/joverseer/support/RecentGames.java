@@ -64,7 +64,7 @@ public class RecentGames {
     
     public boolean shouldDeleteRecentGame(RecentGameInfo rg) {
     	if(rg.getDate().equals("unknown")) return true;
-    	Date dateToCompare = Date.from(ZonedDateTime.now().minusDays(1).toInstant());
+    	Date dateToCompare = Date.from(ZonedDateTime.now().minusMonths(1).toInstant());
     	
     	SimpleDateFormat formatter = new SimpleDateFormat("MMMMMMMMM dd yyyy", Locale.ENGLISH);
 

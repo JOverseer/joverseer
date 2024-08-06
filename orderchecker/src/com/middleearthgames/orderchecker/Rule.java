@@ -2321,7 +2321,7 @@ public class Rule
             PopCenter pc = this.main.getNation().findPopulationCenter(location);
             if(pc == null)
             {
-                if(state != 4)
+                if(state != 4 || state != 5)
                 {
                     this.parentOrder.addError("No population center is present at location " + this.main.locationStr(location) + ".");
                 } else

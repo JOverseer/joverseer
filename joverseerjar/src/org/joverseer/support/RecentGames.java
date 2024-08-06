@@ -168,15 +168,15 @@ public class RecentGames {
 			
 			String o1Date = split1[2];
 			String o2Date = split2[2];
-			if (!o1Date.equals(o2Date)) return Integer.valueOf(o1Date).compareTo(Integer.valueOf(o2Date));
+			if (!o1Date.equals(o2Date)) return Integer.valueOf(o2Date).compareTo(Integer.valueOf(o1Date));
 			
 			o1Date = split1[0];
 			o2Date = split2[0];
-			if (!o1Date.equals(o2Date)) return Month.valueOf(o1Date).compareTo(Month.valueOf(o2Date));
+			if (!o1Date.equals(o2Date)) return Month.valueOf(o2Date).compareTo(Month.valueOf(o1Date));
 			
 			o1Date = split1[1];
 			o2Date = split2[1];
-			return Integer.valueOf(o1Date).compareTo(Integer.valueOf(o2Date));
+			return Integer.valueOf(o2Date).compareTo(Integer.valueOf(o1Date));
 		}
     }
 }

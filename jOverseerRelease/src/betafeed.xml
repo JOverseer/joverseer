@@ -7,6 +7,21 @@
 			helper program.</description>
 		<language>en</language>
 			<item>
+			<title>1.18.15-rc2</title>
+			<pubDate>6 August 2024</pubDate>
+			<description>
+VERSION 1.18.15-rc2
+---------------
+	* New Home Page
+		- Main view is weekly newsletter
+		- Side panel has recent games or info on how to start new game
+	* Submit multiple orders for multiple nations
+	* Fixed few beta bugs
+		- Orderchecker fixes 
+		- Reverse sort recent games
+			</description>
+		</item>		
+			<item>
 			<title>1.18.15-rc1</title>
 			<pubDate>2 July 2024</pubDate>
 			<description>

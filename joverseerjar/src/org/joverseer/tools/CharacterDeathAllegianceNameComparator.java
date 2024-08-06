@@ -36,7 +36,7 @@ public class CharacterDeathAllegianceNameComparator implements Comparator<Charac
 			if (i != 0)
 				return i;
 		}
-		return c1.getName().compareTo(c2.getName());
+		return c1.getId().compareTo(c2.getId());
 	}
 
 	private int compareDeath(Character c1, Character c2) {

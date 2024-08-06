@@ -18,6 +18,7 @@ import org.xml.sax.SAXParseException;
 
 import com.middleearthgames.orderchecker.Army;
 import com.middleearthgames.orderchecker.Character;
+import com.middleearthgames.orderchecker.Company;
 import com.middleearthgames.orderchecker.Nation;
 import com.middleearthgames.orderchecker.PopCenter;
 
@@ -127,13 +128,19 @@ public class ImportTurnXml
                 continue;
             }
             if(name.equals("Armies"))
+            {
                 parseArmies(childNode);
+                continue;
+            }
+            System.out.println("here");
+            if(name.equals("Companies"))
+            	parseCompanies(childNode);
         }
 
         return true;
     }
 
-    private void parseSecondaryFiles()
+	private void parseSecondaryFiles()
     {
         if(this.nation == null || !this.nation.isNationComplete())
             return;
@@ -281,6 +288,58 @@ public class ImportTurnXml
 
     }
 
+    private void parseCompanies(AdapterNode node) {
+		// TODO Auto-generated method stub
+        int companies = node.childCount();
+        for(int i = 0; i < companies; i++)
+        {
+            AdapterNode childNode = node.child(i);
+            if(!childNode.getNodeName().equals("Company"))
+                continue;
+            Company company = new Company(childNode.extractAttributeNumber());
+            parseCompany(childNode, company);
+            if(this.primaryParse)
+            {
+                this.nation.addCompany(company);
+                continue;
+            }
+            Company existingComp = this.nation.findCompanyByCommander(company.getCommander());
+//            if(existingComp != null && existingComp.getNation() != this.secondaryNation)
+//                continue;
+            if(existingComp != null)
+                this.nation.removeCompany(existingComp);
+            this.nation.addCompany(company);
+        }
+	}
+    
+    private void parseCompany(AdapterNode node, Company company) {
+        int children = node.childCount();
+        for(int i = 0; i < children; i++)
+        {
+            AdapterNode childNode = node.child(i);
+            String name = childNode.getNodeName();
+            if(name.equals("CompanyCO"))
+            {
+                company.setCommander(childNode.extractNodeString());
+                continue;
+            }
+            if(name.equals("CompanyMember"))
+            {
+                int members = childNode.childCount();
+                for(int j = 0; j < members; j++)
+                {
+                    AdapterNode grandChildNode = childNode.child(i);
+                    if(grandChildNode.getNodeName().equals("Spell"))
+                    {
+                        String charName = grandChildNode.extractNodeString();
+                        company.addCharacter(charName);
+                    }
+                }
+            }
+        }
+
+    }
+    
     private void parseCharacter(AdapterNode node, Character character)
     {
         int children = node.childCount();

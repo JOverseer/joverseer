@@ -9,6 +9,7 @@ import java.util.zip.GZIPOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 
+import org.joverseer.JOApplication;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -16,6 +17,7 @@ import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
 import org.joverseer.ui.JOverseerJIDEClient;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
@@ -104,6 +106,7 @@ public class SaveGame extends ActionCommand {
 	        		dlg.showDialog();
                 }
                 this.doExecuteCompletedSave = true;
+                JOApplication.publishEvent(LifecycleEventsEnum.SaveGameEvent, g, g);
                 BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
             }
             catch (Exception exc) {

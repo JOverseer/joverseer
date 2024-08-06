@@ -406,7 +406,7 @@ public class CharacterViewer extends ObjectViewer {
 			this.notesViewer.setFormObject(notes1);
 			this.characterName.setCaretPosition(0);
 			
-			//Disables/enables show/hide orders button depending on whether the player controls tehm or not (set in Advanced menu)
+			//Disables/enables show/hide orders button depending on whether the player controls them or not (set in Advanced menu)
 			//If they haven't set any preferences, defaults to enabling show order button
 			PlayerInfo pI = this.gameHolder.getGame().getTurn().getPlayerInfo(this.gameHolder.getGame().getMetadata().getNationNo());
 			boolean charIsControlled = true;
@@ -421,11 +421,15 @@ public class CharacterViewer extends ObjectViewer {
 				}
 			}
 			if (!charIsControlled) {
-				this.btnCharDetails.setEnabled(false);
+				this.order1.setEnabledButton(false);
+				this.order2.setEnabledButton(false);
+				this.order3.setEnabledButton(false);
 				this.btnCharDetails.setToolTipText(Messages.getString("CharacterViewer.showOrders.ToolTip"));
 			}
 			else {
-				this.btnCharDetails.setEnabled(true);
+				this.order1.setEnabledButton(true);
+				this.order2.setEnabledButton(true);
+				this.order3.setEnabledButton(true);
 				this.btnCharDetails.setToolTipText(null);
 			}
 		}

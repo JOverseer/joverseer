@@ -14,18 +14,24 @@ import java.util.logging.Logger;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.ArtifactInfo;
+import org.joverseer.metadata.domain.ClimateModifier;
 import org.joverseer.metadata.domain.Hex;
+import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.metadata.domain.NationMapRange;
 import org.joverseer.metadata.domain.SpellInfo;
+import org.joverseer.metadata.domain.TerrainModifier;
 import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.CommentedBufferedReader;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.readers.newXml.TurnInfoModifierWrapper;
+import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 
@@ -58,6 +64,8 @@ public class GameMetadata implements Serializable {
 	Container<Army> armies = new Container<Army>(new String[] { "hexNo" });
 	HashMap<Integer, Container<Hex>> hexOverrides = new HashMap<Integer, Container<Hex>>();
 	ArrayList<MetadataReader> readers = new ArrayList<MetadataReader>();
+	Container<TerrainModifier> terrainModifiers = new Container<TerrainModifier>();
+	Container<ClimateModifier> climateModifiers = new Container<ClimateModifier>();
 
 	String basePath;
 
@@ -71,6 +79,15 @@ public class GameMetadata implements Serializable {
 
 	public void setGame(Game game) {
 		this.game = game;
+	}
+	
+	public void loadCombatModifiers() throws IOException, MetadataReaderException {
+		//load defaults from config files that are not included in saved game
+		if (this.climateModifiers == null || this.climateModifiers.items.isEmpty()) {
+			this.basePath = "metadata";
+			CombatModifierReader r = new CombatModifierReader();
+			r.load(this);
+		}
 	}
 
 	public String getAdditionalNations() {
@@ -117,6 +134,7 @@ public class GameMetadata implements Serializable {
 	}
 
 	public void load() throws IOException, MetadataReaderException {
+		
 		for (MetadataReader r : getReaders()) {
 			r.load(this);
 		}
@@ -168,9 +186,11 @@ public class GameMetadata implements Serializable {
 		out.writeObject(getNewXmlFormat());
 		out.writeObject(getStartDummyCharacters());
 		out.writeObject(this.hexOverrides);
+		out.writeObject(getClimateModifiers());
+		out.writeObject(getTerrainModifiers());
 	}
 
-	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException, MetadataReaderException {
 		this.characters = (Container<Character>) in.readObject();
 		this.artifacts = (Container<ArtifactInfo>) in.readObject();
 		this.spells = (Container<SpellInfo>) in.readObject();
@@ -196,6 +216,17 @@ public class GameMetadata implements Serializable {
 		} catch (Exception e) {
 			// do nothing, this may have not been set
 		}
+		try {
+			setClimateModifiers((Container<ClimateModifier>) in.readObject());
+		} catch (Exception e) {
+			// do nothing, this may have not been set
+		}		
+		try {
+			setTerrainModifiers((Container<TerrainModifier>) in.readObject());
+		} catch (Exception e) {
+			// do nothing, this may have not been set
+		}	
+		
 	}
 
 	public Nation getNationByNum(int number) {
@@ -231,7 +262,53 @@ public class GameMetadata implements Serializable {
 	public void setPopulationCenters(Container<PopulationCenter> populationCenters) {
 		this.populationCenters = populationCenters;
 	}
+	
+	public Container<TerrainModifier> getTerrainModifiers() {
+		return this.terrainModifiers;
+	}
 
+	public void setTerrainModifiers(Container<TerrainModifier> terrainModifiers) {
+		this.terrainModifiers = terrainModifiers;
+	}
+	
+	public Container<ClimateModifier> getClimateModifiers() {
+		return this.climateModifiers;
+	}
+
+	public void setClimateModifiers(Container<ClimateModifier> climateModifiers) {
+		this.climateModifiers = climateModifiers;
+	}
+	
+	public void clearModifiers(int clearNation) {
+		//this.terrainModifiers.removeAllByProperties("NationNo", Integer.valueOf(clearNation));
+		//this.climateModifiers.removeAllByProperties("NationNo", Integer.valueOf(clearNation));
+		// The above don't work, not sure why
+		
+		ArrayList<TerrainModifier> removeTerrain = new ArrayList<TerrainModifier>();
+				
+		for (TerrainModifier tm : this.terrainModifiers.items) {
+			if (tm.NationNo == clearNation) {
+				removeTerrain.add(tm);
+			}
+		}
+		
+		for (TerrainModifier tm : removeTerrain) {
+			this.terrainModifiers.removeItem(tm);
+		}
+		
+		ArrayList<ClimateModifier> removeClimate = new ArrayList<ClimateModifier>();
+		
+		for (ClimateModifier cm : this.climateModifiers.items) {
+			if (cm.NationNo == clearNation) {
+				removeClimate.add(cm);
+			}
+		}
+		
+		for (ClimateModifier cm : removeClimate) {
+			this.climateModifiers.removeItem(cm);
+		}		
+	}
+	
 	public Container<OrderMetadata> getOrders() {
 		if (this.orders != null) {
 			OrderMetadata om = this.orders.findFirstByProperty("number", Integer.valueOf(225));
@@ -390,17 +467,20 @@ public class GameMetadata implements Serializable {
 	}
 	public Resource getResource(String resourceName) throws IOException {
 		try {
+			System.out.println("file:///" + getBasePath() + "/" + resourceName);
 			Resource r = Application.instance().getApplicationContext().getResource("file:///" + getBasePath() + "/" + resourceName);
 			new InputStreamReader(r.getInputStream());
 			return r;
 		} catch (Exception exc) {
 			try {
 				//System.out.println(exc.getMessage());
+				System.out.println("classpath:" + this.basePath + "/" + resourceName);
 				Resource r = Application.instance().getApplicationContext().getResource("classpath:" + this.basePath + "/" + resourceName);
 				new InputStreamReader(r.getInputStream());
 				return r;
 			} catch (Exception ex) {
 				Logger.getLogger(this.getClass().getName()).warning(resourceName);
+				Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
 				throw new IOException(resourceName + " not found.");
 			}
 		}
@@ -446,6 +526,44 @@ public class GameMetadata implements Serializable {
 		for (ArtifactInfo ai : this.getArtifacts().getItems()) {
 			ai.setNo(0);
 		}
+	}
+
+	public int getTerrainModifier(int nation, HexTerrainEnum terrain) {
+		
+//		try {
+//			TerrainModifier tm =  this.terrainModifiers.findFirstByProperties(new String[] {"NationNo", "Terrain"}, new Object[] {nation, terrain});
+//			return (int) Math.round(tm.Modifier * 100);
+//		}  catch (Exception ex) {
+//			return 100;
+//		}
+//	For some reason I am having no luck with containers so looping manually...
+		
+		for (TerrainModifier tm : this.terrainModifiers) {
+			if (tm.NationNo == nation && tm.Terrain == terrain) {
+				return (int) Math.round(tm.Modifier * 100);
+			}
+		}
+		
+		return 100;
+		
+	}
+
+	public int getClimateModifier(int nation, ClimateEnum climate) {
+//		try {
+//			ClimateModifier cm =  this.climateModifiers.findFirstByProperties(new String[] {"NationNo", "Climate"}, new Object[] {nation, climate});
+//			return (int) Math.round(cm.Modifier * 100);
+//		}  catch (Exception ex) {
+//			return 100;
+//		}
+		
+		for (ClimateModifier cm : this.climateModifiers) {
+			if (cm.NationNo == nation && cm.Climate == climate) {
+				return (int) Math.round(cm.Modifier * 100);
+			}
+		}
+		
+		return 100;
+		
 	}
 
 }

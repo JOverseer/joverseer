@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 import org.joverseer.JOApplication;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
+import org.joverseer.metadata.MetadataReader;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
 import org.joverseer.ui.JOverseerJIDEClient;
@@ -95,6 +96,7 @@ public class LoadGame extends ActionCommand {
                 GameHolder gh = this.gameHolder;
                 Game g = Game.loadGame(f);
                 g.getMetadata().setGame(g);
+                g.getMetadata().loadCombatModifiers();
                 gh.setGame(g);
                 gh.setFile(this.fname);
 

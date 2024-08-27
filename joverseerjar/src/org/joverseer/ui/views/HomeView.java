@@ -20,6 +20,7 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.event.HyperlinkEvent.EventType;
 
+import org.joverseer.JOApplication;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.HomeViewInfoCollector;
 import org.joverseer.ui.ScalableAbstractView;
@@ -29,6 +30,7 @@ import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.richclient.image.ImageSource;
 
 import javax.swing.JLabel;
 import javax.swing.BoxLayout;
@@ -187,6 +189,7 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 			
 			if(subQ.equals("recentgame")) {
 				String file = query.substring(11);
+				System.out.println(file);
 				LoadGame loadGame = new LoadGame(file, this.gameHolder);
 				loadGame.execute();
 				GraphicUtils.showView("mapView");
@@ -220,8 +223,10 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 	}
 	
 	public void setImageIcon(int width) {
-		ImageIcon i = new ImageIcon("resources/images/melogo_small_tm_black.png");
-		Image im = i.getImage().getScaledInstance(width, -1, Image.SCALE_SMOOTH);
+		ImageSource is = JOApplication.getImageSource();
+		Image i = is.getImage("homeView.topRight");
+		//ImageIcon i = new ImageIcon("resources/images/melogo_small_tm_black.png");
+		Image im = i.getScaledInstance(width, -1, Image.SCALE_SMOOTH);
 		this.lblLogo.setIcon(new ImageIcon(im));
 	}
 

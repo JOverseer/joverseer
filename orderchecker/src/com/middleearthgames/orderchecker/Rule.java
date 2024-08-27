@@ -770,9 +770,12 @@ public class Rule
         }
         int artifactParam = convertParameter(0);
         int artifact = this.parentOrder.getParameterNumber(artifactParam);
+        System.out.println(artifactParam);
+        System.out.println(artifact);
         if(artifact == -1)
         {
-            return "Couldn't get artifact (" + artifactParam + ") for find artifact check!";
+            artifact = 0;
+        	//return "Couldn't get artifact (" + artifactParam + ") for find artifact check!";
         }
         if(this.phase == 1)
         {
@@ -1128,26 +1131,30 @@ public class Rule
             				this.parentOrder.addError(this.parentChar + " is not on the same hex as " + ch);
             				success = false;
             			}
-            			Company cJoin = n.findCompanyByCommander(ch.getName());
+            			Company cJoin = n.findCompanyByCommander(ch.getId());
+            	        if(cJoin == null) {
+            	                this.parentOrder.addError(ch + " is not a commander of a company.");
+            	                return null;
+            	            }
             			if (cJoin.getCurrentCapacity() >= 9) {
             				this.parentOrder.addError(ch + "s company is at maximum capacity, meaning " + this.parentChar + " couldn't join.");
             				success = false;
             			}
             			
-            			if (success = true) {
-            				this.parentOrder.addInfo(this.parentChar + " joined " + ch + "s company.");
-            				cJoin.addCharacter(this.parentChar.getName());
+            			if (success == true) {
+            				this.parentOrder.addInfo(this.parentChar + " joined " + ch + "'s company.");
+            				cJoin.addCharacter(this.parentChar.getId());
             			}
             		}
             	}
             	else if (type == 7) {
-            		Company cLeave = n.findCompanyByCharacterWith(this.parentChar.getName());
+            		Company cLeave = n.findCompanyByCharacterWith(this.parentChar.getId());
             		if (cLeave == null) {
             			this.parentOrder.addError(this.parentChar + " is not in a company.");
             		}
             		else {
-            			this.parentOrder.addInfo(this.parentChar + " leaved " + cLeave.getCommander() + "s company.");
-            			cLeave.removeCharacter(this.parentChar.getName());
+            			this.parentOrder.addInfo(this.parentChar + " leaved " + cLeave.getCommander() + "'s company.");
+            			cLeave.removeCharacter(this.parentChar.getId());
             		}
             		
             	}
@@ -1168,11 +1175,17 @@ public class Rule
         if (r == null && this.phase == 2) {
         	int location = this.parentOrder.getParameterNumber(locParam);
         	Nation n = this.getMain().getNation();
-        	Vector charWith = n.findCompanyByCommander(this.parentChar.getName()).getCharsWith();
+        	Company comp = n.findCompanyByCommander(this.parentChar.getId());
+        	if (comp == null) {
+        		this.parentOrder.addError(this.parentChar + " is not a commander of a company.");
+        		return null;
+        	}
+        	
+        	Vector charWith = comp.getCharsWith();
         	String chars = "";
         	for (int i = 0; i < charWith.size(); i++) {
         		String cName = (String) charWith.get(i);
-        		Character c = n.findCharacterByFullName(cName);
+        		Character c = n.findCharacterById(cName);
         		c.setNewLocation(location, this.parentOrder.getOrder());
         		
         		if (i != 0) {
@@ -2321,7 +2334,7 @@ public class Rule
             PopCenter pc = this.main.getNation().findPopulationCenter(location);
             if(pc == null)
             {
-                if(state != 4 || state != 5)
+                if(state != 4 && state != 5)
                 {
                     this.parentOrder.addError("No population center is present at location " + this.main.locationStr(location) + ".");
                 } else
@@ -2962,12 +2975,24 @@ public class Rule
                 break;
 
             case 1: // '\001'
-                if(character.isCompanyCO(this.parentOrder.getOrder()) && logic == 0 || !character.isCompanyCO(this.parentOrder.getOrder()) && logic == 1)
-                {
-                    character.setCompanyCO(!character.isCompanyCO(this.parentOrder.getOrder()), this.parentOrder.getOrder());
-                } else
-                {
-                }
+//                if(character.isCompanyCO(this.parentOrder.getOrder()) && logic == 0 || !character.isCompanyCO(this.parentOrder.getOrder()) && logic == 1)
+//                {
+//                    character.setCompanyCO(!character.isCompanyCO(this.parentOrder.getOrder()), this.parentOrder.getOrder());
+//                } else
+//                {
+//                }
+            	if(character.isCompanyCO(this.parentOrder.getOrder()) && logic == 0) {
+            		character.setCompanyCO(false, this.parentOrder.getOrder());
+            		Company c = this.main.getNation().findCompanyByCommander(character.getId());
+            		this.main.getNation().removeCompany(c);
+            	}
+            	else if(!character.isCompanyCO(this.parentOrder.getOrder()) && logic == 1) {
+            		character.setCompanyCO(true, this.parentOrder.getOrder());
+            		Company c = new Company(character.getLocation(this.parentOrder.getOrder()));
+            		c.setCommander(character.getId());
+            		
+            		this.main.getNation().addCompany(c);
+            	}
                 break;
 
             default:

@@ -62,6 +62,7 @@ public class Company {
     
     public String getDescription(String com) {
     	String str = "";
+    	Vector charsWithFullName = this.getFullNameCharsWith();
     	if (this.isCharTheCommander(com)) {
     		str += "Commands the Company of ";
     		for (int i = 0; i < this.getCharsWith().size(); i++) {
@@ -69,12 +70,12 @@ public class Company {
         			if(i == this.getCharsWith().size() - 1) str += " and ";
         			else str += ", ";
         		}
-    			str += (String) this.getCharsWith().get(i);
+    			str += (String) charsWithFullName.get(i);
     		}
     		return str;
     	}
     	else {
-    		str += "Member of " + this.commander + "s Company";
+    		str += "Member of " + this.getCommanderFullName() + "'s Company";
     		return str;
     	}
     }
@@ -117,7 +118,19 @@ public class Company {
 		return this.commander;
 	}
 	public void setCommander(String commander) {
-		this.commander = commander;
+        String charName = commander;
+        if(commander.length() >= 5)
+        {
+        	charName = "";
+            charName = commander.substring(0, 5);
+            charName = Normalizer.normalize(charName, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+        }
+		this.commander = charName;
+	}
+	
+	public String getCommanderFullName() {
+		Nation n = Main.main.getNation();
+		return n.findCharacterById(this.commander).getName();
 	}
 
 	public int getCommanderNation() {
@@ -139,9 +152,25 @@ public class Company {
 	public Vector getCharsWith() {
 		return this.charsWith;
 	}
+	
+	public Vector getFullNameCharsWith() {
+		Nation n = Main.main.getNation();
+		Vector fullNames = new Vector();
+		for(int i = 0; i < this.getCurrentCapacity()-1; i++) {
+			fullNames.add((Object) (n.findCharacterById((String) this.getCharsWith().get(i))).getName());
+		}
+		return fullNames;
+	}
 
 	public void addCharacter(String charName) {
-		this.charsWith.add((Object) charName);
+        String charNameID = charName;
+        if(charName.length() >= 5)
+        {
+        	charNameID = "";
+            charNameID = charName.substring(0, 5);
+            charNameID = Normalizer.normalize(charName, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+        }
+		this.charsWith.add((Object) charNameID);
 	}
 	
 	public void removeCharacter(String name) {

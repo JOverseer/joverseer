@@ -1,3 +1,15 @@
+VERSION 1.18.15-rc3
+---------------
+	* Fixes for Home Page
+		- Formatting and functionality issues
+		- Preference for it to be landing page
+	* Orderchecker fixes
+		- Company logic fully working
+		- Neutral nations working with 'isEnemy' using relations
+		- 550 555 orders work now
+	* Other
+		- Submit orders fixes
+		- Double Agents being overwritten by other nations files fixed
 VERSION 1.18.15-rc2
 ---------------
 	* New Home Page

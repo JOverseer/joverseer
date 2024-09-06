@@ -495,12 +495,12 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 					autoSaveGameAccordingToPref();
 				} 
 				if (this.index + 1 == this.numberOfControlledNations) break;
-				this.arrowAction("forward");
+				if (sendAll)this.arrowAction("forward");
 			} while (sendAll);
 			if(send){
 				String prefMethod = PreferenceRegistry.instance().getPreferenceValue("submitOrders.method");
 				Game g = this.gameHolder.getGame();
-				this.arrowAction("reset");
+				if (sendAll) this.arrowAction("reset");
 
 				String email = null;
 				this.serverResponse = "";
@@ -594,7 +594,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 						}
 					}
 					if (this.index + 1 == this.numberOfControlledNations) break;
-					this.arrowAction("forward");
+					if (sendAll) this.arrowAction("forward");
 				} while(sendAll);
 
 				String temp = "<br/>";
@@ -602,7 +602,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 				for (int i = 0; i < this.numberOfControlledNations; i++) {
 					if (i != 0) this.arrowAction("forward");
 					temp += g.getMetadata().getNationByNum(this.getSelectedNationNo()) + ": ";
-					temp += successes[i] ? "Success" : "Fail";
+					temp += successes[i] ? "Success" : "Not Sent";
 					temp += "<br/>";
 				}
 				

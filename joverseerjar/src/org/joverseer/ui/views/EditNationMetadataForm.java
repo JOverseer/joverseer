@@ -217,7 +217,14 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 		tlb.relatedGapRow();
 		tlb.relatedGapRow();
 		tlb.row();
+		tlb.relatedGapRow();
+		tlb.relatedGapRow();
+		tlb.relatedGapRow();
+		tlb.relatedGapRow();
+		tlb.row();
+
 		JScrollPane scp = new JScrollPane(tlb.getPanel());
+
 		scp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		return scp;
 	}

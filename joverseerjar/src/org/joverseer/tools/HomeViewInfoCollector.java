@@ -53,11 +53,12 @@ public class HomeViewInfoCollector {
 	private String renderSideViewReport() {
 		String s = "";
 		s += "<div style='font-family:MS Sans Serif; font-size:11pt'>";
-		s += this.getTipOfTheDay();
-		s += "<br/>";
 		String temp = this.renderRecentGames();
 		if (temp.equals("")) s += "<br/>" + Messages.getString("homeView.defaultWelcomeText");
-		else s += "<h3>Games:</h3>" + temp;
+		else s += "<h3>Your Games:</h3>" + temp;
+		s += "<br/>";
+		s += "<h3>Tip of the Day:</h3>";
+		s += this.getTipOfTheDay();
 		return s;
 	}
 	
@@ -122,7 +123,7 @@ public class HomeViewInfoCollector {
 	 */
 	private String renderRecentGameLine(RecentGameInfo frgi) {
 		String s = "";
-		s += "Game <a href='http://event?recentgame=" + frgi.getFile() + "'>" + frgi.getNumber() + "</a>, orders due by: " + frgi.getDate();
+		s += "Game <a href='http://event?recentgame=" + frgi.getFile().replace("'", "~~") + "'>" + frgi.getNumber() + "</a>, orders due by: " + frgi.getDate();
 		return s;
 	}
 	
@@ -141,7 +142,7 @@ public class HomeViewInfoCollector {
 		URLConnection connection = null;
 		try {
 		  connection =  new URL(getFinalURL(Url)).openConnection();
-		  Scanner scanner = new Scanner(connection.getInputStream());
+		  Scanner scanner = new Scanner(connection.getInputStream(), "UTF-8");
 		  scanner.useDelimiter("\\Z");
 		  content = scanner.next();
 		  scanner.close();

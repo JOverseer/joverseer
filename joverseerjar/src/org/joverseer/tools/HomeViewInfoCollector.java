@@ -123,7 +123,7 @@ public class HomeViewInfoCollector {
 	 */
 	private String renderRecentGameLine(RecentGameInfo frgi) {
 		String s = "";
-		s += "Game <a href='http://event?recentgame=" + frgi.getFile() + "'>" + frgi.getNumber() + "</a>, orders due by: " + frgi.getDate();
+		s += "Game <a href='http://event?recentgame=" + frgi.getFile().replace("'", "~~") + "'>" + frgi.getNumber() + "</a>, orders due by: " + frgi.getDate();
 		return s;
 	}
 	

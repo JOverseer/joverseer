@@ -2432,13 +2432,7 @@ public class Rule
                     this.parentOrder.addError(pc + " is hidden.");
                     break;
                 }
-                if(neutral)
-                {
-                    this.parentOrder.addWarning(pc + " belongs to a neutral.");
-                } else
-                {
-                    this.parentOrder.addError(pc + " does not belong to an enemy.");
-                }
+                this.parentOrder.addError(pc + " does not belong to an enemy.");
                 break;
                 
             case 5:

@@ -39,6 +39,7 @@ import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.TurnInitializer;
 import org.joverseer.support.infoSources.DerivedFromArmyInfoSource;
+import org.joverseer.support.infoSources.DoubleAgentInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.support.infoSources.PdfTurnInfoSource;
@@ -373,6 +374,7 @@ public class TurnXmlReader implements Runnable {
 	private void updateChars() throws Exception {
 		Container<Character> chars = this.turn.getCharacters();
 		if (this.turn.getTurnNo() == 0) {
+			
 			// remove all character's import from metadata for given nation
 			ArrayList<Character> metadataChars = chars.findAllByProperty("nationNo", this.turnInfo.getNationNo()); //$NON-NLS-1$
 			ArrayList<Character> toRemove = new ArrayList<Character>();
@@ -384,6 +386,7 @@ public class TurnXmlReader implements Runnable {
 			chars.removeAll(toRemove);
 		}
 		for (CharacterWrapper cw : this.turnInfo.getCharacters().getItems()) {
+			
 			Character newCharacter;
 			Character oldCharacter;
 			try {
@@ -401,6 +404,13 @@ public class TurnXmlReader implements Runnable {
 					try {
 						if (DerivedFromArmyInfoSource.class.isInstance(oldCharacter.getInfoSource()) || PdfTurnInfoSource.class.isInstance(oldCharacter.getInfoSource()) || DerivedFromSpellInfoSource.class.isInstance(oldCharacter.getInfoSource()) || (newCharacter.getInformationSource().getValue() > oldCharacter.getInformationSource().getValue())) {
 							logger.debug("Replace."); //$NON-NLS-1$
+							
+							//Band aid solution to InformationEnum problem
+							//Fixes double agents being overwritten by another nations xml
+							if(DoubleAgentInfoSource.class.isInstance(oldCharacter.getInfoSource())) {
+								if(oldCharacter.getDoubleAgent() != null)
+									newCharacter.setDoubleAgent(oldCharacter.getDoubleAgent(), oldCharacter.getDoubleAgentForNationNo());
+							}
 							chars.removeItem(oldCharacter);
 							chars.addItem(newCharacter);
 						}
@@ -408,6 +418,7 @@ public class TurnXmlReader implements Runnable {
 
 					}
 				}
+
 				if (newCharacter.getNationNo() == this.turnInfo.getNationNo()) {
 					// if character is same nation, process PC existence in hex
 					// if a PC is found in the hex with info source from
@@ -425,6 +436,7 @@ public class TurnXmlReader implements Runnable {
 
 					}
 				}
+
 			} catch (Exception exc) {
 				logger.error(exc);
 				throw exc;

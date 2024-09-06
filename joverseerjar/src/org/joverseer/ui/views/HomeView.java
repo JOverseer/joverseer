@@ -188,8 +188,7 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 			String subQ = query.substring(0, query.indexOf("="));
 			
 			if(subQ.equals("recentgame")) {
-				String file = query.substring(11);
-				System.out.println(file);
+				String file = query.substring(11).replace("~~", "'");;
 				LoadGame loadGame = new LoadGame(file, this.gameHolder);
 				loadGame.execute();
 				GraphicUtils.showView("mapView");

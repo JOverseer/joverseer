@@ -831,6 +831,31 @@
 
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
+						<value>general.homeView</value>
+					</property>
+					<property name="description">
+						<value>Home page default page upon opening</value>
+					</property>
+					<property name="group">
+						<value>General</value>
+					</property>
+					<property name="type">
+						<value>check</value>
+					</property>
+					<property name="defaultValue">
+						<value>yes</value>
+					</property>
+
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
+						</list>
+					</property>
+				</bean>
+
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
 						<value>general.showWelcome</value>
 					</property>
 					<property name="description">

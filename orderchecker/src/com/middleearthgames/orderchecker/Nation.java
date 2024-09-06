@@ -12,6 +12,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import com.middleearthgames.orderchecker.Relations.NationRelationsEnum;
 import com.middleearthgames.orderchecker.io.Data;
 
 // Referenced classes of package com.middleearthgames.orderchecker:
@@ -37,6 +38,7 @@ public class Nation
     private Vector orderList;
     private Vector requestList;
     private Vector companies;
+    private Relations relations = null;
     
     private int dataGameType;
 
@@ -65,6 +67,7 @@ public class Nation
         this.orderList = new Vector();
         this.requestList = new Vector();
         this.companies = new Vector();
+        this.relations = new Relations();
     }
 
     public String implementPhase(int phase, Main main)
@@ -891,6 +894,19 @@ public class Nation
     public Vector getNationParsed()
     {
         return this.nationsParsed;
+    }
+    
+    public void setNationRelations(int relationInt) {
+    	
+    	this.getRelations().setRelationsFor(this.getNation(), relationInt);
+    }
+    
+    public Relations getRelations() {
+    	return this.relations;
+    }
+    
+    public NationRelationsEnum getRelationFor(int nationNum) {
+    	return this.getRelations().getRelationsFor(nationNum);
     }
 
     public String getNationName(int nationNumber)

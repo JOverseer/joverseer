@@ -317,7 +317,8 @@ public class Main
         {
             return false;
         }
-        return thisAlignment != 0 && otherAlignment != 0;
+        return this.nation.getRelations().isNationEnemy(otherNation);
+        //return thisAlignment != 0 && otherAlignment != 0;
     }
 
     public boolean isFriend(int thisNation, int otherNation)

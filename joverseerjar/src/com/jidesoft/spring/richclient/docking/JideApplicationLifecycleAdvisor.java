@@ -167,7 +167,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 		refreshClearMapItemsVisibility();
 
 		JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
-
+		
 		for (int i = 0; i < menuBar.getMenuCount(); i++) {
 			// recent games
 			//TODO: I18N
@@ -324,6 +324,10 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			landing.setTitle(Messages.getString("Welcome.Title"));
 			landing.setDescription(Messages.getString("Welcome.Description"));
 			landing.showDialog();
+		}
+		
+		if(PreferenceRegistry.instance().getPreferenceValue("general.homeView").equals("yes")) {
+			GraphicUtils.showView("homeView");
 		}
 	}
 

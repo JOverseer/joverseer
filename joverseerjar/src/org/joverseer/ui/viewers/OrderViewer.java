@@ -56,6 +56,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
     JTextField orderText;
     JLabel orderResultIcon;
     JCheckBox draw;
+    JButton btn;
 
     public OrderViewer(FormModel formModel,GameHolder gameHolder) {
         super(formModel, FORM_PAGE,gameHolder);
@@ -228,9 +229,9 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
 
         ImageSource imgSource = JOApplication.getImageSource();
         Icon ico = new ImageIcon(imgSource.getImage("edit.image")); //$NON-NLS-1$
-        final JButton btn = new JButton(ico);
-        btn.setToolTipText(Messages.getString("OrderViewer.EditOrder")); //$NON-NLS-1$
-        btn.addActionListener(new ActionListener() {
+        this.btn = new JButton(ico);
+        this.btn.setToolTipText(Messages.getString("OrderViewer.EditOrder")); //$NON-NLS-1$
+        this.btn.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent e) {
                 Order order = (Order)getFormObject();
@@ -238,9 +239,9 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
             }
         });
 
-        btn.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
-        btn.setBorder(border);
-        glb.append(btn);
+        this.btn.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
+        this.btn.setBorder(border);
+        glb.append(this.btn);
 
 //        imgSource = joApplication.getImageSource();
 //        ico = new ImageIcon(imgSource.getImage("selectHexCommand.icon"));
@@ -314,6 +315,10 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         return p;
     }
 
+    public void setEnabledButton(boolean b) {
+    	this.btn.setEnabled(b);
+    }
+    
     @Override
 	public void actionPerformed(ActionEvent e) {
           Order order = (Order)getFormObject();

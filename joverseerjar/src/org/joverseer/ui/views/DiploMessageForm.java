@@ -34,14 +34,10 @@ import org.joverseer.ui.BaseView;
 import javax.swing.BoxLayout;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-import javax.swing.JList;
 import javax.swing.JScrollPane;
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 
 /**

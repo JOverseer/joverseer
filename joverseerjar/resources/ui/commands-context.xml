@@ -404,6 +404,7 @@
 					</property>
 					<property name="members">
 						<list>
+							<ref bean="homeView" />
 							<ref bean="notesListView" />
 							<ref bean="playerInfoListView" />
 							<ref bean="orderListView" />

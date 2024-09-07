@@ -1,6 +1,7 @@
 package org.joverseer.tools.ordercheckerIntegration;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -17,6 +18,7 @@ import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Company;
 import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.NationRelations;
+import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
@@ -106,7 +108,7 @@ public class OrdercheckerProxy {
 		if (!result) {
 			// maybe we're running under eclipse.
 			rules.closeFile();
-			rules = new ImportRulesCsv("bin/metadata/orderchecker/ruleset.csv", Main.main.getRuleSet());
+			rules = new ImportRulesCsv("../orderchecker/bin/metadata/orderchecker/ruleset.csv", Main.main.getRuleSet());
 			result = rules.getRules();
 			if (!result) {
 				this.displayErrorMessage("The rules file (" + this.data.getRulesPath() + ") could not be opened!");
@@ -264,6 +266,18 @@ public class OrdercheckerProxy {
 		}
 		return nation;
 	}
+	
+	private static void updateCompanies(Turn t, Nation nation) {
+		for (Company comp : (ArrayList<Company>) t.getContainer(TurnElementsEnum.Company).getItems()) {
+			com.middleearthgames.orderchecker.Company c = new com.middleearthgames.orderchecker.Company(comp.getHexNo());
+			c.setCommander(comp.getCommander());
+			for (int i = 0; i < comp.getMembers().size(); i++) {
+				c.addCharacter(comp.getMembers().get(i));
+			}
+			
+			nation.addCompany(c);
+		}
+	}
 
 	private static void updatePC(Turn t,Nation nation)
 	{
@@ -407,6 +421,18 @@ public class OrdercheckerProxy {
 				} else if (nr.getAllegiance() == NationAllegianceEnum.Neutral) {
 					data.setNationAlignment(nr.getNationNo() - 1, 0, nation);
 				}
+				
+				if(i == nation.getNation()) {
+			        for (int i1 = 0; i1 < 26; i1++) {
+			        	if(nr.getRelationsFor(i1) == NationRelationsEnum.Hated) nation.getRelations().setRelationsFor(i1, 0);
+			        	if(nr.getRelationsFor(i1) == NationRelationsEnum.Disliked) nation.getRelations().setRelationsFor(i1, 1);
+			        	if(nr.getRelationsFor(i1) == NationRelationsEnum.Neutral) nation.getRelations().setRelationsFor(i1, 2);
+			        	if(nr.getRelationsFor(i1) == NationRelationsEnum.Tolerated) nation.getRelations().setRelationsFor(i1, 3);
+			        	if(nr.getRelationsFor(i1) == NationRelationsEnum.Friendly) nation.getRelations().setRelationsFor(i1, 4);
+	
+			        }
+				} 
+		        
 			} else {
 				org.joverseer.metadata.domain.Nation n = g.getMetadata().getNationByNum(i);
 				if (n != null) {
@@ -420,6 +446,7 @@ public class OrdercheckerProxy {
 				}
 			}
 		}
+		
 	}
 	public void updateOrdercheckerGameData(int nationNo1) throws Exception {
 		setNationNo(nationNo1);
@@ -440,10 +467,11 @@ public class OrdercheckerProxy {
 			oal.add(new Artifact(ai.getNo(), ai.getName(), 1, Artifact.encodeAlignment(ai.getAlignment()),ai.getPower1()+","+ai.getPower2() ));
 		}
 
-
+		
 		updatePC(t, nation);
 		this.updateCharacters(g,t, nation);
 		updateArmies(t, nation);
+		updateCompanies(t, nation);
 
 		//ReflectionUtils.invokeMethod(data, "findGame", new Object[] { nation });
 		this.data.findGame(nation);

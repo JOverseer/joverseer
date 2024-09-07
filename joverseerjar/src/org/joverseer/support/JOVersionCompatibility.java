@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 
 import org.joverseer.preferences.PreferenceRegistry;
 import org.springframework.richclient.application.Application;
+import com.jidesoft.spring.richclient.docking.JideApplicationWindow;
 
 import com.middleearthgames.updater.UpdateInfo;
 
@@ -42,6 +43,7 @@ public class JOVersionCompatibility {
 		if (lastVersion == null) {
 			lastVersion = "";
 		}
+		((JideApplicationWindow)Application.instance().getActiveWindow()).getDockingManager().showFrame("homeView");
 		return !lastVersion.equals(thisVersion());
 	}
 	public void markAsFirstTimeThisVersonRun(String value) {

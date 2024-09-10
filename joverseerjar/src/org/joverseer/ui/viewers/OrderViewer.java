@@ -192,23 +192,23 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
                         Order no = (Order)t.getTransferData(new OrderDataFlavor());
                         Order o = (Order)getFormObject();
 
-                        // swap characters
                         org.joverseer.domain.Character c = o.getCharacter();
-                        o.setCharacter(no.getCharacter());
-                        no.setCharacter(c);
+                        org.joverseer.domain.Character nc = no.getCharacter();
 
-                        // set order no to character c
-                        for (int i=0; i<c.getNumberOfOrders(); i++) {
-                        	if (c.getOrders()[i] == o) {
-                        		c.getOrders()[i] = no;
-                        	}
-                        }
-
-                        // set order o to character o.getCharacter
-                        for (int i=0; i<o.getCharacter().getNumberOfOrders(); i++) {
-                        	if (o.getCharacter().getOrders()[i] == no) {
-                        		o.getCharacter().getOrders()[i] = o;
-                        	}
+                        //note order ... if both characters are the same, then the order object is unintentionally duplicated
+                        int index1 = c.findOrderIndexOf(o);
+                        int index2 = nc.findOrderIndexOf(no);
+                        if ((index1 > -1) && (index1 > -1)) {
+                        		
+                        	Order temp;
+                        	temp = c.getOrders()[index1];
+                        	c.getOrders()[index1] = nc.getOrders()[index2];                        	
+                        	nc.getOrders()[index2] = temp;
+                        	// now fixup the owners of the order objects we swapped
+                        	if (!c.equals(nc)) {
+                        		o.setCharacter(nc);
+                        		no.setCharacter(c);
+                        	}                        	
                         }
 
                         JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);

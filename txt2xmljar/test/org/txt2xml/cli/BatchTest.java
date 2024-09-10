@@ -1,6 +1,8 @@
 package org.txt2xml.cli;
 
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -15,6 +17,9 @@ import org.junit.Test;
 public class BatchTest {
 
 	final String OUTPUT_FILE =  "src/org/txt2xml/cli/sample.txt.xml";
+	public static void setup() {
+		
+	}
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}

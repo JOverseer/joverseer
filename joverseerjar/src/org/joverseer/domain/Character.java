@@ -558,5 +558,13 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 			}
 		}
 	}
+	public int findOrderIndexOf(Order o) {
+		for (int i=0; i<this.numberOfOrders; i++) {
+        	if (this.getOrders()[i] == o) {
+        		return i;
+        	}
+        }
+		return -1;
+	}
 
 }

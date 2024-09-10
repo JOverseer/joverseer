@@ -143,6 +143,21 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 				}
 				menusEnabled = true;
 			}
+		case SaveGameEvent:
+			JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
+
+			for (int i = 0; i < menuBar.getMenuCount(); i++) {
+				// recent games
+				//TODO: I18N
+				if (menuBar.getMenu(i).getText().equals("Game")) {
+					for (int j = 0; j < menuBar.getMenu(i).getItemCount(); j++) {
+						if (menuBar.getMenu(i).getItem(j) != null && menuBar.getMenu(i).getItem(j).getText() != null && menuBar.getMenu(i).getItem(j).getText().equals("Recent Games")) {
+							menuBar.getMenu(i).getItem(j).removeAll();
+							addRecentGamesMenu((JMenu) menuBar.getMenu(i).getItem(j));
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -152,7 +167,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 		refreshClearMapItemsVisibility();
 
 		JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
-
+		
 		for (int i = 0; i < menuBar.getMenuCount(); i++) {
 			// recent games
 			//TODO: I18N
@@ -310,6 +325,10 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			landing.setDescription(Messages.getString("Welcome.Description"));
 			landing.showDialog();
 		}
+		
+		if(PreferenceRegistry.instance().getPreferenceValue("general.homeView").equals("yes")) {
+			GraphicUtils.showView("homeView");
+		}
 	}
 
 	public void setRepaintManager(RepaintManager repaintManager) {
@@ -400,6 +419,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			mu.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					System.out.println(frgi.getFile());
 					LoadGame loadGame = new LoadGame(frgi.getFile(),JideApplicationLifecycleAdvisor.this.gameHolder);
 					loadGame.execute();
 				}

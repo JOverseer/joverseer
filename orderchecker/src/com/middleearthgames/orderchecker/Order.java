@@ -85,6 +85,7 @@ public class Order
         	result = this.rules.processRules(this, phase);
         } catch (Exception exc) {
         	this.errorResults.add("Internal error while checking order");
+        	exc.printStackTrace();
         	result = null;
         	this.done = true;
         }

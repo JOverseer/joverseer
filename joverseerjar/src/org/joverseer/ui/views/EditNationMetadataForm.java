@@ -226,6 +226,7 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 		JScrollPane scp = new JScrollPane(tlb.getPanel());
 
 		scp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scp.setPreferredSize(new Dimension(750,550));
 		return scp;
 	}
 

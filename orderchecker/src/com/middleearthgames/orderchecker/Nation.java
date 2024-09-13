@@ -5,6 +5,7 @@
 
 package com.middleearthgames.orderchecker;
 
+import java.text.Normalizer;
 import java.util.Collections;
 import java.util.Vector;
 
@@ -356,10 +357,17 @@ public class Nation
     }
     
     public Company findCompanyByCommander(String name) {
+        String charNameID = name;
+        if(name.length() >= 5)
+        {
+        	charNameID = "";
+            charNameID = (name.substring(0, 5)).toLowerCase();
+            charNameID = Normalizer.normalize(charNameID, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+        }
         for(int i = 0; i < this.companies.size(); i++)
         {
             Company company = (Company)this.companies.get(i);
-            if(company.getCommander().equalsIgnoreCase(name))
+            if(company.getCommander().equalsIgnoreCase(charNameID))
             {
                 return company;
             }
@@ -370,10 +378,18 @@ public class Nation
 
     public String findCompanyCommanderByCharacterWith(String name) {
     	if (name == null) return null;
+        String charNameID = name;
+        if(name.length() >= 5)
+        {
+        	charNameID = "";
+            charNameID = (name.substring(0, 5)).toLowerCase();
+            charNameID = Normalizer.normalize(charNameID, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+        }
+        
     	int size = this.companies.size();
     	for (int i = 0; i < size; i++) {
     		Company c = (Company) this.companies.get(i);
-    		if(c.getCharacterIdInComp(name) != null) {
+    		if(c.getCharacterIdInComp(charNameID) != null) {
     			return c.getCommander();
     		}
     	}

@@ -110,7 +110,7 @@
 0;Lance of Reaching;Neutral;Combat;500;Cast 436 Scry Character;
 0;Mallorn Staff;Neutral;Mage;30;Cast 2 Minor Heal;
 0;Mane of the Mearas;Neutral;Mage;10;Learn Conjure Mounts;
-0;Maranya;Neutral;Mage;30;Learn Weakness, Sickness;
+0;Maranya;Good;Mage;30;Learn Weakness, Sickness;
 0;Mithril Helm;Neutral;Combat;1500;Cast 240 Summon Fire Spirits;
 0;Orcrist;Neutral;Combat;750;Cast 424 Perceive Mission;
 0;Ossanna;Neutral;Mage;15;Cast 430 Reveal Character True;
@@ -127,7 +127,7 @@
 0;Staff of the Serpent;Neutral;Mage;10;Cast 114 Barrier Walls;
 0;Staff of the Wanderer;Neutral;Mage;15;Learn Teleport;
 0;Taurin;Neutral;Combat;2000;Cast 202 Call Fire;
-0;Tinculin;Neutral;Mage;40;Learn Weakness, Sickness;
+0;Tinculin;Evil;Mage;30;Learn Weakness, Sickness;
 0;Mithril Shirt;Neutral;Stealth;5;Cast 508 Conjure Mounts;
 0;Shadow Mace;Neutral;Combat;2000;Cast 102 Barriers;
 0;Rod of the Steward;Neutral;Emissary;5;Cast 432 Perceive Secrets;
@@ -144,7 +144,7 @@
 0;Hue Changer;Neutral;Combat;500;Cast 508 Conjure Mounts;
 0;Cloud Bow;Neutral;Combat;750;Cast 426 Divine Army True;
 0;Stinging Tongue;Neutral;Combat;500;Cast 432 Perceive Secrets;
-0;Thôlogaer Ciryatano;Neutral;Mage;30;Learn Weakness, Sickness;
+0;Thôlogaer Ciryatano;Neutral;Mage;30;Cast 2 Minor Heal;
 0;Ring of Angrenost;Neutral;Combat;500;Cast 430 Reveal Character True;
 0;Mithril Ring;Neutral;Mage;10;Cast 114 Barrier Walls;
 0;Andorithel;Neutral;Command;10;Cast 508 Conjure Mounts;

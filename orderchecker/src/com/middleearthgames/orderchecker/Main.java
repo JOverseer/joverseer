@@ -317,6 +317,8 @@ public class Main
         {
             return false;
         }
+        if(otherNation == 26) return thisAlignment == 1;
+        if(otherNation == 27) return thisAlignment == 2;
         return this.nation.getRelations().isNationEnemy(otherNation);
         //return thisAlignment != 0 && otherAlignment != 0;
     }

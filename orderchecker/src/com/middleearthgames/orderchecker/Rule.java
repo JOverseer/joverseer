@@ -5,6 +5,7 @@
 
 package com.middleearthgames.orderchecker;
 
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.JCheckBox;
@@ -1472,6 +1473,37 @@ public class Rule
             {
                 this.parentChar.setCompanyCO(false, this.parentOrder.getOrder());
                 character.setCompanyCO(true, this.parentOrder.getOrder());
+                
+                Company cTo = this.getMain().getNation().findCompanyByCommander(character.getId());
+                Company cFrom = this.getMain().getNation().findCompanyByCommander(this.parentChar.getId());
+                if(cFrom != null) {
+	                if(cTo != null) {
+	                	if((cFrom.getCurrentCapacity() + cTo.getCurrentCapacity()) > 9) {
+	                		this.parentOrder.addError("Joining these 2 companies will fail, capacity exceeding 9.");
+	                		return null;
+	                	}
+	                	
+	                	Vector charWith = cFrom.getCharsWith();
+	                	String[] arrayChar = (String[]) charWith.toArray(new String[charWith.size()]);
+	                	
+	                	for(int i = 0; i < arrayChar.length; i++) {
+	                		cTo.addCharacter(arrayChar[i]);
+	                		cFrom.removeCharacter(arrayChar[i]);
+	                	}
+	                	
+	                	cTo.addCharacter(cFrom.getCommander());
+	                	cFrom.setCommander("");
+	                	this.getMain().getNation().removeCompany(cFrom);
+	                	
+	                } else {
+	                	cFrom.setCommander(character.getId());
+	                	cFrom.removeCharacter(character.getId());
+	                	cFrom.addCharacter(this.parentChar.getId());
+	                }
+                } else {
+                	this.parentOrder.addError("Couldn't find company.");
+                }
+                
                 return null;
             }
             Army sourceArmy = this.parentChar.getArmy(this.parentOrder.getOrder());

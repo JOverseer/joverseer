@@ -29,7 +29,7 @@ public class Company {
         String charName = "";
         if(this.commander.length() >= 5)
         {
-            charName = this.commander.substring(0, 5);
+            charName = (this.commander.substring(0, 5)).toLowerCase();
             charName = Normalizer.normalize(charName, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
         }
         if(!charName.equalsIgnoreCase(id))
@@ -62,7 +62,12 @@ public class Company {
     
     public String getDescription(String com) {
     	String str = "";
-    	Vector charsWithFullName = this.getFullNameCharsWith();
+    	Vector charsWithFullName;
+    	try {
+    		charsWithFullName = this.getFullNameCharsWith();
+    	} catch (Exception e) {
+    		return "";
+    	}
     	if (this.isCharTheCommander(com)) {
     		str += "Commands the Company of ";
     		for (int i = 0; i < this.getCharsWith().size(); i++) {
@@ -122,7 +127,7 @@ public class Company {
         if(commander.length() >= 5)
         {
         	charName = "";
-            charName = commander.substring(0, 5);
+            charName = (commander.substring(0, 5)).toLowerCase();
             charName = Normalizer.normalize(charName, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
         }
 		this.commander = charName;
@@ -153,7 +158,7 @@ public class Company {
 		return this.charsWith;
 	}
 	
-	public Vector getFullNameCharsWith() {
+	public Vector getFullNameCharsWith() throws NullPointerException {
 		Nation n = Main.main.getNation();
 		Vector fullNames = new Vector();
 		for(int i = 0; i < this.getCurrentCapacity()-1; i++) {
@@ -167,14 +172,21 @@ public class Company {
         if(charName.length() >= 5)
         {
         	charNameID = "";
-            charNameID = charName.substring(0, 5);
-            charNameID = Normalizer.normalize(charName, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+            charNameID = (charName.substring(0, 5)).toLowerCase();
+            charNameID = Normalizer.normalize(charNameID, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
         }
 		this.charsWith.add((Object) charNameID);
 	}
 	
 	public void removeCharacter(String name) {
-		this.charsWith.remove((Object) name);
+        String charNameID = name;
+        if(name.length() >= 5)
+        {
+        	charNameID = "";
+            charNameID = (name.substring(0, 5)).toLowerCase();
+            charNameID = Normalizer.normalize(charNameID, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+        }
+		this.charsWith.remove((Object) charNameID);
 	}
 	
 

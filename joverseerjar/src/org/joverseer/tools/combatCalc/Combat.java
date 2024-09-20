@@ -354,6 +354,9 @@ public class Combat implements Serializable, IHasMapLocation {
             int armySideTotalCon,
             int armyTotalWMs,
             int round) {
+    	
+    	this.log = "";
+    	
         int relMod = CombatModifiers.getRelationModifier(relations);
         int defCon = computNativeArmyConstitution(army);
         int attStr = computePopCenterStrength(pc, armyTotalWMs);
@@ -370,6 +373,7 @@ public class Combat implements Serializable, IHasMapLocation {
         if (attStr < 0) attStr = 0;
         double losses = computeLosses(army, attStr);
         addToLog("New losses: " + losses);
+        System.out.println(this.log);
         return losses;
     }
     

@@ -12,7 +12,7 @@
 
 	<bean id="applicationDescriptor"
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="1.18.15-rc3"/>
+		<property name="version" value="1.18.15-rc4"/>
 		<property name="buildId" value="Osgilliath"/>
 
 	</bean>
@@ -306,6 +306,7 @@
 				<bean class="org.joverseer.metadata.HexReader" />
 				<bean class="org.joverseer.metadata.ArtifactReader" />
 				<bean class="org.joverseer.metadata.PopulationCenterReader" />
+				<bean class="org.joverseer.metadata.CombatModifierReader" />
 				<bean class="org.joverseer.metadata.OrderReader" />
 				<bean class="org.joverseer.metadata.CharacterReader" />
 				<bean class="org.joverseer.metadata.StartingCharacterReader" />

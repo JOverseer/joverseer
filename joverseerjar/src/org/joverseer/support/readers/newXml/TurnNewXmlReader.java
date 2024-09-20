@@ -35,8 +35,11 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
+import org.joverseer.metadata.domain.ClimateModifier;
+import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.metadata.domain.TerrainModifier;
 import org.joverseer.support.StringUtils;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.DerivedFromOrderResultsInfoSource;
@@ -668,10 +671,111 @@ public class TurnNewXmlReader implements Runnable {
 		
 		System.out.println("Modifiers for " + this.turnInfo.nationNo);
 		if (this.turnInfo.modifiers != null) {
-			for (TurnInfoModifierWrapper modifier : (ArrayList<TurnInfoModifierWrapper>) this.turnInfo.modifiers.items) {
+			//remove default modifiers for this nation
+			try {
+				game1.getMetadata().clearModifiers(this.turnInfo.nationNo);
+			} catch(Exception exc) {
+				// No modifiers set for this nation anyway.
+			}
+			
+			for (TurnInfoModifierWrapper modifier : (ArrayList<TurnInfoModifierWrapper>) this.turnInfo.modifiers.getItems()) {
 				System.out.println(modifier.climate);
 				System.out.println(modifier.terrain);
 				System.out.println(modifier.modifier);
+				
+				if (modifier.getClimate() != null) {
+					ClimateModifier m = new ClimateModifier();
+
+					int ClimateID = Integer.parseInt(modifier.getClimate());
+					
+					m.setNationNo(this.turnInfo.nationNo);
+					m.setModifier(modifier.getModifier());
+					
+					switch(ClimateID) {
+					
+					case 1:
+						m.setClimate(ClimateEnum.Polar);
+						break;
+						
+					case 2:
+						m.setClimate(ClimateEnum.Severe);
+						break;
+		
+					case 3:
+						m.setClimate(ClimateEnum.Cold);
+						break;
+					
+					case 4:
+						m.setClimate(ClimateEnum.Cool);
+						break;
+					
+					case 5:
+						m.setClimate(ClimateEnum.Mild);
+						break;
+						
+					case 6:
+						m.setClimate(ClimateEnum.Warm);
+						break;
+						
+					case 7:
+						m.setClimate(ClimateEnum.Hot);
+						break;
+						
+					}			
+					
+					game1.getMetadata().getClimateModifiers().addItem(m);
+
+				}
+				else if (modifier.getTerrain() != null) {
+					int TerrainID = Integer.parseInt(modifier.getTerrain());
+					
+					TerrainModifier m = new TerrainModifier();
+					
+					m.setNationNo(this.turnInfo.nationNo);
+					m.setModifier(modifier.getModifier());
+					
+					switch(TerrainID) {
+					// The Terrain in the data file is different to the JO Enum
+					case 0:
+						m.setTerrain(HexTerrainEnum.ocean);
+						break;
+
+					case 1:
+						m.setTerrain(HexTerrainEnum.sea);
+						break;
+						
+					case 2:
+						m.setTerrain(HexTerrainEnum.shore);
+						break;
+
+					case 3:
+						m.setTerrain(HexTerrainEnum.plains);
+						break;
+					
+					case 4:
+						m.setTerrain(HexTerrainEnum.hillsNrough);
+						break;
+					
+					case 5:
+						m.setTerrain(HexTerrainEnum.forest);
+						break;
+						
+					case 6:
+						m.setTerrain(HexTerrainEnum.desert);
+						break;
+						
+					case 7:
+						m.setTerrain(HexTerrainEnum.swamp);
+						break;
+						
+					case 8:
+						m.setTerrain(HexTerrainEnum.mountains);
+						break;
+						
+					}
+					
+					game1.getMetadata().getTerrainModifiers().addItem(m);
+				}
 			}
 		}
 		

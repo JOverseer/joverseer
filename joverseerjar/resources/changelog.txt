@@ -1,5 +1,11 @@
 VERSION 1.18.15-rc4
 ---------------
+	*Small Bug fixes
+	*Loading a game opens map view
+	*Importing order results go to turn report
+	
+VERSION 1.18.15-rc4
+---------------
 	*Fixes for orderchecker
 	*Arti changes
 	*Edit nation Data form fix

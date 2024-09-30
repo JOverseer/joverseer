@@ -1,4 +1,4 @@
-VERSION 1.18.15-rc4
+VERSION 1.18.15-rc5
 ---------------
 	*Small Bug fixes
 	*Loading a game opens map view

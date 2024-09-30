@@ -6,7 +6,7 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
-			<item>
+		<item>
 			<title>1.18.15-rc5</title>
 			<pubDate>30 September 2024</pubDate>
 			<description>
@@ -16,6 +16,7 @@ VERSION 1.18.15-rc5
 	*Loading a game opens map view
 	*Importing order results go to turn report
 			</description>
+			</item>	
 			<item>
 			<title>1.18.15-rc4</title>
 			<pubDate>9 September 2024</pubDate>
@@ -26,6 +27,7 @@ VERSION 1.18.15-rc4
 	*Arti changes
 	*Edit nation Data form fix
 			</description>
+			</item>	
 			<item>
 			<title>1.18.15-rc3</title>
 			<pubDate>6 September 2024</pubDate>
@@ -44,6 +46,7 @@ VERSION 1.18.15-rc3
 		- Double Agents being overwritten by other nations files fixed
 		- Reverse sort recent games
 			</description>
+			</item>	
 			<item>
 			<title>1.18.15-rc2</title>
 			<pubDate>6 August 2024</pubDate>

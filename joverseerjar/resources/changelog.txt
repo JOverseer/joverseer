@@ -1,39 +1,15 @@
-VERSION 1.18.15-rc4
+VERSION 1.18.15
 ---------------
-	*Fixes for orderchecker
-	*Arti changes
-	*Edit nation Data form fix
-VERSION 1.18.15-rc3
----------------
-	* Fixes for Home Page
-		- Formatting and functionality issues
-		- Preference for it to be landing page
-	* Orderchecker fixes
-		- Company logic fully working
-		- Neutral nations working with 'isEnemy' using relations
-		- 550 555 orders work now
-	* Other
-		- Submit orders fixes
-		- Double Agents being overwritten by other nations files fixed
-VERSION 1.18.15-rc2
----------------
-	* New Home Page
-		- Main view is weekly newsletter
-		- Side panel has recent games or info on how to start new game
-	* Submit multiple orders for multiple nations
-	* Fixed few beta bugs
-		- Orderchecker fixes 
-		- Reverse sort recent games
-VERSION 1.18.15-rc1
----------------
-	* Enh: Orderchecker more accurately includes and uses Companies when checking orders
-	* Enh: Recent Games Menu now sorts by orders due 
-	* Enh: Added preference (automatically on) to automatically clear old/innactive games from Recent Games Menu
-	* recent games menu now refreshes upon saving game
-	* Fixed orders not loading for sone characters after importing xml
-	* 940 412 now showing 6 artis
-	* Nation selection no longer greys out blue arrow, now disables edit order buttons
-	* Fixed comparator, character order in hex view should now ignore accents
+	* Enh: New Home page, including news and your recent games
+	* Enh: Can now send multiple orders at once
+	* Enh: New preferences, automatically clearing old games from 'recent games' and making Home page the default landing page
+	* Enh: Orderchecker now says if a character is a company commander or is in a company
+	* QA: Orderchecker better evaluates company-related orders
+	* QA: Sort recent games by when orders are due
+	* QA: Opening a game now brings the map into focus, and importing results brings you to the turn report view
+	* Fix: Some artifact information now updated
+	* Fix: Minor bugs in Orderchecker now fixed
+	* Fix: Some orders not being imported with results
 
 VERSION 1.18.14
 ---------------

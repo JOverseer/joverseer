@@ -20,6 +20,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapMetadataUtils;
 import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.richclient.application.Application;
@@ -70,6 +71,7 @@ public class LoadGame extends ActionCommand {
         } else {
             loadGame();
         }
+        GraphicUtils.showView("mapView");
     }
 
 

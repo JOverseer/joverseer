@@ -360,10 +360,10 @@ public class Nation
         String charNameID = name;
         if(name.length() >= 5)
         {
-        	charNameID = "";
-            charNameID = (name.substring(0, 5)).toLowerCase();
-            charNameID = Normalizer.normalize(charNameID, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+        	charNameID = (name.substring(0, 5));
         }
+        charNameID = charNameID.toLowerCase();
+        charNameID = Normalizer.normalize(charNameID, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
         for(int i = 0; i < this.companies.size(); i++)
         {
             Company company = (Company)this.companies.get(i);
@@ -381,10 +381,10 @@ public class Nation
         String charNameID = name;
         if(name.length() >= 5)
         {
-        	charNameID = "";
-            charNameID = (name.substring(0, 5)).toLowerCase();
-            charNameID = Normalizer.normalize(charNameID, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+        	charNameID = (name.substring(0, 5));
         }
+        charNameID = charNameID.toLowerCase();
+        charNameID = Normalizer.normalize(charNameID, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
         
     	int size = this.companies.size();
     	for (int i = 0; i < size; i++) {

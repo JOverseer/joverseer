@@ -101,7 +101,7 @@ public class Company {
     }
     
     public boolean isCharInCompany(String character) {
-    	character = Normalizer.normalize(character, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+    	character = Normalizer.normalize(character, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "").toLowerCase();
     	if (character.length() >= 5) {
     		character = character.substring(0, 5);
     	}
@@ -126,10 +126,13 @@ public class Company {
         String charName = commander;
         if(commander.length() >= 5)
         {
-        	charName = "";
-            charName = (commander.substring(0, 5)).toLowerCase();
-            charName = Normalizer.normalize(charName, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+            charName = (commander.substring(0, 5));
         }
+        else {
+        	charName = String.format("%" + (-5) + "s", charName).replace(' ', ' '); 
+        }
+        charName = charName.toLowerCase();
+        charName = Normalizer.normalize(charName, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
 		this.commander = charName;
 	}
 	
@@ -171,10 +174,13 @@ public class Company {
         String charNameID = charName;
         if(charName.length() >= 5)
         {
-        	charNameID = "";
-            charNameID = (charName.substring(0, 5)).toLowerCase();
-            charNameID = Normalizer.normalize(charNameID, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+            charNameID = (charName.substring(0, 5));
         }
+        else {
+        	charNameID = String.format("%" + (-5) + "s", charNameID).replace(' ', ' '); 
+        }
+        charNameID = charNameID.toLowerCase();
+        charNameID = Normalizer.normalize(charNameID, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
 		this.charsWith.add((Object) charNameID);
 	}
 	
@@ -182,10 +188,10 @@ public class Company {
         String charNameID = name;
         if(name.length() >= 5)
         {
-        	charNameID = "";
-            charNameID = (name.substring(0, 5)).toLowerCase();
-            charNameID = Normalizer.normalize(charNameID, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+        	charNameID = (name.substring(0, 5));
         }
+        charNameID = charNameID.toLowerCase();
+        charNameID = Normalizer.normalize(charNameID, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
 		this.charsWith.remove((Object) charNameID);
 	}
 	

@@ -23,6 +23,7 @@ import org.joverseer.support.readers.xml.TurnXmlReader;
 import org.joverseer.ui.JOverseerClientProgressMonitor;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
+import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -194,6 +195,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 
 				@Override
 				protected boolean onFinish() {
+					GraphicUtils.showView("turnReportView");
 					return true;
 				}
 

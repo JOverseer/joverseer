@@ -7,6 +7,24 @@
 			helper program.</description>
 		<language>en</language>
 		<item>
+			<title>1.18.15</title>
+			<pubDate>1 October 2024</pubDate>
+			<description>
+VERSION 1.18.15
+---------------
+	* Enh: New Home page, including news and your recent games
+	* Enh: Can now send multiple orders at once
+	* Enh: New preferences, automatically clearing old games from 'recent games' and making Home page the default landing page
+	* Enh: Orderchecker now says if a character is a company commander or is in a company
+	* QA: Orderchecker better evaluates company-related orders
+	* QA: Sort recent games by when orders are due
+	* QA: Opening a game now brings the map into focus, and importing results brings you to the turn report view
+	* Fix: Some artifact information now updated
+	* Fix: Minor bugs in Orderchecker now fixed
+	* Fix: Some orders not being imported with results
+			</description>
+		</item>	
+		<item>
 			<title>1.18.14</title>
 			<pubDate>20 June 2024</pubDate>
 			<description>

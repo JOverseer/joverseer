@@ -191,7 +191,6 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 				String file = query.substring(11).replace("~~", "'");;
 				LoadGame loadGame = new LoadGame(file, this.gameHolder);
 				loadGame.execute();
-				GraphicUtils.showView("mapView");
 			}
 			else {
 				openURL(url);

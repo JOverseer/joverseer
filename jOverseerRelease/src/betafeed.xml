@@ -7,6 +7,15 @@
 			helper program.</description>
 		<language>en</language>
 		<item>
+			<title>1.18.16-rc1</title>
+			<pubDate>21 October 2024</pubDate>
+			<description>
+VERSION 1.18.16-rc1
+---------------
+	*ArmyViewer bug fix, crashing on enemy navy but no 'elements'
+			</description>
+			</item>	
+		<item>
 			<title>1.18.15-rc5</title>
 			<pubDate>30 September 2024</pubDate>
 			<description>

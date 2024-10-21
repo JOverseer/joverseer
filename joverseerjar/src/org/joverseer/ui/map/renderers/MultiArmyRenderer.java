@@ -63,8 +63,10 @@ public class MultiArmyRenderer extends ImageRenderer {
                 i++;
             }
         }
-        int maxFirstLine = this.mapMetadata.getGridCellWidth() < 10 ? 2 : 3;
-        int maxSecondLine = this.mapMetadata.getGridCellWidth() < 10 ? 1 : 2;
+        
+        int maxFirstLine = this.mapMetadata.getGridCellWidth() < 10 ? 1 : 3;
+        int maxSecondLine = this.mapMetadata.getGridCellWidth() < 10 ? 0 : 50;
+
         // render up to five armies
         if (i >= maxFirstLine) {
             j = 1;

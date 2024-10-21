@@ -43,6 +43,7 @@ public class CreateCombatForHexCommand extends ActionCommand {
 		combat.setDescription("Combat at " + String.valueOf(hex));
 		combat.loadTerrainAndClimateFromHex();
 		combat.autoSetRelationsToHated();
+		combat.autoSetCombatRelations();
 		game.getTurn().getContainer(TurnElementsEnum.CombatCalcCombats).addItem(combat);
 		JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
 		ShowCombatCalculatorCommand cmd = new ShowCombatCalculatorCommand(combat,this.gameHolder);

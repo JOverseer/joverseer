@@ -17,6 +17,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexTerrainEnum;
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.InfoUtils;
@@ -48,6 +49,7 @@ public class Combat implements Serializable, IHasMapLocation {
 
     CombatArmy[] side1 = new CombatArmy[MAX_ALL];
     CombatArmy[] side2 = new CombatArmy[MAX_ALL];
+    CombatArmy[] otherSide = new CombatArmy[MAX_ALL];
     
     NationRelationsEnum[][] side1Relations = new NationRelationsEnum[MAX_ALL][MAX_ALL];
     NationRelationsEnum[][] side2Relations = new NationRelationsEnum[MAX_ALL][MAX_ALL];
@@ -245,6 +247,18 @@ public class Combat implements Serializable, IHasMapLocation {
         this.rounds = 0;
         boolean finished = false;
         this.log = "";
+        addToLog("Side 1:");
+        for (int i = 0; i < this.side1.length && this.side1[i] != null; i++){
+	     	addToLog(this.side1[i].getCommander());
+	    }
+        addToLog("Side 2:");
+        for (int i = 0; i < this.side2.length && this.side2[i] != null; i++){
+        	addToLog(this.side2[i].getCommander());
+        }
+        addToLog("Side Other:");
+        for (int i = 0; i < this.otherSide.length && this.otherSide[i] != null; i++){
+        	addToLog(this.otherSide[i].getCommander());
+        }
         do {
             addToLog("Starting round " + this.rounds);
             double[] side1Losses = new double[MAX_ARMIES];
@@ -328,7 +342,7 @@ public class Combat implements Serializable, IHasMapLocation {
             addToLog("");
             addToLog("");
         } while (!finished);
-        System.out.println(this.log);
+        //System.out.println(this.log);
     }
     
     public void runWholeCombat() {
@@ -373,7 +387,7 @@ public class Combat implements Serializable, IHasMapLocation {
         if (attStr < 0) attStr = 0;
         double losses = computeLosses(army, attStr);
         addToLog("New losses: " + losses);
-        System.out.println(this.log);
+        //System.out.println(this.log);
         return losses;
     }
     
@@ -479,11 +493,13 @@ public class Combat implements Serializable, IHasMapLocation {
         this.side2Relations = side2Relations;
     }
 
+    public CombatArmy[] getOtherSide() {
+    	return this.otherSide;
+    }
     
     public HexTerrainEnum getTerrain() {
         return this.terrain;
     }
-
     
     public void setTerrain(HexTerrainEnum terrain) {
         this.terrain = terrain;
@@ -498,7 +514,7 @@ public class Combat implements Serializable, IHasMapLocation {
                 }
             }
             return false;
-        } else {
+        } else if (side == 1){
             for (int i=0; i<this.side2.length; i++) {
                 if (this.side2[i] == null) {
                     this.side2[i] = ca;
@@ -506,10 +522,17 @@ public class Combat implements Serializable, IHasMapLocation {
                 }
             }
             return false;
-
+        } else {
+            for (int i=0; i<this.otherSide.length; i++) {
+                if (this.otherSide[i] == null) {
+                    this.otherSide[i] = ca;
+                    return true;
+                }
+            }
+            return false;
         }
     }
-    
+
     public boolean removeFromSide(int side, CombatArmy ca) {
         boolean found = false;
         if (side == 0) {
@@ -524,7 +547,7 @@ public class Combat implements Serializable, IHasMapLocation {
                 }
             }
             return found;
-        } else {
+        } else if(side == 1){
             for (int i=0; i<this.side2.length; i++) {
                 if (this.side2[i] == ca) {
                     this.side2[i] = null;
@@ -533,6 +556,19 @@ public class Combat implements Serializable, IHasMapLocation {
                 if (i > 0 && this.side2[i-1] == null && this.side2[i] != null) {
                     this.side2[i-1] = this.side2[i];
                     this.side2[i] = null;
+                }
+            }
+            return found;
+
+        } else {
+            for (int i=0; i<this.otherSide.length; i++) {
+                if (this.otherSide[i] == ca) {
+                    this.otherSide[i] = null;
+                    found = true;
+                }
+                if (i > 0 && this.otherSide[i-1] == null && this.otherSide[i] != null) {
+                    this.otherSide[i-1] = this.otherSide[i];
+                    this.otherSide[i] = null;
                 }
             }
             return found;
@@ -652,17 +688,18 @@ public class Combat implements Serializable, IHasMapLocation {
 		ArrayList<Army> dsarmies = GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Army).findAllByProperties(new String[] { "hexNo", "nationAllegiance" }, new Object[] { strHex, NationAllegianceEnum.DarkServants });
 		ArrayList<Army> ntarmies = GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Army).findAllByProperties(new String[] { "hexNo", "nationAllegiance" }, new Object[] { strHex, NationAllegianceEnum.Neutral });
 
-		if (ntarmies.size() > 0) {
-			ErrorDialog.showErrorDialog("createCombatForHexCommand.error.NetrualArmiesFound");
-		}
+//		if (ntarmies.size() > 0) {
+//			ErrorDialog.showErrorDialog("createCombatForHexCommand.error.NetrualArmiesFound");
+//		}
 
 		PopulationCenter pc = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", this.hexNo);
-		if (pc != null && (pc.getNationNo() == 0 || pc.getNation().getAllegiance().equals(NationAllegianceEnum.Neutral))) {
-			ErrorDialog.showErrorDialog("createCombatForHexCommand.error.PopWithUnknownOrNeutralNationFound");
-		}
+//		if (pc != null && (pc.getNationNo() == 0 || pc.getNation().getAllegiance().equals(NationAllegianceEnum.Neutral))) {
+//			ErrorDialog.showErrorDialog("createCombatForHexCommand.error.PopWithUnknownOrNeutralNationFound");
+//		}
 
 		ArrayList<Army> aside1;
 		ArrayList<Army> aside2;
+		ArrayList<Army> other = ntarmies;
 
 		if (pc != null && pc.getNation().getAllegiance().equals(NationAllegianceEnum.FreePeople)) {
 			aside2 = fparmies;
@@ -675,23 +712,27 @@ public class Combat implements Serializable, IHasMapLocation {
 		for (int i=0; i<MAX_ALL; i++) {
 	        this.side1[i] = null;
 	        this.side2[i] = null;
+	        this.otherSide[i] = null;
 		}
 
-		for (int i = 0; i < 2; i++) {
-			ArrayList<Army> sideArmies = i == 0 ? aside1 : aside2;
+		for (int i = 0; i < 3; i++) {
+			ArrayList<Army> sideArmies;
+			if (i != 2) sideArmies = i == 0 ? aside1 : aside2;
+			else sideArmies = other;
+			
 			for (Army a : sideArmies) {
 				CombatArmy ca;
 				if (a.computeNumberOfMen() > 0) {
-					System.out.println("Adding Known Army "+a.getCommanderName());
+					//System.out.println("Adding Known Army "+a.getCommanderName());
 					ca = new CombatArmy(a);
 				} else {
 					ArmyEstimate ae = (ArmyEstimate) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", a.getCommanderName());
 					if (ae != null) {
-						System.out.println("Adding Army Estimate "+ae.getCommanderName());
+						//System.out.println("Adding Army Estimate "+ae.getCommanderName());
 						ca = new CombatArmy(ae);
 
 					} else {
-						System.out.println("Adding Zero Army "+a.getCommanderName() + " troops "+a.getTroopCount());
+						//System.out.println("Adding Zero Army "+a.getCommanderName() + " troops "+a.getTroopCount());
 						ca = new CombatArmy(a);
 
 					}
@@ -704,7 +745,7 @@ public class Combat implements Serializable, IHasMapLocation {
 		if (pc != null) {
 			CombatPopCenter cpc = new CombatPopCenter(pc);
 			this.setSide2Pc(cpc);
-		} 	
+		}
     }
     
     public void autoSetRelationsToHated() {
@@ -717,7 +758,38 @@ public class Combat implements Serializable, IHasMapLocation {
     	}
     }
 
-
+    public void autoDetectCombatArmyRelations(int side, int caInd) {
+    	NationRelations nR = null;
+    	if (side == 0) nR = GameHolder.instance().getGame().getTurn().getNationRelations(this.side1[caInd].getNationNo());
+    	else if(side == 1) nR = GameHolder.instance().getGame().getTurn().getNationRelations(this.side2[caInd].getNationNo());
+    	
+    	if (side == 0 && nR != null) {
+	    	for (int i = 0; i < MAX_ARMIES && this.side2[i] != null; i++) {
+	    		this.side1Relations[caInd][i] = nR.getRelationsFor(this.side2[i].getNationNo());
+	    		System.out.println(this.side1[caInd].getNation().getName() + " to " + this.side2[i].getNation().getName() + ": " +  nR.getRelationsFor(this.side2[i].getNationNo()));
+	    	}
+	    	if (this.side2Pc != null) this.side1Relations[caInd][10] = nR.getRelationsFor(this.side2Pc.getNationNo());
+	    	if (this.side2Pc != null) System.out.println(nR.getRelationsFor(this.side2Pc.getNationNo()));
+    	} else if (side == 1 && nR != null){
+	    	for (int i = 0; i < MAX_ARMIES&& this.side1[i] != null; i++) {
+	    		this.side2Relations[caInd][i] = nR.getRelationsFor(this.side1[i].getNationNo());
+	    	}
+	    	if (this.side1Pc != null) this.side2Relations[caInd][10] = nR.getRelationsFor(this.side1Pc.getNationNo());
+    	}
+    }
+    
+    public void autoSetCombatRelations() {
+    	//Side1 relations
+    	System.out.println("REACHED");
+    	for (int i = 0; i < MAX_ARMIES && this.side1[i] != null; i++) {
+    		this.autoDetectCombatArmyRelations(0, i);
+    	}
+    	
+    	//Side2 relations
+   		for (int i = 0; i < MAX_ARMIES && this.side2[i] != null; i++) {
+    		this.autoDetectCombatArmyRelations(1, i);
+    	}
+    }
 
 	public boolean getAttackPopCenter() {
 		return this.attackPopCenter;

@@ -1,5 +1,11 @@
 package org.joverseer.ui.command;
 
+import java.awt.Component;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+
 import org.joverseer.domain.Army;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.ActiveGameChecker;
@@ -18,6 +24,9 @@ import org.springframework.richclient.form.FormModelHelper;
  */
 public class ExportOrdersCommand extends ActionCommand {
 	final protected GameHolder gameHolder;
+	ExportOrdersForm form;
+	TitledPageApplicationDialog dialog;
+	
     public ExportOrdersCommand(GameHolder gameHolder) {
         super("ExportOrdersCommand");
         this.gameHolder = gameHolder;
@@ -27,27 +36,45 @@ public class ExportOrdersCommand extends ActionCommand {
 	protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
         FormModel formModel = FormModelHelper.createFormModel(new Army());
-        final ExportOrdersForm form = new ExportOrdersForm(formModel,this.gameHolder);
-        FormBackedDialogPage page = new FormBackedDialogPage(form);
+        this.form = new ExportOrdersForm(formModel,this.gameHolder);
+        FormBackedDialogPage page = new FormBackedDialogPage(this.form);
 
-        TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+        this.dialog = new TitledPageApplicationDialog(page) {
             @Override
 			protected void onAboutToShow() {
             }
 
             @Override
 			protected boolean onFinish() {
-            	form.commit();
-                return form.getReadyToClose();
+            	ExportOrdersCommand.this.form.setSendAll(false);
+            	ExportOrdersCommand.this.form.commit();
+                return ExportOrdersCommand.this.form.getReadyToClose();
             }
 
 			@Override
 			protected String getFinishCommandId() {
         		return "ExportOrdersSubmit";
 			}
+			
+			@Override
+			protected Object[] getCommandGroupMembers() {
+				return new Object[] { new ActionCommand("submitAllNationsOrders") { //$NON-NLS-1$
+					@Override
+					protected void doExecuteCommand() {
+						submitAllOrders();
+					}
+				}, getFinishCommand(), getCancelCommand() };
+			}
         };
-        dialog.setTitle(Messages.getString("exportOrdersDialog.title"));
-        dialog.showDialog();
+
+        this.dialog.setTitle(Messages.getString("exportOrdersDialog.title"));
+        this.dialog.showDialog();
+    }
+    
+    public boolean submitAllOrders() {
+    	this.form.setSendAll(true);
+        this.form.commit();
+        return this.form.getReadyToClose();
     }
 
 }

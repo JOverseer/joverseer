@@ -248,6 +248,30 @@
 						</list>
 					</property>
 				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>currentHexView.disableEditOrderButton</value>
+					</property>
+					<property name="description">
+						<value>Disable edit order button for controlled nations</value>
+					</property>
+					<property name="group">
+						<value>Display.Current Hex View</value>
+					</property>
+					<property name="type">
+						<value>check</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
+						</list>
+					</property>
+				</bean>
 
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
@@ -837,7 +861,7 @@
 						<value>Home page default page upon opening</value>
 					</property>
 					<property name="group">
-						<value>General</value>
+						<value>Default Landing Pages</value>
 					</property>
 					<property name="type">
 						<value>check</value>
@@ -1043,6 +1067,66 @@
 						<list>
 							<ref bean="yesPrefValue" />
 							<ref bean="noPrefValue" />
+						</list>
+					</property>
+				</bean>
+				
+								<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>orderEditor.autoDraw</value>
+					</property>
+					<property name="description">
+						<value>Auto Draw When Editing</value>
+					</property>
+					<property name="group">
+						<value>Order Editor</value>
+					</property>
+					<property name="type">
+						<value>check</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>defaultPage.importResults</value>
+					</property>
+					<property name="description">
+						<value>Default page after importing results</value>
+					</property>
+					<property name="group">
+						<value>Default Landing Pages</value>
+					</property>
+					<property name="defaultValue">
+						<value>map</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>tRV</value>
+								</property>
+								<property name="description">
+									<value>Turn Report View</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>map</value>
+								</property>
+								<property name="description">
+									<value>Map</value>
+								</property>
+							</bean>
 						</list>
 					</property>
 				</bean>

@@ -14,8 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.InputStream;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,7 +35,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.text.html.HTMLDocument;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
@@ -184,14 +181,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		JPanel nationPanel = new JPanel();
 		nationPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-		this.currentNation = new JLabel("");
-		Font newLabelFont = new Font(this.currentNation.getFont().getName(),Font.BOLD,this.currentNation.getFont().getSize());
-		this.currentNation.setFont(newLabelFont);
-		this.setNationLabel(0);
-
 		panel.add(topPanel, BorderLayout.NORTH);
-
-		nationPanel.add(this.currentNation);
 
 		JPanel pnlPlayerInfo = new JPanel();
 		nationPanel.add(pnlPlayerInfo);
@@ -232,8 +222,6 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		this.lblFile.setBackground(Color.WHITE);
 		pnlFile.add(this.lblFileValue);
 
-		setPlayerInfoItems();
-		this.setOrderText();
 		topPanel.add(nationPanel);
 
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -268,23 +256,17 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		this.chkShadowOrder.setToolTipText(Messages.getString("ExportOrdersForm.chkShadowOrder.toolTipText"));
 		buttonPanel.add(this.chkShadowOrder);
 		
+		JPanel veryTopPanel = new JPanel(new BorderLayout());
+		oPanel.add(veryTopPanel, BorderLayout.NORTH);
+		
 		JPanel buttonPanel2 = new JPanel();
 		buttonPanel2.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-		oPanel.add(buttonPanel2, BorderLayout.SOUTH);
+		veryTopPanel.add(buttonPanel2, BorderLayout.CENTER);
 		
-		JButton selectNationsBtn = new JButton(Messages.getString("ExportOrdersForm.BtnSelectNations"));
-		selectNationsBtn.setToolTipText(Messages.getString("ExportOrdersForm.BtnSelectNations.toolTipText"));
-		selectNationsBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SelectPlayedNations spn = new SelectPlayedNations(ExportOrdersForm.this.gameHolder);
-				spn.execute();
-				ExportOrdersForm.this.arrowAction("reset");
-			}
-		});
-		buttonPanel2.add(selectNationsBtn);
+		JLabel slN = new JLabel(Messages.getString("ExportOrdersForm.lblSelectNation"));
+		buttonPanel2.add(slN);
 		
-		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
+		Component horizontalStrut_2 = Box.createHorizontalStrut(5);
 		buttonPanel2.add(horizontalStrut_2);
 		
 		this.backBtn = new JButton("<");
@@ -305,10 +287,33 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 			}
 		});
 		
-		this.chkDontCloseOnFinish = new JCheckBox(Messages.getString("ExportOrdersForm.chckbxNewCheckBox.text")); //$NON-NLS-1$
-		this.chkDontCloseOnFinish.setToolTipText(Messages.getString("ExportOrdersForm.chkSendAnother.toolTipText")); //$NON-NLS-1$
-		buttonPanel2.add(this.chkDontCloseOnFinish);
+		this.currentNation = new JLabel("");
+		Font newLabelFont = new Font(this.currentNation.getFont().getName(),Font.BOLD,this.currentNation.getFont().getSize());
+		this.currentNation.setFont(newLabelFont);
+		this.setNationLabel(0);
+		buttonPanel2.add(this.currentNation);
 		
+		JPanel sNBtnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		veryTopPanel.add(sNBtnPanel, BorderLayout.EAST);
+
+		JButton selectNationsBtn = new JButton(Messages.getString("ExportOrdersForm.BtnSelectNations"));
+		selectNationsBtn.setToolTipText(Messages.getString("ExportOrdersForm.BtnSelectNations.toolTipText"));
+		selectNationsBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SelectPlayedNations spn = new SelectPlayedNations(ExportOrdersForm.this.gameHolder);
+				spn.execute();
+				ExportOrdersForm.this.arrowAction("reset");
+			}
+		});
+		sNBtnPanel.add(selectNationsBtn);
+		
+		this.chkDontCloseOnFinish = new JCheckBox(); //$NON-NLS-1$
+//		this.chkDontCloseOnFinish.setToolTipText(Messages.getString("ExportOrdersForm.chkSendAnother.toolTipText")); //$NON-NLS-1$
+//		sNBtnPanel.add(this.chkDontCloseOnFinish);
+		
+		setPlayerInfoItems();
+		this.setOrderText();
 		this.index = 0;
 		this.refreshArrows();
 		
@@ -387,7 +392,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
                 this.lblSent.setVisible(false);
             } else {
             	this.lblSentValue.setText(new SimpleDateFormat().format(d));
-    			this.lblVersionValue.setText(String.valueOf(pi.getTurnVersion()));
+    			this.lblVersionValue.setText(" " + String.valueOf(pi.getTurnVersion()));
     			String file = String.valueOf(pi.getLastOrderFile());
     			final int truncate=40;
     			if (file.length() > truncate) {
@@ -664,6 +669,10 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		if (pi.isDiploDue() && !pi.isDiploSent()) JOptionPane.showMessageDialog(null, "Remember, a Diplo is due this turn, and you have yet to send one.");
 		
 		this.lastSaveWasNotCancelled = saveAndSendOrders(true);
+	}
+	
+	public void setSendAll(boolean sendAll) {
+		this.chkDontCloseOnFinish.setSelected(sendAll);
 	}
 
 	private int validateOrders() {

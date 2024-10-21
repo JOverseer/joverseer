@@ -614,6 +614,14 @@
 						<value>Window Display</value>
 					</property>
 				</bean>
+				<bean class="org.joverseer.ui.command.EditPreferencesCommand">
+					<property name="enabled">
+						<value>true</value>
+					</property>
+					<property name="group">
+						<value>Default Landing Pages</value>
+					</property>
+				</bean>
 				<value>separator</value>
 				<ref bean="restoreLayoutMenu" />
 			</list>

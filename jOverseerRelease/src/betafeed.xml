@@ -7,6 +7,22 @@
 			helper program.</description>
 		<language>en</language>
 		<item>
+			<title>1.18.17-rc1</title>
+			<pubDate>21 October 2024</pubDate>
+			<description>
+VERSION 1.18.17-rc1
+---------------
+	* Combat calculator changes:
+		* Auto loads relations for each army
+		* Add new table, all other armies in hex go here, including neutral armies, can drag and drop them across
+		* Now a "refresh combat button" in case things go wrong...
+	* No longer warns players about neutral armies or popcenters
+	* Moved things around in send orders pane to try and make things clearer
+	* New preference tab, for default pages
+	* Preference for disabling orders on characters you dont control
+			</description>
+			</item>	
+		<item>
 			<title>1.18.16-rc1</title>
 			<pubDate>21 October 2024</pubDate>
 			<description>

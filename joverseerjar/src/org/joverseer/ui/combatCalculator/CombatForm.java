@@ -99,7 +99,6 @@ public class CombatForm extends AbstractForm {
 
 	@Override
 	protected JComponent createFormControl() {
-		System.out.println("NEWWWWWWWWW");
 		SwingBindingFactory sbf = (SwingBindingFactory) getBindingFactory();
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 

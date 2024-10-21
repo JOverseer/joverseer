@@ -8,7 +8,6 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
-import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.tools.CombatUtils;
 import org.joverseer.tools.combatCalc.Combat;

@@ -308,7 +308,8 @@ public class ArmyViewer extends ObjectViewer {
 			if(ter.isOpenSea()) {
 				return Messages.getString("ArmyViewer.Navy");
 			}
-			if(a.getNumberOfRequiredTransports() <= a.getElement(ArmyElementType.Transports).getNumber()) {
+			if (a.getElements().size() == 0) {}
+			else if(a.getNumberOfRequiredTransports() <= a.getElement(ArmyElementType.Transports).getNumber()) {
 				return Messages.getString("ArmyViewer.Navy");
 			}
 		}

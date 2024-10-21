@@ -467,14 +467,12 @@ public class GameMetadata implements Serializable {
 	}
 	public Resource getResource(String resourceName) throws IOException {
 		try {
-			System.out.println("file:///" + getBasePath() + "/" + resourceName);
 			Resource r = Application.instance().getApplicationContext().getResource("file:///" + getBasePath() + "/" + resourceName);
 			new InputStreamReader(r.getInputStream());
 			return r;
 		} catch (Exception exc) {
 			try {
 				//System.out.println(exc.getMessage());
-				System.out.println("classpath:" + this.basePath + "/" + resourceName);
 				Resource r = Application.instance().getApplicationContext().getResource("classpath:" + this.basePath + "/" + resourceName);
 				new InputStreamReader(r.getInputStream());
 				return r;

@@ -186,7 +186,7 @@ public class ArmyViewer extends ObjectViewer {
 			Color c = ColorPicker.getInstance().getColor(army.getNationAllegiance().toString());
 			this.commanderName.setForeground(c);
 		}
-
+		
 		Game game = this.gameHolder.getGame();
 		if (game == null)
 			return;
@@ -199,6 +199,7 @@ public class ArmyViewer extends ObjectViewer {
 		this.armySizeStr = army.getSize().toString();
 		this.armyTypeStr = army.isNavy() ? Messages.getString("ArmyViewer.Navy") : Messages.getString("ArmyViewer.Army");
 		this.resetExtraInfo();
+
 		if (army.getElements().size() > 0) {
 			for (ArmyElement element : army.getElements()) {
 				this.appendItemExtraInfo(element.getLocalizedDescription() + " ");
@@ -234,6 +235,7 @@ public class ArmyViewer extends ObjectViewer {
 				}
 			}
 		}
+
 		this.extraInfo.setCaretPosition(0);
 		this.extraInfo2.setCaretPosition(0);
 				
@@ -265,25 +267,10 @@ public class ArmyViewer extends ObjectViewer {
 			}
 		}
 		
-		// armyMorale.setText("M: 0");
-
-		String movementTypeUnit = "";
 		this.cavStr = ""; //$NON-NLS-1$
-		String cavTooltip = ""; //$NON-NLS-1$
-		Boolean isCav = army.computeCavalry();
-		
-		if (isCav == null) {
-			this.cavStr = ""; //$NON-NLS-1$
-			cavTooltip = ""; //$NON-NLS-1$
-		} else if (isCav) {
-			this.cavStr = Messages.getString("ArmyViewer.AbbCavalry") + " "; //$NON-NLS-1$
-			cavTooltip = Messages.getString("ArmyViewer.TreatAsCavalry"); //$NON-NLS-1$
-		} else {
-			this.cavStr = Messages.getString("ArmyViewer.AbbInfantry") + " "; //$NON-NLS-1$
-			cavTooltip = Messages.getString("ArmyViewer.TreatAsInfantry"); //$NON-NLS-1$
-		}
-		this.cavStr = this.computeMovementTypeUnit(army);
 
+		this.cavStr = this.computeMovementTypeUnit(army);
+		
 		this.armyInfoText.setText(this.armyTypeStr + " of " + this.armySizeStr + " size.");
 		this.movementType.setText("Movement Type: " + foodStr + foodNum + this.cavStr);
 		
@@ -297,6 +284,7 @@ public class ArmyViewer extends ObjectViewer {
 		} else {
 			this.travellingWith.setVisible(false);
 		}
+		
 	}
 	
 	/*
@@ -313,18 +301,14 @@ public class ArmyViewer extends ObjectViewer {
 				return Messages.getString("ArmyViewer.Navy");
 			}
 		}
-		String cavTooltip = ""; //$NON-NLS-1$
 		Boolean isCav = a.computeCavalry();
 		
 		if (isCav == null) {
-			cavTooltip = ""; //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		} else if (isCav) {
 			return Messages.getString("ArmyViewer.AbbCavalry") + " "; //$NON-NLS-1$
-			//cavTooltip = Messages.getString("ArmyViewer.TreatAsCavalry"); //$NON-NLS-1$
 		} else {
 			return Messages.getString("ArmyViewer.AbbInfantry") + " "; //$NON-NLS-1$
-			//cavTooltip = Messages.getString("ArmyViewer.TreatAsInfantry"); //$NON-NLS-1$
 		}
 	}
 	

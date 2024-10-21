@@ -64,7 +64,12 @@ public class ShowCombatCalculatorCommand extends ActionCommand {
 
             @Override
 			protected Object[] getCommandGroupMembers() {
-                return new AbstractCommand[] {
+                return new AbstractCommand[] { new ActionCommand("refreshCombat") { //$NON-NLS-1$
+					@Override
+					protected void doExecuteCommand() {
+						form.refreshCombat();
+					}
+				}, 
                         getFinishCommand()
                 };
             }

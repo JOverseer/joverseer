@@ -420,7 +420,8 @@ public class CharacterViewer extends ObjectViewer {
 					}
 				}
 			}
-			if (!charIsControlled) {
+			String pval = PreferenceRegistry.instance().getPreferenceValue("currentHexView.disableEditOrderButton");
+			if (!charIsControlled && pval == "yes") {
 				this.order1.setEnabledButton(false);
 				this.order2.setEnabledButton(false);
 				this.order3.setEnabledButton(false);

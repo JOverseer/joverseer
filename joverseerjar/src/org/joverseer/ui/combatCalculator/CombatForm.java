@@ -1,6 +1,7 @@
 package org.joverseer.ui.combatCalculator;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -11,10 +12,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
+import javax.swing.BorderFactory;
+import javax.swing.DropMode;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,10 +28,14 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.TitledBorder;
 
 import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
@@ -66,12 +76,18 @@ import com.jidesoft.popup.JidePopup;
 public class CombatForm extends AbstractForm {
 
 	public static String FORM_ID = "combatForm"; //$NON-NLS-1$
+	CombatArmyReducedTableModel otherTableModel;
 	CombatArmyTableModel side1TableModel;
 	CombatArmyTableModel side2TableModel;
+	JTable otherTable;
 	JTable side1Table;
 	JTable side2Table;
 	PopCenterTableModel popCenterTableModel;
 	JTextField rounds;
+	
+	int draggedFrom;
+	protected int xDiff;
+	protected int yDiff;
 
 	//dependencies
 	GameHolder gameHolder;
@@ -83,6 +99,7 @@ public class CombatForm extends AbstractForm {
 
 	@Override
 	protected JComponent createFormControl() {
+		System.out.println("NEWWWWWWWWW");
 		SwingBindingFactory sbf = (SwingBindingFactory) getBindingFactory();
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 
@@ -99,37 +116,37 @@ public class CombatForm extends AbstractForm {
 		lb.cell(new JLabel(Messages.getString("CombatForm.Hex")), "colspec=left:80px"); //$NON-NLS-1$ //$NON-NLS-2$
 		lb.gapCol();
 		lb.cell(sbf.createBoundTextField("hexNo").getControl(), "colspec=left:120px"); //$NON-NLS-1$ //$NON-NLS-2$
-		lb.gapCol();
+		//lb.gapCol();
 
-		JButton updateButton = new JButton(Messages.getString("CombatForm.Refresh")); //$NON-NLS-1$
-		updateButton.setPreferredSize(new Dimension(70, 20));
-		updateButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					commit();
-					Combat c = (Combat) getFormObject();
-					int hexNo = c.getHexNo();
-					Hex h = CombatForm.this.gameHolder.getGame().getMetadata().getHex(hexNo);
-					HexInfo hi = CombatForm.this.gameHolder.getGame().getTurn().getHexInfo(hexNo);
-					if (h != null && h.getTerrain() != null) {
-						ValueModel vm = getFormModel().getValueModel("terrain"); //$NON-NLS-1$
-						vm.setValue(h.getTerrain());
-					}
-					if (hi != null && hi.getClimate() != null) {
-						ValueModel vm = getFormModel().getValueModel("climate"); //$NON-NLS-1$
-						vm.setValue(hi.getClimate());
-					}
-					
-					c.setArmiesAndPCFromHex();
-					refreshArmies();
-					
-				} catch (Exception exc) {
-					exc.printStackTrace();
-				}
-			}
-		});
-		lb.cell(updateButton, "colspec=left:80px"); //$NON-NLS-1$
+//		JButton updateButton = new JButton(Messages.getString("CombatForm.Refresh")); //$NON-NLS-1$
+//		updateButton.setPreferredSize(new Dimension(70, 20));
+//		updateButton.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				try {
+//					commit();
+//					Combat c = (Combat) getFormObject();
+//					int hexNo = c.getHexNo();
+//					Hex h = CombatForm.this.gameHolder.getGame().getMetadata().getHex(hexNo);
+//					HexInfo hi = CombatForm.this.gameHolder.getGame().getTurn().getHexInfo(hexNo);
+//					if (h != null && h.getTerrain() != null) {
+//						ValueModel vm = getFormModel().getValueModel("terrain"); //$NON-NLS-1$
+//						vm.setValue(h.getTerrain());
+//					}
+//					if (hi != null && hi.getClimate() != null) {
+//						ValueModel vm = getFormModel().getValueModel("climate"); //$NON-NLS-1$
+//						vm.setValue(hi.getClimate());
+//					}
+//					
+//					c.setArmiesAndPCFromHex();
+//					refreshArmies();
+//					
+//				} catch (Exception exc) {
+//					exc.printStackTrace();
+//				}
+//			}
+//		});
+		//lb.cell(updateButton, "colspec=left:80px"); //$NON-NLS-1$
 		lb.relatedGapRow();
 
 		lb.cell(new JLabel(Messages.getString("CombatForm.Terrain")), "colspec=left:80px"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -180,16 +197,108 @@ public class CombatForm extends AbstractForm {
 		lb.gapCol();
 		lb.relatedGapRow();
 
-		tlb.cell(lb.getPanel(), "colspan=2"); //$NON-NLS-1$
+		tlb.cell(lb.getPanel()); //$NON-NLS-1$
+		
+		tlb.gapCol();
+		JPanel tp = new JPanel();
+		tp.setBorder(BorderFactory.createTitledBorder(
+			      BorderFactory.createEtchedBorder(), "Other armies in hex", TitledBorder.LEFT,
+			      TitledBorder.TOP));
+		MessageSource messageSource = Messages.getMessageSource();
+		this.otherTableModel = new CombatArmyReducedTableModel(this, messageSource);
+		this.otherTable = TableUtils.createStandardSortableTable(this.otherTableModel);
+		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.otherTable, this.otherTableModel.getColumnWidths());
+
+		this.otherTable.setDragEnabled(true);
+		this.otherTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		this.otherTable.setDropMode(DropMode.INSERT_ROWS);
+		this.otherTable.setDropTarget(new DropTarget(this.otherTable, new AddArmyDropTargetAdapter(2)));
+		this.otherTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					CombatForm.this.xDiff = e.getX();
+					CombatForm.this.yDiff = e.getY();
+				}
+//				if (e.getClickCount() == 1 && e.getButton() == 3) {
+//					int idx = CombatForm.this.otherTable.rowAtPoint(e.getPoint());
+//					CombatForm.this.otherTable.getSelectionModel().setSelectionInterval(idx, idx);
+//					showContextMenu(2, e);
+//				}
+//			};
+//
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				if (e.getClickCount() == 2 && e.getButton() == 1) {
+//					int idx = CombatForm.this.otherTable.rowAtPoint(e.getPoint());
+//					CombatForm.this.otherTable.getSelectionModel().setSelectionInterval(idx, idx);
+//					new EditSelectedArmyCommand(2).doExecuteCommand();
+//				}
+			};
+		});
+		this.otherTable.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				int dx = Math.abs(e.getX() - CombatForm.this.xDiff);
+				int dy = Math.abs(e.getY() - CombatForm.this.yDiff);
+				if (dx > 5 || dy > 5) {
+					CombatForm.this.draggedFrom = 2;
+					CombatForm.this.otherTableModel.startDragAndDropAction(e, CombatForm.this.otherTable, 2);
+
+				}
+			}
+		});
+		
+		JScrollPane scp = new JScrollPane(this.otherTable);
+		scp.setPreferredSize(new Dimension(300, 130));
+		scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(2)));
+		tp.add(scp);
+		tlb.cell(tp, "colspan=1");
+
+//		JButton updateButton = new JButton(Messages.getString("CombatForm.Refresh")); //$NON-NLS-1$
+//		updateButton.setPreferredSize(new Dimension(70, 20));
+//		updateButton.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				try {
+//					commit();
+//					Combat c = (Combat) getFormObject();
+//					int hexNo = c.getHexNo();
+//					Hex h = CombatForm.this.gameHolder.getGame().getMetadata().getHex(hexNo);
+//					HexInfo hi = CombatForm.this.gameHolder.getGame().getTurn().getHexInfo(hexNo);
+//					if (h != null && h.getTerrain() != null) {
+//						ValueModel vm = getFormModel().getValueModel("terrain"); //$NON-NLS-1$
+//						vm.setValue(h.getTerrain());
+//					}
+//					if (hi != null && hi.getClimate() != null) {
+//						ValueModel vm = getFormModel().getValueModel("climate"); //$NON-NLS-1$
+//						vm.setValue(hi.getClimate());
+//					}
+//					
+//					c.setArmiesAndPCFromHex();
+//					refreshArmies();
+//					
+//				} catch (Exception exc) {
+//					exc.printStackTrace();
+//				}
+//			}
+//		});
+//		
+//		tlb.gapCol();
+//		tlb.cell(updateButton);
+//		
 		tlb.relatedGapRow();
 
-		MessageSource messageSource = Messages.getMessageSource();
 		this.side1TableModel = new CombatArmyTableModel(this, messageSource);
 		this.side1Table = TableUtils.createStandardSortableTable(this.side1TableModel);
 		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.side1Table, this.side1TableModel.getColumnWidths());
 		this.side1Table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					CombatForm.this.xDiff = e.getX();
+					CombatForm.this.yDiff = e.getY();
+				}
 				if (e.getClickCount() == 1 && e.getButton() == 3) {
 					int idx = CombatForm.this.side1Table.rowAtPoint(e.getPoint());
 					CombatForm.this.side1Table.getSelectionModel().setSelectionInterval(idx, idx);
@@ -206,13 +315,27 @@ public class CombatForm extends AbstractForm {
 				}
 			};
 		});
+		this.side1Table.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				int dx = Math.abs(e.getX() - CombatForm.this.xDiff);
+				int dy = Math.abs(e.getY() - CombatForm.this.yDiff);
+				if (dx > 5 || dy > 5) {
+					CombatForm.this.draggedFrom = 0;
+					CombatForm.this.side1TableModel.startDragAndDropAction(e, CombatForm.this.side1Table, 0);
+				}
+			}
+		});
+		this.side1Table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		this.side1Table.setDropTarget(new DropTarget(this.side1Table, new AddArmyDropTargetAdapter(0)));
-
-		JScrollPane scp = new JScrollPane(this.side1Table);
+		this.side1Table.setDragEnabled(true);
+		this.side1Table.setDropMode(DropMode.INSERT_ROWS);
+		
+		scp = new JScrollPane(this.side1Table);
 		scp.setPreferredSize(new Dimension(560, 130));
 		scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(0)));
-		tlb.cell(scp);
-
+		tlb.cell(scp, "colspan=2");
+		
 		ImageSource imgSource = JOApplication.getImageSource();
 		Icon ico;
 		JButton btn;
@@ -299,6 +422,10 @@ public class CombatForm extends AbstractForm {
 		this.side2Table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					CombatForm.this.xDiff = e.getX();
+					CombatForm.this.yDiff = e.getY();
+				}
 				if (e.getClickCount() == 1 && e.getButton() == 3) {
 					int idx = CombatForm.this.side2Table.rowAtPoint(e.getPoint());
 					CombatForm.this.side2Table.getSelectionModel().setSelectionInterval(idx, idx);
@@ -315,12 +442,26 @@ public class CombatForm extends AbstractForm {
 				}
 			};
 		});
+		this.side2Table.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				int dx = Math.abs(e.getX() - CombatForm.this.xDiff);
+				int dy = Math.abs(e.getY() - CombatForm.this.yDiff);
+				if (dx > 5 || dy > 5) {
+					CombatForm.this.draggedFrom = 1;
+					CombatForm.this.side2TableModel.startDragAndDropAction(e, CombatForm.this.side2Table, 1);
+				}
+			}
+		});
+		this.side2Table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		this.side2Table.setDropTarget(new DropTarget(this.side2Table, new AddArmyDropTargetAdapter(1)));
-
+		this.side2Table.setDragEnabled(true);
+		this.side2Table.setDropMode(DropMode.INSERT_ROWS);
+		
 		scp = new JScrollPane(this.side2Table);
 		scp.setPreferredSize(new Dimension(560, 130));
 		scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(1)));
-		tlb.cell(scp);
+		tlb.cell(scp, "colspan=2");
 
 		lb = new TableLayoutBuilder();
 		ico = new ImageIcon(imgSource.getImage("edit.image")); //$NON-NLS-1$
@@ -419,7 +560,7 @@ public class CombatForm extends AbstractForm {
 		scp.setDropTarget(new DropTarget(scp, new SetPopCenterDropTargetAdapter()));
 		scp.setDropTarget(new DropTarget(pcTable, new SetPopCenterDropTargetAdapter()));
 
-		tlb.cell(scp);
+		tlb.cell(scp, "colspan=2");
 
 		lb = new TableLayoutBuilder();
 		ico = new ImageIcon(imgSource.getImage("edit.image")); //$NON-NLS-1$
@@ -469,6 +610,30 @@ public class CombatForm extends AbstractForm {
 
 		return tlb.getPanel();
 
+	}
+	
+	public void refreshCombat() {
+		try {
+			commit();
+			Combat c = (Combat) getFormObject();
+			int hexNo = c.getHexNo();
+			Hex h = CombatForm.this.gameHolder.getGame().getMetadata().getHex(hexNo);
+			HexInfo hi = CombatForm.this.gameHolder.getGame().getTurn().getHexInfo(hexNo);
+			if (h != null && h.getTerrain() != null) {
+				ValueModel vm = getFormModel().getValueModel("terrain"); //$NON-NLS-1$
+				vm.setValue(h.getTerrain());
+			}
+			if (hi != null && hi.getClimate() != null) {
+				ValueModel vm = getFormModel().getValueModel("climate"); //$NON-NLS-1$
+				vm.setValue(hi.getClimate());
+			}
+			
+			c.setArmiesAndPCFromHex();
+			refreshArmies();
+			
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
 	}
 
 	private void removeItemSelectionFromTable(JTable table, int idx) {
@@ -541,19 +706,31 @@ public class CombatForm extends AbstractForm {
 		this.side2TableModel.setRows(sa);
 
 		sa = new ArrayList<Object>();
+		for (CombatArmy ca : c.getOtherSide()) {
+			if (ca != null)
+				sa.add(ca);
+		}
+		this.otherTableModel.setRows(sa);
+		
+		sa = new ArrayList<Object>();
 		if (c.getSide2Pc() != null) {
 			sa.add(c.getSide2Pc());
 
 		}
 		this.popCenterTableModel.setRows(sa);
+		
+		c.autoSetCombatRelations();
 
 		runCombat();
 
 		this.side1TableModel.fireTableDataChanged();
 		this.side2TableModel.fireTableDataChanged();
+		this.otherTableModel.fireTableDataChanged();
 		this.popCenterTableModel.fireTableDataChanged();
 
 	}
+	
+	
 
 	class SwitchSideCommand extends ActionCommand {
 
@@ -636,8 +813,10 @@ public class CombatForm extends AbstractForm {
 			int idx = -1;
 			if (this.side == 0) {
 				idx = CombatForm.this.side1Table.getSelectedRow();
-			} else {
+			} else if (this.side == 1){
 				idx = CombatForm.this.side2Table.getSelectedRow();
+			} else {
+				idx = CombatForm.this.otherTable.getSelectedRow();
 			}
 			if (idx < 0)
 				return;
@@ -652,6 +831,8 @@ public class CombatForm extends AbstractForm {
 						if (combat.removeFromSide(0, ca)) {
 							removeItemSelectionFromTable(CombatForm.this.side1Table, idx1);
 							CombatForm.this.side1TableModel.remove(idx2);
+							combat.addToSide(2, ca);
+							CombatForm.this.refreshArmies();
 							runCombat();
 						}
 					}
@@ -669,6 +850,8 @@ public class CombatForm extends AbstractForm {
 						if (combat.removeFromSide(1, ca)) {
 							removeItemSelectionFromTable(CombatForm.this.side2Table, idx1);
 							CombatForm.this.side2TableModel.remove(idx2);
+							combat.addToSide(2, ca);
+							CombatForm.this.refreshArmies();
 							runCombat();
 						}
 					}
@@ -792,16 +975,20 @@ public class CombatForm extends AbstractForm {
 			int idx = -1;
 			if (this.side == 0) {
 				idx = CombatForm.this.side1Table.getSelectedRow();
-			} else {
+			} else if(this.side == 1){
 				idx = CombatForm.this.side2Table.getSelectedRow();
+			} else {
+				idx = CombatForm.this.otherTable.getSelectedRow();
 			}
 			if (idx < 0)
 				return;
 			CombatArmy ca = null;
 			if (this.side == 0) {
 				ca = (CombatArmy) CombatForm.this.side1TableModel.getRow(((SortableTableModel) CombatForm.this.side1Table.getModel()).convertSortedIndexToDataIndex(idx));
-			} else {
+			} else if (this.side == 1){
 				ca = (CombatArmy) CombatForm.this.side2TableModel.getRow(((SortableTableModel) CombatForm.this.side2Table.getModel()).convertSortedIndexToDataIndex(idx));
+			} else {
+				ca = (CombatArmy) CombatForm.this.otherTableModel.getRow(((SortableTableModel) CombatForm.this.otherTable.getModel()).convertSortedIndexToDataIndex(idx));
 			}
 			if (ca == null)
 				return;
@@ -870,12 +1057,15 @@ public class CombatForm extends AbstractForm {
 
 		@Override
 		public void drop(DropTargetDropEvent e) {
+			System.out.println("Drop event");
 			Transferable t = e.getTransferable();
 			try {
 				DataFlavor armyArrayFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" + Army[].class.getName() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 				DataFlavor armyFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + Army.class.getName()); //$NON-NLS-1$
 				DataFlavor armyEstimateArrayFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" + ArmyEstimate[].class.getName() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 				DataFlavor armyEstimateFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + ArmyEstimate.class.getName()); //$NON-NLS-1$
+				DataFlavor combatArmyArrayFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" + CombatArmy[].class.getName() + "\"");  //$NON-NLS-1$
+				DataFlavor combatArmyFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + CombatArmy.class.getName());  //$NON-NLS-1$
 
 				Combat c = (Combat) getFormObject();
 				if (t.isDataFlavorSupported(armyArrayFlavor)) {
@@ -885,8 +1075,11 @@ public class CombatForm extends AbstractForm {
 						c.addToSide(this.side, ca);
 						if (this.side == 0) {
 							CombatForm.this.side1TableModel.addRow(ca);
-						} else {
+						} else if (this.side == 1){
 							CombatForm.this.side2TableModel.addRow(ca);
+						}
+						else {
+							CombatForm.this.otherTableModel.addRow(ca);
 						}
 					}
 					runCombat();
@@ -895,8 +1088,10 @@ public class CombatForm extends AbstractForm {
 					c.addToSide(this.side, ca);
 					if (this.side == 0) {
 						CombatForm.this.side1TableModel.addRow(ca);
-					} else {
+					} else  if (this.side == 1){
 						CombatForm.this.side2TableModel.addRow(ca);
+					} else {
+						CombatForm.this.otherTableModel.addRow(ca);
 					}
 					runCombat();
 				} else if (t.isDataFlavorSupported(armyEstimateArrayFlavor)) {
@@ -906,9 +1101,14 @@ public class CombatForm extends AbstractForm {
 						c.addToSide(this.side, ca);
 						if (this.side == 0) {
 							CombatForm.this.side1TableModel.addRow(ca);
-						} else {
+						} else  if (this.side == 1){
 							CombatForm.this.side2TableModel.addRow(ca);
 						}
+						else {
+							CombatForm.this.otherTableModel.addRow(ca);
+						}
+						
+						
 					}
 					runCombat();
 				} else if (t.isDataFlavorSupported(armyEstimateFlavor)) {
@@ -916,9 +1116,46 @@ public class CombatForm extends AbstractForm {
 					c.addToSide(this.side, ca);
 					if (this.side == 0) {
 						CombatForm.this.side1TableModel.addRow(ca);
-					} else {
+					} else  if (this.side == 1){
 						CombatForm.this.side2TableModel.addRow(ca);
 					}
+					else {
+						CombatForm.this.otherTableModel.addRow(ca);
+					}
+					runCombat();
+				} else if(t.isDataFlavorSupported(combatArmyArrayFlavor)) {
+					if (this.side == CombatForm.this.draggedFrom) return;
+					CombatArmy[] cas = (CombatArmy[]) t.getTransferData(combatArmyArrayFlavor);
+					for (CombatArmy ca : cas) {
+						c.addToSide(this.side, ca);
+						if (this.side == 0) {
+							CombatForm.this.side1TableModel.addRow(ca);
+						} else  if (this.side == 1){
+							CombatForm.this.side2TableModel.addRow(ca);
+						}
+						else {
+							CombatForm.this.otherTableModel.addRow(ca);
+						}
+						c.removeFromSide(CombatForm.this.draggedFrom, ca);
+						CombatForm.this.refreshArmies();
+					}
+					runCombat();
+					
+				} else if(t.isDataFlavorSupported(combatArmyFlavor)) {
+					if (this.side == CombatForm.this.draggedFrom) return;
+					CombatArmy ca = (CombatArmy) t.getTransferData(combatArmyArrayFlavor);
+					c.addToSide(this.side, ca);
+					if (this.side == 0) {
+						CombatForm.this.side1TableModel.addRow(ca);
+					} else  if (this.side == 1){
+						CombatForm.this.side2TableModel.addRow(ca);
+					}
+					else {
+						CombatForm.this.otherTableModel.addRow(ca);
+					}
+					c.removeFromSide(CombatForm.this.draggedFrom, ca);
+					CombatForm.this.refreshArmies();
+
 					runCombat();
 				}
 			} catch (Exception exc) {

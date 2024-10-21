@@ -1,12 +1,25 @@
 package org.joverseer.ui.combatCalculator;
 
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JComponent;
+import javax.swing.JTable;
+import javax.swing.TransferHandler;
+
+import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.tools.CombatUtils;
 import org.joverseer.tools.combatCalc.Combat;
 import org.joverseer.tools.combatCalc.CombatArmy;
+import org.joverseer.ui.support.UIUtils;
+import org.joverseer.ui.support.transferHandlers.GenericExportTransferHandler;
+import org.joverseer.ui.support.transferHandlers.GenericTransferable;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.form.Form;
 import org.springframework.richclient.table.BeanTableModel;
+import org.springframework.richclient.table.SortableTableModel;
 
 public class CombatArmyTableModel extends BeanTableModel {
 	private static final long serialVersionUID = 1L;
@@ -90,5 +103,47 @@ public class CombatArmyTableModel extends BeanTableModel {
 	public Class<?> getColumnClass(int columnIndex) {
 		return super.getColumnClass(columnIndex);
 	}
+	
+	protected void startDragAndDropAction(MouseEvent e, JTable table, int side) {
+		final CombatArmy[] selectedArmies = new CombatArmy[table.getSelectedRowCount()];
+		String copyString = "";
+		for (int i = 0; i < table.getSelectedRowCount(); i++) {
+			int id = table.getSelectedRows()[i];
+			int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(id);
+			CombatArmy a = (CombatArmy) this.getRow(idx);
+			selectedArmies[i] = a;
+			String ln = "";
+			for (int j = 0; j < table.getColumnCount(); j++) {
+				Object v = table.getValueAt(i, j);
+				if (v == null)
+					v = "";
+				ln += UIUtils.OptTab(ln, v.toString());
+			}
+			copyString += UIUtils.OptNewLine(copyString,ln);
+		}
+		final String str = copyString;
+		System.out.println("Copied String:");	//These prints helped reduced bugs...
+		System.out.println(str);
 
+		TransferHandler handler = new GenericExportTransferHandler() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected Transferable createTransferable(JComponent arg0) {
+				try {
+					Transferable t = new GenericTransferable(new DataFlavor[] { new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" + CombatArmy[].class.getName() + "\""), new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + CombatArmy.class.getName()), DataFlavor.stringFlavor }, new Object[] { selectedArmies, selectedArmies[0], str });
+					return t;
+				} catch (Exception exc) {
+					exc.printStackTrace();
+					return null;
+				}
+
+			}
+		};
+		System.out.println("Before Tranfer handler");
+		table.setTransferHandler(handler);
+		handler.exportAsDrag(table, e, TransferHandler.COPY);
+		System.out.println("After Export");
+	}
 }

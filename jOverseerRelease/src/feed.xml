@@ -7,6 +7,16 @@
 			helper program.</description>
 		<language>en</language>
 		<item>
+			<title>1.18.16</title>
+			<pubDate>21 October 2024</pubDate>
+			<description>
+VERSION 1.18.16
+---------------
+	* QA: Adjust the amount of armies shown on map at different zoom levels
+	* Fix: A navy with unknown troops doesn't show in Current Hex View, and prevents other armies from doing so
+			</description>
+		</item>	
+		<item>
 			<title>1.18.15</title>
 			<pubDate>1 October 2024</pubDate>
 			<description>

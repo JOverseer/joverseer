@@ -1,5 +1,7 @@
 package org.joverseer.ui.views;
 
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,6 +14,8 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
@@ -29,11 +33,14 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -48,6 +55,7 @@ import org.joverseer.domain.Character;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameTypeEnum;
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.orders.export.OrderFileGenerator;
 import org.joverseer.orders.export.OrderTextGenerator;
 import org.joverseer.preferences.PreferenceRegistry;
@@ -63,6 +71,7 @@ import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.command.OpenGameDirTree;
 import org.joverseer.ui.command.SaveGame;
 import org.joverseer.ui.command.SelectPlayedNations;
+import org.joverseer.ui.support.controls.CheckBoxList;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.support.dialogs.InputDialog;
 import org.springframework.binding.form.FormModel;
@@ -94,6 +103,8 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	
 	JComboBox nation;
 	JLabel currentNation;
+	JList nList;
+	NationCheckBoxList nationSelectionPanel;
 	int numberOfControlledNations;
 	int index;
 	JTextArea orders;
@@ -150,6 +161,33 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		Game g = this.gameHolder.getGame();
 		return g.getMetadata().getNationByName(nationName).getNumber();
 	}
+	
+	class NationCheckBoxList extends CheckBoxList {
+
+		private static final long serialVersionUID = 1L;
+		GameHolder gm;
+		ArrayList<String> nationsStr;
+		
+		public NationCheckBoxList(ItemListener itemListener, GameHolder gm) {
+			super(itemListener);
+			this.gm = gm;
+			this.nationsStr = new ArrayList<String>();
+			for (Nation n : this.gm.getGame().getMetadata().getNations()) {
+				if(n.getNumber() == 0) continue;
+				this.nationsStr.add(n.getName());
+			}
+			this.setList(this.nationsStr);
+		}
+		
+		public void setSelectedNations(int[] ind) {
+			ArrayList<String> selection = new ArrayList<String>();
+			for (int i : ind) {
+				selection.add(this.nationsStr.get(i-1));
+			}
+			this.setSelected(selection);
+		}
+		
+	}
 
 	/**
 	 * The comment below allows Eclipse Window Builder Pro to parse the GUI for us!
@@ -173,6 +211,22 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		JScrollPane scp = new JScrollPane(this.orders);
 		scp.setPreferredSize(new Dimension(500, 400));
 		panel.add(scp, BorderLayout.CENTER);
+		
+//		this.nList = new JList(this.gameHolder.getGame().getMetadata().getNations().toArray());
+//		this.nList.setCellRenderer(new CheckboxListCellRenderer());
+//		this.nList.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		ItemListener itemListener = new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				// TODO Auto-generated method stub
+				ExportOrdersForm.this.arrowAction("reset");
+			}
+		};
+		
+		this.nationSelectionPanel = new NationCheckBoxList(itemListener, this.gameHolder);
+		JScrollPane scp2 = new JScrollPane(this.nationSelectionPanel);
+		scp2.setPreferredSize(new Dimension(200, 400));
+		panel.add(scp2, BorderLayout.EAST);
 
 		JPanel topPanel = new JPanel();
 		JPanel buttonPanel = new JPanel();
@@ -224,23 +278,27 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 		topPanel.add(nationPanel);
 
+		JPanel bottomPanel = new JPanel();
+		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
+		bottomPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-		panel.add(buttonPanel, BorderLayout.SOUTH);
+		panel.add(bottomPanel, BorderLayout.SOUTH);
+		bottomPanel.add(buttonPanel);
 
 		// use SaveAs to show user that the name can be changed and that it's not a final click...there's a popup.
-		JButton save = new JButton(Messages.getString("standardActions.SaveAs"));
+		JButton save = new JButton(Messages.getString("ExportOrdersForm.SaveAsButton"));
 		save.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveAndSendOrders(false);
 			}
 		});
-		save.setPreferredSize(this.uiSizes.newDimension(100/20, this.uiSizes.getHeight5()));
+		save.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight5()));
 		buttonPanel.add(save);
 
-		JButton ctc = new JButton(Messages.getString("standardActions.CopyToClipboard"));
+		JButton ctc = new JButton(Messages.getString("ExportOrdersForm.CopyButton"));
 		final ClipboardOwner clipboardOwner = this;
-		ctc.setPreferredSize(this.uiSizes.newDimension(100/11, this.uiSizes.getHeight5()));
+		ctc.setPreferredSize(this.uiSizes.newDimension(100/9, this.uiSizes.getHeight5()));
 		ctc.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -252,9 +310,13 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 		buttonPanel.add(ctc);
 		
+		JPanel chkPanel = new JPanel();
+		chkPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		this.chkShadowOrder = new JCheckBox(Messages.getString("ExportOrdersForm.chkShadowOrder.text"));
 		this.chkShadowOrder.setToolTipText(Messages.getString("ExportOrdersForm.chkShadowOrder.toolTipText"));
-		buttonPanel.add(this.chkShadowOrder);
+		this.chkShadowOrder.setAlignmentX(Component.LEFT_ALIGNMENT);
+		chkPanel.add(this.chkShadowOrder);
+		bottomPanel.add(chkPanel);
 		
 		JPanel veryTopPanel = new JPanel(new BorderLayout());
 		oPanel.add(veryTopPanel, BorderLayout.NORTH);
@@ -290,23 +352,43 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		this.currentNation = new JLabel("");
 		Font newLabelFont = new Font(this.currentNation.getFont().getName(),Font.BOLD,this.currentNation.getFont().getSize());
 		this.currentNation.setFont(newLabelFont);
+		
+		if (g!=null) {
+			int nationNo = g.getMetadata().getNationNo();
+			PlayerInfo pi = g.getTurn().getPlayerInfo(nationNo);
+			if (pi != null) {
+				int[] conNations = pi.getControlledNations();
+				if(conNations == null) {
+					this.currentNation.setText(g.getMetadata().getNationByNum(g.getMetadata().getNationNo()).getName());
+					this.numberOfControlledNations = 1;
+					int[] i = {g.getMetadata().getNationNo()};
+					this.nationSelectionPanel.setSelectedNations(i);
+				}
+				else {
+					this.currentNation.setText(g.getMetadata().getNationByNum(conNations[0]).getName());
+					this.numberOfControlledNations = conNations.length;
+					this.nationSelectionPanel.setSelectedNations(conNations);
+				}
+			}
+		}
+		
 		this.setNationLabel(0);
 		buttonPanel2.add(this.currentNation);
 		
-		JPanel sNBtnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		veryTopPanel.add(sNBtnPanel, BorderLayout.EAST);
-
-		JButton selectNationsBtn = new JButton(Messages.getString("ExportOrdersForm.BtnSelectNations"));
-		selectNationsBtn.setToolTipText(Messages.getString("ExportOrdersForm.BtnSelectNations.toolTipText"));
-		selectNationsBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SelectPlayedNations spn = new SelectPlayedNations(ExportOrdersForm.this.gameHolder);
-				spn.execute();
-				ExportOrdersForm.this.arrowAction("reset");
-			}
-		});
-		sNBtnPanel.add(selectNationsBtn);
+//		JPanel sNBtnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+//		veryTopPanel.add(sNBtnPanel, BorderLayout.EAST);
+//
+//		JButton selectNationsBtn = new JButton(Messages.getString("ExportOrdersForm.BtnSelectNations"));
+//		selectNationsBtn.setToolTipText(Messages.getString("ExportOrdersForm.BtnSelectNations.toolTipText"));
+//		selectNationsBtn.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				SelectPlayedNations spn = new SelectPlayedNations(ExportOrdersForm.this.gameHolder);
+//				spn.execute();
+//				ExportOrdersForm.this.arrowAction("reset");
+//			}
+//		});
+//		sNBtnPanel.add(selectNationsBtn);
 		
 		this.chkDontCloseOnFinish = new JCheckBox(); //$NON-NLS-1$
 //		this.chkDontCloseOnFinish.setToolTipText(Messages.getString("ExportOrdersForm.chkSendAnother.toolTipText")); //$NON-NLS-1$
@@ -359,19 +441,26 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	private void setNationLabel(int ind) {
 		Game g = this.gameHolder.getGame();
 		if (g!=null) {
-			int nationNo = g.getMetadata().getNationNo();
-			PlayerInfo pi = g.getTurn().getPlayerInfo(nationNo);
-			if (pi == null) return;
-			int[] conNations = pi.getControlledNations();
-			if(conNations == null) {
-				this.currentNation.setText(g.getMetadata().getNationByNum(g.getMetadata().getNationNo()).getName());
-				this.numberOfControlledNations = 1;
-			}
-			else {
-				System.out.println("Current int num: " + conNations[ind]);
-				this.currentNation.setText(g.getMetadata().getNationByNum(conNations[ind]).getName());
-				this.numberOfControlledNations = conNations.length;
-			}
+			//int nationNo = g.getMetadata().getNationNo();
+			ArrayList<String> selNations = this.nationSelectionPanel.getSelected();
+			this.currentNation.setText(selNations.get(ind));
+			this.numberOfControlledNations = selNations.size();
+			
+//			PlayerInfo pi = g.getTurn().getPlayerInfo(nationNo);
+//			if (pi == null) return;
+//			int[] conNations = pi.getControlledNations();
+//			if(conNations == null) {
+//				this.currentNation.setText(g.getMetadata().getNationByNum(g.getMetadata().getNationNo()).getName());
+//				this.numberOfControlledNations = 1;
+//				int[] i = {g.getMetadata().getNationNo()};
+//				this.nationSelectionPanel.setSelectedNations(i);
+//			}
+//			else {
+//				System.out.println("Current int num: " + conNations[ind]);
+//				this.currentNation.setText(g.getMetadata().getNationByNum(conNations[ind]).getName());
+//				this.numberOfControlledNations = conNations.length;
+//				this.nationSelectionPanel.setSelectedNations(conNations);
+//			}
 		}
 	}
 
@@ -462,7 +551,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 				fileChooser.setFileFilter(new FileNameExtensionFilter("Game " + Integer.toString(g.getMetadata().getGameNo()), Integer.toString(g.getMetadata().getGameNo())));
 				fileChooser.setAcceptAllFileFilterUsed(false);
 				fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-				fileChooser.setApproveButtonText(getMessage("standardActions.Save"));
+				fileChooser.setApproveButtonText(getMessage("standardActions.SaveAs"));
 				fileChooser.setSelectedFile(new File(fname));
 		
 				String orderPathPref = PreferenceRegistry.instance().getPreferenceValue("submitOrders.defaultFolder");
@@ -834,6 +923,30 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 	@Override
 	public void lostOwnership(Clipboard clipboard, Transferable contents) {
+	}
+	
+	public class CheckboxListCellRenderer extends JCheckBox implements ListCellRenderer {
+
+	    /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public Component getListCellRendererComponent(JList list, Object value, int index, 
+	            boolean isSelected, boolean cellHasFocus) {
+
+	        setComponentOrientation(list.getComponentOrientation());
+	        setFont(list.getFont());
+	        setBackground(list.getBackground());
+	        setForeground(list.getForeground());
+	        setSelected(isSelected);
+	        setEnabled(list.isEnabled());
+
+	        setText(value == null ? "" : value.toString());  
+
+	        return this;
+	    }
 	}
 
 }

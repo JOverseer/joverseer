@@ -406,6 +406,7 @@
 						<list>
 							<ref bean="homeView" />
 							<ref bean="notesListView" />
+							<ref bean="notePad" />
 							<ref bean="playerInfoListView" />
 							<ref bean="orderListView" />
 							<ref bean="relationsListView" />

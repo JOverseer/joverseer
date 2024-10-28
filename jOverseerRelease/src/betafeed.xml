@@ -7,6 +7,24 @@
 			helper program.</description>
 		<language>en</language>
 		<item>
+			<title>1.18.17-rc2</title>
+			<pubDate>28 October 2024</pubDate>
+			<description>
+VERSION 1.18.17-rc2
+---------------
+- New notepad tab
+   - In Tools -> General -> Notepad
+   - Right click on tabs to edit, new note or delete
+   - Constant between turns
+- Submit orders, further redesign
+- Orderchecker fixes
+   - 820 order even if failed (not commander) updated char position
+   - DsbComp didnt properly remove them from company
+- Homeview now has default view with no internet
+- Fix Preference not hiding/showing edit order button
+			</description>
+			</item>	
+		<item>
 			<title>1.18.17-rc1</title>
 			<pubDate>21 October 2024</pubDate>
 			<description>

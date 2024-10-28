@@ -1165,6 +1165,10 @@ public class Rule
     }
 
     private String processCompanyMove() {
+    	if (this.parentOrder.getErrorResults().size() > 0) {
+    		return null;
+    	}
+    	
         String result = parameterCount(2, "COMPANYMOVE");
         if(result != null)
         {
@@ -1172,15 +1176,17 @@ public class Rule
         }
         int locParam = convertParameter(0);
         int max = convertParameter(1);
+        
+    	Nation n = this.getMain().getNation();
+    	Company comp = n.findCompanyByCommander(this.parentChar.getId());
+    	if (comp == null) {
+    		this.parentOrder.addError(this.parentChar + " is not a commander of a company.");
+    		return null;
+    	}
+    	
         String r = processCharacterMove(locParam, max, 0);
         if (r == null && this.phase == 2) {
         	int location = this.parentOrder.getParameterNumber(locParam);
-        	Nation n = this.getMain().getNation();
-        	Company comp = n.findCompanyByCommander(this.parentChar.getId());
-        	if (comp == null) {
-        		this.parentOrder.addError(this.parentChar + " is not a commander of a company.");
-        		return null;
-        	}
         	
         	Vector charWith = comp.getCharsWith();
         	String chars = "";
@@ -1296,7 +1302,13 @@ public class Rule
             case 4: // '\004'
                 if(!companyCO)
                 {
-                    this.parentOrder.addError(character + " is not a company CO.");
+                	//Janky code... but means there aren't 2 error messages for the same thing in the 820 movComp order
+                	if(this.parentOrder.getOrder() == 820) {
+	                	if(this.parentOrder.getErrorResults().size() != 1) {
+	                		if ((String) this.parentOrder.getErrorResults().get(0) != this.parentChar + " is not a commander of a company.")
+	                			this.parentOrder.addError(character + " is not a company CO.");
+	                	}
+                	}
                 }
                 break;
 
@@ -3007,14 +3019,16 @@ public class Rule
 //                } else
 //                {
 //                }
-            	if(character.isCompanyCO(this.parentOrder.getOrder()) && logic == 0) {
+            	Company c = this.main.getNation().findCompanyByCommander(character.getId());
+
+            	if(c != null && logic == 0) {
             		character.setCompanyCO(false, this.parentOrder.getOrder());
-            		Company c = this.main.getNation().findCompanyByCommander(character.getId());
+            		c = this.main.getNation().findCompanyByCommander(character.getId());
             		this.main.getNation().removeCompany(c);
             	}
-            	else if(!character.isCompanyCO(this.parentOrder.getOrder()) && logic == 1) {
+            	else if(c == null && logic == 1) {
             		character.setCompanyCO(true, this.parentOrder.getOrder());
-            		Company c = new Company(character.getLocation(this.parentOrder.getOrder()));
+            		c = new Company(character.getLocation(this.parentOrder.getOrder()));
             		c.setCommander(character.getId());
             		
             		this.main.getNation().addCompany(c);

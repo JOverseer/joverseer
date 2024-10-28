@@ -19,6 +19,7 @@ import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.NationMessage;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.Note;
+import org.joverseer.domain.NotepadInfo;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.ProductEnum;
@@ -298,4 +299,15 @@ public class Turn implements Serializable {
 	public Diplo getNationDiplo(int nationNo) {
 		return getDiplos().findFirstByProperty("nationNo", nationNo);
 	}
+	
+	public Container<NotepadInfo> getNotepadInfoCont() {
+		return getContainer(TurnElementsEnum.NotepadInfo);
+	}
+	
+	public NotepadInfo getNotepadInfo() {
+		if(this.getNotepadInfoCont().size() == 0) return null;
+		return this.getNotepadInfoCont().getItems().get(0);
+	}
+	
+	
 }

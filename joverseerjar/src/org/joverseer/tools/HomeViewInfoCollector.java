@@ -147,6 +147,7 @@ public class HomeViewInfoCollector {
 		  content = scanner.next();
 		  scanner.close();
 		}catch ( Exception ex ) {
+			content = Messages.getString("homeView.noInternetWelcomeText");
 		    ex.printStackTrace();
 		}
 		return content;

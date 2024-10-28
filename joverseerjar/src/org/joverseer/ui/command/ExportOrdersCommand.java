@@ -57,13 +57,13 @@ public class ExportOrdersCommand extends ActionCommand {
 			}
 			
 			@Override
-			protected Object[] getCommandGroupMembers() {
+			protected Object[] getCommandGroupMembers() {	//getFinishCommand(), 
 				return new Object[] { new ActionCommand("submitAllNationsOrders") { //$NON-NLS-1$
 					@Override
 					protected void doExecuteCommand() {
 						submitAllOrders();
 					}
-				}, getFinishCommand(), getCancelCommand() };
+				}, getCancelCommand() };
 			}
         };
 

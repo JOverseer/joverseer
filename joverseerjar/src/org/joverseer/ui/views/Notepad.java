@@ -1,14 +1,19 @@
 package org.joverseer.ui.views;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -28,6 +33,7 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.support.AbstractView;
@@ -51,7 +57,6 @@ public class Notepad extends AbstractView implements ApplicationListener{
 	
 	@Override
 	public void onApplicationEvent(ApplicationEvent arg0) {
-		// TODO Auto-generated method stub
 		if (arg0 instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) arg0;
 			if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
@@ -80,9 +85,15 @@ public class Notepad extends AbstractView implements ApplicationListener{
 		p.setLayout(new BorderLayout());
 		
 		this.tabPane = new JTabbedPane();
-//		this.tabPane.addMouseListener(new TabPaneMouseAdapter());
 		
 		p.add(this.tabPane, BorderLayout.CENTER);
+		
+		JEditorPane jp = new JEditorPane();
+		jp.setContentType("text/html");
+		jp.setEditable(false);
+		jp.setCaretColor(Color.WHITE);
+		jp.setText("<div style='font-family:MS Sans Serif; font-size:11pt'><i>" + "Right click on a tab to delete it or edit the title. When adding a new tab or changing a title you cannot name it the same as one that already exists.");
+		p.add(jp, BorderLayout.PAGE_END);
 		
 		this.init = true;
 		refresh(0);
@@ -135,7 +146,24 @@ public class Notepad extends AbstractView implements ApplicationListener{
 			this.addTab(titles.get(i), notes.get(i));
 		}
 		
+		this.addAddTab();
+		
 		this.tabPane.setSelectedIndex(selInd);
+	}
+	
+	public void addAddTab() {
+		int i = this.tabPane.getTabCount();
+		
+		JButton addButton = new JButton(new AddNoteAction());
+		addButton.setBorder(null);
+		addButton.setFocusPainted(false);
+		addButton.setContentAreaFilled(false);
+		addButton.setPreferredSize(new Dimension(30, 30));
+		
+		this.tabPane.addTab("", null);;
+		this.tabPane.setTabComponentAt(i, addButton);
+
+		this.tabPane.getTabComponentAt(i).addMouseListener(new TabPaneMouseAdapter(i));
 	}
 	
 	class TabPaneMouseAdapter extends MouseAdapter {
@@ -147,6 +175,7 @@ public class Notepad extends AbstractView implements ApplicationListener{
 	    @Override
 	    public void mouseClicked(MouseEvent e) 
 	    {
+	    	if (e.getComponent() instanceof JButton) return;
 	    	if(e.getButton() == MouseEvent.BUTTON1) {
 	    		Notepad.this.tabPane.setSelectedIndex(this.ind);
 	    	}
@@ -154,27 +183,20 @@ public class Notepad extends AbstractView implements ApplicationListener{
 	            JPopupMenu menu = new JPopupMenu(); 
 	            menu.add(new JMenuItem(new CloseAction(this.ind)));
 	            menu.add(new JMenuItem(new EditTitleAction(this.ind)));
-	            menu.add(new JMenuItem(new AddNoteAction(this.ind)));
 	            menu.show(Notepad.this.tabPane, e.getX(), e.getY());
 	        }
 	    }
 	}
 	
 	class AddNoteAction extends AbstractAction{
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1243168452698565591L;
-		int ind;
 		
-		public AddNoteAction(int ind){
-			super("Add Note");
-			this.ind = ind;
+		public AddNoteAction(){
+			super("+");
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			String newTitle;
 			do {
 				newTitle = (String)JOptionPane.showInputDialog("Input a new note title that doesn't currently exist:");
@@ -203,9 +225,6 @@ public class Notepad extends AbstractView implements ApplicationListener{
 	}
 	
 	class EditTitleAction extends AbstractAction{
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 2239120300087720316L;
 		int ind;
 		

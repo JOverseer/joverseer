@@ -317,6 +317,8 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
 
     public void setEnabledButton(boolean b) {
     	this.btn.setEnabled(b);
+    	if(!b) this.btn.setToolTipText(Messages.getString("CharacterViewer.showOrders.ToolTip"));
+    	else this.btn.setToolTipText(Messages.getString("OrderViewer.EditOrder"));
     }
     
     @Override

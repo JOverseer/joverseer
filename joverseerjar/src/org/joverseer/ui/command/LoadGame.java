@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
@@ -133,8 +135,16 @@ public class LoadGame extends ActionCommand {
                 }
                 RecentGames rgs = new RecentGames();
                 String dueDate = PlayerInfo.getDueDateDefaulted(g.getTurn(g.getMaxTurn()).getPlayerInfo(g.getMetadata().getNationNo()),"unknown");
-                rgs.updateRecentGameInfoPreferenceWithGame(g.getMetadata().getGameNo(), f.getAbsolutePath(), dueDate);
-
+                boolean ordersSent = g.getTurn().getPlayerInfo(g.getMetadata().getNationNo()).getOrdersSentOn() != null;
+        		Date ordersSentOn = g.getTurn().getPlayerInfo(g.getMetadata().getNationNo()).getOrdersSentOn();
+        		String ordersSentStr;
+        		if(ordersSentOn == null) ordersSentStr = null;
+        		else {
+        	        SimpleDateFormat formatter = new SimpleDateFormat("MMMM dd yyyy");
+        	        String formattedDate = formatter.format(ordersSentOn);
+        	        ordersSentStr = formattedDate.toUpperCase();
+        		}
+                rgs.updateRecentGameInfoPreferenceWithGame(g.getMetadata().getGameNo(), f.getAbsolutePath(), dueDate, ordersSent, ordersSentStr);
             }
             catch (EOFException exc) {
             	ErrorDialog.showErrorDialog(exc,"LoadGame.CorruptFile"); //$NON-NLS-1$ //$NON-NLS-2$

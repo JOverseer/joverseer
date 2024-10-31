@@ -1,5 +1,6 @@
 package org.joverseer.tools;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -8,10 +9,12 @@ import java.util.Enumeration;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
+import org.joverseer.JOApplication;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
 import org.joverseer.support.RecentGames.RecentGameInfo;
 import org.joverseer.ui.views.Messages;
+import org.springframework.richclient.image.ImageSource;
 
 import com.jidesoft.tipoftheday.ResourceBundleTipOfTheDaySource;
 
@@ -123,7 +126,17 @@ public class HomeViewInfoCollector {
 	 */
 	private String renderRecentGameLine(RecentGameInfo frgi) {
 		String s = "";
-		s += "Game <a href='http://event?recentgame=" + frgi.getFile().replace("'", "~~") + "'>" + frgi.getNumber() + "</a>, orders due by: " + frgi.getDate();
+		String imagePath = "";
+		String urlOrderSent = "'http://a'";
+		try {
+			if(!frgi.hasSentOrd()) imagePath = JOApplication.getImageSource().getImageResource("orderresult.error.icon").getURL().toString();
+			else imagePath = JOApplication.getImageSource().getImageResource("orderresult.okay.icon").getURL().toString();
+			urlOrderSent = "'http://event?orderSentOn=" + frgi.getOrdersSentDate() + "'";
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		s += "Game <a href='http://event?recentgame=" + frgi.getFile().replace("'", "~~") + "'>" + frgi.getNumber() + "</a>, orders due by: " + frgi.getDate() + " <a href=" + urlOrderSent + "> <img border=\"0\" src='" + imagePath + "'></a>";
 		return s;
 	}
 	

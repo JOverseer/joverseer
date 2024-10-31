@@ -17,6 +17,7 @@ public class NotepadInfo implements Serializable{
 	
 	public boolean newNote(String title, String note) {
 		if (this.noteTitles.contains(title)) return false;
+		if (this.noteTitles.contains("")) return false;
 		this.notes.add(note);
 		this.noteTitles.add(title);
 		return true;

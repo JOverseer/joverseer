@@ -329,6 +329,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 		if(PreferenceRegistry.instance().getPreferenceValue("general.homeView").equals("yes")) {
 			GraphicUtils.showView("homeView");
 		}
+		GraphicUtils.showView("currentHexDataViewer");
 	}
 
 	public void setRepaintManager(RepaintManager repaintManager) {

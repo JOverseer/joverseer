@@ -13,6 +13,7 @@ import java.util.prefs.Preferences;
 
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.ui.JOverseerJIDEClient;
+import org.joverseer.ui.views.Messages;
 
 /**
  * Support for remembering the recent games the user has accessed
@@ -36,19 +37,37 @@ public class RecentGames {
             for (String game : games) {
                 int i = game.indexOf("!");
                 int j = game.indexOf("?");
+                int m = game.indexOf("¬");
+                int n = game.indexOf("|");
                 if (i==-1) continue;
-                if (j==-1) j = game.length();
+                if (m == -1 && n == -1) ;
+//                if (j==-1) continue;
+                if (m==-1) m = game.length();
+                if (n==-1) n = game.length();
                 RecentGameInfo rgi = new RecentGameInfo();
                 rgi.setNumber(Integer.parseInt(game.substring(0, i)));
                 rgi.setFile(game.substring(i+1, j).replace("!-!", "#"));
                 
                 if(j != game.length()) {
-                	rgi.setDate(game.substring(j+1));
+                	rgi.setDate(game.substring(j+1, m));
                 }
                 else {
             		//TODO: I18N
                 	rgi.setDate("unknown");
                 }                
+                
+                if(m == game.length() && n == game.length()) {
+                	rgi.setSentOrd(true);
+                	rgi.setOrdersSentDate(Messages.getString("recentGames.defaultMessageNoOrdersSent"));
+                	res.add(rgi);
+                	continue;
+                }
+                
+                if(m != game.length()) rgi.setSentOrd(game.substring(m + 1, n).equals("Y"));
+                else rgi.setSentOrd(true);
+                
+                if(n != game.length()) rgi.setOrdersSentDate(game.substring(n + 1).equals(Messages.getString("recentGames.defaultMessageNoOrdersSent")) ? Messages.getString("recentGames.defaultMessageNoOrdersSent") : "Last Orders Sent: " + game.substring(n + 1));
+                else rgi.setOrdersSentDate(Messages.getString("recentGames.defaultMessageNoOrdersSent"));
                 
                 res.add(rgi);
             }
@@ -83,18 +102,23 @@ public class RecentGames {
             if (!res.equals("")) {
                 res += "#";
             }
-            res += rgi.getNumber() + "!" + rgi.getFile().replace("#", "!-!") + "?" + rgi.getDate();
+            String sentOrdBool = rgi.hasSentOrd() ? "Y" : "N";
+            String sentOrderDateStr = rgi.getOrdersSentDate() == null ? "null": rgi.getOrdersSentDate();
+            res += rgi.getNumber() + "!" + rgi.getFile().replace("#", "!-!") + "?" + rgi.getDate() + "¬" + sentOrdBool + "|" + sentOrderDateStr;
         }
         return res;
     }
     
-    public void updateRecentGameInfoPreferenceWithGame(int number, String file, String date) {
+    public void updateRecentGameInfoPreferenceWithGame(int number, String file, String date, boolean sentOrd, String ordersSentOn) {
         String rgiStr = Preferences.userNodeForPackage(JOverseerJIDEClient.class).get("recentGames", null);
         ArrayList<RecentGameInfo> rgis = getRecentGameInfo(rgiStr);
         RecentGameInfo rgi = new RecentGameInfo();
         rgi.setNumber(number);
         rgi.setFile(file);
         rgi.setDate(date);
+        rgi.setSentOrd(sentOrd);
+        if(ordersSentOn == null) rgi.setOrdersSentDate(Messages.getString("recentGames.defaultMessageNoOrdersSent"));
+        else rgi.setOrdersSentDate(ordersSentOn);
 
         RecentGameInfo toRemove = null;
         for (RecentGameInfo orgi : rgis) {
@@ -127,6 +151,8 @@ public class RecentGames {
         int number;
         String dueDate;
         String file;
+        boolean sentOrd;
+        String ordersSentDate;
         
         public int getNumber() {
             return this.number;
@@ -135,7 +161,6 @@ public class RecentGames {
         public void setNumber(int number) {
             this.number = number;
         }
-
         
         public String getFile() {
             return this.file;
@@ -145,13 +170,28 @@ public class RecentGames {
             this.file = file;
         }
         
-        
         public void setDate(String date) {
             this.dueDate = date;
         }
         
         public String getDate() {
             return this.dueDate;
+        }
+        
+        public void setSentOrd(boolean val) {
+        	this.sentOrd = val;
+        }
+        
+        public boolean hasSentOrd() {
+        	return this.sentOrd;
+        }
+        
+        public void setOrdersSentDate(String date) {
+            this.ordersSentDate = date;
+        }
+        
+        public String getOrdersSentDate() {
+            return this.ordersSentDate;
         }
                 
     }
@@ -168,15 +208,15 @@ public class RecentGames {
 			
 			String o1Date = split1[2];
 			String o2Date = split2[2];
-			if (!o1Date.equals(o2Date)) return Integer.valueOf(o2Date).compareTo(Integer.valueOf(o1Date));
+			if (!o1Date.equals(o2Date)) return Integer.valueOf(o1Date).compareTo(Integer.valueOf(o2Date));
 			
 			o1Date = split1[0];
 			o2Date = split2[0];
-			if (!o1Date.equals(o2Date)) return Month.valueOf(o2Date).compareTo(Month.valueOf(o1Date));
+			if (!o1Date.equals(o2Date)) return Month.valueOf(o1Date).compareTo(Month.valueOf(o2Date));
 			
 			o1Date = split1[1];
 			o2Date = split2[1];
-			return Integer.valueOf(o2Date).compareTo(Integer.valueOf(o1Date));
+			return Integer.valueOf(o1Date).compareTo(Integer.valueOf(o2Date));
 		}
     }
 }

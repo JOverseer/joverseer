@@ -3,6 +3,8 @@ package org.joverseer.ui.command;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.prefs.Preferences;
 import java.util.zip.GZIPOutputStream;
 
@@ -93,8 +95,18 @@ public class SaveGame extends ActionCommand {
 
                 	RecentGames rgs = new RecentGames();
                 	Turn turn = g.getTurn(g.getMaxTurn());
-            		String maybeUnknownDate = PlayerInfo.getDueDateDefaulted(turn.getPlayerInfo(g.getMetadata().getNationNo()), "unknown"); 
-                	rgs.updateRecentGameInfoPreferenceWithGame(g.getMetadata().getGameNo(), f.getAbsolutePath(), maybeUnknownDate);
+            		String maybeUnknownDate = PlayerInfo.getDueDateDefaulted(turn.getPlayerInfo(g.getMetadata().getNationNo()), "unknown");
+            		boolean ordersSent = turn.getPlayerInfo(g.getMetadata().getNationNo()).getOrdersSentOn() != null;
+            		
+            		Date ordersSentOn = turn.getPlayerInfo(g.getMetadata().getNationNo()).getOrdersSentOn();
+            		String ordersSentStr;
+            		if(ordersSentOn == null) ordersSentStr = null;
+            		else {
+            	        SimpleDateFormat formatter = new SimpleDateFormat("MMMM dd yyyy");
+            	        String formattedDate = formatter.format(ordersSentOn);
+            	        ordersSentStr = formattedDate.toUpperCase();
+            		}
+                	rgs.updateRecentGameInfoPreferenceWithGame(g.getMetadata().getGameNo(), f.getAbsolutePath(), maybeUnknownDate, ordersSent, ordersSentStr);
                 } finally {
                 	// make sure if we've opened it, and even if we get an error...
                 	zos.finish();

@@ -254,7 +254,7 @@
 						<value>currentHexView.disableEditOrderButton</value>
 					</property>
 					<property name="description">
-						<value>Disable edit order button for controlled nations</value>
+						<value>Disable edit order for unselected nations</value>
 					</property>
 					<property name="group">
 						<value>Display.Current Hex View</value>

@@ -425,7 +425,7 @@ public class CharacterViewer extends ObjectViewer {
 				this.order1.setEnabledButton(false);
 				this.order2.setEnabledButton(false);
 				this.order3.setEnabledButton(false);
-				this.btnCharDetails.setToolTipText(Messages.getString("CharacterViewer.showOrders.ToolTip"));
+				this.btnCharDetails.setToolTipText(null);
 			}
 			else {
 				this.order1.setEnabledButton(true);

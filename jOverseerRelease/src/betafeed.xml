@@ -6,6 +6,23 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
+				<item>
+			<title>1.18.17-rc3</title>
+			<pubDate>11 November 2024</pubDate>
+			<description>
+VERSION 1.18.17-rc3
+---------------
+- '+' tab in notepad to add new notes
+- descriptive text in notepad to guide user how to use
+- Home page recent games: Icon showing whether or not orders have been sent this turn, upon mouseover tooltip says when you submitted them.
+- Send orders pane now closes after submit
+- reversed recent games list
+- Copy and save orders now copy/save all selected nations orders
+- Legal copyright stuff put in home page
+- Fixed notepad layout issue
+- Fixed other text issues
+			</description>
+			</item>	
 		<item>
 			<title>1.18.17-rc2</title>
 			<pubDate>28 October 2024</pubDate>

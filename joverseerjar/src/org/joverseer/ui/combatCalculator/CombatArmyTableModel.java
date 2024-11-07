@@ -26,6 +26,7 @@ public class CombatArmyTableModel extends BeanTableModel {
 	public static int iStr = 3;
 	public static int iCon = 4;
 	public static int iLosses = 5;
+	public static int iTactic = 6;
 
 	Form parentForm;
 
@@ -37,16 +38,16 @@ public class CombatArmyTableModel extends BeanTableModel {
 
 	@Override
 	protected String[] createColumnPropertyNames() {
-		return new String[] { "commander", "nationNo", "troops", "strength", "constitution", "losses" };
+		return new String[] { "commander", "nationNo", "troops", "strength", "constitution", "losses", "tactic" };
 	}
 
 	@Override
 	protected Class[] createColumnClasses() {
-		return new Class[] { String.class, String.class, String.class, String.class, String.class, String.class };
+		return new Class[] { String.class, String.class, String.class, String.class, String.class, String.class, String.class };
 	}
 
 	public int[] getColumnWidths() {
-		return new int[] { 100, 48, 200, 64, 64, 64 };
+		return new int[] { 100, 48, 200, 64, 64, 64, 64 };
 	}
 
 	protected Combat getCombat() {

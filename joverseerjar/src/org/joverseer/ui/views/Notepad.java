@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -38,6 +39,13 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.support.AbstractView;
 
+/**
+ * Notepad panel
+ * Allows different tabs of notes, like OneNote.
+ * Different from notes, not attached to any particular objects, just a generic notepad, persistent between turns.
+ *
+ * @author Sam Terrett
+ */
 public class Notepad extends AbstractView implements ApplicationListener{
 	boolean init = false;
 	
@@ -88,11 +96,12 @@ public class Notepad extends AbstractView implements ApplicationListener{
 		
 		p.add(this.tabPane, BorderLayout.CENTER);
 		
+		//Small text pane at bottom to tell user how to use pane
 		JEditorPane jp = new JEditorPane();
 		jp.setContentType("text/html");
 		jp.setEditable(false);
 		jp.setCaretColor(Color.WHITE);
-		jp.setText("<div style='font-family:MS Sans Serif; font-size:11pt'><i>" + "Right click on a tab to delete it or edit the title. When adding a new tab or changing a title you cannot name it the same as one that already exists.");
+		jp.setText("<div style='font-family:MS Sans Serif; font-size:11pt'><i>" + Messages.getString("NotePad.instructions"));
 		p.add(jp, BorderLayout.PAGE_END);
 		
 		this.init = true;
@@ -100,6 +109,10 @@ public class Notepad extends AbstractView implements ApplicationListener{
 		return p;
 	}
 	
+	/**
+	 * Gets the users notes for the game.
+	 * @return the notepadInfo stored in the turn, which contains all the users notes for the game.
+	 */
 	private NotepadInfo getNotepadInfo() {
 		if(this.gameHolder == null) return null;
 		NotepadInfo nI1 = null;
@@ -121,6 +134,11 @@ public class Notepad extends AbstractView implements ApplicationListener{
 		return nI1;
 	}
 	
+	/**
+	 * Adds a tab to the tabbedPane, populating it with the note and the notes title
+	 * @param title: The title of the note, what the tab should be named.
+	 * @param note: The content of the note itself, which will be loaded into the JEditorPane of the tab to be viewed and edited by user.
+	 */
 	public void addTab(String title, String note) {
 		JTextPane tP = new JTextPane();
 		int i = this.tabPane.getTabCount();
@@ -129,16 +147,29 @@ public class Notepad extends AbstractView implements ApplicationListener{
 		
 		JScrollPane scp = new JScrollPane(tP);
 		this.tabPane.add(scp);
-		this.tabPane.setTabComponentAt(i, new JLabel(title));
+		this.tabPane.setTabComponentAt(i, new JLabel(title));	//Setting title like this allows us to attach a mouse listener to the JLabel, so we can add a right click menu
 
-		tP.getDocument().addDocumentListener(new MyDocumentListener(i));
-		this.tabPane.getTabComponentAt(i).addMouseListener(new TabPaneMouseAdapter(i));
+		tP.getDocument().addDocumentListener(new MyDocumentListener(i));	//Updates and saves the note as the user types.
+		this.tabPane.getTabComponentAt(i).addMouseListener(new TabPaneMouseAdapter(i));	
 	}
 	
+	/**
+	 * Refresh the pane, used when a game is loaded, or when a tab is added or removed. 
+	 * It collects the users notes from the turn, and adds all of them as tabs. 
+	 * @param selInd: Which tab index to be selected after loading
+	 */
 	private void refresh(int selInd) {
 		this.tabPane.removeAll();
 		
-		if (this.getNotepadInfo() == null) return;
+		if (this.getNotepadInfo() == null) {
+			JEditorPane jp = new JEditorPane();
+			jp.setContentType("text/html");
+			jp.setEditable(false);
+			jp.setCaretColor(Color.WHITE);
+			jp.setText("<div style='font-family:MS Sans Serif; font-size:13pt'><i>" + Messages.getString("NotePad.preLoadGame"));
+			this.tabPane.add(jp);
+			return;
+		}
 		
 		ArrayList<String> titles = this.nI.getNoteTitles();
 		ArrayList<String> notes = this.nI.getNotes();
@@ -151,6 +182,9 @@ public class Notepad extends AbstractView implements ApplicationListener{
 		this.tabPane.setSelectedIndex(selInd);
 	}
 	
+	/**
+	 * Weird name... adds a '+' tab which when clicked, allows the user to add a new note and therefore tab.
+	 */
 	public void addAddTab() {
 		int i = this.tabPane.getTabCount();
 		
@@ -166,6 +200,9 @@ public class Notepad extends AbstractView implements ApplicationListener{
 		this.tabPane.getTabComponentAt(i).addMouseListener(new TabPaneMouseAdapter(i));
 	}
 	
+	/**
+	 * MouseAdaptor for the tab titles.
+	 */
 	class TabPaneMouseAdapter extends MouseAdapter {
 		int ind;
 		public TabPaneMouseAdapter(int ind) {
@@ -175,10 +212,13 @@ public class Notepad extends AbstractView implements ApplicationListener{
 	    @Override
 	    public void mouseClicked(MouseEvent e) 
 	    {
+	    	//This stops the user from right clicking on the '+' tab
 	    	if (e.getComponent() instanceof JButton) return;
+	    	
 	    	if(e.getButton() == MouseEvent.BUTTON1) {
 	    		Notepad.this.tabPane.setSelectedIndex(this.ind);
 	    	}
+	    	//Generates menu on right click on tab.
 	        if(e.getButton() == MouseEvent.BUTTON3) {
 	            JPopupMenu menu = new JPopupMenu(); 
 	            menu.add(new JMenuItem(new CloseAction(this.ind)));
@@ -188,6 +228,9 @@ public class Notepad extends AbstractView implements ApplicationListener{
 	    }
 	}
 	
+	/**
+	 * The action added to the button to add a new tab
+	 */
 	class AddNoteAction extends AbstractAction{
 		private static final long serialVersionUID = 1243168452698565591L;
 		
@@ -200,11 +243,15 @@ public class Notepad extends AbstractView implements ApplicationListener{
 			String newTitle;
 			do {
 				newTitle = (String)JOptionPane.showInputDialog("Input a new note title that doesn't currently exist:");
-			} while(!Notepad.this.nI.newNote(newTitle, ""));
+			} while(!Notepad.this.nI.newNote(newTitle, ""));	//Adds note to backend then refreshes pane to reload info.
 			Notepad.this.refresh(Notepad.this.tabPane.getTabCount());
 		}
 	}
 	
+	/**
+	 * The close action which is available upon right clicking a tab.
+	 * It deletes said note from the backend then refreshes the pane.
+	 */
 	class CloseAction extends AbstractAction{
 		int ind;
 		
@@ -224,6 +271,10 @@ public class Notepad extends AbstractView implements ApplicationListener{
 		
 	}
 	
+	/**
+	 * The edit action which is available upon right clicking a tab.
+	 * It edits the title of said note on the backend then refreshes the pane.
+	 */
 	class EditTitleAction extends AbstractAction{
 		private static final long serialVersionUID = 2239120300087720316L;
 		int ind;
@@ -246,7 +297,9 @@ public class Notepad extends AbstractView implements ApplicationListener{
 		
 	}
 
-	
+	/**
+	 * Document Listener detects if a note has been changed (more typed or deleted) and updates note contents on the backend
+	 */
 	class MyDocumentListener implements DocumentListener {
 		int ind;
 		public MyDocumentListener(int ind) {

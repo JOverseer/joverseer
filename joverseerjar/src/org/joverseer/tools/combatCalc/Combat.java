@@ -95,18 +95,16 @@ public class Combat implements Serializable, IHasMapLocation {
 		this.rounds = rounds;
 	}
 
-
-
 	public static int computeNativeArmyStrength(CombatArmy ca, HexTerrainEnum terrain, ClimateEnum climate, boolean againstPopCenter) {
         return computeNativeArmyStrength(ca, terrain, climate, null, againstPopCenter);
-    }
+	}
     
     public static int computeNativeArmyStrength(CombatArmy army, HexTerrainEnum terrain, ClimateEnum climate, Double lossesOverride, boolean againstPopCenter) {
         int strength = 0;
         
         //add up army modifiers
         int armyModifiers = army.getCommandRank() + army.getMorale() + CombatModifiers.getModifierFor(
-                army.getNationNo(), terrain, climate) * 2;
+                army.getNationNo(), terrain, climate);
         
         int troopModifiers = 0;
         
@@ -131,12 +129,17 @@ public class Combat implements Serializable, IHasMapLocation {
             troopModifiers = armyElement.getTraining() + armyElement.getWeapons() + tacticMod + terrainMod;
             double mod = (double) (armyModifiers + troopModifiers) / 800d;
             
+            System.out.println(againstPopCenter);
+            System.out.println("Strength" + strength);
+            System.out.println("troopMod: " + troopModifiers + " tac: " +tacticMod+ " terr: " + terrainMod);
             strength += troopStrength * armyElement.getNumber() * mod;
         }
 
         if (lossesOverride == null) {
             lossesOverride = army.getLosses();
         }
+        
+        //System.out.println("Strength: " + strength + "armyModifiers: " + armyModifiers + " troopModifiers: " + troopModifiers);
         
         strength = (int)(strength * (double)(100 - lossesOverride) / 100d);
         return strength;
@@ -780,7 +783,6 @@ public class Combat implements Serializable, IHasMapLocation {
     
     public void autoSetCombatRelations() {
     	//Side1 relations
-    	System.out.println("REACHED");
     	for (int i = 0; i < MAX_ARMIES && this.side1[i] != null; i++) {
     		this.autoDetectCombatArmyRelations(0, i);
     	}

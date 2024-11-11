@@ -23,9 +23,9 @@ public class CombatModifiers {
        	GameMetadata gm = GameHolder.instance().getGame().getMetadata();
     			
        	int tm = gm.getTerrainModifier(nationNo, terrain);
-       	int cm = gm.getClimateModifier(nationNo, climate);
+       	int cm = gm.getClimateModifier(nationNo, climate); 
        	
-       	return Math.round((tm + cm)/2);
+       	return tm + cm;
     
     }
     

@@ -6,6 +6,25 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
+						<item>
+			<title>1.18.17-rc6</title>
+			<pubDate>11 November 2024</pubDate>
+			<description>
+VERSION 1.18.17-rc5
+---------------
+- updated troopvstactic, tacticvstactic and troopterrain tables for correct values
+			</description>
+			</item>	
+		<item>
+			<title>1.18.17-rc4</title>
+			<pubDate>7 November 2024</pubDate>
+			<description>
+VERSION 1.18.17-rc4
+---------------
+- Can see tactic in combat form
+- Hopefully fixed Home, Recent games from going to a second line
+			</description>
+			</item>	
 				<item>
 			<title>1.18.17-rc5</title>
 			<pubDate>8 November 2024</pubDate>

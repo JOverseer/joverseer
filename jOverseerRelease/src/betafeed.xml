@@ -10,9 +10,9 @@
 			<title>1.18.17-rc6</title>
 			<pubDate>11 November 2024</pubDate>
 			<description>
-VERSION 1.18.17-rc5
+VERSION 1.18.17-rc6
 ---------------
-- updated troopvstactic, tacticvstactic and troopterrain tables for correct values
+- Rounding error when calculating combat modifier
 			</description>
 			</item>	
 		<item>

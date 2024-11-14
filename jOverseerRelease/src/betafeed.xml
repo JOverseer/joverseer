@@ -6,7 +6,23 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
-						<item>
+				<item>
+			<title>1.18.17-rc7</title>
+			<pubDate>14 November 2024</pubDate>
+			<description>
+VERSION 1.18.17-rc7
+---------------
+- Fixed War machines
+    - Now count towards army combats (50)
+    - Were counting doubly for fortifications
+- Adjusted Size of panel and components
+- Fixed bug with removing armies from first table
+- 'Add army' now automatically opens edit menu
+- Fix - Hex numbers which begin with a '0' wasnt importing armies properly, fixed now
+- New 'before/after' option, showing troop numbers before and after combat
+			</description>
+			</item>	
+		<item>
 			<title>1.18.17-rc6</title>
 			<pubDate>11 November 2024</pubDate>
 			<description>

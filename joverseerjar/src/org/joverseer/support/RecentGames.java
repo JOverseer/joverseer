@@ -35,6 +35,7 @@ public class RecentGames {
         if (str != null) {
             String[] games = str.split("#");
             for (String game : games) {
+            	System.out.println(game);
                 int i = game.indexOf("!");
                 int j = game.indexOf("?");
                 int m = game.indexOf("¬");

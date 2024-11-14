@@ -4,6 +4,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.richclient.form.Form;
 
 public class CombatArmyReducedTableModel extends CombatArmyTableModel {
+	private static final long serialVersionUID = 1L;
 
 	public CombatArmyReducedTableModel(Form parentForm, MessageSource arg1) {
 		super(parentForm, arg1);
@@ -22,7 +23,7 @@ public class CombatArmyReducedTableModel extends CombatArmyTableModel {
 	
 	@Override
 	public int[] getColumnWidths() {
-		return new int[] { 100, 48, 150};
+		return new int[] { 100, 48, 200};
 	}
 	
 //	@Override

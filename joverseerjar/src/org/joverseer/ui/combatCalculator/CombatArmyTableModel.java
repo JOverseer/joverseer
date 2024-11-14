@@ -25,8 +25,9 @@ public class CombatArmyTableModel extends BeanTableModel {
 	public static int iTroops = 2;
 	public static int iStr = 3;
 	public static int iCon = 4;
-	public static int iLosses = 5;
-	public static int iTactic = 6;
+	public static int iWarM = 5;
+	public static int iLosses = 6;
+	public static int iTactic = 7;
 
 	Form parentForm;
 
@@ -38,16 +39,16 @@ public class CombatArmyTableModel extends BeanTableModel {
 
 	@Override
 	protected String[] createColumnPropertyNames() {
-		return new String[] { "commander", "nationNo", "troops", "strength", "constitution", "losses", "tactic" };
+		return new String[] { "commander", "nationNo", "troops", "strength", "constitution", "warmachines", "losses", "tactic" };
 	}
 
 	@Override
 	protected Class[] createColumnClasses() {
-		return new Class[] { String.class, String.class, String.class, String.class, String.class, String.class, String.class };
+		return new Class[] { String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class };
 	}
 
 	public int[] getColumnWidths() {
-		return new int[] { 100, 48, 200, 64, 64, 64, 64 };
+		return new int[] { 100, 48, 200, 64, 64, 32, 64, 64 };
 	}
 
 	protected Combat getCombat() {
@@ -60,6 +61,7 @@ public class CombatArmyTableModel extends BeanTableModel {
 		if (arg1 == iTroops) {
 			String ret = "";
 			for (ArmyElement ae : ca.getElements()) {
+				if(ae.getArmyElementType().getType().equals("WM")) continue;
 				if (ae.getNumber() > 0) {
 					ret += (ret.equals("") ? "" : " ") + (int) Math.round(ae.getNumber() * (100 - ca.getLosses()) / 100) + ae.getArmyElementType().getType();
 				}
@@ -88,6 +90,10 @@ public class CombatArmyTableModel extends BeanTableModel {
 			} else {
 				return (int) Math.round(ca.getLosses());
 			}
+		} else if (arg1 == iWarM) {
+			if(ca.getWM().equals(null)) return 0;
+			return ca.getWM().getNumber();
+			
 		} else if (arg1 == iLosses) {
 			return Math.round(ca.getLosses()) + "%";
 		}

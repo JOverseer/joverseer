@@ -3,6 +3,7 @@ package org.joverseer.ui.combatCalculator;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DropTarget;
@@ -20,6 +21,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.DropMode;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -27,9 +29,11 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -85,6 +89,7 @@ public class CombatForm extends AbstractForm {
 	PopCenterTableModel popCenterTableModel;
 	JTextField rounds;
 	
+	boolean before = false;
 	int draggedFrom;
 	protected int xDiff;
 	protected int yDiff;
@@ -179,6 +184,46 @@ public class CombatForm extends AbstractForm {
 		lb.gapCol();
 		lb.gapCol();
 		lb.relatedGapRow();
+		
+		JPanel paRadioBut = new JPanel();
+		paRadioBut.setLayout(new FlowLayout());
+        // Create radio buttons
+        JRadioButton beforeButton = new JRadioButton("Before");
+        JRadioButton afterButton = new JRadioButton("After");
+
+        // Group the radio buttons so only one can be selected at a time
+        ButtonGroup group = new ButtonGroup();
+        group.add(beforeButton);
+        group.add(afterButton);
+
+        // Add ActionListener to both radio buttons
+        ActionListener radioButtonListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	System.out.println("REACHED");
+                if (beforeButton.isSelected()) CombatForm.this.before = true;
+                else if (afterButton.isSelected()) CombatForm.this.before = false;
+                commit();
+                runCombat();
+            }
+        };
+
+        beforeButton.addActionListener(radioButtonListener);
+        afterButton.addActionListener(radioButtonListener);
+
+        // Add radio buttons to the frame
+        paRadioBut.add(beforeButton);
+        paRadioBut.add(afterButton);
+
+        // Set default selection
+        afterButton.setSelected(true);
+		
+		lb.cell(new JLabel("Troops: "), "colspec=left:80px");
+		lb.cell(paRadioBut, "colspec=left:130px");
+		
+		lb.gapCol();
+		lb.gapCol();
+		lb.relatedGapRow();
 
 		lb.cell(new JLabel(Messages.getString("CombatForm.AttackPC")), "colspec=left:80px"); //$NON-NLS-1$ //$NON-NLS-2$
 		lb.gapCol();
@@ -195,7 +240,7 @@ public class CombatForm extends AbstractForm {
 		lb.gapCol();
 		lb.gapCol();
 		lb.relatedGapRow();
-
+		
 		tlb.cell(lb.getPanel()); //$NON-NLS-1$
 		
 		tlb.gapCol();
@@ -249,7 +294,7 @@ public class CombatForm extends AbstractForm {
 		});
 		
 		JScrollPane scp = new JScrollPane(this.otherTable);
-		scp.setPreferredSize(new Dimension(300, 130));
+		scp.setPreferredSize(new Dimension(350, 130));
 		scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(2)));
 		tp.add(scp);
 		tlb.cell(tp, "colspan=1");
@@ -458,7 +503,7 @@ public class CombatForm extends AbstractForm {
 		this.side2Table.setDropMode(DropMode.INSERT_ROWS);
 		
 		scp = new JScrollPane(this.side2Table);
-		scp.setPreferredSize(new Dimension(560, 130));
+		scp.setPreferredSize(new Dimension(650, 130));
 		scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(1)));
 		tlb.cell(scp, "colspan=2");
 
@@ -554,7 +599,7 @@ public class CombatForm extends AbstractForm {
 		});
 		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(pcTable, this.popCenterTableModel.getColumnWidths());
 		scp = new JScrollPane(pcTable);
-		scp.setPreferredSize(new Dimension(560, 48));
+		scp.setPreferredSize(new Dimension(650, 48));
 
 		scp.setDropTarget(new DropTarget(scp, new SetPopCenterDropTargetAdapter()));
 		scp.setDropTarget(new DropTarget(pcTable, new SetPopCenterDropTargetAdapter()));
@@ -659,14 +704,20 @@ public class CombatForm extends AbstractForm {
 			if (ca != null)
 				ca.setLosses(0);
 		}
-		c.runArmyBattle();
-		int round = 0;
-		if (this.side1TableModel.getRowCount() > 0 && this.side2TableModel.getRowCount() > 0) {
-			round = 1;
+		
+		if (!this.before) {
+		
+			c.runArmyBattle();
+			int round = 0;
+			if (this.side1TableModel.getRowCount() > 0 && this.side2TableModel.getRowCount() > 0) {
+				round = 1;
+			}
+			if (c.getAttackPopCenter() && this.popCenterTableModel.getRows().size() > 0) {
+				c.runPcBattle(0, round);
+			}
+			
 		}
-		if (c.getAttackPopCenter() && this.popCenterTableModel.getRows().size() > 0) {
-			c.runPcBattle(0, round);
-		}
+		
 		for (int i = 0; i < this.side1TableModel.getRowCount(); i++) {
 			for (int j = 0; j < this.side1TableModel.getColumnCount(); j++) {
 				this.side1TableModel.fireTableCellUpdated(i, j);
@@ -776,10 +827,12 @@ public class CombatForm extends AbstractForm {
 	class AddArmyCommand extends ActionCommand {
 
 		int side;
+		EditSelectedArmyCommand editArmy;
 
 		public AddArmyCommand(int side) {
 			super();
 			this.side = side;
+			this.editArmy = new EditSelectedArmyCommand(side);
 		}
 
 		@Override
@@ -789,8 +842,14 @@ public class CombatForm extends AbstractForm {
 			if (combat.addToSide(this.side, ca)) {
 				if (this.side == 0) {
 					CombatForm.this.side1TableModel.addRow(ca);
+					CombatForm.this.side1Table.clearSelection();
+					CombatForm.this.side1Table.setRowSelectionInterval(CombatForm.this.side1Table.getRowCount() - 1, CombatForm.this.side1Table.getRowCount() - 1);;
+					this.editArmy.doExecuteCommand();
 				} else {
 					CombatForm.this.side2TableModel.addRow(ca);
+					CombatForm.this.side2Table.clearSelection();
+					CombatForm.this.side2Table.setRowSelectionInterval(CombatForm.this.side2Table.getRowCount() - 1, CombatForm.this.side2Table.getRowCount() - 1);;
+					this.editArmy.doExecuteCommand();
 				}
 				runCombat();
 			}
@@ -821,7 +880,7 @@ public class CombatForm extends AbstractForm {
 				return;
 			if (this.side == 0) {
 				final int idx1 = idx;
-				ConfirmationDialog md = new ConfirmationDialog(Messages.getString("CombatForm.RemoveArmy.title"), "") { //$NON-NLS-1$
+				ConfirmationDialog md = new ConfirmationDialog(Messages.getString("CombatForm.RemoveArmy.title"), Messages.getString("CombatForm.RemoveArmySide1")) { //$NON-NLS-1$
 
 					@Override
 					protected void onConfirm() {

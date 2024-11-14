@@ -114,9 +114,10 @@ public class Combat implements Serializable, IHasMapLocation {
         	
             Integer troopStrength = InfoUtils.getTroopStrength(armyElement.getArmyElementType(), "Attack");
             
-            if (armyElement.getArmyElementType() == ArmyElementType.WarMachimes && againstPopCenter) {
-            	troopStrength = 200;
-            }
+
+//            if (armyElement.getArmyElementType() == ArmyElementType.WarMachimes && againstPopCenter) {
+//            	troopStrength = 200;
+//            }
             
             if (troopStrength == null || troopStrength == 0)
                 continue;
@@ -196,22 +197,26 @@ public class Combat implements Serializable, IHasMapLocation {
         int totalCon = 0;
         CombatPopCenter pc = (attackerSide == 0 ? this.side2Pc : this.side1Pc);
         double[] losses = new double[MAX_ARMIES];
+        System.out.println("BEFORE --------------------------------------------------------");
         for (int i=0; i<MAX_ARMIES; i++) {
             if (attackerSide == 0) {
                 if (this.side1[i] == null) continue;
                 int str = computeNativeArmyStrength(this.side1[i], this.terrain, this.climate, true);
+                System.out.println("Strength: " + str);
                 // adjust for relations
                 int relMod = CombatModifiers.getRelationModifier(this.side1Relations[i][MAX_ALL-1]);
                 str = (int)(str * (double)relMod / 100d);
                 attackerStr += str;
+                System.out.println("Strength: " + attackerStr);
                 ArmyElement wmEl = this.side1[i].getWM(); 
                 int wm = 0;
-                if (wmEl != null) wmEl.getNumber(); 
+                if (wmEl != null)  wm = wmEl.getNumber(); 
                 warMachines += wm;
                 totalCon += computNativeArmyConstitution(this.side1[i]);
                 losses[i] = this.side1[i].getLosses();
                 if (round == 0) {
                 	attackerStr += this.side1[i].getOffensiveAddOns();
+                	System.out.println("Strength: " + attackerStr);
                 }
             } else {
                 if (this.side2[i] == null) continue;
@@ -220,7 +225,10 @@ public class Combat implements Serializable, IHasMapLocation {
                 int relMod = CombatModifiers.getRelationModifier(this.side2Relations[i][MAX_ALL-1]);
                 str = (int)(str * (double)relMod / 100d);
                 attackerStr += str;
-                warMachines += this.side2[i].getWM().getNumber();
+                ArmyElement wmEl = this.side2[i].getWM(); 
+                int wm = 0;
+                if (wmEl != null)  wm = wmEl.getNumber(); 
+                warMachines += wm;
                 totalCon += computNativeArmyConstitution(this.side2[i]);
                 losses[i] = this.side2[i].getLosses();
                 if (round == 0) {
@@ -244,6 +252,7 @@ public class Combat implements Serializable, IHasMapLocation {
                 this.side2[i].setLosses(Math.min(this.side2[i].getLosses() + l, 100));
             }
         }
+        System.out.println("AFTER --------------------------------------------------------");
     }
 
     public void runArmyBattle() {
@@ -410,6 +419,13 @@ public class Combat implements Serializable, IHasMapLocation {
         int defBonus = 0;
         // adjust by relations
         attStr = (int)((double)attStr * (double)relMod / 100d);
+        
+        ArmyElement wmEl = att.getWM(); 
+        int wm = 0;
+        if (wmEl != null) wm = wmEl.getNumber();
+        
+        attStr += wm * 50;
+        
         // handle first round
         if (round == 0) {
             attBonus = att.getOffensiveAddOns();
@@ -686,6 +702,7 @@ public class Combat implements Serializable, IHasMapLocation {
     
     public void setArmiesAndPCFromHex() {
 		String strHex = String.valueOf(this.hexNo);
+		if (strHex.length() == 3) strHex = "0" + strHex;
 		//ArrayList<Army> allarmies = game.getTurn().getContainer(TurnElementsEnum.Army).findAllByProperties(new String[] { "hexNo" }, new Object[] { strHex });
 		ArrayList<Army> fparmies = GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Army).findAllByProperties(new String[] { "hexNo", "nationAllegiance" }, new Object[] { strHex, NationAllegianceEnum.FreePeople });
 		ArrayList<Army> dsarmies = GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Army).findAllByProperties(new String[] { "hexNo", "nationAllegiance" }, new Object[] { strHex, NationAllegianceEnum.DarkServants });

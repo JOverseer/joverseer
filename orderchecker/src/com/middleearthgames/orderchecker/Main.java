@@ -307,7 +307,11 @@ public class Main
     }
     public boolean isNeutral(int nationNumber)
     {
-        return getNationAlignment(nationNumber) == 0;
+    	if(getNationAlignment(nationNumber) == 0) {
+    		if(getNationAlignment(this.getNation().getNation()) == 0) return false;
+    		return true;
+    	}
+        return false;
     }
     public boolean isEnemy(int thisNation, int otherNation)
     {

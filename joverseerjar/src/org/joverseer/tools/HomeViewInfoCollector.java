@@ -131,7 +131,7 @@ public class HomeViewInfoCollector {
 		try {
 			if(!frgi.hasSentOrd()) imagePath = JOApplication.getImageSource().getImageResource("orderresult.error.icon").getURL().toString();
 			else imagePath = JOApplication.getImageSource().getImageResource("orderresult.okay.icon").getURL().toString();
-			urlOrderSent = "'http://event?orderSentOn=" + frgi.getOrdersSentDate() + "'";
+			urlOrderSent = "'http://event?orderSentOn=" + frgi.formatOrdersSentDateInf() + "'";
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -2,8 +2,10 @@ package org.joverseer.support;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -67,7 +69,14 @@ public class RecentGames {
                 if(m != game.length()) rgi.setSentOrd(game.substring(m + 1, n).equals("Y"));
                 else rgi.setSentOrd(true);
                 
-                if(n != game.length()) rgi.setOrdersSentDate(game.substring(n + 1).equals(Messages.getString("recentGames.defaultMessageNoOrdersSent")) ? Messages.getString("recentGames.defaultMessageNoOrdersSent") : "Last Orders Sent: " + game.substring(n + 1));
+                if(n != game.length()) {
+                	if(game.substring(n + 1).equals(Messages.getString("recentGames.defaultMessageNoOrdersSent"))) rgi.setOrdersSentDate(Messages.getString("recentGames.defaultMessageNoOrdersSent"));
+                	else {
+                		String st = game.substring(n + 1);
+                		if (st.lastIndexOf(":") == -1) rgi.setOrdersSentDate(st);
+                		else rgi.setOrdersSentDate(st.substring(st.lastIndexOf(":") + 2));
+                	}
+                }
                 else rgi.setOrdersSentDate(Messages.getString("recentGames.defaultMessageNoOrdersSent"));
                 
                 res.add(rgi);
@@ -184,6 +193,7 @@ public class RecentGames {
         }
         
         public boolean hasSentOrd() {
+        	if(!this.pastDueDate()) return false;
         	return this.sentOrd;
         }
         
@@ -193,6 +203,26 @@ public class RecentGames {
         
         public String getOrdersSentDate() {
             return this.ordersSentDate;
+        }
+        
+        public String formatOrdersSentDateInf() {
+        	if (this.ordersSentDate.equals(Messages.getString("recentGames.defaultMessageNoOrdersSent"))) return "Orders have not been sent for this turn (remember to save)";
+
+            if(this.pastDueDate()) return ("Last Orders Sent: " + this.ordersSentDate);
+            else return "Import new results.";
+        }
+        
+        public boolean pastDueDate() {
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d yyyy");
+            LocalDate dueDateD = LocalDate.parse(toTitleCase(this.dueDate), formatter);
+            LocalDate now = LocalDate.now();
+            
+            return now.isEqual(dueDateD) || now.isBefore(dueDateD);
+        }
+        
+        public String toTitleCase(String input) {
+            if (input == null || input.isEmpty()) return input;
+            return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
         }
                 
     }

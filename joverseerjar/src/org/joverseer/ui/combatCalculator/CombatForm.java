@@ -86,6 +86,7 @@ public class CombatForm extends AbstractForm {
 	JTable otherTable;
 	JTable side1Table;
 	JTable side2Table;
+	JTable pcTable;
 	PopCenterTableModel popCenterTableModel;
 	JTextField rounds;
 	
@@ -586,8 +587,8 @@ public class CombatForm extends AbstractForm {
 		tlb.relatedGapRow();
 
 		this.popCenterTableModel = new PopCenterTableModel(this, messageSource);
-		JTable pcTable = TableUtils.createStandardSortableTable(this.popCenterTableModel);
-		pcTable.addMouseListener(new MouseAdapter() {
+		this.pcTable = TableUtils.createStandardSortableTable(this.popCenterTableModel);
+		this.pcTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2 && e.getButton() == 1) {
@@ -597,12 +598,12 @@ public class CombatForm extends AbstractForm {
 				}
 			};
 		});
-		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(pcTable, this.popCenterTableModel.getColumnWidths());
-		scp = new JScrollPane(pcTable);
+		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.pcTable, this.popCenterTableModel.getColumnWidths());
+		scp = new JScrollPane(this.pcTable);
 		scp.setPreferredSize(new Dimension(650, 48));
 
 		scp.setDropTarget(new DropTarget(scp, new SetPopCenterDropTargetAdapter()));
-		scp.setDropTarget(new DropTarget(pcTable, new SetPopCenterDropTargetAdapter()));
+		scp.setDropTarget(new DropTarget(this.pcTable, new SetPopCenterDropTargetAdapter()));
 
 		tlb.cell(scp, "colspan=2");
 
@@ -630,6 +631,29 @@ public class CombatForm extends AbstractForm {
 		});
 		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
 		lb.gapCol();
+		
+		lb.relatedGapRow();
+
+		ico = new ImageIcon(imgSource.getImage("relations.icon")); //$NON-NLS-1$
+		btn = new JButton(ico);
+		btn.setToolTipText("Change Relations for Army");
+		btn.setPreferredSize(new Dimension(20, 20));
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new EditPopCenterRelationsCommand().doExecuteCommand();
+			}
+		});
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
+		lb.gapCol();
+		lb.cell(new JLabel(" ")); //$NON-NLS-1$
+		lb.relatedGapRow();
+
+		lb.cell(new JLabel(" ")); //$NON-NLS-1$
+		lb.relatedGapRow();
+
+		lb.row();
+		
 		lb.relatedGapRow();
 
 		tlb.cell(lb.getPanel());
@@ -770,6 +794,7 @@ public class CombatForm extends AbstractForm {
 		this.popCenterTableModel.setRows(sa);
 		
 		c.autoSetCombatRelations();
+		
 
 		runCombat();
 
@@ -919,7 +944,81 @@ public class CombatForm extends AbstractForm {
 			}
 		}
 	}
+	
+	class EditPopCenterRelationsCommand extends ActionCommand {
+		public EditPopCenterRelationsCommand() {
+			super();
+		}
+		
+		@Override
+		protected void doExecuteCommand() {
+			CombatPopCenter cPC = null;
+			int idx = 0;
+			
+			cPC = (CombatPopCenter) CombatForm.this.popCenterTableModel.getRow(idx);
+			if(cPC == null) return;
+			final Combat c = (Combat) getFormObject();
+			
+			final JidePopup popup = new JidePopup();
+			popup.getContentPane().setLayout(new BorderLayout());
+			TableLayoutBuilder tlb = new TableLayoutBuilder();
+			final ArrayList<JComboBox> relations = new ArrayList<JComboBox>();
+			CombatArmy[] enemySide;
 
+			enemySide = c.getSide1();
+			for (int i = 0; i < enemySide.length-1; i++) {
+				String label = Messages.getString("CombatForm.ArmySpace") + (i + 1) + ": "; //$NON-NLS-1$ //$NON-NLS-2$
+//				if (i == enemySide.length - 1)
+//					label = Messages.getString("CombatForm.PC"); //$NON-NLS-1$
+				tlb.cell(new JLabel(label));
+				tlb.gapCol();
+				final JComboBox rel = new JComboBox(NationRelationsEnum.values());
+				rel.setSelectedItem(c.getPCRelations()[i]);
+				tlb.cell(new JLabel(Messages.getString("CombatForm.relations"))); //$NON-NLS-1$
+				tlb.gapCol();
+				tlb.cell(rel);
+				tlb.relatedGapRow();
+
+				relations.add(rel);
+				rel.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						int i1 = relations.indexOf(rel);
+						c.getPCRelations()[i1] = (NationRelationsEnum) rel.getSelectedItem();
+						runCombat();
+					}
+				});
+			}
+			JButton closePopup = new JButton(Messages.getString("CombatForm.Close")); //$NON-NLS-1$
+			closePopup.setPreferredSize(new Dimension(70, 20));
+			closePopup.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					popup.hidePopup();
+					runCombat();
+				}
+			});
+			tlb.cell(closePopup, "align=left"); //$NON-NLS-1$
+			tlb.relatedGapRow();
+
+			JScrollPane scp = new JScrollPane(tlb.getPanel());
+			scp.setPreferredSize(new Dimension(200, 350));
+			scp.getVerticalScrollBar().setUnitIncrement(16);
+			popup.getContentPane().add(scp);
+			popup.updateUI();
+			popup.setOwner(CombatForm.this.pcTable);
+			popup.setResizable(true);
+			popup.setMovable(true);
+			if (popup.isPopupVisible()) {
+				popup.hidePopup();
+			} else {
+				popup.showPopup();
+			}
+		}
+	}
+	
 	class EditSelectedArmyRelationsCommand extends ActionCommand {
 
 		int side;
@@ -987,6 +1086,7 @@ public class CombatForm extends AbstractForm {
 						} else {
 							c.getSide2Relations()[armyIdx][i1] = (NationRelationsEnum) rel.getSelectedItem();
 						}
+						runCombat();
 					}
 				});
 			}

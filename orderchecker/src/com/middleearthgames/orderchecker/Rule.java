@@ -1177,36 +1177,51 @@ public class Rule
         int locParam = convertParameter(0);
         int max = convertParameter(1);
         
-    	Nation n = this.getMain().getNation();
-    	Company comp = n.findCompanyByCommander(this.parentChar.getId());
-    	if (comp == null) {
-    		this.parentOrder.addError(this.parentChar + " is not a commander of a company.");
-    		return null;
-    	}
-    	
-        String r = processCharacterMove(locParam, max, 0);
-        if (r == null && this.phase == 2) {
-        	int location = this.parentOrder.getParameterNumber(locParam);
-        	
-        	Vector charWith = comp.getCharsWith();
-        	String chars = "";
-        	for (int i = 0; i < charWith.size(); i++) {
-        		String cName = (String) charWith.get(i);
-        		Character c = n.findCharacterById(cName);
-        		c.setNewLocation(location, this.parentOrder.getOrder());
-        		
-        		if (i != 0) {
-        			if(i == charWith.size() - 1) chars += " and ";
-        			else chars += ", ";
-        		}
-        		chars += c.getName();
-        		
-        	}
-        	this.parentOrder.addInfo("The rest of the company (" + chars + ") succesfully moved with them.");
-        	
-        	return null;
+        if(this.phase == 1)
+        {
+        	//clearProcessState(STATE_CHARACTER_LOCATION);
+        	clearProcessState(STATE_COMPANY);
+        } else if(this.phase == 2)
+        {
+
+            if(waitForPartialState(STATE_COMPANY))
+            {
+                return STATE_REQ;
+            }
+            setProcessState(STATE_COMPANY);
+        
+	    	Nation n = this.getMain().getNation();
+	    	Company comp = n.findCompanyByCommander(this.parentChar.getId());
+	    	if (comp == null) {
+	    		this.parentOrder.addError(this.parentChar + " is not a commander of a company.");
+	    		return null;
+	    	}
+	    	
+	        String r = processCharacterMove(locParam, max, 0);
+	        if (r == null && this.phase == 2) {
+	        	int location = this.parentOrder.getParameterNumber(locParam);
+	        	
+	        	Vector charWith = comp.getCharsWith();
+	        	String chars = "";
+	        	for (int i = 0; i < charWith.size(); i++) {
+	        		String cName = (String) charWith.get(i);
+	        		Character c = n.findCharacterById(cName);
+	        		c.setNewLocation(location, this.parentOrder.getOrder());
+	        		
+	        		if (i != 0) {
+	        			if(i == charWith.size() - 1) chars += " and ";
+	        			else chars += ", ";
+	        		}
+	        		chars += c.getName();
+	        		
+	        	}
+	        	this.parentOrder.addInfo("The rest of the company (" + chars + ") succesfully moved with them.");
+	        	
+	        	return null;
+	        }
+	        else return r; 
         }
-        else return r; 
+        return null;
     }
     
     private String processCommander()

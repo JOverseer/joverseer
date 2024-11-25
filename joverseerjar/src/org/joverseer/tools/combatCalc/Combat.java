@@ -53,11 +53,12 @@ public class Combat implements Serializable, IHasMapLocation {
     
     NationRelationsEnum[][] side1Relations = new NationRelationsEnum[MAX_ALL][MAX_ALL];
     NationRelationsEnum[][] side2Relations = new NationRelationsEnum[MAX_ALL][MAX_ALL];
+    NationRelationsEnum[] popCenterRelations = new NationRelationsEnum[MAX_ALL];
      
     boolean[][] side1Attack = new boolean[MAX_ALL][MAX_ALL];
     boolean[][] side2Attack = new boolean[MAX_ALL][MAX_ALL];
     
-    CombatPopCenter side1Pc = null;
+    CombatPopCenter side1Pc = null;		//Never used???
     CombatPopCenter side2Pc = null;
     
     int rounds = 0;
@@ -78,6 +79,7 @@ public class Combat implements Serializable, IHasMapLocation {
             }
             this.side1[i] = null;
             this.side2[i] = null;
+            this.popCenterRelations[i] = NationRelationsEnum.Disliked;
         }
         this.terrain = HexTerrainEnum.plains;
         this.climate = ClimateEnum.Cool;
@@ -174,8 +176,11 @@ public class Combat implements Serializable, IHasMapLocation {
     public static int computeModifiedArmyStrength(HexTerrainEnum terrain, ClimateEnum climate, CombatArmy att,
             CombatArmy def) {
         int s = computeNativeArmyStrength(att, terrain, climate, false);
+        System.out.println("ARMY " + att.commander);
+        System.out.println("ARMY STRENGTH:  " + s);
         int tacticVsTacticMod = InfoUtils.getTacticVsTacticModifier(att.getTactic(), def.getTactic());
         s = (int) (s * (double) tacticVsTacticMod / 100d);
+        System.out.println("ARMY STRENGTH:  " + s);
         return s;
     }
 
@@ -188,9 +193,9 @@ public class Combat implements Serializable, IHasMapLocation {
         this.log += msg + "\n";
     }
     
-    public void runPcBattle(int attackerSide, int round) {
+    public void runPcBattle(int attackerSide, int round) {		//I believe attackerSide is always 0, could remove redundant code
 //        int defenderSide = (attackerSide == 0 ? 1 : 0);
-        
+    	
         // compute str for attacker
         int warMachines = 0;
         int attackerStr = 0;
@@ -244,7 +249,7 @@ public class Combat implements Serializable, IHasMapLocation {
         for (int i=0; i<MAX_ARMIES; i++) {
             if (attackerSide == 0) {
                 if (this.side1[i] == null) continue;
-                double l = computeNewLossesFromPopCenter(this.side1[i], pc, this.side2Relations[MAX_ALL - 1][i], totalCon, warMachines, round);
+                double l = computeNewLossesFromPopCenter(this.side1[i], pc, this.popCenterRelations[i], totalCon, warMachines, round);
                 this.side1[i].setLosses(Math.min(this.side1[i].getLosses() + l, 100));
             } else {
                 if (this.side2[i] == null) continue;
@@ -480,6 +485,10 @@ public class Combat implements Serializable, IHasMapLocation {
     
     public void setSide1Relations(NationRelationsEnum[][] side1Relations) {
         this.side1Relations = side1Relations;
+    }
+    
+    public NationRelationsEnum[] getPCRelations() {
+    	return this.popCenterRelations;
     }
 
     
@@ -717,6 +726,11 @@ public class Combat implements Serializable, IHasMapLocation {
 //			ErrorDialog.showErrorDialog("createCombatForHexCommand.error.PopWithUnknownOrNeutralNationFound");
 //		}
 
+		if (pc != null) {
+			CombatPopCenter cpc = new CombatPopCenter(pc);
+			this.setSide2Pc(cpc);
+		}
+		
 		ArrayList<Army> aside1;
 		ArrayList<Army> aside2;
 		ArrayList<Army> other = ntarmies;
@@ -759,13 +773,16 @@ public class Combat implements Serializable, IHasMapLocation {
 				}
 				this.addToSide(i, ca);
 				ca.setBestTactic();
+				this.fortDefBonus(ca);
 			}
 		}
-
-		if (pc != null) {
-			CombatPopCenter cpc = new CombatPopCenter(pc);
-			this.setSide2Pc(cpc);
-		}
+    }
+    
+    public void fortDefBonus(CombatArmy ca) {
+    	if(this.getSide2Pc() == null) return;
+    	if(this.getSide2Pc().getNationNo() == ca.getNationNo()) {
+    		ca.setDefensiveAddOns(ca.getDefensiveAddOns() + this.getSide2Pc().getFort().getSize() * 200);
+    	}
     }
     
     public void autoSetRelationsToHated() {
@@ -775,15 +792,21 @@ public class Combat implements Serializable, IHasMapLocation {
     			this.side1Relations[i][j] = NationRelationsEnum.Hated;
     			this.side2Relations[i][j] = NationRelationsEnum.Hated;
     		}
+    		this.popCenterRelations[i] = NationRelationsEnum.Hated;
     	}
     }
 
-    public void autoDetectCombatArmyRelations(int side, int caInd) {
+    public void autoDetectCombatArmyRelations(int side, int caInd, boolean pC) {
     	NationRelations nR = null;
-    	if (side == 0) nR = GameHolder.instance().getGame().getTurn().getNationRelations(this.side1[caInd].getNationNo());
+    	if (pC) nR = GameHolder.instance().getGame().getTurn().getNationRelations(this.getSide2Pc().getNationNo());
+    	else if (side == 0) nR = GameHolder.instance().getGame().getTurn().getNationRelations(this.side1[caInd].getNationNo());
     	else if(side == 1) nR = GameHolder.instance().getGame().getTurn().getNationRelations(this.side2[caInd].getNationNo());
     	
-    	if (side == 0 && nR != null) {
+    	if(pC && nR != null) {
+	    	for (int i = 0; i < MAX_ARMIES&& this.side1[i] != null; i++) {
+	    		this.popCenterRelations[i] = nR.getRelationsFor(this.side1[i].getNationNo());
+	    	}
+    	} else if (side == 0 && nR != null) {
 	    	for (int i = 0; i < MAX_ARMIES && this.side2[i] != null; i++) {
 	    		this.side1Relations[caInd][i] = nR.getRelationsFor(this.side2[i].getNationNo());
 	    		System.out.println(this.side1[caInd].getNation().getName() + " to " + this.side2[i].getNation().getName() + ": " +  nR.getRelationsFor(this.side2[i].getNationNo()));
@@ -795,19 +818,24 @@ public class Combat implements Serializable, IHasMapLocation {
 	    		this.side2Relations[caInd][i] = nR.getRelationsFor(this.side1[i].getNationNo());
 	    	}
 	    	if (this.side1Pc != null) this.side2Relations[caInd][10] = nR.getRelationsFor(this.side1Pc.getNationNo());
-    	}
+    	} 
     }
     
     public void autoSetCombatRelations() {
     	//Side1 relations
     	for (int i = 0; i < MAX_ARMIES && this.side1[i] != null; i++) {
-    		this.autoDetectCombatArmyRelations(0, i);
+    		this.autoDetectCombatArmyRelations(0, i, false);
     	}
     	
     	//Side2 relations
    		for (int i = 0; i < MAX_ARMIES && this.side2[i] != null; i++) {
-    		this.autoDetectCombatArmyRelations(1, i);
+    		this.autoDetectCombatArmyRelations(1, i, false);
     	}
+   		
+   		//PopCenter Relations;
+   		for (int i = 0; i < MAX_ARMIES && this.side1[i] != null; i++) {
+   			this.autoDetectCombatArmyRelations(1, i, true);
+   		}
     }
 
 	public boolean getAttackPopCenter() {

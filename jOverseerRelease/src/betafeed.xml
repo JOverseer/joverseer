@@ -6,6 +6,21 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
+						<item>
+			<title>1.18.17-rc8</title>
+			<pubDate>25 November 2024</pubDate>
+			<description>
+VERSION 1.18.17-rc8
+---------------
+- Recent Games (changes to internal storing and getting)
+- Recent games now say whether you have 1. Not submitted orders for this turn 2. If you need to import new results (current date is after dur date) 3. when you last submitted orders
+- Orderchecker fixes, MovComp wasn't waiting for state updates to do with joining/creating companies
+- Orderchecker Error checking if camp is there (neutral camp)
+- ExportOrders now closes on release
+- Combat calc - relations for pop center can now be edited (and imported properly)
+- Armies automatically get defense points added from fortification bonus
+			</description>
+			</item>	
 				<item>
 			<title>1.18.17-rc7</title>
 			<pubDate>14 November 2024</pubDate>

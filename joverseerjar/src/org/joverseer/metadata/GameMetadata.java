@@ -81,9 +81,9 @@ public class GameMetadata implements Serializable {
 		this.game = game;
 	}
 	
-	public void loadCombatModifiers() throws IOException, MetadataReaderException {
+	public void loadCombatModifiers(boolean override) throws IOException, MetadataReaderException {
 		//load defaults from config files that are not included in saved game
-		if (this.climateModifiers == null || this.climateModifiers.items.isEmpty()) {
+		if (this.climateModifiers == null || this.climateModifiers.items.isEmpty() || override) {
 			this.basePath = "metadata";
 			CombatModifierReader r = new CombatModifierReader();
 			r.load(this);

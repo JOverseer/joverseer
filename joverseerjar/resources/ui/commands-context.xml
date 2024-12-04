@@ -273,6 +273,12 @@
 					</property>
 				</bean>
 				<value>separator</value>
+				<bean class="org.joverseer.ui.command.RefreshGameCSV">
+					<constructor-arg index="0" ref="gameHolder" />
+					<property name="enabled">
+						<value>false</value>
+					</property>
+				</bean>
 				<bean class="org.joverseer.ui.command.DeleteLastTurnCommand">
 					<constructor-arg index="0" ref="gameHolder" />
 					<property name="enabled">

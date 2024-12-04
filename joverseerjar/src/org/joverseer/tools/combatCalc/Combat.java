@@ -15,6 +15,8 @@ import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.metadata.domain.Nation;
@@ -104,9 +106,13 @@ public class Combat implements Serializable, IHasMapLocation {
     public static int computeNativeArmyStrength(CombatArmy army, HexTerrainEnum terrain, ClimateEnum climate, Double lossesOverride, boolean againstPopCenter) {
         int strength = 0;
         
+        GameMetadata gm = GameHolder.instance().getGame().getMetadata();
+        int cm;
+        if(gm.getGameType() != GameTypeEnum.gameFA) cm = CombatModifiers.getModifierFor(army.getNationNo(), terrain, climate);
+        else cm = CombatModifiers.getModifierFor(InfoUtils.getRegionNumByName(GameTypeEnum.gameFA, army.getRegion()), terrain, climate);
+        
         //add up army modifiers
-        int armyModifiers = army.getCommandRank() + army.getMorale() + CombatModifiers.getModifierFor(
-                army.getNationNo(), terrain, climate);
+        int armyModifiers = army.getCommandRank() + army.getMorale() + cm;
         
         int troopModifiers = 0;
         
@@ -132,9 +138,9 @@ public class Combat implements Serializable, IHasMapLocation {
             troopModifiers = armyElement.getTraining() + armyElement.getWeapons() + tacticMod + terrainMod;
             double mod = (double) (armyModifiers + troopModifiers) / 800d;
             
-            System.out.println(againstPopCenter);
-            System.out.println("Strength" + strength);
-            System.out.println("troopMod: " + troopModifiers + " tac: " +tacticMod+ " terr: " + terrainMod);
+//            System.out.println(againstPopCenter);
+//            System.out.println("Strength" + strength);
+//            System.out.println("troopMod: " + troopModifiers + " tac: " +tacticMod+ " terr: " + terrainMod);
             strength += troopStrength * armyElement.getNumber() * mod;
         }
 
@@ -176,11 +182,11 @@ public class Combat implements Serializable, IHasMapLocation {
     public static int computeModifiedArmyStrength(HexTerrainEnum terrain, ClimateEnum climate, CombatArmy att,
             CombatArmy def) {
         int s = computeNativeArmyStrength(att, terrain, climate, false);
-        System.out.println("ARMY " + att.commander);
-        System.out.println("ARMY STRENGTH:  " + s);
+//        System.out.println("ARMY " + att.commander);
+//        System.out.println("ARMY STRENGTH:  " + s);
         int tacticVsTacticMod = InfoUtils.getTacticVsTacticModifier(att.getTactic(), def.getTactic());
         s = (int) (s * (double) tacticVsTacticMod / 100d);
-        System.out.println("ARMY STRENGTH:  " + s);
+//        System.out.println("ARMY STRENGTH:  " + s);
         return s;
     }
 
@@ -202,17 +208,17 @@ public class Combat implements Serializable, IHasMapLocation {
         int totalCon = 0;
         CombatPopCenter pc = (attackerSide == 0 ? this.side2Pc : this.side1Pc);
         double[] losses = new double[MAX_ARMIES];
-        System.out.println("BEFORE --------------------------------------------------------");
+        //System.out.println("BEFORE --------------------------------------------------------");
         for (int i=0; i<MAX_ARMIES; i++) {
             if (attackerSide == 0) {
                 if (this.side1[i] == null) continue;
                 int str = computeNativeArmyStrength(this.side1[i], this.terrain, this.climate, true);
-                System.out.println("Strength: " + str);
+                //System.out.println("Strength: " + str);
                 // adjust for relations
                 int relMod = CombatModifiers.getRelationModifier(this.side1Relations[i][MAX_ALL-1]);
                 str = (int)(str * (double)relMod / 100d);
                 attackerStr += str;
-                System.out.println("Strength: " + attackerStr);
+                //System.out.println("Strength: " + attackerStr);
                 ArmyElement wmEl = this.side1[i].getWM(); 
                 int wm = 0;
                 if (wmEl != null)  wm = wmEl.getNumber(); 
@@ -221,7 +227,7 @@ public class Combat implements Serializable, IHasMapLocation {
                 losses[i] = this.side1[i].getLosses();
                 if (round == 0) {
                 	attackerStr += this.side1[i].getOffensiveAddOns();
-                	System.out.println("Strength: " + attackerStr);
+                	//System.out.println("Strength: " + attackerStr);
                 }
             } else {
                 if (this.side2[i] == null) continue;
@@ -257,7 +263,7 @@ public class Combat implements Serializable, IHasMapLocation {
                 this.side2[i].setLosses(Math.min(this.side2[i].getLosses() + l, 100));
             }
         }
-        System.out.println("AFTER --------------------------------------------------------");
+        //System.out.println("AFTER --------------------------------------------------------");
     }
 
     public void runArmyBattle() {
@@ -735,9 +741,17 @@ public class Combat implements Serializable, IHasMapLocation {
 		ArrayList<Army> aside2;
 		ArrayList<Army> other = ntarmies;
 
-		if (pc != null && pc.getNation().getAllegiance().equals(NationAllegianceEnum.FreePeople)) {
-			aside2 = fparmies;
-			aside1 = dsarmies;
+		if(pc != null) {
+			if(pc.getNation().getAllegiance().equals(NationAllegianceEnum.FreePeople)) {
+				aside2 = fparmies;
+				aside1 = dsarmies;
+			} else if(pc.getNation().getAllegiance().equals(NationAllegianceEnum.Neutral) && fparmies.size() == 0) {
+				aside2 = fparmies;
+				aside1 = dsarmies;
+			} else {
+				aside1 = fparmies;
+				aside2 = dsarmies;
+			}
 		} else {
 			aside1 = fparmies;
 			aside2 = dsarmies;
@@ -809,10 +823,8 @@ public class Combat implements Serializable, IHasMapLocation {
     	} else if (side == 0 && nR != null) {
 	    	for (int i = 0; i < MAX_ARMIES && this.side2[i] != null; i++) {
 	    		this.side1Relations[caInd][i] = nR.getRelationsFor(this.side2[i].getNationNo());
-	    		System.out.println(this.side1[caInd].getNation().getName() + " to " + this.side2[i].getNation().getName() + ": " +  nR.getRelationsFor(this.side2[i].getNationNo()));
 	    	}
 	    	if (this.side2Pc != null) this.side1Relations[caInd][10] = nR.getRelationsFor(this.side2Pc.getNationNo());
-	    	if (this.side2Pc != null) System.out.println(nR.getRelationsFor(this.side2Pc.getNationNo()));
     	} else if (side == 1 && nR != null){
 	    	for (int i = 0; i < MAX_ARMIES&& this.side1[i] != null; i++) {
 	    		this.side2Relations[caInd][i] = nR.getRelationsFor(this.side1[i].getNationNo());

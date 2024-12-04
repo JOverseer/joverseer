@@ -100,7 +100,7 @@ public class LoadGame extends ActionCommand {
                 GameHolder gh = this.gameHolder;
                 Game g = Game.loadGame(f);
                 g.getMetadata().setGame(g);
-                g.getMetadata().loadCombatModifiers();
+                g.getMetadata().loadCombatModifiers(false);
                 gh.setGame(g);
                 gh.setFile(this.fname);
 

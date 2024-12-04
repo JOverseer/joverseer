@@ -9,7 +9,10 @@ import javax.swing.JLabel;
 import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.Nation;
+import org.joverseer.support.GameHolder;
+import org.joverseer.support.info.InfoUtils;
 import org.joverseer.tools.combatCalc.TacticEnum;
 import org.joverseer.ui.support.Messages;
 import org.springframework.beans.support.PropertyComparator;
@@ -37,6 +40,15 @@ public class CombatArmyForm extends AbstractForm {
 		tlb.gapCol();
 		tlb.cell(sbf.createBoundTextField(Messages.getString("CombatArmyForm.commander")).getControl(), "align=left"); //$NON-NLS-1$ //$NON-NLS-2$
 		tlb.relatedGapRow();
+		
+        GameMetadata gm = GameHolder.instance().getGame().getMetadata();
+        if(gm.getGameType() == GameTypeEnum.gameFA) {
+    		
+    		tlb.cell(new JLabel("Region: "), "align=left"); //$NON-NLS-1$ //$NON-NLS-2$
+    		tlb.gapCol();
+    		tlb.cell(sbf.createBoundComboBox("region", new ListListModel(InfoUtils.getRegionNames(gm.getGameType()))).getControl(), "align=left"); //$NON-NLS-1$ //$NON-NLS-2$
+    		tlb.relatedGapRow();
+        }
 
 		tlb.cell(new JLabel(Messages.getString("CombatArmyForm.CommandRankColon")), "colspec=left:120px"); //$NON-NLS-1$ //$NON-NLS-2$
 		tlb.gapCol();
@@ -46,7 +58,7 @@ public class CombatArmyForm extends AbstractForm {
 		ArrayList<Nation> nations = new ArrayList<Nation>();
 		Game g = JOApplication.getGame();
 		if (Game.isInitialized(g)) {
-			GameMetadata gm = g.getMetadata();
+			gm = g.getMetadata();
 			nations.addAll(gm.getNations());
 		}
 

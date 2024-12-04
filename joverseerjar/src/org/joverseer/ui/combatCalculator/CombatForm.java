@@ -2,6 +2,7 @@ package org.joverseer.ui.combatCalculator;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.datatransfer.DataFlavor;
@@ -40,6 +41,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
@@ -72,6 +74,7 @@ import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.TableLayoutBuilder;
+import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.SortableTableModel;
 import org.springframework.richclient.table.TableUtils;
 
@@ -376,6 +379,8 @@ public class CombatForm extends AbstractForm {
 		this.side1Table.setDragEnabled(true);
 		this.side1Table.setDropMode(DropMode.INSERT_ROWS);
 		
+		this.side1Table.setDefaultRenderer(String.class, new IncompleteArmyRenderer(this.side1TableModel));
+		
 		scp = new JScrollPane(this.side1Table);
 		scp.setPreferredSize(new Dimension(560, 130));
 		scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(0)));
@@ -502,6 +507,8 @@ public class CombatForm extends AbstractForm {
 		this.side2Table.setDropTarget(new DropTarget(this.side2Table, new AddArmyDropTargetAdapter(1)));
 		this.side2Table.setDragEnabled(true);
 		this.side2Table.setDropMode(DropMode.INSERT_ROWS);
+		
+		this.side2Table.setDefaultRenderer(String.class, new IncompleteArmyRenderer(this.side2TableModel));
 		
 		scp = new JScrollPane(this.side2Table);
 		scp.setPreferredSize(new Dimension(650, 130));
@@ -805,7 +812,52 @@ public class CombatForm extends AbstractForm {
 
 	}
 	
+	class IncompleteArmyRenderer extends DefaultTableCellRenderer {
+		private static final long serialVersionUID = 6703872492730589499L;
+	    BeanTableModel tableModel;
+	    
+	    public IncompleteArmyRenderer(BeanTableModel tableModel) {
+	        this.tableModel = tableModel;
+	    }
 	
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+	        Component cellComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+	        if (isSelected) {
+	            return cellComponent;
+	        }
+	        
+	        int objRow = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
+	        Object obj = this.tableModel.getRow(objRow);
+	        CombatArmy ca = (CombatArmy) obj;
+	        
+	        if(!ca.completeInfo()) {
+	            Color bg = Color.decode("#ffff99");
+	        	cellComponent.setBackground(bg);
+	        	
+	        	JLabel lb = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+	        	lb.setToolTipText("Not accurate strength, incomplete data, edit army.");
+	        }
+	        else {
+	        	cellComponent.setBackground(Color.WHITE);
+	        	JLabel lb = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+	        	lb.setToolTipText(null);
+	        	
+	        }
+
+	        return cellComponent;
+		}
+		
+	    public BeanTableModel getTableModel() {
+	        return this.tableModel;
+	    }
+
+	    
+	    public void setTableModel(BeanTableModel tableModel) {
+	        this.tableModel = tableModel;
+	    }
+	}
 
 	class SwitchSideCommand extends ActionCommand {
 

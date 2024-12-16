@@ -382,7 +382,7 @@ public class CombatForm extends AbstractForm {
 		this.side1Table.setDefaultRenderer(String.class, new IncompleteArmyRenderer(this.side1TableModel));
 		
 		scp = new JScrollPane(this.side1Table);
-		scp.setPreferredSize(new Dimension(560, 130));
+		scp.setPreferredSize(new Dimension(700, 130));
 		scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(0)));
 		tlb.cell(scp, "colspan=2");
 		
@@ -511,7 +511,7 @@ public class CombatForm extends AbstractForm {
 		this.side2Table.setDefaultRenderer(String.class, new IncompleteArmyRenderer(this.side2TableModel));
 		
 		scp = new JScrollPane(this.side2Table);
-		scp.setPreferredSize(new Dimension(650, 130));
+		scp.setPreferredSize(new Dimension(700, 130));
 		scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(1)));
 		tlb.cell(scp, "colspan=2");
 
@@ -727,6 +727,7 @@ public class CombatForm extends AbstractForm {
 
 	protected void runCombat() {
 		Combat c = (Combat) getFormObject();
+		c.setPlayerLogUp();
 		for (CombatArmy ca : c.getSide1()) {
 			if (ca != null)
 				ca.setLosses(0);
@@ -748,6 +749,8 @@ public class CombatForm extends AbstractForm {
 			}
 			
 		}
+		
+		c.logger.addMode = false;
 		
 		for (int i = 0; i < this.side1TableModel.getRowCount(); i++) {
 			for (int j = 0; j < this.side1TableModel.getColumnCount(); j++) {
@@ -810,6 +813,28 @@ public class CombatForm extends AbstractForm {
 		this.otherTableModel.fireTableDataChanged();
 		this.popCenterTableModel.fireTableDataChanged();
 
+	}
+	
+	public void openLog() {
+		FormModel formModel = FormModelHelper.createFormModel((Combat)this.getFormObject());
+		final CombatLog form = new CombatLog(formModel, ((Combat)this.getFormObject()).logger);
+		FormBackedDialogPage page = new FormBackedDialogPage(form);
+
+		TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+
+			@Override
+			protected void onAboutToShow() {
+			}
+
+			@Override
+			protected boolean onFinish() {
+				form.commit();
+				return true;
+			}
+		};
+		MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
+		dialog.setTitle(ms.getMessage("CombatLog.title", new Object[] {}, Locale.getDefault())); //$NON-NLS-1$
+		dialog.showDialog();
 	}
 	
 	class IncompleteArmyRenderer extends DefaultTableCellRenderer {

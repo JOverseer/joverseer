@@ -43,6 +43,7 @@ public class CombatArmy implements Serializable {
     int commandRank;
     TacticEnum tactic;
     double losses; // Stored as a percent of the original constitution?
+    int strOfAttackingArmy = 0;
 
 
     int offensiveAddOns;
@@ -130,9 +131,20 @@ public class CombatArmy implements Serializable {
         return this.losses;
     }
 
-    
     public void setLosses(double losses) {
         this.losses = losses;
+    }
+    
+    public void setStrOfAttackingArmy(int str) {
+    	this.strOfAttackingArmy = str;
+    }
+    
+    public int getStrOfAttackingArmy() {
+    	return this.strOfAttackingArmy;
+    }
+    
+    public void addStrToAttackingArmy(int toAdd) {
+    	this.strOfAttackingArmy += toAdd;
     }
     
     public ArmyElement getArmyElement(ArmyElementType aet) {

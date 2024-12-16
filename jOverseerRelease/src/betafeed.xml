@@ -6,13 +6,27 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
-								<item>
+			<item>
+			<title>1.18.17-rc10</title>
+			<pubDate>16 December 2024</pubDate>
+			<description>
+VERSION 1.18.17-rc10
+---------------
+- 'Strength of Attacking armies' Column now added to armies
+- Strength changed to 'base Strength', showing strength before any modifiers which change between armies and PC are applied
+- New 'Combat Log' button, shows numbers and calculations 
+			</description>
+			</item>	
+			<item>
 			<title>1.18.17-rc9</title>
 			<pubDate>4 December 2024</pubDate>
 			<description>
 VERSION 1.18.17-rc9
 ---------------
-- 
+- Fixed TurnReportView double agent bug
+- Introduced .csv for climate and terrain modifiers for 'Regions' (1000 games)
+- Drop down menu for each army to select what region it is
+- If an army doesnt have completed info (eg has command rank or morale set to 0) then will make it yellow 
 			</description>
 			</item>	
 						<item>

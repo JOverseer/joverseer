@@ -26,8 +26,9 @@ public class CombatArmyTableModel extends BeanTableModel {
 	public static int iStr = 3;
 	public static int iCon = 4;
 	public static int iWarM = 5;
-	public static int iLosses = 6;
-	public static int iTactic = 7;
+	public static int iStrOfAt = 6;	
+	public static int iLosses = 7;
+	public static int iTactic = 8;
 
 	Form parentForm;
 
@@ -39,16 +40,16 @@ public class CombatArmyTableModel extends BeanTableModel {
 
 	@Override
 	protected String[] createColumnPropertyNames() {
-		return new String[] { "commander", "nationNo", "troops", "strength", "constitution", "warmachines", "losses", "tactic" };
+		return new String[] { "commander", "nationNo", "troops", "strength", "constitution", "warmachines", "strengthOfAttackingArmies", "losses", "tactic" };
 	}
 
 	@Override
 	protected Class[] createColumnClasses() {
-		return new Class[] { String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class };
+		return new Class[] { String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class };
 	}
 
 	public int[] getColumnWidths() {
-		return new int[] { 100, 48, 200, 64, 64, 32, 64, 64 };
+		return new int[] { 100, 48, 200, 64, 64, 32, 64, 42, 64 };
 	}
 
 	protected Combat getCombat() {
@@ -75,7 +76,7 @@ public class CombatArmyTableModel extends BeanTableModel {
 				return 0;
 			} else {
 				getCombat();
-				return Combat.computeNativeArmyStrength(ca, getCombat().getTerrain(), getCombat().getClimate(), 0d, false);
+				return Combat.computeNativeArmyStrength(ca, getCombat().getTerrain(), getCombat().getClimate(), 0d, true);
 			}
 		} else if (arg1 == iCon) {
 			if (getCombat() == null) {
@@ -94,6 +95,9 @@ public class CombatArmyTableModel extends BeanTableModel {
 			if(ca.getWM().equals(null)) return 0;
 			return ca.getWM().getNumber();
 			
+		} else if (arg1 == iStrOfAt) {
+			if(getCombat() == null) return 0;
+			return ca.getStrOfAttackingArmy();
 		} else if (arg1 == iLosses) {
 			return Math.round(ca.getLosses()) + "%";
 		}

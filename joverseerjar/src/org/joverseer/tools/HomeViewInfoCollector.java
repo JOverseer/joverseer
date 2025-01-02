@@ -127,16 +127,25 @@ public class HomeViewInfoCollector {
 	private String renderRecentGameLine(RecentGameInfo frgi) {
 		String s = "";
 		String imagePath = "";
-		String urlOrderSent = "'http://a'";
+		String middleString = "";
+		String urlOrderSent = "'http://'";
 		try {
 			if(!frgi.hasSentOrd()) imagePath = JOApplication.getImageSource().getImageResource("orderresult.error.icon").getURL().toString();
 			else imagePath = JOApplication.getImageSource().getImageResource("orderresult.okay.icon").getURL().toString();
-			urlOrderSent = "'http://event?orderSentOn=" + frgi.formatOrdersSentDateInf() + "'";
+			if (frgi.formatOrdersSentDateInf().equals("Import new results.")) {
+				middleString = ". Import new results.";
+				
+			}
+			else {
+				urlOrderSent = "'http://event?orderSentOn=" + frgi.formatOrdersSentDateInf() + "'";
+				middleString = ", orders due: " + frgi.getDate();
+			}
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		s += "Game <a href='http://event?recentgame=" + frgi.getFile().replace("'", "~~") + "'>" + frgi.getNumber() + "</a>, orders due: " + frgi.getDate() + " <a href=" + urlOrderSent + "> <img border=\"0\" src='" + imagePath + "'></a>";
+		s += "Game <a href='http://event?recentgame=" + frgi.getFile().replace("'", "~~") + "'>" + frgi.getNumber() + "</a>" + middleString + " <a href=" + urlOrderSent + "> <img border=\"0\" src='" + imagePath + "'></a>";
 		return s;
 	}
 	

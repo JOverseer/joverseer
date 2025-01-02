@@ -627,7 +627,7 @@ public class Combat implements Serializable, IHasMapLocation {
             attStr += attBonus;
             addToLog("First round - str: " + attBonus + " con: " + defBonus);
             
-            this.addToLog("\tFirst round - Offense bonus to str.: " + attBonus + ", Defense bonus to con.: " + defBonus);
+            this.addToPlayerLog("\tFirst round - Offense bonus to str.: " + attBonus + ", Defense bonus to con.: " + defBonus);
         }
         double lossesFactor = (double)defCon / (double)defenderSideTotalCon;
         addToLog("Defender loss factor: " + lossesFactor);

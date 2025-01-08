@@ -19,11 +19,9 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexTerrainEnum;
-import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.InfoUtils;
-import org.joverseer.ui.support.dialogs.ErrorDialog;
 
 /**
  * Represents a land combat for the combat calculator.
@@ -141,18 +139,13 @@ public class Combat implements Serializable, IHasMapLocation {
             troopModifiers = armyElement.getTraining() + armyElement.getWeapons() + tacticMod + terrainMod;
             double mod = (double) (armyModifiers + troopModifiers) / 800d;
             
-//            System.out.println(againstPopCenter);
-            //System.out.println("Strength" + strength);
-            //System.out.println("troopMod: " + troopModifiers + " tac: " +tacticMod+ " terr: " + terrainMod);
             strength += troopStrength * armyElement.getNumber() * mod;
         }
 
         if (lossesOverride == null) {
             lossesOverride = army.getLosses();
         }
-        
-        //System.out.println("Strength: " + strength + "armyModifiers: " + armyModifiers + " troopModifiers: " + troopModifiers);
-        
+
         strength = (int)(strength * (double)(100 - lossesOverride) / 100d);
         return strength;
     }
@@ -211,10 +204,7 @@ public class Combat implements Serializable, IHasMapLocation {
             double mod = (double) (armyModifiers + troopModifiers) / 800d;
 
             s += "\n\t\tTroop Total Modifier (Weapons + Training + Tac. + Terr.): " + troopModifiers;
-            
-//            System.out.println(againstPopCenter);
-            //System.out.println("Strength" + strength);
-            //System.out.println("troopMod: " + troopModifiers + " tac: " +tacticMod+ " terr: " + terrainMod);
+
             strength += troopStrength * armyElement.getNumber() * mod;
             
             s += "\n\t\tTroop Total Strength (Str. * Num. * Mod.): " + troopStrength * armyElement.getNumber() * mod + "\n";
@@ -223,9 +213,7 @@ public class Combat implements Serializable, IHasMapLocation {
         if (lossesOverride == null) {
             lossesOverride = army.getLosses();
         }
-        
-        //System.out.println("Strength: " + strength + "armyModifiers: " + armyModifiers + " troopModifiers: " + troopModifiers);
-        
+
         strength = (int)(strength * (double)(100 - lossesOverride) / 100d);
         s += "\n\tTotal Strength: " + strength;
         this.logger.appendCurrentLog(s);
@@ -262,11 +250,10 @@ public class Combat implements Serializable, IHasMapLocation {
     public static int computeModifiedArmyStrength(HexTerrainEnum terrain, ClimateEnum climate, CombatArmy att,
             CombatArmy def) {
         int s = computeNativeArmyStrength(att, terrain, climate, false);
-//        System.out.println("ARMY " + att.commander);
-//        System.out.println("ARMY STRENGTH:  " + s);
+
         int tacticVsTacticMod = InfoUtils.getTacticVsTacticModifier(att.getTactic(), def.getTactic());
         s = (int) (s * (double) tacticVsTacticMod / 100d);
-//        System.out.println("ARMY STRENGTH:  " + s);
+
         return s;
     }
     
@@ -320,23 +307,27 @@ public class Combat implements Serializable, IHasMapLocation {
         int attackerStr = 0;
         int totalCon = 0;
         CombatPopCenter pc = (attackerSide == 0 ? this.side2Pc : this.side1Pc);
+        if (pc == null) {	//this should never happen as function only is ever run when there is a PC
+        	this.addToPlayerLog("Error, no PC");
+        	return;
+        }
         double[] losses = new double[MAX_ARMIES];
         
         if (pc != null) this.addToPlayerLog("Combat PopCenter " + pc.getName() + ", Nation " + pc.getNationNo(), true);
-        //System.out.println("BEFORE --------------------------------------------------------");
+
         for (int i=0; i<MAX_ARMIES; i++) {
             if (attackerSide == 0) {
                 if (this.side1[i] == null) continue;
                 this.addToPlayerLog("Combat Army, " + this.side1[i].getCommander() + " N" + this.side1[i].getNationNo() + ": ", true);
                 int str = this.computeNativeArmyStrength(this.side1[i], null, true);
-                //System.out.println("Strength: " + str);
+                
                 // adjust for relations
                 int relMod = CombatModifiers.getRelationModifier(this.side1Relations[i][MAX_ALL-1]);
                 str = (int)(str * (double)relMod / 100d);
                 attackerStr += str;
                 
                 this.addToPlayerLog("\tRelation Modifier,  " + relMod + ", new Str.: " + str, true);
-                //System.out.println("Strength: " + attackerStr);
+
                 ArmyElement wmEl = this.side1[i].getWM(); 
                 int wm = 0;
                 if (wmEl != null)  wm = wmEl.getNumber(); 
@@ -347,8 +338,6 @@ public class Combat implements Serializable, IHasMapLocation {
                 if (round == 0) {
                 	attackerStr += this.side1[i].getOffensiveAddOns();
                 	this.addToPlayerLog("\tOffense Add Ons: " + this.side1[i].getOffensiveAddOns(), true);
-                	//System.out.println("Strength: " + attackerStr);
-                	
                 }
             } else {
                 if (this.side2[i] == null) continue;
@@ -379,7 +368,6 @@ public class Combat implements Serializable, IHasMapLocation {
         
         // compute pop center defense and attack
         int popCenterStr = computePopCenterStrength(pc, warMachines);
-       // System.out.println("PC: " + popCenterStr);
         
         pc.setCaptured(popCenterStr <= attackerStr);
         
@@ -400,7 +388,6 @@ public class Combat implements Serializable, IHasMapLocation {
                 this.side2[i].setLosses(Math.min(this.side2[i].getLosses() + l, 100));
             }
         }
-        //System.out.println("AFTER --------------------------------------------------------");
     }
 
     public void runArmyBattle() {
@@ -421,7 +408,6 @@ public class Combat implements Serializable, IHasMapLocation {
         }
         
         do {
-        	//System.out.println("Round: " + this.rounds);
             addToLog("Starting round " + this.rounds);
             this.addToPlayerLog("Starting round " + this.rounds);
             double[] side1Losses = new double[MAX_ARMIES];
@@ -480,7 +466,7 @@ public class Combat implements Serializable, IHasMapLocation {
                 for (int j=0; j<MAX_ARMIES; j++) {
                     CombatArmy ca2 = this.side2[j];
                     if (ca2 == null) continue;
-                    //System.out.println("1");
+
                     // losses for ca1
                     addToLog("");
                     this.addToPlayerLog("");
@@ -490,7 +476,7 @@ public class Combat implements Serializable, IHasMapLocation {
                     if (side1Losses[i] < 99.5) {
                         side1Alive = true;
                     }
-                    //System.out.println("2");
+
                     // losses for ca2
                     addToLog("");
                     this.addToPlayerLog("");
@@ -524,7 +510,6 @@ public class Combat implements Serializable, IHasMapLocation {
             addToLog("");
             addToLog("");
         } while (!finished);
-        //System.out.println(this.log);
     }
     
     public void runWholeCombat() {
@@ -569,24 +554,29 @@ public class Combat implements Serializable, IHasMapLocation {
         int defCon = computNativeArmyConstitution(army);
         this.addToPlayerLog("\tDefending army con: " + defCon, true);
         int defBonus = 0;
+        
         // adjust by relations
         attStr = (int)((double)attStr * (double)relMod / 100d);
         this.addToPlayerLog("\tRelation Modifier, " + relMod + ", strength of PC after: " + attStr, true);
+        
         // handle first round
         if (round == 0) {
             defBonus = army.getDefensiveAddOns();
             this.addToPlayerLog("\tDefense Bonus: " + defBonus, true);
         }
+        
         double lossesFactor = (double)defCon / (double)armySideTotalCon;
         addToLog("Defender loss factor: " + lossesFactor);
         this.addToPlayerLog("\tDefender loss factor: " + lossesFactor, true);
+        
         attStr = (int)(attStr * lossesFactor) - defBonus;
         if (attStr < 0) attStr = 0;
         this.addToPlayerLog("\t Final Attackins Strength to army ((attackStrength * lossesFactor) - defBonus): " + attStr, true);
+        
         double losses = computeLosses(army, attStr);
         addToLog("New losses: " + losses);
         this.addToPlayerLog("\tNew Losees: " + losses, true);
-        //System.out.println(this.log);
+
         return losses;
     }
     
@@ -609,7 +599,6 @@ public class Combat implements Serializable, IHasMapLocation {
         attStr = (int)((double)attStr * (double)relMod / 100d);
         
         this.addToPlayerLog("\tAttaacker Str. w/Relations bonus: " + attStr);
-        //System.out.println("a " + attStr);
         
         ArmyElement wmEl = att.getWM(); 
         int wm = 0;
@@ -631,12 +620,13 @@ public class Combat implements Serializable, IHasMapLocation {
         }
         double lossesFactor = (double)defCon / (double)defenderSideTotalCon;
         addToLog("Defender loss factor: " + lossesFactor);
+        
         attStr = (int)(attStr * lossesFactor) - defBonus;
-        //System.out.println("Attacking strength: " + attStr);
         if (attStr < 0) attStr = 0;
         double losses = computeLosses(def, attStr);
         if(round == 0) def.addStrToAttackingArmy(attStr);
         addToLog("New losses: " + losses);
+        
         return losses;
     }
 
@@ -958,16 +948,13 @@ public class Combat implements Serializable, IHasMapLocation {
 			for (Army a : sideArmies) {
 				CombatArmy ca;
 				if (a.computeNumberOfMen() > 0) {
-					//System.out.println("Adding Known Army "+a.getCommanderName());
 					ca = new CombatArmy(a);
 				} else {
 					ArmyEstimate ae = (ArmyEstimate) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", a.getCommanderName());
 					if (ae != null) {
-						//System.out.println("Adding Army Estimate "+ae.getCommanderName());
 						ca = new CombatArmy(ae);
 
 					} else {
-						//System.out.println("Adding Zero Army "+a.getCommanderName() + " troops "+a.getTroopCount());
 						ca = new CombatArmy(a);
 
 					}
@@ -1086,6 +1073,7 @@ public class Combat implements Serializable, IHasMapLocation {
 		}
 		
 		public void appendCurrentLog(String msg) {
+			if(this.round == -1) return;
 			this.roundLogs.set(this.round, this.roundLogs.get(this.round) + msg + "\n");
 		}
 		

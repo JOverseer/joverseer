@@ -11,14 +11,8 @@ import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.GameTypeEnum;
-import org.joverseer.metadata.MetadataReader;
-import org.joverseer.metadata.MetadataReaderException;
-import org.joverseer.metadata.domain.ClimateModifier;
 import org.joverseer.metadata.domain.HexTerrainEnum;
-import org.joverseer.metadata.domain.TerrainModifier;
 import org.joverseer.support.AsciiUtils;
-import org.joverseer.support.Container;
-import org.joverseer.support.GameHolder;
 import org.joverseer.tools.combatCalc.TacticEnum;
 
 /**
@@ -363,7 +357,6 @@ public class InfoUtils {
 			GameMetadata gm = GameMetadata.instance();
 			gm.setGameType(gt);
 			BufferedReader reader = gm.getUTF8ResourceByGame("regiondescription.csv",true);
-			System.out.println("Done");
 			String ln;
 			while ((ln = reader.readLine()) != null) {
 				ln = ln.replace("\"", "");
@@ -371,7 +364,6 @@ public class InfoUtils {
 				
 				String regionName = (parts[1]);
 				names.add(regionName);
-				System.out.println(ln);
 			}
 			
 		} catch (IOException exc) {

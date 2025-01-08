@@ -30,8 +30,6 @@ import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.CommentedBufferedReader;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
-import org.joverseer.support.readers.newXml.TurnInfoModifierWrapper;
-import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 

@@ -151,14 +151,6 @@ public class TurnReportCollector {
 				cr.setModification(ObjectModificationType.Lost);
 			};
 			cr.setHexNo(c.getHexNo());
-//			PopulationCenter pop = t.getPopCenter(c.getHexNo());
-//			if (pop != null) {
-//				cr.setNotes("PC: " + popPlusNation(pop));
-//			}
-//			if (c.getInfoSource() != null && !XmlTurnInfoSource.class.isInstance(c.getInfoSource())) {
-//				cr.appendNote(c.getInfoSource().getDescription());
-//				System.out.println(c.getInfoSource().getDescription());
-//			}
 			
 			ret.add(cr);
 		}

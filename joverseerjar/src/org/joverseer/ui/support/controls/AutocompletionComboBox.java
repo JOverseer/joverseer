@@ -48,7 +48,6 @@ public class AutocompletionComboBox extends AutoCompletionComboBox {
             @Override
 			public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    System.out.println("Autocomp combo received enter.");
                     fireActionEvent(true);
                 }
             }

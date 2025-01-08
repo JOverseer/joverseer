@@ -14,9 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -30,14 +28,12 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
@@ -204,7 +200,6 @@ public class CombatForm extends AbstractForm {
         ActionListener radioButtonListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	System.out.println("REACHED");
                 if (beforeButton.isSelected()) CombatForm.this.before = true;
                 else if (afterButton.isSelected()) CombatForm.this.before = false;
                 commit();

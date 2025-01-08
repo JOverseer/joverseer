@@ -14,7 +14,6 @@ import javax.swing.JScrollPane;
 import org.joverseer.JOApplication;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
-import org.joverseer.metadata.MetadataReader;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
 import org.joverseer.ui.JOverseerJIDEClient;

@@ -12,6 +12,7 @@ import java.awt.FlowLayout;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -102,9 +103,7 @@ public class ExportDiploForm extends ScalableAbstractForm {
 			this.diploText.setText("NO DIPLO TEXT SAVED");
 		}
 		
-
 		JPanel topPanel = new JPanel();
-		JPanel buttonPanel = new JPanel();
 		
 		topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
@@ -277,7 +276,7 @@ public class ExportDiploForm extends ScalableAbstractForm {
 				@Override
 				protected void onAboutToShow() {
 					try {
-						((HTMLDocument) frm.getJEditorPane().getDocument()).setBase(new URL("http://www.meturn.com/"));
+						((HTMLDocument) frm.getJEditorPane().getDocument()).setBase(new URI("http://www.meturn.com/").toURL());
 						frm.getJEditorPane().getEditorKit().read(filePost.getResponseBodyAsStream(), frm.getJEditorPane().getDocument(), 0);
 						this.setDescription(this.getMessage("ExportDiploForm.DiploSentByMETURNSuccessMessage", new Object[] { file }));
 						this.setTitlePaneTitle(Messages.getString("submitDiploResultsForm.title"));
@@ -324,7 +323,6 @@ public class ExportDiploForm extends ScalableAbstractForm {
             Date d = pi.getDiploSentOn();
             if (d == null) {
     			this.lbVersionV.setText(String.valueOf(pi.getDiploVersion()));
-    			System.out.println(String.valueOf(pi.getDiploVersion()));
             	this.lbSentV.setText("");
             	this.lbFileV.setText("");
         		this.lbFileV.setVisible(false);

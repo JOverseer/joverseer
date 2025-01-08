@@ -37,7 +37,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -143,15 +142,6 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	public boolean getReadyToClose() {
 		return this.lastSaveWasNotCancelled;
 	}
-	private ArrayList<String> getNationItems() {
-		Game g = this.gameHolder.getGame();
-		ArrayList<String> ret = new ArrayList<String>();
-		for (PlayerInfo pi : g.getTurn().getPlayerInfo()) {
-			ret.add(g.getMetadata().getNationByNum(pi.getNationNo()).getName());
-		}
-		return ret;
-	}
-
 	private int getSelectedNationNo() {
 		String nationName = this.currentNation.getText();
 		Game g = this.gameHolder.getGame();
@@ -488,7 +478,6 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	 */
 	private boolean saveAndSendOrders(boolean send) {
 		boolean sendAll = false;
-		boolean cont = true;
 		if (this.chkDontCloseOnFinish.isSelected()) {
 			this.arrowAction("reset");;
 			sendAll = true;
@@ -497,7 +486,6 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 			do {
 				final boolean isOK = true;
 				final boolean isNotOK = false;
-				cont = true;
 				this.cancel = false;
 				if (!this.ordersOk)
 					return isOK;
@@ -891,30 +879,6 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 	@Override
 	public void lostOwnership(Clipboard clipboard, Transferable contents) {
-	}
-	
-	public class CheckboxListCellRenderer extends JCheckBox implements ListCellRenderer {
-
-	    /**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public Component getListCellRendererComponent(JList list, Object value, int index, 
-	            boolean isSelected, boolean cellHasFocus) {
-
-	        setComponentOrientation(list.getComponentOrientation());
-	        setFont(list.getFont());
-	        setBackground(list.getBackground());
-	        setForeground(list.getForeground());
-	        setSelected(isSelected);
-	        setEnabled(list.isEnabled());
-
-	        setText(value == null ? "" : value.toString());  
-
-	        return this;
-	    }
 	}
 
 }

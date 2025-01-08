@@ -5,7 +5,6 @@
 
 package com.middleearthgames.orderchecker;
 
-import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.JCheckBox;
@@ -771,8 +770,7 @@ public class Rule
         }
         int artifactParam = convertParameter(0);
         int artifact = this.parentOrder.getParameterNumber(artifactParam);
-        System.out.println(artifactParam);
-        System.out.println(artifact);
+
         if(artifact == -1)
         {
             artifact = 0;
@@ -2413,7 +2411,6 @@ public class Rule
             }
             boolean owned = pc.getNation() == this.parentChar.getNation();
             boolean enemy = this.main.isEnemy(this.parentChar.getNation(), pc.getNation());
-            boolean neutral = this.main.isNeutral(pc.getNation());
             String possibleLoss = "Enemy troops are present at " + pc + " which could result in it being captured or destroyed.";
             String possibleCombatGain = pc + " is not owned by your nation " + "but may be captured due to combat.";
             String possibleInfluenceGain = pc + " is not owned by your nation " + "but could be influenced away by emissaries.";

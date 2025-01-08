@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.infoSources.InfoSource;
-import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.readers.pdf.OrderResult;
 import org.junit.After;
 import org.junit.Before;

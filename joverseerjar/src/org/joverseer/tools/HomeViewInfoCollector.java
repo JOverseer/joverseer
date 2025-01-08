@@ -2,7 +2,7 @@ package org.joverseer.tools;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -14,8 +14,6 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
 import org.joverseer.support.RecentGames.RecentGameInfo;
 import org.joverseer.ui.views.Messages;
-import org.springframework.richclient.image.ImageSource;
-
 import com.jidesoft.tipoftheday.ResourceBundleTipOfTheDaySource;
 
 /**
@@ -163,7 +161,7 @@ public class HomeViewInfoCollector {
 		String content = null;
 		URLConnection connection = null;
 		try {
-		  connection =  new URL(getFinalURL(Url)).openConnection();
+		  connection =  new URI(getFinalURL(Url)).toURL().openConnection();
 		  Scanner scanner = new Scanner(connection.getInputStream(), "UTF-8");
 		  scanner.useDelimiter("\\Z");
 		  content = scanner.next();
@@ -182,7 +180,7 @@ public class HomeViewInfoCollector {
 	 */
 	public static String getFinalURL(String url) {
 		try {
-		    HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
+		    HttpURLConnection con = (HttpURLConnection) new URI(url).toURL().openConnection();
 		    con.setInstanceFollowRedirects(false);
 		    con.connect();
 		    con.getInputStream();

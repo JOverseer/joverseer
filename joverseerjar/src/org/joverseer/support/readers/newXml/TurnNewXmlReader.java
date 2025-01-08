@@ -669,7 +669,6 @@ public class TurnNewXmlReader implements Runnable {
 			
 		}
 		
-		System.out.println("Modifiers for " + this.turnInfo.nationNo);
 		if (this.turnInfo.modifiers != null) {
 			//remove default modifiers for this nation
 			try {
@@ -679,9 +678,6 @@ public class TurnNewXmlReader implements Runnable {
 			}
 			
 			for (TurnInfoModifierWrapper modifier : (ArrayList<TurnInfoModifierWrapper>) this.turnInfo.modifiers.getItems()) {
-				System.out.println(modifier.climate);
-				System.out.println(modifier.terrain);
-				System.out.println(modifier.modifier);
 				
 				if (modifier.getClimate() != null) {
 					ClimateModifier m = new ClimateModifier();
@@ -831,13 +827,11 @@ public class TurnNewXmlReader implements Runnable {
 		GameInfoOptionWrapper option = (GameInfoOptionWrapper)this.turnInfo.gameInfo.findFirstByProperty("name", "NoPCsNation");
 		if (option != null && option.value != null) {
 			GameMetadata gm = game1.getMetadata();
-			NationRelations nr;
 			String[] notInNations = option.value.split(",");
 			for(String nn : notInNations) {
 				try {
 					int nni = Integer.parseInt(nn.trim());				
 					Nation n = gm.getNations().get(nni);
-					nr = game1.getTurn().getNationRelations(nni);
 					n.setEliminated(true);
 				} catch (Exception exc) {
 					error = true;
@@ -893,7 +887,6 @@ public class TurnNewXmlReader implements Runnable {
 					}
 					
 				} catch (Exception exc) {
-					System.out.println(exc.getMessage());
 					error = true;
 					errorMessage += "Error setting the diplo due for turn:" + turnsDue[i] + "\n";
 				}

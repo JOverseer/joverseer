@@ -41,9 +41,9 @@ public class CheckBoxList extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				JCheckBox ch = (JCheckBox) e.getSource();
-				if (ch.isSelected()) ch.setFont(new Font(ch.getFont().getName(), Font.BOLD, ch.getFont().getSize()));
-				else ch.setFont(new Font(ch.getFont().getName(), Font.PLAIN, ch.getFont().getSize()));
+				JCheckBox ch1 = (JCheckBox) e.getSource();
+				if (ch1.isSelected()) ch1.setFont(new Font(ch1.getFont().getName(), Font.BOLD, ch1.getFont().getSize()));
+				else ch1.setFont(new Font(ch1.getFont().getName(), Font.PLAIN, ch1.getFont().getSize()));
 			}
 			
 		});
@@ -55,10 +55,9 @@ public class CheckBoxList extends JPanel {
 	public ArrayList<String> getSelected(){
 		ArrayList<String> sel = new ArrayList<String>();
 		for (JCheckBox ch : this.list) {
-			if (ch.isSelected()) System.out.println(ch.getText());
 			if (ch.isSelected()) sel.add(ch.getText());
 		}
-		System.out.println(sel.size());
+
 		return sel;
 	}
 	

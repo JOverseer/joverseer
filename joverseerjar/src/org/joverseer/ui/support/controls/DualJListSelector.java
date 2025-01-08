@@ -5,12 +5,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 /**
  * A class which creates a JPanel containing 2 JLists.
@@ -49,12 +48,12 @@ public class DualJListSelector extends JPanel implements MouseListener{
 		
 		this.selectedList = new JList(this.selLM);
 		this.selectedList.addMouseListener(this);
-		this.sp1 = new JScrollPane(this.selectedList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		this.sp1 = new JScrollPane(this.selectedList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		this.add(this.sp1);
 
 		this.n_selectedList = new JList(this.n_selLM);
 		this.n_selectedList.addMouseListener(this);
-		this.sp2 = new JScrollPane(this.n_selectedList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		this.sp2 = new JScrollPane(this.n_selectedList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		this.add(this.sp2);
 	}
 	

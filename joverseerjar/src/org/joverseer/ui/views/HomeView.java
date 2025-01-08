@@ -25,7 +25,6 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.tools.HomeViewInfoCollector;
 import org.joverseer.ui.ScalableAbstractView;
 import org.joverseer.ui.command.LoadGame;
-import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.springframework.context.ApplicationEvent;
@@ -119,9 +118,9 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 		this.lblLogo.setOpaque(true);
 		panel_R.add(this.lblLogo);
 		
-		JPanel p = new JPanel();
-		p.setLayout(new BorderLayout());
-		panel_R.add(p);
+		JPanel p1 = new JPanel();
+		p1.setLayout(new BorderLayout());
+		panel_R.add(p1);
 		
 		this.sideEditor = new JEditorPane();
 		this.sideEditor.setContentType("text/html");
@@ -157,14 +156,14 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 				}
 			}
 		});
-		p.add(this.sideEditor, BorderLayout.CENTER);
+		p1.add(this.sideEditor, BorderLayout.CENTER);
 		
 		jp = new JEditorPane();
 		jp.setContentType("text/html");
 		jp.setEditable(false);
 		jp.setCaretColor(Color.WHITE);
 		jp.setText("<div style='font-family:MS Sans Serif; font-size:9pt'><i>" + Messages.getString("extraLegal.copyright"));
-		p.add(jp, BorderLayout.PAGE_END);
+		p1.add(jp, BorderLayout.PAGE_END);
 		
 		return this.p;
 

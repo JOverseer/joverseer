@@ -143,7 +143,7 @@ public class HomeViewInfoCollector {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		s += "Game <a href='http://event?recentgame=" + frgi.getFile().replace("'", "~~") + "'>" + frgi.getNumber() + "</a>" + middleString + " <a href=" + urlOrderSent + "> <img border=\"0\" src='" + imagePath + "'></a>";
+		s += "<a href='http://event?recentgame=" + frgi.getFile().replace("'", "~~") + "'>" + frgi.getNumber() + "</a>" + middleString + " <a href=" + urlOrderSent + "> <img border=\"0\" src='" + imagePath + "'></a>";
 		return s;
 	}
 	

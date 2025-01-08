@@ -470,7 +470,6 @@ public class GameMetadata implements Serializable {
 			return r;
 		} catch (Exception exc) {
 			try {
-				//System.out.println(exc.getMessage());
 				Resource r = Application.instance().getApplicationContext().getResource("classpath:" + this.basePath + "/" + resourceName);
 				new InputStreamReader(r.getInputStream());
 				return r;

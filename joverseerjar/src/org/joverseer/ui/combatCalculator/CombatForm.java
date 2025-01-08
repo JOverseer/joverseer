@@ -120,37 +120,6 @@ public class CombatForm extends AbstractForm {
 		lb.cell(new JLabel(Messages.getString("CombatForm.Hex")), "colspec=left:80px"); //$NON-NLS-1$ //$NON-NLS-2$
 		lb.gapCol();
 		lb.cell(sbf.createBoundTextField("hexNo").getControl(), "colspec=left:120px"); //$NON-NLS-1$ //$NON-NLS-2$
-		//lb.gapCol();
-
-//		JButton updateButton = new JButton(Messages.getString("CombatForm.Refresh")); //$NON-NLS-1$
-//		updateButton.setPreferredSize(new Dimension(70, 20));
-//		updateButton.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				try {
-//					commit();
-//					Combat c = (Combat) getFormObject();
-//					int hexNo = c.getHexNo();
-//					Hex h = CombatForm.this.gameHolder.getGame().getMetadata().getHex(hexNo);
-//					HexInfo hi = CombatForm.this.gameHolder.getGame().getTurn().getHexInfo(hexNo);
-//					if (h != null && h.getTerrain() != null) {
-//						ValueModel vm = getFormModel().getValueModel("terrain"); //$NON-NLS-1$
-//						vm.setValue(h.getTerrain());
-//					}
-//					if (hi != null && hi.getClimate() != null) {
-//						ValueModel vm = getFormModel().getValueModel("climate"); //$NON-NLS-1$
-//						vm.setValue(hi.getClimate());
-//					}
-//					
-//					c.setArmiesAndPCFromHex();
-//					refreshArmies();
-//					
-//				} catch (Exception exc) {
-//					exc.printStackTrace();
-//				}
-//			}
-//		});
-		//lb.cell(updateButton, "colspec=left:80px"); //$NON-NLS-1$
 		lb.relatedGapRow();
 
 		lb.cell(new JLabel(Messages.getString("CombatForm.Terrain")), "colspec=left:80px"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -210,11 +179,9 @@ public class CombatForm extends AbstractForm {
         beforeButton.addActionListener(radioButtonListener);
         afterButton.addActionListener(radioButtonListener);
 
-        // Add radio buttons to the frame
         paRadioBut.add(beforeButton);
         paRadioBut.add(afterButton);
 
-        // Set default selection
         afterButton.setSelected(true);
 		
 		lb.cell(new JLabel("Troops: "), "colspec=left:80px");
@@ -263,20 +230,6 @@ public class CombatForm extends AbstractForm {
 					CombatForm.this.xDiff = e.getX();
 					CombatForm.this.yDiff = e.getY();
 				}
-//				if (e.getClickCount() == 1 && e.getButton() == 3) {
-//					int idx = CombatForm.this.otherTable.rowAtPoint(e.getPoint());
-//					CombatForm.this.otherTable.getSelectionModel().setSelectionInterval(idx, idx);
-//					showContextMenu(2, e);
-//				}
-//			};
-//
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//				if (e.getClickCount() == 2 && e.getButton() == 1) {
-//					int idx = CombatForm.this.otherTable.rowAtPoint(e.getPoint());
-//					CombatForm.this.otherTable.getSelectionModel().setSelectionInterval(idx, idx);
-//					new EditSelectedArmyCommand(2).doExecuteCommand();
-//				}
 			};
 		});
 		this.otherTable.addMouseMotionListener(new MouseMotionAdapter() {
@@ -297,39 +250,7 @@ public class CombatForm extends AbstractForm {
 		scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(2)));
 		tp.add(scp);
 		tlb.cell(tp, "colspan=1");
-
-//		JButton updateButton = new JButton(Messages.getString("CombatForm.Refresh")); //$NON-NLS-1$
-//		updateButton.setPreferredSize(new Dimension(70, 20));
-//		updateButton.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				try {
-//					commit();
-//					Combat c = (Combat) getFormObject();
-//					int hexNo = c.getHexNo();
-//					Hex h = CombatForm.this.gameHolder.getGame().getMetadata().getHex(hexNo);
-//					HexInfo hi = CombatForm.this.gameHolder.getGame().getTurn().getHexInfo(hexNo);
-//					if (h != null && h.getTerrain() != null) {
-//						ValueModel vm = getFormModel().getValueModel("terrain"); //$NON-NLS-1$
-//						vm.setValue(h.getTerrain());
-//					}
-//					if (hi != null && hi.getClimate() != null) {
-//						ValueModel vm = getFormModel().getValueModel("climate"); //$NON-NLS-1$
-//						vm.setValue(hi.getClimate());
-//					}
-//					
-//					c.setArmiesAndPCFromHex();
-//					refreshArmies();
-//					
-//				} catch (Exception exc) {
-//					exc.printStackTrace();
-//				}
-//			}
-//		});
-//		
-//		tlb.gapCol();
-//		tlb.cell(updateButton);
-//		
+	
 		tlb.relatedGapRow();
 
 		this.side1TableModel = new CombatArmyTableModel(this, messageSource);

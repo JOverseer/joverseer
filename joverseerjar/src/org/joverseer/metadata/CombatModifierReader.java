@@ -92,7 +92,6 @@ public class CombatModifierReader implements MetadataReader {
 	
 			String ln;
 			while ((ln = reader.readLine()) != null) {
-				System.out.println(ln);
 				ln = ln.replace("\"", "");
 				String parts[] = ln.split(",");
 				

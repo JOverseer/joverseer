@@ -12,9 +12,11 @@
 			<description>
 VERSION 1.18.17-rc11
 ---------------
-- 'Strength of Attacking armies' Column now added to armies
-- Strength changed to 'base Strength', showing strength before any modifiers which change between armies and PC are applied
-- New 'Combat Log' button, shows numbers and calculations 
+- Force Compatibility Stuff (Set order preference + show Notepad)
+- Home View changes to orders due etc
+- Tidy code and warnings up
+- Remove 'Show log' button
+- Fix bug - 'PC attack info'
 			</description>
 			</item>	
 			<item>

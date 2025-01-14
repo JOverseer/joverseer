@@ -103,6 +103,7 @@ public class Notepad extends AbstractView implements ApplicationListener{
 		
 		this.init = true;
 		refresh(0);
+
 		return p;
 	}
 	
@@ -115,9 +116,12 @@ public class Notepad extends AbstractView implements ApplicationListener{
 		NotepadInfo nI1 = null;
 		Game g = this.getGameHolder().getGame();
 		if(g == null) return null;
+		
 		if(g.getTurn().getNotepadInfo() == null) {
 			for (int i = 0; i <= g.getMaxTurn(); i++) {
+				if(g.getTurn(i) == null) continue;
 				if(g.getTurn(i).getNotepadInfo() == null) continue;
+				
 				nI1 = g.getTurn(i).getNotepadInfo();
 				break;
 			}
@@ -157,13 +161,14 @@ public class Notepad extends AbstractView implements ApplicationListener{
 	 */
 	private void refresh(int selInd) {
 		this.tabPane.removeAll();
-		
 		if (this.getNotepadInfo() == null) {
 			JEditorPane jp = new JEditorPane();
+			
 			jp.setContentType("text/html");
 			jp.setEditable(false);
 			jp.setCaretColor(Color.WHITE);
 			jp.setText("<div style='font-family:MS Sans Serif; font-size:13pt'><i>" + Messages.getString("NotePad.preLoadGame"));
+			
 			this.tabPane.add(jp);
 			return;
 		}

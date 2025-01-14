@@ -992,18 +992,23 @@ public class Combat implements Serializable, IHasMapLocation {
     	
     	if(pC && nR != null) {
 	    	for (int i = 0; i < MAX_ARMIES&& this.side1[i] != null; i++) {
+	    		if(this.side1[i].getNationNo() > 25) continue;
 	    		this.popCenterRelations[i] = nR.getRelationsFor(this.side1[i].getNationNo());
 	    	}
     	} else if (side == 0 && nR != null) {
 	    	for (int i = 0; i < MAX_ARMIES && this.side2[i] != null; i++) {
+	    		if(this.side2[i].getNationNo() > 25) continue;
 	    		this.side1Relations[caInd][i] = nR.getRelationsFor(this.side2[i].getNationNo());
 	    	}
-	    	if (this.side2Pc != null) this.side1Relations[caInd][10] = nR.getRelationsFor(this.side2Pc.getNationNo());
+	    	
+	    	
+	    	if (this.side2Pc != null && this.side2Pc.getNationNo() < 26) this.side1Relations[caInd][10] = nR.getRelationsFor(this.side2Pc.getNationNo());
     	} else if (side == 1 && nR != null){
-	    	for (int i = 0; i < MAX_ARMIES&& this.side1[i] != null; i++) {
+	    	for (int i = 0; i < MAX_ARMIES && this.side1[i] != null; i++) {
+	    		if(this.side1[i].getNationNo() > 25) continue;
 	    		this.side2Relations[caInd][i] = nR.getRelationsFor(this.side1[i].getNationNo());
 	    	}
-	    	if (this.side1Pc != null) this.side2Relations[caInd][10] = nR.getRelationsFor(this.side1Pc.getNationNo());
+	    	if (this.side1Pc != null && this.side1Pc.getNationNo() < 26) this.side2Relations[caInd][10] = nR.getRelationsFor(this.side1Pc.getNationNo());
     	} 
     }
     

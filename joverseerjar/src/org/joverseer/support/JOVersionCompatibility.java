@@ -44,7 +44,9 @@ public class JOVersionCompatibility {
 			lastVersion = "";
 		}
 		((JideApplicationWindow)Application.instance().getActiveWindow()).getDockingManager().showFrame("notePad");
+		((JideApplicationWindow)Application.instance().getActiveWindow()).getDockingManager().showFrame("homeView");
 		PreferenceRegistry.instance().setPreferenceValue("currentHexView.disableEditOrderButton", "No");
+		PreferenceRegistry.instance().setPreferenceValue("general.homeView", "Yes");
 		return !lastVersion.equals(thisVersion());
 	}
 	public void markAsFirstTimeThisVersonRun(String value) {

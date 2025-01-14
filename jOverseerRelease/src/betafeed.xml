@@ -6,6 +6,15 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
+				<item>
+			<title>1.18.17-rc12</title>
+			<pubDate>14 January 2025</pubDate>
+			<description>
+VERSION 1.18.17-rc12
+---------------
+- Small bug fixes
+			</description>
+			</item>	
 		<item>
 			<title>1.18.17-rc11</title>
 			<pubDate>8 January 2025</pubDate>

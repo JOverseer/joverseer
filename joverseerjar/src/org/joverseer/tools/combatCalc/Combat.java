@@ -1,5 +1,7 @@
 package org.joverseer.tools.combatCalc;
 
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -986,29 +988,36 @@ public class Combat implements Serializable, IHasMapLocation {
 
     public void autoDetectCombatArmyRelations(int side, int caInd, boolean pC) {
     	NationRelations nR = null;
-    	if (pC) nR = GameHolder.instance().getGame().getTurn().getNationRelations(this.getSide2Pc().getNationNo());
-    	else if (side == 0) nR = GameHolder.instance().getGame().getTurn().getNationRelations(this.side1[caInd].getNationNo());
-    	else if(side == 1) nR = GameHolder.instance().getGame().getTurn().getNationRelations(this.side2[caInd].getNationNo());
+    	Game g = GameHolder.instance().getGame();
+    	if (pC) nR = g.getTurn().getNationRelations(this.getSide2Pc().getNationNo());
+    	else if (side == 0) nR = g.getTurn().getNationRelations(this.side1[caInd].getNationNo());
+    	else if(side == 1) nR = g.getTurn().getNationRelations(this.side2[caInd].getNationNo());
+    	NationAllegianceEnum nA = g.getMetadata().getNationByNum(g.getMetadata().getNationNo()).getAllegiance();
     	
     	if(pC && nR != null) {
 	    	for (int i = 0; i < MAX_ARMIES&& this.side1[i] != null; i++) {
 	    		if(this.side1[i].getNationNo() > 25) continue;
-	    		this.popCenterRelations[i] = nR.getRelationsFor(this.side1[i].getNationNo());
+	    		if(this.getSide2Pc().getNation().getAllegiance() != nA) this.popCenterRelations[i] = NationRelationsEnum.Hated;
+	    		else this.popCenterRelations[i] = nR.getRelationsFor(this.side1[i].getNationNo());
 	    	}
     	} else if (side == 0 && nR != null) {
 	    	for (int i = 0; i < MAX_ARMIES && this.side2[i] != null; i++) {
 	    		if(this.side2[i].getNationNo() > 25) continue;
-	    		this.side1Relations[caInd][i] = nR.getRelationsFor(this.side2[i].getNationNo());
+	    		if(this.side1[caInd].getNation().getAllegiance() != nA) this.side1Relations[caInd][i] = NationRelationsEnum.Hated;
+	    		else this.side1Relations[caInd][i] = nR.getRelationsFor(this.side2[i].getNationNo());
 	    	}
 	    	
-	    	
-	    	if (this.side2Pc != null && this.side2Pc.getNationNo() < 26) this.side1Relations[caInd][10] = nR.getRelationsFor(this.side2Pc.getNationNo());
+	    	if (this.side1[caInd].getNation().getAllegiance() != nA) this.side1Relations[caInd][10] = NationRelationsEnum.Hated;
+	    	else if (this.side2Pc != null && this.side2Pc.getNationNo() < 26) this.side1Relations[caInd][10] = nR.getRelationsFor(this.side2Pc.getNationNo());
     	} else if (side == 1 && nR != null){
 	    	for (int i = 0; i < MAX_ARMIES && this.side1[i] != null; i++) {
 	    		if(this.side1[i].getNationNo() > 25) continue;
-	    		this.side2Relations[caInd][i] = nR.getRelationsFor(this.side1[i].getNationNo());
+	    		if(this.side2[caInd].getNation().getAllegiance() != nA) this.side2Relations[caInd][i] = NationRelationsEnum.Hated;
+	    		else this.side2Relations[caInd][i] = nR.getRelationsFor(this.side1[i].getNationNo());
 	    	}
-	    	if (this.side1Pc != null && this.side1Pc.getNationNo() < 26) this.side2Relations[caInd][10] = nR.getRelationsFor(this.side1Pc.getNationNo());
+	    	
+	    	if (this.side2[caInd].getNation().getAllegiance() != nA) this.side2Relations[caInd][10] = NationRelationsEnum.Hated;
+	    	else if (this.side1Pc != null && this.side1Pc.getNationNo() < 26) this.side2Relations[caInd][10] = nR.getRelationsFor(this.side1Pc.getNationNo());
     	} 
     }
     

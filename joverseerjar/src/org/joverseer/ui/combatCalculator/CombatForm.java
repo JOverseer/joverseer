@@ -720,7 +720,6 @@ public class CombatForm extends AbstractForm {
 		this.popCenterTableModel.setRows(sa);
 		
 		c.autoSetCombatRelations();
-		
 
 		runCombat();
 

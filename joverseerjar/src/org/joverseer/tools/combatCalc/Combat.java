@@ -1,7 +1,5 @@
 package org.joverseer.tools.combatCalc;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -337,10 +335,10 @@ public class Combat implements Serializable, IHasMapLocation {
                 this.addToPlayerLog("\tWarmachines: " + wm + " (" + warMachines + " total so far)", true);
                 totalCon += computNativeArmyConstitution(this.side1[i]);
                 losses[i] = this.side1[i].getLosses();
-                if (round == 0) {
+                //if (round == 0) {
                 	attackerStr += this.side1[i].getOffensiveAddOns();
                 	this.addToPlayerLog("\tOffense Add Ons: " + this.side1[i].getOffensiveAddOns(), true);
-                }
+                //}
             } else {
                 if (this.side2[i] == null) continue;
                 this.addToPlayerLog("Combat Army, " + this.side2[i].getCommander() + " N" + this.side1[i].getNationNo() + ": ", true);
@@ -359,10 +357,10 @@ public class Combat implements Serializable, IHasMapLocation {
                 this.addToPlayerLog("\tWarmachines: " + wm + " (" + warMachines + " total so far)", true);
                 totalCon += computNativeArmyConstitution(this.side2[i]);
                 losses[i] = this.side2[i].getLosses();
-                if (round == 0) {
+                //if (round == 0) {
                 	attackerStr += this.side2[i].getOffensiveAddOns();
                 	this.addToPlayerLog("\tOffense Add Ons: " + this.side1[i].getOffensiveAddOns(), true);
-                }
+                //}
             }
         }
         this.addToPlayerLog("\nTotal Con: " + totalCon, true);
@@ -562,10 +560,10 @@ public class Combat implements Serializable, IHasMapLocation {
         this.addToPlayerLog("\tRelation Modifier, " + relMod + ", strength of PC after: " + attStr, true);
         
         // handle first round
-        if (round == 0) {
+        //if (round == 0) {
             defBonus = army.getDefensiveAddOns();
             this.addToPlayerLog("\tDefense Bonus: " + defBonus, true);
-        }
+        //}
         
         double lossesFactor = (double)defCon / (double)armySideTotalCon;
         addToLog("Defender loss factor: " + lossesFactor);
@@ -612,14 +610,14 @@ public class Combat implements Serializable, IHasMapLocation {
         attStr += wm * 50;
         
         // handle first round
-        if (round == 0) {
+        //if (round == 0) {
             attBonus = att.getOffensiveAddOns();
             defBonus = def.getDefensiveAddOns();
             attStr += attBonus;
             addToLog("First round - str: " + attBonus + " con: " + defBonus);
             
             this.addToPlayerLog("\tFirst round - Offense bonus to str.: " + attBonus + ", Defense bonus to con.: " + defBonus);
-        }
+        //}
         double lossesFactor = (double)defCon / (double)defenderSideTotalCon;
         addToLog("Defender loss factor: " + lossesFactor);
         

@@ -12,6 +12,7 @@ import javax.swing.JFileChooser;
 
 import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameFileComparator;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.GamePreference;
@@ -23,6 +24,7 @@ import org.joverseer.support.readers.xml.TurnXmlReader;
 import org.joverseer.ui.JOverseerClientProgressMonitor;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
+import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -194,6 +196,13 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 
 				@Override
 				protected boolean onFinish() {
+	                String pval = PreferenceRegistry.instance().getPreferenceValue("defaultPage.importResults"); //$NON-NLS-1$
+	                if (pval.equals("tRV")) { //$NON-NLS-1$
+	                	GraphicUtils.showView("turnReportView");
+	                }
+	                else if (pval.equals("map")) {
+	                	GraphicUtils.showView("mapView");
+	                }
 					return true;
 				}
 

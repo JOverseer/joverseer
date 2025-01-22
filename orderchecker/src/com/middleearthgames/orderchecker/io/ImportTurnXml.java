@@ -132,7 +132,7 @@ public class ImportTurnXml
                 parseArmies(childNode);
                 continue;
             }
-            System.out.println("here");
+
             if(name.equals("Companies"))
             	parseCompanies(childNode);
         }

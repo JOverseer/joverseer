@@ -6,6 +6,190 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
+		<item>
+			<title>1.18.17-rc13</title>
+			<pubDate>21 January 2025</pubDate>
+			<description>
+VERSION 1.18.17-rc13
+---------------
+- Fixes
+			</description>
+			</item>	
+				<item>
+			<title>1.18.17-rc12</title>
+			<pubDate>14 January 2025</pubDate>
+			<description>
+VERSION 1.18.17-rc12
+---------------
+- Small bug fixes
+			</description>
+			</item>	
+		<item>
+			<title>1.18.17-rc11</title>
+			<pubDate>8 January 2025</pubDate>
+			<description>
+VERSION 1.18.17-rc11
+---------------
+- Force Compatibility Stuff (Set order preference + show Notepad)
+- Home View changes to orders due etc
+- Tidy code and warnings up
+- Remove 'Show log' button
+- Fix bug - 'PC attack info'
+			</description>
+			</item>	
+			<item>
+			<title>1.18.17-rc10</title>
+			<pubDate>16 December 2024</pubDate>
+			<description>
+VERSION 1.18.17-rc10
+---------------
+- 'Strength of Attacking armies' Column now added to armies
+- Strength changed to 'base Strength', showing strength before any modifiers which change between armies and PC are applied
+- New 'Combat Log' button, shows numbers and calculations 
+			</description>
+			</item>	
+			<item>
+			<title>1.18.17-rc9</title>
+			<pubDate>4 December 2024</pubDate>
+			<description>
+VERSION 1.18.17-rc9
+---------------
+- Fixed TurnReportView double agent bug
+- Introduced .csv for climate and terrain modifiers for 'Regions' (1000 games)
+- Drop down menu for each army to select what region it is
+- If an army doesnt have completed info (eg has command rank or morale set to 0) then will make it yellow 
+			</description>
+			</item>	
+						<item>
+			<title>1.18.17-rc8</title>
+			<pubDate>25 November 2024</pubDate>
+			<description>
+VERSION 1.18.17-rc8
+---------------
+- Recent Games (changes to internal storing and getting)
+- Recent games now say whether you have 1. Not submitted orders for this turn 2. If you need to import new results (current date is after dur date) 3. when you last submitted orders
+- Orderchecker fixes, MovComp wasn't waiting for state updates to do with joining/creating companies
+- Orderchecker Error checking if camp is there (neutral camp)
+- ExportOrders now closes on release
+- Combat calc - relations for pop center can now be edited (and imported properly)
+- Armies automatically get defense points added from fortification bonus
+			</description>
+			</item>	
+				<item>
+			<title>1.18.17-rc7</title>
+			<pubDate>14 November 2024</pubDate>
+			<description>
+VERSION 1.18.17-rc7
+---------------
+- Fixed War machines
+    - Now count towards army combats (50)
+    - Were counting doubly for fortifications
+- Adjusted Size of panel and components
+- Fixed bug with removing armies from first table
+- 'Add army' now automatically opens edit menu
+- Fix - Hex numbers which begin with a '0' wasnt importing armies properly, fixed now
+- New 'before/after' option, showing troop numbers before and after combat
+			</description>
+			</item>	
+		<item>
+			<title>1.18.17-rc6</title>
+			<pubDate>11 November 2024</pubDate>
+			<description>
+VERSION 1.18.17-rc6
+---------------
+- Rounding error when calculating combat modifier
+			</description>
+			</item>	
+				<item>
+			<title>1.18.17-rc5</title>
+			<pubDate>8 November 2024</pubDate>
+			<description>
+VERSION 1.18.17-rc5
+---------------
+- updated troopvstactic, tacticvstactic and troopterrain tables for correct values
+			</description>
+			</item>	
+		<item>
+			<title>1.18.17-rc4</title>
+			<pubDate>7 November 2024</pubDate>
+			<description>
+VERSION 1.18.17-rc4
+---------------
+- Can see tactic in combat form
+- Hopefully fixed Home, Recent games from going to a second line
+			</description>
+			</item>	
+				<item>
+			<title>1.18.17-rc3</title>
+			<pubDate>4 November 2024</pubDate>
+			<description>
+VERSION 1.18.17-rc3
+---------------
+- '+' tab in notepad to add new notes
+- descriptive text in notepad to guide user how to use
+- Home page recent games: Icon showing whether or not orders have been sent this turn, upon mouseover tooltip says when you submitted them.
+- Send orders pane now closes after submit
+- reversed recent games list
+- Copy and save orders now copy/save all selected nations orders
+- Legal copyright stuff put in home page
+- Fixed notepad layout issue
+- Fixed other text issues
+			</description>
+			</item>	
+		<item>
+			<title>1.18.17-rc2</title>
+			<pubDate>28 October 2024</pubDate>
+			<description>
+VERSION 1.18.17-rc2
+---------------
+- New notepad tab
+   - In Tools -> General -> Notepad
+   - Right click on tabs to edit, new note or delete
+   - Constant between turns
+- Submit orders, further redesign
+- Orderchecker fixes
+   - 820 order even if failed (not commander) updated char position
+   - DsbComp didnt properly remove them from company
+- Homeview now has default view with no internet
+- Fix Preference not hiding/showing edit order button
+			</description>
+			</item>	
+		<item>
+			<title>1.18.17-rc1</title>
+			<pubDate>21 October 2024</pubDate>
+			<description>
+VERSION 1.18.17-rc1
+---------------
+	* Combat calculator changes:
+		* Auto loads relations for each army
+		* Add new table, all other armies in hex go here, including neutral armies, can drag and drop them across
+		* Now a "refresh combat button" in case things go wrong...
+	* No longer warns players about neutral armies or popcenters
+	* Moved things around in send orders pane to try and make things clearer
+	* New preference tab, for default pages
+	* Preference for disabling orders on characters you dont control
+			</description>
+			</item>	
+		<item>
+			<title>1.18.16-rc1</title>
+			<pubDate>21 October 2024</pubDate>
+			<description>
+VERSION 1.18.16-rc1
+---------------
+	*ArmyViewer bug fix, crashing on enemy navy but no 'elements'
+			</description>
+			</item>	
+		<item>
+			<title>1.18.15-rc5</title>
+			<pubDate>30 September 2024</pubDate>
+			<description>
+VERSION 1.18.15-rc5
+---------------
+	*Small Bug fixes
+	*Loading a game opens map view
+	*Importing order results go to turn report
+			</description>
+			</item>	
 			<item>
 			<title>1.18.15-rc4</title>
 			<pubDate>9 September 2024</pubDate>
@@ -16,6 +200,7 @@ VERSION 1.18.15-rc4
 	*Arti changes
 	*Edit nation Data form fix
 			</description>
+			</item>	
 			<item>
 			<title>1.18.15-rc3</title>
 			<pubDate>6 September 2024</pubDate>
@@ -34,6 +219,7 @@ VERSION 1.18.15-rc3
 		- Double Agents being overwritten by other nations files fixed
 		- Reverse sort recent games
 			</description>
+			</item>	
 			<item>
 			<title>1.18.15-rc2</title>
 			<pubDate>6 August 2024</pubDate>

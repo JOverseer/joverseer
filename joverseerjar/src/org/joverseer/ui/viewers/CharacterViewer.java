@@ -420,11 +420,12 @@ public class CharacterViewer extends ObjectViewer {
 					}
 				}
 			}
-			if (!charIsControlled) {
+			String pval = PreferenceRegistry.instance().getPreferenceValue("currentHexView.disableEditOrderButton");
+			if (!charIsControlled && pval.equals("yes")) {
 				this.order1.setEnabledButton(false);
 				this.order2.setEnabledButton(false);
 				this.order3.setEnabledButton(false);
-				this.btnCharDetails.setToolTipText(Messages.getString("CharacterViewer.showOrders.ToolTip"));
+				this.btnCharDetails.setToolTipText(null);
 			}
 			else {
 				this.order1.setEnabledButton(true);
@@ -760,8 +761,8 @@ public class CharacterViewer extends ObjectViewer {
 				if (aComponent == CharacterViewer.this.characterName) {
 					return btnMainMenu;
 				} else if (aComponent == btnMainMenu) {
-					return btnCharDetails;
-				} else if (aComponent == btnCharDetails) {
+					return CharacterViewer.this.btnCharDetails;
+				} else if (aComponent == CharacterViewer.this.btnCharDetails) {
 					return CharacterViewer.this.order1comp.getFocusTraversalPolicy().getFirstComponent(CharacterViewer.this.order1comp);
 				} else if (aComponent == CharacterViewer.this.order1comp.getFocusTraversalPolicy().getLastComponent(CharacterViewer.this.order1comp)) {
 					return CharacterViewer.this.order2comp.getFocusTraversalPolicy().getFirstComponent(CharacterViewer.this.order2comp);
@@ -777,10 +778,10 @@ public class CharacterViewer extends ObjectViewer {
 					return CharacterViewer.this.order2comp.getFocusTraversalPolicy().getLastComponent(CharacterViewer.this.order2comp);
 				} else if (aComponent == btnMainMenu) {
 					return CharacterViewer.this.characterName;
-				} else if (aComponent == btnCharDetails) {
+				} else if (aComponent == CharacterViewer.this.btnCharDetails) {
 					return btnMainMenu;
 				} else if (aComponent == CharacterViewer.this.order1comp.getFocusTraversalPolicy().getFirstComponent(CharacterViewer.this.order1comp)) {
-					return btnCharDetails;
+					return CharacterViewer.this.btnCharDetails;
 				} else if (aComponent == CharacterViewer.this.order2comp.getFocusTraversalPolicy().getFirstComponent(CharacterViewer.this.order2comp)) {
 					return CharacterViewer.this.order1comp.getFocusTraversalPolicy().getLastComponent(CharacterViewer.this.order1comp);
 				}
@@ -799,7 +800,7 @@ public class CharacterViewer extends ObjectViewer {
 
 			@Override
 			public Component getLastComponent(java.awt.Container aContainer) {
-				return CharacterViewer.this.order2comp.isVisible() ? CharacterViewer.this.order2comp.getFocusTraversalPolicy().getLastComponent(CharacterViewer.this.order2comp) : btnCharDetails;
+				return CharacterViewer.this.order2comp.isVisible() ? CharacterViewer.this.order2comp.getFocusTraversalPolicy().getLastComponent(CharacterViewer.this.order2comp) : CharacterViewer.this.btnCharDetails;
 			}
 
 		});

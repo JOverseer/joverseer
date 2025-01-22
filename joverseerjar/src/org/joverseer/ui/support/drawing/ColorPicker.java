@@ -1,7 +1,6 @@
 package org.joverseer.ui.support.drawing;
 
 import java.awt.Color;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Locale;
 
@@ -10,8 +9,6 @@ import org.joverseer.domain.NationRelations;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
-import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;

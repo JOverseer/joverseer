@@ -32,4 +32,5 @@ public enum TurnElementsEnum implements Serializable {
     ChallengeFights,
     Diplo,
     ArtifactUser,
+    NotepadInfo,
 }

@@ -85,7 +85,6 @@ public class NationJList extends JList {
 		
 	}
 	public String[] getSelectedNations() {
-        Game g = this.gh.getGame();
         if (this.getSelectedValuesList().size() == 0)
             return null;
         List<String> ns = this.getSelectedValuesList();

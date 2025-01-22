@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
@@ -12,7 +14,6 @@ import javax.swing.JScrollPane;
 import org.joverseer.JOApplication;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
-import org.joverseer.metadata.MetadataReader;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
 import org.joverseer.ui.JOverseerJIDEClient;
@@ -20,6 +21,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapMetadataUtils;
 import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.richclient.application.Application;
@@ -70,6 +72,7 @@ public class LoadGame extends ActionCommand {
         } else {
             loadGame();
         }
+        GraphicUtils.showView("mapView");
     }
 
 
@@ -96,7 +99,7 @@ public class LoadGame extends ActionCommand {
                 GameHolder gh = this.gameHolder;
                 Game g = Game.loadGame(f);
                 g.getMetadata().setGame(g);
-                g.getMetadata().loadCombatModifiers();
+                g.getMetadata().loadCombatModifiers(false);
                 gh.setGame(g);
                 gh.setFile(this.fname);
 
@@ -131,8 +134,16 @@ public class LoadGame extends ActionCommand {
                 }
                 RecentGames rgs = new RecentGames();
                 String dueDate = PlayerInfo.getDueDateDefaulted(g.getTurn(g.getMaxTurn()).getPlayerInfo(g.getMetadata().getNationNo()),"unknown");
-                rgs.updateRecentGameInfoPreferenceWithGame(g.getMetadata().getGameNo(), f.getAbsolutePath(), dueDate);
-
+                boolean ordersSent = g.getTurn().getPlayerInfo(g.getMetadata().getNationNo()).getOrdersSentOn() != null;
+        		Date ordersSentOn = g.getTurn().getPlayerInfo(g.getMetadata().getNationNo()).getOrdersSentOn();
+        		String ordersSentStr;
+        		if(ordersSentOn == null) ordersSentStr = null;
+        		else {
+        	        SimpleDateFormat formatter = new SimpleDateFormat("MMMM dd yyyy");
+        	        String formattedDate = formatter.format(ordersSentOn);
+        	        ordersSentStr = formattedDate.toUpperCase();
+        		}
+                rgs.updateRecentGameInfoPreferenceWithGame(g.getMetadata().getGameNo(), f.getAbsolutePath(), dueDate, ordersSent, ordersSentStr);
             }
             catch (EOFException exc) {
             	ErrorDialog.showErrorDialog(exc,"LoadGame.CorruptFile"); //$NON-NLS-1$ //$NON-NLS-2$

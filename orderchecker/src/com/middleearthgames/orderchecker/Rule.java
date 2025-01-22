@@ -5,7 +5,6 @@
 
 package com.middleearthgames.orderchecker;
 
-import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.JCheckBox;
@@ -771,8 +770,7 @@ public class Rule
         }
         int artifactParam = convertParameter(0);
         int artifact = this.parentOrder.getParameterNumber(artifactParam);
-        System.out.println(artifactParam);
-        System.out.println(artifact);
+
         if(artifact == -1)
         {
             artifact = 0;
@@ -1165,6 +1163,10 @@ public class Rule
     }
 
     private String processCompanyMove() {
+    	if (this.parentOrder.getErrorResults().size() > 0) {
+    		return null;
+    	}
+    	
         String result = parameterCount(2, "COMPANYMOVE");
         if(result != null)
         {
@@ -1172,35 +1174,52 @@ public class Rule
         }
         int locParam = convertParameter(0);
         int max = convertParameter(1);
-        String r = processCharacterMove(locParam, max, 0);
-        if (r == null && this.phase == 2) {
-        	int location = this.parentOrder.getParameterNumber(locParam);
-        	Nation n = this.getMain().getNation();
-        	Company comp = n.findCompanyByCommander(this.parentChar.getId());
-        	if (comp == null) {
-        		this.parentOrder.addError(this.parentChar + " is not a commander of a company.");
-        		return null;
-        	}
-        	
-        	Vector charWith = comp.getCharsWith();
-        	String chars = "";
-        	for (int i = 0; i < charWith.size(); i++) {
-        		String cName = (String) charWith.get(i);
-        		Character c = n.findCharacterById(cName);
-        		c.setNewLocation(location, this.parentOrder.getOrder());
-        		
-        		if (i != 0) {
-        			if(i == charWith.size() - 1) chars += " and ";
-        			else chars += ", ";
-        		}
-        		chars += c.getName();
-        		
-        	}
-        	this.parentOrder.addInfo("The rest of the company (" + chars + ") succesfully moved with them.");
-        	
-        	return null;
+        
+        if(this.phase == 1)
+        {
+        	//clearProcessState(STATE_CHARACTER_LOCATION);
+        	clearProcessState(STATE_COMPANY);
+        } else if(this.phase == 2)
+        {
+
+            if(waitForPartialState(STATE_COMPANY))
+            {
+                return STATE_REQ;
+            }
+            setProcessState(STATE_COMPANY);
+        
+	    	Nation n = this.getMain().getNation();
+	    	Company comp = n.findCompanyByCommander(this.parentChar.getId());
+	    	if (comp == null) {
+	    		this.parentOrder.addError(this.parentChar + " is not a commander of a company.");
+	    		return null;
+	    	}
+	    	
+	        String r = processCharacterMove(locParam, max, 0);
+	        if (r == null && this.phase == 2) {
+	        	int location = this.parentOrder.getParameterNumber(locParam);
+	        	
+	        	Vector charWith = comp.getCharsWith();
+	        	String chars = "";
+	        	for (int i = 0; i < charWith.size(); i++) {
+	        		String cName = (String) charWith.get(i);
+	        		Character c = n.findCharacterById(cName);
+	        		c.setNewLocation(location, this.parentOrder.getOrder());
+	        		
+	        		if (i != 0) {
+	        			if(i == charWith.size() - 1) chars += " and ";
+	        			else chars += ", ";
+	        		}
+	        		chars += c.getName();
+	        		
+	        	}
+	        	this.parentOrder.addInfo("The rest of the company (" + chars + ") succesfully moved with them.");
+	        	
+	        	return null;
+	        }
+	        else return r; 
         }
-        else return r; 
+        return null;
     }
     
     private String processCommander()
@@ -1296,7 +1315,13 @@ public class Rule
             case 4: // '\004'
                 if(!companyCO)
                 {
-                    this.parentOrder.addError(character + " is not a company CO.");
+                	//Janky code... but means there aren't 2 error messages for the same thing in the 820 movComp order
+                	if(this.parentOrder.getOrder() == 820) {
+	                	if(this.parentOrder.getErrorResults().size() != 1) {
+	                		if ((String) this.parentOrder.getErrorResults().get(0) != this.parentChar + " is not a commander of a company.")
+	                			this.parentOrder.addError(character + " is not a company CO.");
+	                	}
+                	}
                 }
                 break;
 
@@ -2386,7 +2411,6 @@ public class Rule
             }
             boolean owned = pc.getNation() == this.parentChar.getNation();
             boolean enemy = this.main.isEnemy(this.parentChar.getNation(), pc.getNation());
-            boolean neutral = this.main.isNeutral(pc.getNation());
             String possibleLoss = "Enemy troops are present at " + pc + " which could result in it being captured or destroyed.";
             String possibleCombatGain = pc + " is not owned by your nation " + "but may be captured due to combat.";
             String possibleInfluenceGain = pc + " is not owned by your nation " + "but could be influenced away by emissaries.";
@@ -3007,14 +3031,16 @@ public class Rule
 //                } else
 //                {
 //                }
-            	if(character.isCompanyCO(this.parentOrder.getOrder()) && logic == 0) {
+            	Company c = this.main.getNation().findCompanyByCommander(character.getId());
+
+            	if(c != null && logic == 0) {
             		character.setCompanyCO(false, this.parentOrder.getOrder());
-            		Company c = this.main.getNation().findCompanyByCommander(character.getId());
+            		c = this.main.getNation().findCompanyByCommander(character.getId());
             		this.main.getNation().removeCompany(c);
             	}
-            	else if(!character.isCompanyCO(this.parentOrder.getOrder()) && logic == 1) {
+            	else if(c == null && logic == 1) {
             		character.setCompanyCO(true, this.parentOrder.getOrder());
-            		Company c = new Company(character.getLocation(this.parentOrder.getOrder()));
+            		c = new Company(character.getLocation(this.parentOrder.getOrder()));
             		c.setCommander(character.getId());
             		
             		this.main.getNation().addCompany(c);

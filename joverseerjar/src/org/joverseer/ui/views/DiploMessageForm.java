@@ -175,12 +175,12 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 			
 	          @Override
 				public void actionPerformed(ActionEvent e) {
-	        	  if(inputDiplo.getMessage() == null) {
+	        	  if(DiploMessageForm.this.inputDiplo.getMessage() == null) {
 	      			ErrorDialog.showErrorDialog("No saved message");
 	    			return;
 	        	  }
-	        	  diplomaticMess.setText(inputDiplo.getMessage());
-	        	  btReload.setEnabled(false);
+	        	  DiploMessageForm.this.diplomaticMess.setText(DiploMessageForm.this.inputDiplo.getMessage());
+	        	  DiploMessageForm.this.btReload.setEnabled(false);
 	          }
 			});
 		buttonPanel.add(this.btReload);

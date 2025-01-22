@@ -95,6 +95,7 @@ public class PLaFHelper {
 	}
 
 	public boolean isClassAvailable(String clazz) {
+		@SuppressWarnings("unused")
 		Class candidate;
 		boolean result = false;
 		try {

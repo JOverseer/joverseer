@@ -51,6 +51,7 @@ public class TurnReportCollectorTest {
 		fail("Not yet implemented"); // TODO
 	}
 
+	@SuppressWarnings("unused")
 	@Test
 	public final void testCollectChallenges() {
 		GameHolder gh=null;

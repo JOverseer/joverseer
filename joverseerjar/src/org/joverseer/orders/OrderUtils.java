@@ -42,17 +42,6 @@ public class OrderUtils {
         //return new Double(random.nextGaussian() * 100).intValue();
     }
 
-//    public void testRandomNumber() {
-//        int sum = 0;
-//        int total = 10000;
-//        for (int i=0; i<total; i++) {
-//            int v = getRandomNumber(-3, 3);
-//            sum += v;
-//            System.out.println(v);
-//        }
-//        System.out.println(new Double(sum) / total);
-//    }
-
     public static void main(String[] args) {
         int sum = 0;
         int total = 1000000;

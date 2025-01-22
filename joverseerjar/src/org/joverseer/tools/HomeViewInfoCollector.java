@@ -1,18 +1,19 @@
 package org.joverseer.tools;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
+import org.joverseer.JOApplication;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
 import org.joverseer.support.RecentGames.RecentGameInfo;
 import org.joverseer.ui.views.Messages;
-
 import com.jidesoft.tipoftheday.ResourceBundleTipOfTheDaySource;
 
 /**
@@ -123,7 +124,26 @@ public class HomeViewInfoCollector {
 	 */
 	private String renderRecentGameLine(RecentGameInfo frgi) {
 		String s = "";
-		s += "Game <a href='http://event?recentgame=" + frgi.getFile().replace("'", "~~") + "'>" + frgi.getNumber() + "</a>, orders due by: " + frgi.getDate();
+		String imagePath = "";
+		String middleString = "";
+		String urlOrderSent = "'http://'";
+		try {
+			if(!frgi.hasSentOrd()) imagePath = JOApplication.getImageSource().getImageResource("orderresult.error.icon").getURL().toString();
+			else imagePath = JOApplication.getImageSource().getImageResource("orderresult.okay.icon").getURL().toString();
+			if (frgi.formatOrdersSentDateInf().equals("Import new results.")) {
+				middleString = ". Import new results.";
+				
+			}
+			else {
+				urlOrderSent = "'http://event?orderSentOn=" + frgi.formatOrdersSentDateInf() + "'";
+				middleString = ", orders due: " + frgi.getDate();
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		s += "<a href='http://event?recentgame=" + frgi.getFile().replace("'", "~~") + "'>" + frgi.getNumber() + "</a>" + middleString + " <a href=" + urlOrderSent + "> <img border=\"0\" src='" + imagePath + "'></a>";
 		return s;
 	}
 	
@@ -141,12 +161,13 @@ public class HomeViewInfoCollector {
 		String content = null;
 		URLConnection connection = null;
 		try {
-		  connection =  new URL(getFinalURL(Url)).openConnection();
+		  connection =  new URI(getFinalURL(Url)).toURL().openConnection();
 		  Scanner scanner = new Scanner(connection.getInputStream(), "UTF-8");
 		  scanner.useDelimiter("\\Z");
 		  content = scanner.next();
 		  scanner.close();
 		}catch ( Exception ex ) {
+			content = Messages.getString("homeView.noInternetWelcomeText");
 		    ex.printStackTrace();
 		}
 		return content;
@@ -159,7 +180,7 @@ public class HomeViewInfoCollector {
 	 */
 	public static String getFinalURL(String url) {
 		try {
-		    HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
+		    HttpURLConnection con = (HttpURLConnection) new URI(url).toURL().openConnection();
 		    con.setInstanceFollowRedirects(false);
 		    con.connect();
 		    con.getInputStream();

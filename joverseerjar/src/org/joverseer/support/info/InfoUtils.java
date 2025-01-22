@@ -1,11 +1,15 @@
 package org.joverseer.support.info;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.joverseer.JOApplication;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.ProductEnum;
+import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.support.AsciiUtils;
@@ -297,5 +301,76 @@ public class InfoUtils {
 			return Integer.valueOf(info.getValue(j, 3));			
 		}
 		return Integer.MAX_VALUE;
+	}
+	
+	public static int getRegionNumByName(GameTypeEnum gt, String name) {
+		try {
+			GameMetadata gm = GameMetadata.instance();
+			gm.setGameType(gt);
+			BufferedReader reader = gm.getUTF8ResourceByGame("regiondescription.csv",true);
+
+			String ln;
+			while ((ln = reader.readLine()) != null) {
+				ln = ln.replace("\"", "");
+				String parts[] = ln.split(",");
+				
+				int regionNum = Integer.parseInt(parts[0]);
+				String regionName = (parts[1]);
+				if(name.equals(regionName)) return regionNum;
+			}
+			
+		} catch (IOException exc) {
+			// Problems here will just lead to an empty collection and no modifier - could be new game tyoe or similar
+		} catch (Exception exc) {
+			// Problems here will just lead to an empty collection and no modifier - could be new game tyoe or similar
+		}		
+		return -1;
+	}
+	
+	public static String getRegionNameByNum(GameTypeEnum gt, int num) {
+		try {
+			GameMetadata gm = GameMetadata.instance();
+			gm.setGameType(gt);
+			BufferedReader reader = gm.getUTF8ResourceByGame("regiondescription.csv",true);
+
+			String ln;
+			while ((ln = reader.readLine()) != null) {
+				ln = ln.replace("\"", "");
+				String parts[] = ln.split(",");
+				
+				int regionNum = Integer.parseInt(parts[0]);
+				String regionName = (parts[1]);
+				if(num == regionNum) return regionName;
+			}
+			
+		} catch (IOException exc) {
+			// Problems here will just lead to an empty collection and no modifier - could be new game tyoe or similar
+		} catch (Exception exc) {
+			// Problems here will just lead to an empty collection and no modifier - could be new game tyoe or similar
+		}		
+		return null;
+	}
+	
+	public static List<String> getRegionNames(GameTypeEnum gt){
+		List<String> names = new ArrayList<String>();
+		try {
+			GameMetadata gm = GameMetadata.instance();
+			gm.setGameType(gt);
+			BufferedReader reader = gm.getUTF8ResourceByGame("regiondescription.csv",true);
+			String ln;
+			while ((ln = reader.readLine()) != null) {
+				ln = ln.replace("\"", "");
+				String parts[] = ln.split(",");
+				
+				String regionName = (parts[1]);
+				names.add(regionName);
+			}
+			
+		} catch (IOException exc) {
+			// Problems here will just lead to an empty collection and no modifier - could be new game tyoe or similar
+		} catch (Exception exc) {
+			// Problems here will just lead to an empty collection and no modifier - could be new game tyoe or similar
+		}		
+		return names;
 	}
 }

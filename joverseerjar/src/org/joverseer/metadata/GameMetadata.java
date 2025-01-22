@@ -30,8 +30,6 @@ import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.CommentedBufferedReader;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
-import org.joverseer.support.readers.newXml.TurnInfoModifierWrapper;
-import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 
@@ -81,9 +79,9 @@ public class GameMetadata implements Serializable {
 		this.game = game;
 	}
 	
-	public void loadCombatModifiers() throws IOException, MetadataReaderException {
+	public void loadCombatModifiers(boolean override) throws IOException, MetadataReaderException {
 		//load defaults from config files that are not included in saved game
-		if (this.climateModifiers == null || this.climateModifiers.items.isEmpty()) {
+		if (this.climateModifiers == null || this.climateModifiers.items.isEmpty() || override) {
 			this.basePath = "metadata";
 			CombatModifierReader r = new CombatModifierReader();
 			r.load(this);
@@ -467,14 +465,11 @@ public class GameMetadata implements Serializable {
 	}
 	public Resource getResource(String resourceName) throws IOException {
 		try {
-			System.out.println("file:///" + getBasePath() + "/" + resourceName);
 			Resource r = Application.instance().getApplicationContext().getResource("file:///" + getBasePath() + "/" + resourceName);
 			new InputStreamReader(r.getInputStream());
 			return r;
 		} catch (Exception exc) {
 			try {
-				//System.out.println(exc.getMessage());
-				System.out.println("classpath:" + this.basePath + "/" + resourceName);
 				Resource r = Application.instance().getApplicationContext().getResource("classpath:" + this.basePath + "/" + resourceName);
 				new InputStreamReader(r.getInputStream());
 				return r;

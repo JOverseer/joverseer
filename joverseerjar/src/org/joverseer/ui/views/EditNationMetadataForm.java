@@ -14,6 +14,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+
 import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
@@ -225,7 +227,7 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 
 		JScrollPane scp = new JScrollPane(tlb.getPanel());
 
-		scp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scp.setPreferredSize(new Dimension(750,550));
 		return scp;
 	}

@@ -43,10 +43,13 @@ public class CombatArmy implements Serializable {
     int commandRank;
     TacticEnum tactic;
     double losses; // Stored as a percent of the original constitution?
+    int strOfAttackingArmy = 0;
 
 
     int offensiveAddOns;
     int defensiveAddOns;
+    
+    String region = "Default";
 
     public String getCommander() {
         return this.commander;
@@ -116,16 +119,32 @@ public class CombatArmy implements Serializable {
         this.tactic = tactic;
     }
     
-    
+    public void setRegion(String reg) {
+    	this.region = reg;
+    }
 
+    public String getRegion() {
+    	return this.region;
+    }
     
     public double getLosses() {
         return this.losses;
     }
 
-    
     public void setLosses(double losses) {
         this.losses = losses;
+    }
+    
+    public void setStrOfAttackingArmy(int str) {
+    	this.strOfAttackingArmy = str;
+    }
+    
+    public int getStrOfAttackingArmy() {
+    	return this.strOfAttackingArmy;
+    }
+    
+    public void addStrToAttackingArmy(int toAdd) {
+    	this.strOfAttackingArmy += toAdd;
     }
     
     public ArmyElement getArmyElement(ArmyElementType aet) {
@@ -286,7 +305,7 @@ public class CombatArmy implements Serializable {
         		}
         	}
         }
-        setNationNo(0);
+        setNationNo(a.getNationNo());
         setCommander(a.getCommanderName());
         setMorale(a.getMorale());
         setTactic(TacticEnum.Standard);
@@ -330,6 +349,42 @@ public class CombatArmy implements Serializable {
     	}
     	r = r.replace("'", "\"");
     	return r;
+    }
+    
+    public boolean completeInfo() {
+    	if (this.computeNumberOfTroops() == 0) return false;
+    	if (this.getCommandRank() == 0) return false;
+    	if (this.getMorale() == 0) return false;
+    	
+    	return this.completeTroopElementInfo();
+    }
+    
+    public boolean completeTroopElementInfo() {
+    	if (this.getHC().getNumber() != 0) {
+    		if(this.getHC().getWeapons() == 0) return false;
+    		if(this.getHC().getTraining() == 0) return false;
+    	}
+        if (this.getLC().getNumber() != 0) {
+            if (this.getLC().getWeapons() == 0) return false;
+            if (this.getLC().getTraining() == 0) return false;
+        }
+        if (this.getHI().getNumber() != 0) {
+            if (this.getHI().getWeapons() == 0) return false;
+            if (this.getHI().getTraining() == 0) return false;
+        }
+        if (this.getLI().getNumber() != 0) {
+            if (this.getLI().getWeapons() == 0) return false;
+            if (this.getLI().getTraining() == 0) return false;
+        }
+        if (this.getAR().getNumber() != 0) {
+            if (this.getAR().getWeapons() == 0) return false;
+            if (this.getAR().getTraining() == 0) return false;
+        }
+        if (this.getMA().getNumber() != 0) {
+            if (this.getMA().getWeapons() == 0) return false;
+            if (this.getMA().getTraining() == 0) return false;
+        }
+        return true;
     }
     
     public int computeNumberOfTroops() {

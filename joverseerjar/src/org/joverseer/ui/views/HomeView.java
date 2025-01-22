@@ -25,7 +25,6 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.tools.HomeViewInfoCollector;
 import org.joverseer.ui.ScalableAbstractView;
 import org.joverseer.ui.command.LoadGame;
-import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.springframework.context.ApplicationEvent;
@@ -119,6 +118,10 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 		this.lblLogo.setOpaque(true);
 		panel_R.add(this.lblLogo);
 		
+		JPanel p1 = new JPanel();
+		p1.setLayout(new BorderLayout());
+		panel_R.add(p1);
+		
 		this.sideEditor = new JEditorPane();
 		this.sideEditor.setContentType("text/html");
 		this.sideEditor.setEditable(false);
@@ -127,6 +130,19 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 
 			@Override
 			public void hyperlinkUpdate(HyperlinkEvent e) {
+				if(e.getURL().toString().contains("http://event?orderSentOn")) {
+					if(e.getEventType() == EventType.ENTERED) {
+						HomeView.this.p.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+						int ind = e.getURL().toString().indexOf("=") + 1;
+						String s = e.getURL().toString().substring(ind);
+						HomeView.this.sideEditor.setToolTipText(s);
+					}
+					if(e.getEventType() == EventType.EXITED) {
+						HomeView.this.sideEditor.setToolTipText(null);
+					}
+					return;
+				}
+				
 				if(e.getEventType() == EventType.ENTERED) {
 					HomeView.this.p.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				}
@@ -140,13 +156,21 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 				}
 			}
 		});
-		panel_R.add(this.sideEditor);
+		p1.add(this.sideEditor, BorderLayout.CENTER);
+		
+		jp = new JEditorPane();
+		jp.setContentType("text/html");
+		jp.setEditable(false);
+		jp.setCaretColor(Color.WHITE);
+		jp.setText("<div style='font-family:MS Sans Serif; font-size:9pt'><i>" + Messages.getString("extraLegal.copyright"));
+		p1.add(jp, BorderLayout.PAGE_END);
 		
 		return this.p;
 
 	}
 	
 	boolean isReportGenerated = false;
+	
 	protected String[] getReportContents() {
 		this.isReportGenerated = true;
 		HomeViewInfoCollector hvic = new HomeViewInfoCollector();
@@ -191,7 +215,6 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 				String file = query.substring(11).replace("~~", "'");;
 				LoadGame loadGame = new LoadGame(file, this.gameHolder);
 				loadGame.execute();
-				GraphicUtils.showView("mapView");
 			}
 			else {
 				openURL(url);

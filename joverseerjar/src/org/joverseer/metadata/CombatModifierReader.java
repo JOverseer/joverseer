@@ -2,14 +2,11 @@ package org.joverseer.metadata;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-
 import org.joverseer.domain.ClimateEnum;
 import org.joverseer.metadata.domain.ClimateModifier;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.metadata.domain.TerrainModifier;
 import org.joverseer.support.Container;
-import org.joverseer.support.readers.newXml.TurnInfoModifierWrapper;
 
 
 public class CombatModifierReader implements MetadataReader {
@@ -95,7 +92,6 @@ public class CombatModifierReader implements MetadataReader {
 	
 			String ln;
 			while ((ln = reader.readLine()) != null) {
-				System.out.println(ln);
 				ln = ln.replace("\"", "");
 				String parts[] = ln.split(",");
 				

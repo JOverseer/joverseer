@@ -7,7 +7,6 @@ import java.text.Normalizer.Form;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.domain.IHasTurnNumber;
-import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.UserInfoBasedOnOtherInfoSource;
 

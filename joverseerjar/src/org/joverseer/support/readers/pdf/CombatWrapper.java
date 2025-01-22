@@ -157,7 +157,6 @@ public class CombatWrapper {
 	}
 
 	public void parse(String narration1) {
-		//System.out.println("Parsing battle at " + getHexNo());
 		// parse char results
 		String txt = narration1.replace("\n", " ").replace("\r", " ");
 		while (txt.indexOf("  ") > -1) {
@@ -175,7 +174,6 @@ public class CombatWrapper {
 				int k = txt.indexOf(" ", i + injured.length());
 				String charName = txt.substring(j + 1, i).trim();
 				String wounds = txt.substring(i + injured.length(), k);
-				//System.out.println(charName + " suffered " + wounds + " wounds.");
 				wounds = wounds + " wounds";
 				addToList(charName, wounds, this.characterWounds);
 				i = i + injured.length();
@@ -193,7 +191,7 @@ public class CombatWrapper {
 				int k = txt.indexOf(" ", i + losses.length());
 				String commanderName = txt.substring(j + 1, i).trim();
 				String aLosses = txt.substring(i + losses.length(), k);
-				//System.out.println(commanderName + "'s had " + aLosses + " losses.");
+
 				addToList(commanderName, aLosses, this.armyLosses);
 
 				i = i + losses.length();
@@ -381,7 +379,7 @@ public class CombatWrapper {
 							if (trainingRange != null)
 								break;
 						}
-						System.out.println(no + " " + aet + " " + weapons + " " + weaponRange + " " + armor + " " + armorRange + " " + training + " " + trainingRange);
+						//System.out.println(no + " " + aet + " " + weapons + " " + weaponRange + " " + armor + " " + armorRange + " " + training + " " + trainingRange);
 
 						ArmyEstimateElement aee = new ArmyEstimateElement();
 						aee.setNumber(no);

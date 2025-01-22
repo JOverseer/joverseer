@@ -277,20 +277,20 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         p.setFocusTraversalPolicy(new FocusTraversalPolicy() {
             @Override
 			public Component getComponentAfter(Container aContainer, Component aComponent) {
-                if (aComponent == btn) {
+                if (aComponent == OrderViewer.this.btn) {
                     return OrderViewer.this.draw;
                 } else if (aComponent == OrderViewer.this.draw) {
-                    return btn;
+                    return OrderViewer.this.btn;
                 }
-                return btn;
+                return OrderViewer.this.btn;
             }
 
             @Override
 			public Component getComponentBefore(Container aContainer, Component aComponent) {
-                if (aComponent == btn) {
+                if (aComponent == OrderViewer.this.btn) {
                     return OrderViewer.this.draw;
                 } else if (aComponent == OrderViewer.this.draw) {
-                    return btn;
+                    return OrderViewer.this.btn;
                 }
                 return OrderViewer.this.draw;
             }
@@ -298,17 +298,17 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
 
             @Override
 			public Component getDefaultComponent(Container aContainer) {
-                return btn;
+                return OrderViewer.this.btn;
             }
 
             @Override
 			public Component getFirstComponent(Container aContainer) {
-                return btn;
+                return OrderViewer.this.btn;
             }
 
             @Override
 			public Component getLastComponent(Container aContainer) {
-                return (OrderViewer.this.draw.isEnabled() ? OrderViewer.this.draw : btn);
+                return (OrderViewer.this.draw.isEnabled() ? OrderViewer.this.draw : OrderViewer.this.btn);
             }
 
         });
@@ -317,6 +317,8 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
 
     public void setEnabledButton(boolean b) {
     	this.btn.setEnabled(b);
+    	if(!b) this.btn.setToolTipText(Messages.getString("CharacterViewer.showOrders.ToolTip"));
+    	else this.btn.setToolTipText(Messages.getString("OrderViewer.EditOrder"));
     }
     
     @Override

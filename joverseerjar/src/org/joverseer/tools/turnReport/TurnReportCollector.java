@@ -126,34 +126,31 @@ public class TurnReportCollector {
 					acw = null;
 				}
 			}
+			
+			String noteText;
 			if (acw == null) {
 				cr = new CharacterReport(c,t);
+				noteText = "";
 			} else {
 				cr = new CharacterReport(acw,t);
+				if(acw.getDoubleAgentForNationNo() == null) noteText = "";
+				else noteText = " for N" + acw.getDoubleAgentForNationNo() + ", " + this.gameHolder.getGame().getMetadata().getNationByNum(acw.getDoubleAgentForNationNo()).getName();
 			}
 			
 			//Color codes them depending on if they are a new double agent, no longer one, or remained one.
 			if(prevDouble && currentlyDouble) {
-				cr.setNotes("Double agent for N" + acw.getDoubleAgentForNationNo() + ", " + this.gameHolder.getGame().getMetadata().getNationByNum(acw.getDoubleAgentForNationNo()).getName());
+				cr.setNotes("Double agent" + noteText);
 				cr.setModification(ObjectModificationType.Modified);				
 			}
 			else if(!prevDouble && currentlyDouble) {
-				cr.setNotes("New double agent for N" + acw.getDoubleAgentForNationNo() + ", " + this.gameHolder.getGame().getMetadata().getNationByNum(acw.getDoubleAgentForNationNo()).getName());
+				cr.setNotes("New double agent" + noteText);
 				cr.setModification(ObjectModificationType.Gained);
 			}
 			else {
-				cr.setNotes("No longer double agent for N" + acw.getDoubleAgentForNationNo() + ", " + this.gameHolder.getGame().getMetadata().getNationByNum(acw.getDoubleAgentForNationNo()).getName());
+				cr.setNotes("No longer double agent" + noteText);
 				cr.setModification(ObjectModificationType.Lost);
 			};
 			cr.setHexNo(c.getHexNo());
-//			PopulationCenter pop = t.getPopCenter(c.getHexNo());
-//			if (pop != null) {
-//				cr.setNotes("PC: " + popPlusNation(pop));
-//			}
-//			if (c.getInfoSource() != null && !XmlTurnInfoSource.class.isInstance(c.getInfoSource())) {
-//				cr.appendNote(c.getInfoSource().getDescription());
-//				System.out.println(c.getInfoSource().getDescription());
-//			}
 			
 			ret.add(cr);
 		}

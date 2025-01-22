@@ -3,9 +3,7 @@ package org.joverseer.tools.combatCalc;
 import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.metadata.GameMetadata;
-import org.joverseer.metadata.domain.ClimateModifier;
 import org.joverseer.metadata.domain.HexTerrainEnum;
-import org.joverseer.metadata.domain.TerrainModifier;
 import org.joverseer.support.GameHolder;
 
 /**
@@ -23,9 +21,9 @@ public class CombatModifiers {
        	GameMetadata gm = GameHolder.instance().getGame().getMetadata();
     			
        	int tm = gm.getTerrainModifier(nationNo, terrain);
-       	int cm = gm.getClimateModifier(nationNo, climate);
+       	int cm = gm.getClimateModifier(nationNo, climate); 
        	
-       	return Math.round((tm + cm)/2);
+       	return tm + cm;
     
     }
     

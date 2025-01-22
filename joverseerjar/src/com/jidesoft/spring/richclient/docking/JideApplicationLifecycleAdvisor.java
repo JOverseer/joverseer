@@ -329,6 +329,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 		if(PreferenceRegistry.instance().getPreferenceValue("general.homeView").equals("yes")) {
 			GraphicUtils.showView("homeView");
 		}
+		GraphicUtils.showView("currentHexDataViewer");
 	}
 
 	public void setRepaintManager(RepaintManager repaintManager) {
@@ -419,7 +420,6 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			mu.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					System.out.println(frgi.getFile());
 					LoadGame loadGame = new LoadGame(frgi.getFile(),JideApplicationLifecycleAdvisor.this.gameHolder);
 					loadGame.execute();
 				}

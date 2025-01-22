@@ -1,3 +1,32 @@
+VERSION 1.18.17
+---------------
+	* QA: Send Orders Pane redesigned upon feedback
+	* Combat Calculator:
+		* Enh: Auto-loads nation relations for combat armies and PCs
+    	* Enh: New 'Other armies' table - useful for games with neutral armies
+    	* Enh: Can drag and drop armies between tables
+    	* QA: New 'Refresh Combat' button - refreshes everything in combat calculator to the state it was in upon creating the combat
+    	* QA: No warning pop-up when there is neutrals
+    	* QA: 'Tactic' is now a new column, can be changed via editing the army
+    	* QA: 'WMs' new column, showing how many war machines are in the army
+    	* QA: 'Add army' button now automatically opens edit menu
+    	* Enh: Before/After buttons added, to see the state of the armies before combat (original size) and after
+    	* Enh: For 4th Age games, armies now have 'Region' drop down 
+    	* QA: Highlights armies in different colours if there is incomplete information about them, indicating that results therefore may not be accurate
+	* Preferences:
+    	* QA: New preference tab, 'Default Landing Pages'
+    	* QA: New preference for disabling orders on characters you don't control
+	* New Notepad:
+    	* Enh: A Notepad which is persistent throughout your turns
+    	* Enh: Can add more notes with '+' button
+    	* Enh: Delete notes and edit titles by right clicking on tab
+	* Home View:
+    	* Enh: Recent Games now show whether or not orders have been sent for this turn, when you did, or if you need to import new results
+	* Orderchecker fixes:
+    	* Fix: 820 fixed in multiple areas, properly update states
+    	* Fix: DsbComp didn't fully remove them from the company
+    	* Fix: Error whilst checking for neutral camps
+
 VERSION 1.18.16
 ---------------
 	* QA: Adjust the amount of armies shown on map at different zoom levels

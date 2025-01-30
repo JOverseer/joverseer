@@ -3,6 +3,7 @@ package org.joverseer.ui.command;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import org.joverseer.JOApplication;
 import org.joverseer.domain.Character;
@@ -20,6 +21,7 @@ import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.views.SelectOrderchekerNationForm;
 import org.springframework.richclient.command.AbstractCommand;
+import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.support.ApplicationWindowAwareCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
@@ -76,6 +78,7 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 			this.proxy.updateOrdercheckerGameData(this.selectedNation);
 			final OrdercheckerForm form = new OrdercheckerForm(Main.main);
 			FormBackedDialogPage page = new FormBackedDialogPage(form);
+			page.setTitle(this.gh.getGame().getMetadata().getNationByNum(this.selectedNation).getName());
 
 			TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
 				@Override
@@ -90,11 +93,15 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 						// results
 						// the order results are retrieved from the order
 						// checker proxy
-						OrderResultContainer cont = OrderResultContainer.instance();
-						cont.clear();
+						OrderResultContainer cont = RunOrdercheckerCommand.this.gh.getGame().getTurn().getOrderResults().getResultCont();
+						//cont.clear();
+						
+						//this.ga
 
+						int nationNo = Main.main.getNation().getNation();
+						cont.clearAllOrdersForNation(nationNo);
 						ArrayList<OrderResult> resultList = new ArrayList<OrderResult>();
-						ArrayList<Character> chars = g.getTurn().getCharacters().findAllByProperty("nationNo", Main.main.getNation().getNation());
+						ArrayList<Character> chars = g.getTurn().getCharacters().findAllByProperty("nationNo", nationNo);
 						for (Character c : chars) {
 							if (c.getDeathReason() != CharacterDeathReasonEnum.NotDead)
 								continue;
@@ -104,27 +111,27 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 								boolean resultFound = false;
 								cont.removeResultsForOrder(order);
 								for (String msg : RunOrdercheckerCommand.this.proxy.getOrderInfoResults(mo)) {
-									OrderResult or = new OrderResult(order, msg, OrderResultTypeEnum.Info);
+									OrderResult or = new OrderResult(order, msg, OrderResultTypeEnum.Info, nationNo);
 									resultList.add(or);
 									resultFound = true;
 								}
 								for (String msg : RunOrdercheckerCommand.this.proxy.getOrderErrorResults(mo)) {
-									OrderResult or = new OrderResult(order, msg, OrderResultTypeEnum.Error);
+									OrderResult or = new OrderResult(order, msg, OrderResultTypeEnum.Error, nationNo);
 									resultList.add(or);
 									resultFound = true;
 								}
 								for (String msg : RunOrdercheckerCommand.this.proxy.getOrderHelpResults(mo)) {
-									OrderResult or = new OrderResult(order, msg, OrderResultTypeEnum.Help);
+									OrderResult or = new OrderResult(order, msg, OrderResultTypeEnum.Help, nationNo);
 									resultList.add(or);
 									resultFound = true;
 								}
 								for (String msg : RunOrdercheckerCommand.this.proxy.getOrderWarnResults(mo)) {
-									OrderResult or = new OrderResult(order, msg, OrderResultTypeEnum.Warning);
+									OrderResult or = new OrderResult(order, msg, OrderResultTypeEnum.Warning, nationNo);
 									resultList.add(or);
 									resultFound = true;
 								}
 								if (!resultFound) {
-									OrderResult or = new OrderResult(order, "Checked okay.", OrderResultTypeEnum.Okay);
+									OrderResult or = new OrderResult(order, "Checked okay.", OrderResultTypeEnum.Okay, nationNo);
 									resultList.add(or);
 								}
 							}
@@ -140,6 +147,7 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 
 				@Override
 				protected boolean onFinish() {
+					RunOrdercheckerCommand.this.gh.getGame().getTurn().getOrderResults().getResultCont().overrideResultForNation(RunOrdercheckerCommand.this.selectedNation, form.ch.isSelected());
 					return true;
 				}
 
@@ -164,6 +172,7 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 	 * @author Marios Skounakis
 	 */
 	public class OrdercheckerForm extends AbstractForm {
+		JCheckBox ch;
 		public OrdercheckerForm(Main main) {
 			super(FormModelHelper.createFormModel(main), "OrdercheckerForm");
 		}
@@ -181,8 +190,15 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 				exc.printStackTrace();
 			}
 			;
+			tlb.relatedGapRow();
+			this.ch = new JCheckBox(Messages.getString("ordersOK.label"));
+			tlb.cell(this.ch);
 
 			return tlb.getPanel();
+		}
+		
+		public boolean userOrderApproval() {
+			return true;
 		}
 
 	}

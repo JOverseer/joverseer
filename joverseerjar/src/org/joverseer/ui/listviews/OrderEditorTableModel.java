@@ -90,7 +90,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 			OrderVisualizationData ovd = OrderVisualizationData.instance();
 			return ovd.contains((Order) object);
 		} else if (i == iResults) {
-			OrderResultContainer container = OrderResultContainer.instance();
+			OrderResultContainer container = this.gameHolder.getGame().getTurn().getOrderResults().getResultCont();
 			OrderResultTypeEnum orderResultType = container.getResultTypeForOrder((Order) object);
 			return JOApplication.getIcon(orderResultType);
 			
@@ -159,6 +159,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 				}
 			}
 			JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
+			this.gameHolder.getGame().getTurn().getOrderResults().getResultCont().removeResultsForOrder(o);
 			JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, o);
 			return;
 		} else if (col >= iParamStart && col <= iParamEnd) {
@@ -183,6 +184,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 			}
 			o.setParameters(paramTxt2);
 			JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
+			this.gameHolder.getGame().getTurn().getOrderResults().getResultCont().removeResultsForOrder(o);
 			JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, o);
 			return;
 		}

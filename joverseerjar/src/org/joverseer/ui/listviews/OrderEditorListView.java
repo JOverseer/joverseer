@@ -493,7 +493,7 @@ public class OrderEditorListView extends ItemListView {
 					JLabel lbl = (JLabel) super.getTableCellRendererComponent(table1, "", isSelected, hasFocus, row, column);
 					lbl.setIcon(ico);
 					if (ico != null) {
-						OrderResultContainer container = OrderResultContainer.instance();
+						OrderResultContainer container = OrderEditorListView.this.gameHolder.getGame().getTurn().getOrderResults().getResultCont();
 						int idx = ((SortableTableModel) table1.getModel()).convertSortedIndexToDataIndex(row);
 						Object obj = OrderEditorListView.this.tableModel.getRow(idx);
 						Order o = (Order) obj;
@@ -712,6 +712,7 @@ public class OrderEditorListView extends ItemListView {
 			if (order != null) {
 				order.clear();
 				((BeanTableModel) OrderEditorListView.this.table.getModel()).fireTableDataChanged();
+				OrderEditorListView.this.gameHolder.getGame().getTurn().getOrderResults().getResultCont().removeResultsForOrder(order);
 				JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, order, this);
 			}
 		}

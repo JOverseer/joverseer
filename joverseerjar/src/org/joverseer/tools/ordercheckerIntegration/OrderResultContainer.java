@@ -59,7 +59,7 @@ public class OrderResultContainer implements ApplicationListener, Serializable {
 		try {
 			ArrayList<OrderResult> ors = getResultsForOrder(o);
 			this.results.removeAll(ors);
-			if(ors.size() != 0) this.overrideResultForNation(ors.getFirst().getNationNo(), false);
+			if(ors.size() != 0) this.overrideResultForNation(ors.get(0).getNationNo(), false);
 		} catch(java.util.ConcurrentModificationException ex) {
 			Logger.getRootLogger().error(ex.getMessage());
 		}

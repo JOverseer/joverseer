@@ -43,10 +43,10 @@ public class JOVersionCompatibility {
 		if (lastVersion == null) {
 			lastVersion = "";
 		}
-		((JideApplicationWindow)Application.instance().getActiveWindow()).getDockingManager().showFrame("notePad");
+		//((JideApplicationWindow)Application.instance().getActiveWindow()).getDockingManager().showFrame("notePad");
 		((JideApplicationWindow)Application.instance().getActiveWindow()).getDockingManager().showFrame("homeView");
-		PreferenceRegistry.instance().setPreferenceValue("currentHexView.disableEditOrderButton", "No");
-		PreferenceRegistry.instance().setPreferenceValue("general.homeView", "Yes");
+		//PreferenceRegistry.instance().setPreferenceValue("currentHexView.disableEditOrderButton", "No");
+		//PreferenceRegistry.instance().setPreferenceValue("general.homeView", "Yes");
 		return !lastVersion.equals(thisVersion());
 	}
 	public void markAsFirstTimeThisVersonRun(String value) {

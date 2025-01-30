@@ -101,7 +101,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
     	ArrayList<OrderResult> results = new ArrayList<OrderResult>();
     	if (!o.isBlank()) {
 
-	        OrderResultContainer container = OrderResultContainer.instance();
+	        OrderResultContainer container = this.gameHolder.getGame().getTurn().getOrderResults().getResultCont();
 	        orderResultType = container.getResultTypeForOrder(o);
 	        if (orderResultType != null) {
 	        	results = container.getResultsForOrder(o);
@@ -211,9 +211,9 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
                         		no.setCharacter(c);
                         	}                        	
                         }
-
+                        OrderViewer.this.gameHolder.getGame().getTurn().getOrderResults().getResultCont().removeResultsForOrder(o);
                         JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
-
+                        OrderViewer.this.gameHolder.getGame().getTurn().getOrderResults().getResultCont().removeResultsForOrder(no);
                         JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, no, this);
                     }
                 }

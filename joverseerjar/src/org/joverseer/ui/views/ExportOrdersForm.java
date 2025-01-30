@@ -50,6 +50,7 @@ import org.joverseer.JOApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.orders.export.OrderFileGenerator;
@@ -60,6 +61,7 @@ import org.joverseer.support.GamePreference;
 import org.joverseer.support.PropertyComparator;
 import org.joverseer.tools.OrderParameterValidator;
 import org.joverseer.tools.OrderValidationResult;
+import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -171,8 +173,19 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 				selection.add(this.nationsStr.get(i-1));
 			}
 			this.setSelected(selection);
+			
+//			for (String str : selection) {
+//				this.setNationOrderCheckerStatus(str, null);
+//			}
 		}
 		
+		public void setNationOrderCheckerStatus(String nation, OrderResultTypeEnum resultType) {
+			String s = null;
+			if(resultType == OrderResultTypeEnum.Error) s = "This nation has errors in their orders.";
+			else if(resultType == OrderResultTypeEnum.Warning) s = "This nation has warnings in their orders.";
+			else if(resultType == OrderResultTypeEnum.Okay) s = "Orders are good to go!";
+			this.setIconForItem(nation, JOApplication.getIcon(resultType), s);
+		}
 	}
 
 	/**
@@ -202,6 +215,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				// TODO Auto-generated method stub
+				ExportOrdersForm.this.orderCheckNations();
 				ExportOrdersForm.this.arrowAction("reset");
 			}
 		};
@@ -719,6 +733,40 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	public void setSendAll(boolean sendAll) {
 		this.chkDontCloseOnFinish.setSelected(sendAll);
 	}
+	
+	private void orderCheckNations() {
+		Turn t = this.gameHolder.getGame().getTurn();
+		
+		for(String nationName : this.nationSelectionPanel.getSelected()) {
+			int nationNum = this.gameHolder.getGame().getMetadata().getNationByName(nationName).getNumber();
+			ArrayList<OrderResult> results = t.getOrderResults().getOrderResultContainer().findAllByProperty("nationNo", nationNum);
+
+			if (results.size() == 0) {
+				this.nationSelectionPanel.setNationOrderCheckerStatus(nationName, OrderResultTypeEnum.Error);
+				continue;
+			}
+			
+			if (t.getOrderResults().getResultCont().getOverrideForNation(nationNum)) {
+				this.nationSelectionPanel.setNationOrderCheckerStatus(nationName, OrderResultTypeEnum.Okay);
+				continue;
+			}
+			
+			boolean error = false;
+			boolean warning = false;
+			
+			for(OrderResult o : results) {
+				if(o.getType() == OrderResultTypeEnum.Error) {
+					error = true;
+				}
+				else if (o.getType() == OrderResultTypeEnum.Warning) {
+					warning = true;
+				}
+			}
+			if(error) this.nationSelectionPanel.setNationOrderCheckerStatus(nationName, OrderResultTypeEnum.Error);
+			else if(warning) this.nationSelectionPanel.setNationOrderCheckerStatus(nationName, OrderResultTypeEnum.Warning);
+			else this.nationSelectionPanel.setNationOrderCheckerStatus(nationName, OrderResultTypeEnum.Okay);
+		}
+	}
 
 	private int validateOrders() {
 		Game g = this.gameHolder.getGame();
@@ -738,7 +786,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		this.duplicateSkillOrders = false;
 		this.ordersWithWarnings = false;
 
-		OrderResultContainer orc = OrderResultContainer.instance();
+		OrderResultContainer orc = this.gameHolder.getGame().getTurn().getOrderResults().getResultCont();
 		OrderParameterValidator validator = new OrderParameterValidator();
 		for (Character ch : chars) {
 			for (int i = 0; i < ch.getNumberOfOrders(); i++) {
@@ -782,12 +830,12 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	private boolean checkOrderValidity() {
 		this.cancelExport = false;
 		if (this.orderCheckResult != ORDERS_OK) {
-			if (this.missingOrders) {
-				return ErrorDialog.showErrorDialog("ExportOrdersForm.error.CharactersMissingOrders");
-			}
-			if (this.duplicateSkillOrders) {
-				return ErrorDialog.showErrorDialog("ExportOrdersForm.error.CharactersIssuingDuplicateSkillOrders");
-			}
+//			if (this.missingOrders) {
+//				return ErrorDialog.showErrorDialog("ExportOrdersForm.error.CharactersMissingOrders");
+//			}
+//			if (this.duplicateSkillOrders) {
+//				return ErrorDialog.showErrorDialog("ExportOrdersForm.error.CharactersIssuingDuplicateSkillOrders");
+//			}
 			if (this.chkShadowOrder.isSelected()) {
 				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
 						getMessage("ExportOrdersForm.warning.ShadowOrder")) {
@@ -807,62 +855,62 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 				if (this.cancelExport)
 					return false;
 			}
-			if (this.ordersWithErrors) {
-
-				this.cancelExport = false;
-				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
-						getMessage("ExportOrdersForm.warning.OrdersWithErrors")) {
-					@Override
-					protected void onCancel() {
-						super.onCancel();
-						ExportOrdersForm.this.cancelExport = true;
-					}
-
-					@Override
-					protected void onConfirm() {
-					}
-
-				};
-				dlg.showDialog();
-				if (this.cancelExport)
-					return false;
-			} else if (this.ordersWithWarnings) {
-				this.cancelExport = false;
-				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
-						getMessage("ExportOrdersForm.warning.OrdersWithWarnings")) {
-					@Override
-					protected void onCancel() {
-						super.onCancel();
-						ExportOrdersForm.this.cancelExport = true;
-					}
-
-					@Override
-					protected void onConfirm() {
-					}
-
-				};
-				dlg.showDialog();
-				if (this.cancelExport)
-					return false;
-
-			}
-			if (this.uncheckedOrders) {
-				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
-						getMessage("ExportOrdersForm.warning.OrdersNotCheckedWithOC")) {
-					@Override
-					protected void onCancel() {
-						super.onCancel();
-						ExportOrdersForm.this.cancelExport = true;
-					}
-
-					@Override
-					protected void onConfirm() {
-					}
-				};
-				dlg.showDialog();
-				if (this.cancelExport)
-					return false;
-			}
+//			if (this.ordersWithErrors) {
+//
+//				this.cancelExport = false;
+//				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
+//						getMessage("ExportOrdersForm.warning.OrdersWithErrors")) {
+//					@Override
+//					protected void onCancel() {
+//						super.onCancel();
+//						ExportOrdersForm.this.cancelExport = true;
+//					}
+//
+//					@Override
+//					protected void onConfirm() {
+//					}
+//
+//				};
+//				dlg.showDialog();
+//				if (this.cancelExport)
+//					return false;
+//			} else if (this.ordersWithWarnings) {
+//				this.cancelExport = false;
+//				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
+//						getMessage("ExportOrdersForm.warning.OrdersWithWarnings")) {
+//					@Override
+//					protected void onCancel() {
+//						super.onCancel();
+//						ExportOrdersForm.this.cancelExport = true;
+//					}
+//
+//					@Override
+//					protected void onConfirm() {
+//					}
+//
+//				};
+//				dlg.showDialog();
+//				if (this.cancelExport)
+//					return false;
+//
+//			}
+//			if (this.uncheckedOrders) {
+//				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
+//						getMessage("ExportOrdersForm.warning.OrdersNotCheckedWithOC")) {
+//					@Override
+//					protected void onCancel() {
+//						super.onCancel();
+//						ExportOrdersForm.this.cancelExport = true;
+//					}
+//
+//					@Override
+//					protected void onConfirm() {
+//					}
+//				};
+//				dlg.showDialog();
+//				if (this.cancelExport)
+//					return false;
+//			}
 		}
 		return true;
 

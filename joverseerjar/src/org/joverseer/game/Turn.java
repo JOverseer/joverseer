@@ -29,7 +29,6 @@ import org.joverseer.domain.SeasonEnum;
 import org.joverseer.support.Cloner;
 import org.joverseer.support.Container;
 import org.joverseer.tools.infoCollectors.artifacts.ArtifactUserInfo;
-import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 

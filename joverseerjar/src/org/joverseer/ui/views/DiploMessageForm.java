@@ -36,7 +36,6 @@ import org.joverseer.ui.command.ExportDiploCommand;
 import javax.swing.BoxLayout;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import javax.swing.SwingConstants;

@@ -5,14 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.Order;
 import org.joverseer.support.Container;
-import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.richclient.application.Application;
 
 /**
  * Container wrapper for the Order Results.

@@ -93,9 +93,6 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 						// the order results are retrieved from the order
 						// checker proxy
 						OrderResultContainer cont = RunOrdercheckerCommand.this.gh.getGame().getTurn().getOrderResults().getResultCont();
-						//cont.clear();
-						
-						//this.ga
 
 						int nationNo = Main.main.getNation().getNation();
 						cont.clearAllOrdersForNation(nationNo);

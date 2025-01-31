@@ -98,7 +98,17 @@ public class OrderResultContainer implements ApplicationListener, Serializable {
 	}
 	
 	public void clearAllOrdersForNation(int nationNo) {
-		this.results.removeAllByProperties("nationNo", nationNo);
+		try {
+			ArrayList<OrderResult> arr = (ArrayList<OrderResult>) this.results.findAllByProperty("nationNo", nationNo).clone();
+			for (int i = 0; i < arr.size(); i++) {
+				this.results.removeItem(arr.get(i));
+			}
+			
+			//this.results.removeAllByProperties("nationNo", nationNo);
+			//this.removeAllByNationNo(nationNo);
+		} catch(java.util.ConcurrentModificationException ex) {
+			Logger.getRootLogger().error(ex.getMessage());
+		}
 		this.overrideResultForNation(nationNo, false);
 	}
 	

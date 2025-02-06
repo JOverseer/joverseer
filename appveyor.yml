@@ -3,6 +3,7 @@ image:
   - macos-bigsur
 # 2017 is the latest with Inno Setup also installed.
   - Visual Studio 2017
+  - Ubuntu2204
 branches:
   only:
     - master
@@ -80,10 +81,18 @@ for:
 -
   matrix:
     only:
-      - image: Ubuntu2004
+      - image: Ubuntu2204
 
   install:
     - sudo apt -y install ant ant-contrib
+    - echo $SHELL
+    - /usr/libexec/java_home -V
+    - java --version
+    - export JAVA_HOME=`/usr/libexec/java_home -v13.*`
+    - java --version
+    - pwd
+    - ls -F
+
   build_script:
     - ant test
 

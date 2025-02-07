@@ -72,10 +72,14 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 			if (!p.getGroup().equals(group)) {
 				if (tlb != null) {
 					// add to tabPane
+					tlb.relatedGapRow();
+					tlb.relatedGapRow();
+					
 					String tabName = group.replace(".", " - ");
 
 					tabPane.addTab(tabName, null, tlb.getPanel(), tabName);
 				}
+				
 				tlb = new TableLayoutBuilder();
 				// if new group, show separator
 				tlb.separator(p.getGroup().replace(".", " - "));

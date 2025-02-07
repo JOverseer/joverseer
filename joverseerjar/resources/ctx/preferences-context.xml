@@ -590,6 +590,14 @@
 									<value>Color/Allegiance</value>
 								</property>
 							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>custom</value>
+								</property>
+								<property name="description">
+									<value>Color/Custom</value>
+								</property>
+							</bean>
 						</list>
 					</property>
 				</bean>
@@ -618,6 +626,24 @@
 							<ref bean="yesPrefValue" />
 							<ref bean="noPrefValue" />
 						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.colorFolder</value>
+					</property>
+					<property name="description">
+						<value>Custom Color File Location</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="type">
+						<value>text</value>
+					</property>
+					<property name="defaultValue">
+						<value>undefined</value>
 					</property>
 				</bean>
 

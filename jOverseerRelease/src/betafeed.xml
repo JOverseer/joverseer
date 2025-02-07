@@ -7,6 +7,16 @@
 			helper program.</description>
 		<language>en</language>
 		<item>
+			<title>1.18.19-rc3</title>
+			<pubDate>7 February 2025</pubDate>
+			<description>
+VERSION 1.18.19-rc3
+---------------
+- Orderchecker bug fix for results disapearing/not clearing themselves
+- Fixed Order table autocompletion box being weird with typing (hopefully)
+			</description>
+			</item>	
+		<item>
 			<title>1.18.19-rc2</title>
 			<pubDate>31 January 2025</pubDate>
 			<description>

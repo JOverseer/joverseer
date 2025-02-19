@@ -87,6 +87,11 @@ public class GraphicUtils {
 		JideApplicationWindow window = (JideApplicationWindow) Application.instance().getActiveWindow();
 		window.getDockingManager().showFrame(id);
 	}
+	
+	public static void hideView(String id) {
+		JideApplicationWindow window = (JideApplicationWindow) Application.instance().getActiveWindow();
+		window.getDockingManager().removeFrame(id);;		
+	}
 
 	/**
 	 * True if given order can be rendered by the active order renderer

@@ -23,6 +23,7 @@ import javax.swing.event.HyperlinkEvent.EventType;
 import org.joverseer.JOApplication;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.HomeViewInfoCollector;
+import org.joverseer.ui.JOverseerJIDEClient;
 import org.joverseer.ui.ScalableAbstractView;
 import org.joverseer.ui.command.LoadGame;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -181,6 +182,15 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 	public void componentFocusGained() {
 		super.componentFocusGained();
 		
+		boolean homePage = true;
+		for (String c : JOverseerJIDEClient.cmdLineArgs) {
+			if(c.equals("-disableHome")) {
+				homePage = false;
+				break;
+			}
+		}
+		if(!homePage) return;
+		
 		if (!this.isReportGenerated) {
 			this.setEditors(this.getReportContents());
 		}
@@ -248,6 +258,7 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 		ImageSource is = JOApplication.getImageSource();
 		Image i = is.getImage("homeView.topRight");
 		//ImageIcon i = new ImageIcon("resources/images/melogo_small_tm_black.png");
+		if (width == 0) width = 300;
 		Image im = i.getScaledInstance(width, -1, Image.SCALE_SMOOTH);
 		this.lblLogo.setIcon(new ImageIcon(im));
 	}

@@ -6,14 +6,29 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
+				<item>
+			<title>1.18.19-rc4</title>
+			<pubDate>19 February 2025</pubDate>
+			<description>
+VERSION 1.18.19-rc4
+---------------
+- Improvements and bug fixes to Nation Colours 
+	- Auto sets preference to use custo colours on editing colours
+	- New folder location in AppData
+	- Saves which colour file to use for a game file
+	- Can edit file names 
+- HomePage Image width 0 bug fix
+			</description>
+			</item>	
 		<item>
 			<title>1.18.19-rc3</title>
 			<pubDate>7 February 2025</pubDate>
 			<description>
 VERSION 1.18.19-rc3
 ---------------
-- Orderchecker bug fix for results disapearing/not clearing themselves
-- Fixed Order table autocompletion box being weird with typing (hopefully)
+- Edit Nations Colour in Edit Nation Details!
+- The option to use custom colours is in preferences, Map, and Nation Colours
+- In the Edit Nation Details form, you can create different Colour Sets, the one you use is the one selected in the drop down (becomes the default for the current game)
 			</description>
 			</item>	
 		<item>

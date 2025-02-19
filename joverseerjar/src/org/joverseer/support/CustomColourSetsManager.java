@@ -9,17 +9,15 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
-import java.util.prefs.Preferences;
 
-import org.joverseer.preferences.PreferenceRegistry;
-import org.joverseer.ui.JOverseerJIDEClient;
+import org.joverseer.metadata.GameTypeEnum;
 
 public class CustomColourSetsManager {
 	static final String PATH_NAME = File.separator + "Colour Sets";
 	static final String FILE_ENDING = ".properties";
 	static FilenameFilter filter = (dir, name) -> name.endsWith(FILE_ENDING);
 	
-	public static ArrayList<String> getColourSets(boolean createDefault) {
+	public static ArrayList<String> getColourSets(String defaultName, GameTypeEnum gt) {
 		String dir = getDir();
 		if (dir == null) return null;
 		
@@ -27,25 +25,25 @@ public class CustomColourSetsManager {
 
 		String[] ls = f.list(filter);
 		
-		if (!createDefault) return removeNameEndList(f.list(filter));
+		if (defaultName == null) return removeNameEndList(f.list(filter));
 		
-		if (ls.length == 0) createNewColourSetFile("default");		
+		createNewColourSetFile(defaultName, gt);
 		
 		return removeNameEndList(f.list(filter));
 	}
 	
 	public static ArrayList<String> getColourSets(){
-		return getColourSets(true);
+		return getColourSets(null, null);
 	}
 	
-	public static boolean createNewColourSetFile(String name) {
+	public static boolean createNewColourSetFile(String name, GameTypeEnum gt) {
 		String dir = getDir();
 		if (dir == null) return false;
 		
 		File f = new File(dir + File.separator + name + FILE_ENDING);
 		try {			
 			BufferedWriter writer = new BufferedWriter(new FileWriter(f));
-			writer.write(defaultFileContents);
+			writer.write(getDefaultContents(gt));
 			writer.close();
 			return true;
 		} catch (IOException e) {
@@ -53,23 +51,25 @@ public class CustomColourSetsManager {
 		}
 	}
 	
+	public static String getDefaultContents(GameTypeEnum gt) {
+		if(gt == GameTypeEnum.gameBOFA) return defaultBOFAColour;
+		if(gt == GameTypeEnum.gameCME) return defaultCMEColour;
+		if(gt == GameTypeEnum.gameCMF) return defaultCMFColour;
+		if(gt == GameTypeEnum.gameKS) return defaultKSColour;
+		return defaultFileContents;
+	}
+	
 	public static String getDir() {
-		String dir = PreferenceRegistry.instance().getPreferenceValue("map.colorFolder");
+		//String dir = PreferenceRegistry.instance().getPreferenceValue("map.colorFolder");
 		
-		if (dir.equals("undefined")) {
-	        Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
-	        dir = prefs.get("saveDir", null); //$NON-NLS-1$
-	        if (dir == null) return null;
-
-	        dir = dir.concat(PATH_NAME);
-	        makeDir(dir);
-	        PreferenceRegistry.instance().setPreferenceValue("map.colorFolder", removeNameEnd(dir));
+		String dir = AppDataManager.getPath();
+		if (dir == null) {
+			System.out.println("AppData Not found");
+			return null;
 		}
 		
-		else {
-			dir = dir.concat(PATH_NAME);
-			if (!doesDirExist(dir)) makeDir(dir);
-		}
+		dir = dir.concat(PATH_NAME);
+		if(!doesDirExist(dir)) makeDir(dir);
 		
 		return dir;
 	}
@@ -117,7 +117,9 @@ public class CustomColourSetsManager {
 
         try (FileReader reader = new FileReader(filePath)) {
             p.load(reader);
-            return p.getProperty("nation." + nationNum + ".color");
+            String s = p.getProperty("nation." + nationNum + ".color");
+            if(s == null) return "NO_NATION";
+            return s;
         } catch (FileNotFoundException e) {
             e.printStackTrace(); // Consider logging instead of printing
         } catch (IOException e) {
@@ -133,7 +135,9 @@ public class CustomColourSetsManager {
 
         try (FileReader reader = new FileReader(filePath)) {
             p.load(reader);
-            return p.getProperty("nation." + nationNum + ".color2");
+            String s = p.getProperty("nation." + nationNum + ".color2");
+            if(s == null) return "NO_NATION";
+            return s;
         } catch (FileNotFoundException e) {
             e.printStackTrace(); // Consider logging instead of printing
         } catch (IOException e) {
@@ -242,4 +246,76 @@ public class CustomColourSetsManager {
 			+ "nation.25.color2=#007800\r\n"
 			+ "nation.26.color2=#73b2bd\r\n"
 			+ "nation.27.color2=#000001";
+	
+	static final String defaultBOFAColour = "nation.1.color=#000001\r\n"
+			+ "nation.2.color=#000001\r\n"
+			+ "nation.3.color=#00ff00\r\n"
+			+ "nation.4.color=#0000ff\r\n"
+			+ "nation.5.color=#633063\r\n"
+			+ "\r\n"
+			+ "nation.1.color2=#ff0000\r\n"
+			+ "nation.2.color2=#528427\r\n"
+			+ "nation.3.color2=#000001\r\n"
+			+ "nation.4.color2=#000001\r\n"
+			+ "nation.5.color2=#000001";
+	
+	static final String defaultCMEColour = "nation.1.color=#e6ec3c\r\n"
+			+ "nation.26.color=#fcfecb\r\n"
+			+ "nation.2.color=#ff0202\r\n"
+			+ "nation.27.color=#fe8787\r\n"
+			+ "\r\n"
+			+ "nation.1.color2=#000001\r\n"
+			+ "nation.26.color2=#000001\r\n"
+			+ "nation.2.color2=#000001\r\n"
+			+ "nation.27.color2=#000001";
+	
+	static final String defaultCMFColour = "nation.1.color=#e6ec3c\r\n"
+			+ "nation.1.color2=#000001\r\n"
+			+ "nation.2.color=#7ef936\r\n"
+			+ "nation.2.color2=#000001\r\n"
+			+ "\r\n"
+			+ "nation.26.color=#fcfecb\r\n"
+			+ "nation.26.color2=#000001\r\n"
+			+ "\r\n"
+			+ "nation.11.color=#ff0202\r\n"
+			+ "nation.11.color2=#000001\r\n"
+			+ "nation.12.color=#9714fc\r\n"
+			+ "nation.12.color2=#000001\r\n"
+			+ "\r\n"
+			+ "nation.27.color=#fe8787\r\n"
+			+ "nation.27.color2=#000001";
+	
+	static final String defaultKSColour = "nation.1.color=#ff867b\r\n"
+			+ "nation.1.color2=#000001\r\n"
+			+ "nation.2.color=#D67FFF\r\n"
+			+ "nation.2.color2=#000001\r\n"
+			+ "nation.3.color=#ff0000\r\n"
+			+ "nation.3.color2=#000001\r\n"
+			+ "nation.4.color=#11E109\r\n"
+			+ "nation.4.color2=#000001\r\n"
+			+ "nation.5.color=#ff9a00\r\n"
+			+ "nation.5.color2=#000001\r\n"
+			+ "nation.6.color=#ffffff\r\n"
+			+ "nation.6.color2=#000001\r\n"
+			+ "\r\n"
+			+ "nation.11.color=#000001\r\n"
+			+ "nation.11.color2=#528427\r\n"
+			+ "nation.12.color=#000001\r\n"
+			+ "nation.12.color2=#A55000\r\n"
+			+ "nation.13.color=#000001\r\n"
+			+ "nation.13.color2=#ff8000\r\n"
+			+ "nation.14.color=#000001\r\n"
+			+ "nation.14.color2=#A30FFF\r\n"
+			+ "nation.15.color=#000001\r\n"
+			+ "nation.15.color2=#FFFF00\r\n"
+			+ "nation.16.color=#000001\r\n"
+			+ "nation.16.color2=#ffffff\r\n"
+			+ "\r\n"
+			+ "nation.21.color=#aaaaff\r\n"
+			+ "nation.21.color2=#0000aa\r\n"
+			+ "nation.22.color=#07EAD0\r\n"
+			+ "nation.22.color2=#63020d\r\n"
+			+ "\r\n"
+			+ "nation.26.color=#333399\r\n"
+			+ "nation.26.color2=#73b2bd";
 }

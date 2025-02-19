@@ -326,9 +326,21 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			landing.showDialog();
 		}
 		
-		if(PreferenceRegistry.instance().getPreferenceValue("general.homeView").equals("yes")) {
-			GraphicUtils.showView("homeView");
+		boolean homePage = true;
+		for (String c : JOverseerJIDEClient.cmdLineArgs) {
+			System.out.println(c);
+			if(c.equals("-disableHome")) {
+				homePage = false;
+				break;
+			}
 		}
+		
+		if(PreferenceRegistry.instance().getPreferenceValue("general.homeView").equals("yes") && homePage) {
+			GraphicUtils.showView("homeView");
+		} else if(homePage == false){
+			GraphicUtils.hideView("homeView");
+		}
+		
 		GraphicUtils.showView("currentHexDataViewer");
 	}
 

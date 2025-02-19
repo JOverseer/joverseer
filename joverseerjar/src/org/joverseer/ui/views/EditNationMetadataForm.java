@@ -38,6 +38,7 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.Nation;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.CustomColourSetsManager;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.ScalableAbstractForm;
@@ -78,6 +79,7 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 
 	public JComboBox colourSet;
 	public String gameNumber;
+	public GameTypeEnum gameType;
 
 	private String defaultColourSet;
 
@@ -167,7 +169,6 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 			
 			//JColorChooser c1 = this.makeColorChooser(b1.getBackground());
 			b1.addActionListener(new ActionListener() {
-
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
@@ -177,7 +178,6 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 					CustomColourSetsManager.setColor1((String)EditNationMetadataForm.this.colourSet.getSelectedItem(), EditNationMetadataForm.this.colour1.indexOf(((JButton)e.getSource())) + 1, String.valueOf(newC.getRGB()));
 					EditNationMetadataForm.this.applyColourSet();
 				}
-				
 			});
 			
 			this.colour1.add(b1);
@@ -338,12 +338,12 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 		bottomP.add(spaceStrut);
 		
 		this.colourSet = new JComboBox();
-		this.setColourDropDown();
 		this.colourSet.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				((GameMetadata) EditNationMetadataForm.this.getFormObject()).setColourSet((String) EditNationMetadataForm.this.colourSet.getSelectedItem());
+				
 				EditNationMetadataForm.this.applyColourSet();
 			}
 			
@@ -356,6 +356,13 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 		JButton addSetBt = new JButton(new AddColourSet());
 		addSetBt.setIcon(new ImageIcon(JOApplication.getImageSource().getImage("add.icon"))); //$NON-NLS-1$)
 		bottomP.add(addSetBt);
+		
+		Component horizontalStrut1 = Box.createHorizontalStrut(5);
+		bottomP.add(horizontalStrut1);
+		
+		JButton editSetBt = new JButton(new EditColourSetName());
+		editSetBt.setIcon(new ImageIcon(JOApplication.getImageSource().getImage("edit.image"))); //$NON-NLS-1$)
+		bottomP.add(editSetBt);
 		
 		Component horizontalStrut2 = Box.createHorizontalStrut(5);
 		bottomP.add(horizontalStrut2);
@@ -375,7 +382,10 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 	}
 	
 	public void setColourDropDown(String selected) {
-		ArrayList<String> sets = CustomColourSetsManager.getColourSets();
+		System.out.println(this.gameNumber +  " " + this.gameType);
+		ArrayList<String> sets;
+		if (((GameMetadata) this.getFormObject()).getColourSet() == null) sets = CustomColourSetsManager.getColourSets(this.gameNumber, this.gameType);
+		else sets = CustomColourSetsManager.getColourSets();
 		this.colourSet.setModel(new DefaultComboBoxModel(sets.toArray()));
 		if(selected != null) {
 			if(sets.contains(selected)) this.colourSet.setSelectedItem(selected);
@@ -427,6 +437,7 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 				}
 			}
 		}
+		PreferenceRegistry.instance().setPreferenceValue("map.nationColors", "custom");
 		Game g = JOApplication.getGame();
         JOApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, g, g);
 	}
@@ -436,8 +447,9 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 		super.setFormObject(arg0);
 		GameMetadata gm = (GameMetadata) arg0;
 		this.gameNumber = String.valueOf(gm.getGameNo());
+		this.gameType = gm.getGameType();
 		this.defaultColourSet = gm.getColourSet();
-		this.setColourDropDown();
+		this.setColourDropDown(this.defaultColourSet);
 		this.applyColourSet();
 		for (int i = 1; i < 26; i++) {
 			if (i < gm.getNations().size()) {
@@ -479,7 +491,7 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 			do {
 				newTitle = (String)JOptionPane.showInputDialog("Input a new Colour Set title that doesn't currently exist:", EditNationMetadataForm.this.gameNumber);
 			} while(CustomColourSetsManager.getColourSets().contains(newTitle));
-			CustomColourSetsManager.createNewColourSetFile(newTitle);
+			CustomColourSetsManager.createNewColourSetFile(newTitle, EditNationMetadataForm.this.gameType);
 			EditNationMetadataForm.this.setColourDropDown(newTitle);
 			EditNationMetadataForm.this.applyColourSet();
 		}
@@ -521,6 +533,7 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 			do {
 				newTitle = (String)JOptionPane.showInputDialog("Input a new Colour Set title that doesn't currently exist:", EditNationMetadataForm.this.colourSet.getSelectedItem());
 			} while(CustomColourSetsManager.getColourSets().contains(newTitle));
+			if (newTitle == null) return;
 			System.out.println(CustomColourSetsManager.renameFile((String)EditNationMetadataForm.this.colourSet.getSelectedItem(), newTitle));
 			EditNationMetadataForm.this.setColourDropDown(newTitle);
 		}

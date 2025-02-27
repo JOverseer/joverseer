@@ -296,6 +296,7 @@ public class ArmyViewer extends ObjectViewer {
 				return Messages.getString("ArmyViewer.Navy");
 			}
 			if (a.getElements().size() == 0) {}
+			else if (a.getElement(ArmyElementType.Transports) == null) {}
 			else if(a.getNumberOfRequiredTransports() <= a.getElement(ArmyElementType.Transports).getNumber()) {
 				return Messages.getString("ArmyViewer.Navy");
 			}

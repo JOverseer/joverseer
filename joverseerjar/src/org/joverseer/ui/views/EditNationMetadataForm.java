@@ -383,20 +383,23 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 	
 	public void setColourDropDown(String selected) {
 		System.out.println(this.gameNumber +  " " + this.gameType);
+		String def = ((GameMetadata) this.getFormObject()).getColourSet();
 		ArrayList<String> sets;
-		if (((GameMetadata) this.getFormObject()).getColourSet() == null) sets = CustomColourSetsManager.getColourSets(this.gameNumber, this.gameType);
+		if (def == null) sets = CustomColourSetsManager.getColourSets(this.gameNumber, this.gameType);
 		else sets = CustomColourSetsManager.getColourSets();
 		this.colourSet.setModel(new DefaultComboBoxModel(sets.toArray()));
 		if(selected != null) {
 			if(sets.contains(selected)) this.colourSet.setSelectedItem(selected);
 			return;
 		}
-		if(this.defaultColourSet != null) {
-			if(sets.contains(this.defaultColourSet)) this.colourSet.setSelectedItem(this.defaultColourSet);
-			return;
+		if(def != null) {
+			if(sets.contains(def)) this.colourSet.setSelectedItem(def);
 		}
-		if(this.gameNumber != null) {
+		else if(this.gameNumber != null) {
 			if(sets.contains(this.gameNumber)) this.colourSet.setSelectedItem(this.gameNumber);
+		}
+		else {
+			this.colourSet.setSelectedIndex(0);
 		}
 		
 		((GameMetadata) this.getFormObject()).setColourSet((String) this.colourSet.getSelectedItem());
@@ -491,6 +494,7 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 			do {
 				newTitle = (String)JOptionPane.showInputDialog("Input a new Colour Set title that doesn't currently exist:", EditNationMetadataForm.this.gameNumber);
 			} while(CustomColourSetsManager.getColourSets().contains(newTitle));
+			if(newTitle == null) return;
 			CustomColourSetsManager.createNewColourSetFile(newTitle, EditNationMetadataForm.this.gameType);
 			EditNationMetadataForm.this.setColourDropDown(newTitle);
 			EditNationMetadataForm.this.applyColourSet();
@@ -512,6 +516,8 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 			int del = JOptionPane.showConfirmDialog(null, "Are you sure you would like to delete " + name);
 			
 			if(del == JOptionPane.YES_OPTION) System.out.println(CustomColourSetsManager.deleteFile(name));
+			
+			if(CustomColourSetsManager.getColourSets().size() == 0) CustomColourSetsManager.createNewColourSetFile(EditNationMetadataForm.this.gameNumber, EditNationMetadataForm.this.gameType);
 			
 			EditNationMetadataForm.this.setColourDropDown();
 			EditNationMetadataForm.this.applyColourSet();

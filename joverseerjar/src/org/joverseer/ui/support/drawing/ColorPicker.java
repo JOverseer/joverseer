@@ -57,15 +57,17 @@ public class ColorPicker implements ApplicationListener {
     		if (fileName != null) {
     			
 	    		if (CustomColourSetsManager.getColourSets().size() != 0) {
-		    		//fileName = String.valueOf(this.gameHolder.getGame().getMetadata().getGameNo());
-		    		
-		    		String colourString = CustomColourSetsManager.getColor1(fileName, nationNo);
-		    		if (colourString == "NO_NATION") colourString = "#000001";
-		    		else if (colourString == null) colourString = CustomColourSetsManager.getColor1(String.valueOf(gm.getGameNo()), nationNo);
-		    		//if (colourString == null) colourString = "#000001";
-		    		Color c = Color.decode(colourString);
-	
-		    		if(c != null) return c;
+	    			if(CustomColourSetsManager.doesSetExist(fileName)) {
+			    		//fileName = String.valueOf(this.gameHolder.getGame().getMetadata().getGameNo());
+			    		
+			    		String colourString = CustomColourSetsManager.getColor1(fileName, nationNo);
+			    		if (colourString == "NO_NATION") colourString = "#000001";
+			    		else if (colourString == null) colourString = CustomColourSetsManager.getColor1(String.valueOf(gm.getGameNo()), nationNo);
+			    		//if (colourString == null) colourString = "#000001";
+			    		Color c = Color.decode(colourString);
+		
+			    		if(c != null) return c;
+	    			}
 	    		}
     		}
     	}
@@ -105,16 +107,18 @@ public class ColorPicker implements ApplicationListener {
     		if (fileName != null) {
     			
 	    		if (CustomColourSetsManager.getColourSets().size() != 0) {
+	    			if(CustomColourSetsManager.doesSetExist(fileName)) {
 		    		
-		    		//fileName = String.valueOf(this.gameHolder.getGame().getMetadata().getGameNo());
-		    		
-		    		String colourString = CustomColourSetsManager.getColor2(fileName, nationNo);
-		    		if (colourString == "NO_NATION") colourString = "#000001";
-		    		if (colourString == null) colourString = CustomColourSetsManager.getColor2(String.valueOf(gm.getGameNo()), nationNo);
-		    		//if (colourString == null) colourString = "#000001";
-		    		Color c = Color.decode(colourString);
-	
-		    		if(c != null) return c;
+			    		//fileName = String.valueOf(this.gameHolder.getGame().getMetadata().getGameNo());
+			    		
+			    		String colourString = CustomColourSetsManager.getColor2(fileName, nationNo);
+			    		if (colourString == "NO_NATION") colourString = "#000001";
+			    		if (colourString == null) colourString = CustomColourSetsManager.getColor2(String.valueOf(gm.getGameNo()), nationNo);
+			    		//if (colourString == null) colourString = "#000001";
+			    		Color c = Color.decode(colourString);
+		
+			    		if(c != null) return c;
+	    			}
 	    		}
     		}
     	}

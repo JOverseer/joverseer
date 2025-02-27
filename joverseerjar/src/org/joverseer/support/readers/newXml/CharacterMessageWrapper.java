@@ -660,6 +660,10 @@ public class CharacterMessageWrapper {
 			matches = matchPattern(line,new String[] {"was ordered to cast a lore spell. Reveal Character True - ", " is located in the ", " at ", "."});
 			hexIndex = 2;
 		}
+		if (matches == null) {
+			matches = matchPattern(line,new String[] {"was ordered to cast a lore spell. Reveal Character True - ", " may be located in the ", " at ", "."});
+			hexIndex = 2;
+		}
 		if (matches != null) {
 			RevealCharacterTrueResultWrapper rw = new RevealCharacterTrueResultWrapper();
 			rw.setCharacterName(matches[0]);

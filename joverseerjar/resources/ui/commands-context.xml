@@ -313,7 +313,9 @@
 				<bean class="org.joverseer.ui.command.ShowCreditsCommand" />
 				<bean class="org.joverseer.ui.command.ShowChangelogCommand" />
 				<value>separator</value>
-				<bean class="org.joverseer.ui.command.GatherSupportDataCommand" />
+				<bean class="org.joverseer.ui.command.GatherSupportDataCommand" >
+					<constructor-arg index="0" ref="gameHolder" />
+				</bean>
 				<value>separator</value>
 				<bean class="org.joverseer.ui.command.CheckForUpdatesCommand" />
 				<value>separator</value>

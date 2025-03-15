@@ -81,19 +81,20 @@ public class TurnXmlReaderTest {
 		gm.setNewXmlFormat(true);
 		PopulationCenter pcUnderTest;
 		gm.setGameType(GameTypeEnum.gameKS);
-		InfoSource infoSourceT0 = new InfoSource();
-		infoSourceT0.setTurnNo(0);
+		InfoSource infoSourceT7 = new InfoSource();
+		infoSourceT7.setTurnNo(7);
 		InfoSource infoSourceT8 = new InfoSource();
 		infoSourceT8.setTurnNo(8);
 		Turn turn = new Turn();
 		PopulationCenter pcT0 = new PopulationCenter();
 		pcT0.setX(21);
 		pcT0.setY(37);
-		pcT0.setNationNo(0);
-		pcT0.setName("Unknown (Map Icon)");
+		pcT0.setNationNo(1);
+		pcT0.setName("Eithel Culroch");
 		pcT0.setSize(PopulationCenterSizeEnum.village);
-		pcT0.setInfoSource(infoSourceT8);
-		pcT0.setInformationSource(InformationSourceEnum.limited);
+		pcT0.setInfoSource(infoSourceT7);
+		pcT0.setInformationSource(InformationSourceEnum.exhaustive);
+		pcT0.setHarbor(HarborSizeEnum.none);
 		turn.getPopulationCenters().addItem(pcT0);
 
 		PopCenterWrapper pcwT1 = new PopCenterWrapper();
@@ -101,17 +102,17 @@ public class TurnXmlReaderTest {
 		pcwT1.setNation(0);
 		pcwT1.setName("Unknown (Map Icon)");
 		pcwT1.setSize(PopulationCenterSizeEnum.village.getCode());
-		pcwT1.setDock(2);
+		pcwT1.setDock(0);
 		pcwT1.setInformationSource(4);
 		pcws.add(pcwT1);
 
 		PopCenterWrapper pcwT2 = new PopCenterWrapper();
 		pcwT2.setHexID(pcT0.getHexNo());
-		pcwT2.setNation(6);
+		pcwT2.setNation(1);
 		pcwT2.setName("Eithel Culroch");
 		pcwT2.setInformationSource(1); 
 		pcwT2.setSize(PopulationCenterSizeEnum.village.getCode());
-		pcwT2.setDock(0);
+		pcwT2.setDock(1);
 		pcws.add(pcwT2);
 		
 		//check the mistaken mapping of XML InformationSource to enum is as expected.
@@ -123,7 +124,7 @@ public class TurnXmlReaderTest {
 		TurnXmlReader.updateOldPCs(turn, turnNo, tiNationNo, nationCapitalHex, pcws, infoSourceT8, currentNationPops, gm);
 		
 		pcUnderTest = turn.getPopCenter(pcT0.getHexNo());
-		assertEquals("failed to spot dock", HarborSizeEnum.port ,pcUnderTest.getHarbor());
+		assertEquals("failed to remove dock", HarborSizeEnum.none ,pcUnderTest.getHarbor());
 		
 	}
 

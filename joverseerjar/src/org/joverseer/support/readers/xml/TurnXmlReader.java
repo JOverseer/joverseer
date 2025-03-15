@@ -1045,6 +1045,7 @@ public class TurnXmlReader implements Runnable {
 							|| (oldPc.getTurnSeenOnMap() == turnNo)){
 							if (newPc.getHarbor().getSize() == 0) {
 								newPc.setHarbor(oldPc.getHarbor());
+								newPc.setTurnSeenOnMap(oldPc.getTurnSeenOnMap());
 							}
 						}
 						

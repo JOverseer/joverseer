@@ -830,9 +830,9 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	private boolean checkOrderValidity() {
 		this.cancelExport = false;
 		if (this.orderCheckResult != ORDERS_OK) {
-//			if (this.missingOrders) {
-//				return ErrorDialog.showErrorDialog("ExportOrdersForm.error.CharactersMissingOrders");
-//			}
+			if (this.missingOrders) {
+				return ErrorDialog.showErrorDialog("ExportOrdersForm.error.CharactersMissingOrders");
+			}
 //			if (this.duplicateSkillOrders) {
 //				return ErrorDialog.showErrorDialog("ExportOrdersForm.error.CharactersIssuingDuplicateSkillOrders");
 //			}
@@ -855,26 +855,27 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 				if (this.cancelExport)
 					return false;
 			}
-//			if (this.ordersWithErrors) {
-//
-//				this.cancelExport = false;
-//				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
-//						getMessage("ExportOrdersForm.warning.OrdersWithErrors")) {
-//					@Override
-//					protected void onCancel() {
-//						super.onCancel();
-//						ExportOrdersForm.this.cancelExport = true;
-//					}
-//
-//					@Override
-//					protected void onConfirm() {
-//					}
-//
-//				};
-//				dlg.showDialog();
-//				if (this.cancelExport)
-//					return false;
-//			} else if (this.ordersWithWarnings) {
+			if (this.ordersWithErrors) {
+
+				this.cancelExport = false;
+				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
+						getMessage("ExportOrdersForm.warning.OrdersWithErrors")) {
+					@Override
+					protected void onCancel() {
+						super.onCancel();
+						ExportOrdersForm.this.cancelExport = true;
+					}
+
+					@Override
+					protected void onConfirm() {
+					}
+
+				};
+				dlg.showDialog();
+				if (this.cancelExport)
+					return false;
+			} 
+//			else if (this.ordersWithWarnings) {
 //				this.cancelExport = false;
 //				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
 //						getMessage("ExportOrdersForm.warning.OrdersWithWarnings")) {

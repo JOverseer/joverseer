@@ -6,6 +6,25 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
+		<item>
+			<title>1.18.19-rc5</title>
+			<pubDate>19 March 2025</pubDate>
+			<description>
+VERSION 1.18.19-rc5
+---------------
+ - Change wording on orderchecker tickbox
+ - Fix RCT bug
+ - Fix Army disapearing bug (unknown navy + editing to give it troops was cause)
+ - Warns if there are missing orders
+ - warns if there are errors and havent ticked
+ - Nation Colour improvements, ironing out bugs and making smoother to use
+ - Port not carrying over
+- in Gather Data for Support new button, Send an email with jov, log file oackaged in (work in progress)
+ - In Help -> Useful links more links now there
+ - KS artis spells fixed
+ - 930 scout result fix (characters nation not being updated)
+			</description>
+			</item>	
 				<item>
 			<title>1.18.19-rc4</title>
 			<pubDate>19 February 2025</pubDate>

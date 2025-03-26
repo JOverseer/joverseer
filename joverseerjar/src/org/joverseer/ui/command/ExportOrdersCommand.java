@@ -1,5 +1,7 @@
 package org.joverseer.ui.command;
 
+import javax.swing.JOptionPane;
+
 import org.joverseer.domain.Army;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.ActiveGameChecker;
@@ -26,6 +28,15 @@ public class ExportOrdersCommand extends ActionCommand {
     @Override
 	protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
+        if(this.gameHolder.getGame().getCurrentTurn() != this.gameHolder.getGame().getMaxTurn()) {
+        	JOptionPane.showMessageDialog(
+                null, 
+                Messages.getString("turnWarning.content"), 
+                Messages.getString("turnWarning.title"), 
+                JOptionPane.INFORMATION_MESSAGE
+            );
+        	return;
+        }
         FormModel formModel = FormModelHelper.createFormModel(new Army());
         final ExportOrdersForm form = new ExportOrdersForm(formModel,this.gameHolder);
         FormBackedDialogPage page = new FormBackedDialogPage(form);

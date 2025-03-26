@@ -15,6 +15,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
@@ -157,7 +158,10 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 				}
 			}
 		});
-		p1.add(this.sideEditor, BorderLayout.CENTER);
+		JScrollPane scpSide = new JScrollPane(this.sideEditor);
+		scpSide.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scpSide.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		p1.add(scpSide, BorderLayout.CENTER);
 		
 		jp = new JEditorPane();
 		jp.setContentType("text/html");

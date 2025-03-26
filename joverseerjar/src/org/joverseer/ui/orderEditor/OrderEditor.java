@@ -494,6 +494,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		if (container.getResultTypeForOrder(o)!=null) {
 			container.removeResultsForOrder(o);
 		}
+		container.overrideResultForNation(o.getCharacter().getNationNo(), false);
 		System.out.println("Size " + container.getContainer().size()+ "    And bool "  + container.getResultsForOrder(o).toString());
 		
 		// throw an order changed event

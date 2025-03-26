@@ -7,6 +7,20 @@
 			helper program.</description>
 		<language>en</language>
 		<item>
+			<title>1.18.19-rc6</title>
+			<pubDate>26 March 2025</pubDate>
+			<description>
+VERSION 1.18.19-rc6
+---------------
+- Fixed and completed ExportOrders/OrderChecker
+    -Properly displays warning for errors
+    -If unchecked orders, give option to check with them
+- Fix sorting of characters in current hex view
+- If not on correct turn, doesn't allow importing turn results or export orders
+- Add scrollpane to homeview
+			</description>
+			</item>	
+		<item>
 			<title>1.18.19-rc5</title>
 			<pubDate>19 March 2025</pubDate>
 			<description>

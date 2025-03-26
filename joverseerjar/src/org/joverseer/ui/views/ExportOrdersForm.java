@@ -67,6 +67,7 @@ import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.command.OpenGameDirTree;
+import org.joverseer.ui.command.RunOrdercheckerCommand;
 import org.joverseer.ui.command.SaveGame;
 import org.joverseer.ui.support.controls.CheckBoxList;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
@@ -123,6 +124,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	boolean ordersWithWarnings = false;
 	boolean missingOrders = false;
 	boolean duplicateSkillOrders = false;
+	boolean overrideRes = false;
 
 	// bit of a hack to let anonyous class communicate back to this class.
 	private boolean cancel= false;
@@ -181,9 +183,9 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		
 		public void setNationOrderCheckerStatus(String nation, OrderResultTypeEnum resultType) {
 			String s = null;
-			if(resultType == OrderResultTypeEnum.Error) s = "This nation has errors in their orders.";
-			else if(resultType == OrderResultTypeEnum.Warning) s = "This nation has warnings in their orders.";
-			else if(resultType == OrderResultTypeEnum.Okay) s = "Orders are good to go!";
+			if(resultType == OrderResultTypeEnum.Error) s = Messages.getString("ExportOrdersForm.nationPanel.error");
+			else if(resultType == OrderResultTypeEnum.Warning) s = Messages.getString("ExportOrdersForm.nationPanel.warning");
+			else if(resultType == OrderResultTypeEnum.Okay) s = Messages.getString("ExportOrdersForm.nationPanel.ok");
 			this.setIconForItem(nation, JOApplication.getIcon(resultType), s);
 		}
 	}
@@ -296,7 +298,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 		JButton ctc = new JButton(Messages.getString("ExportOrdersForm.CopyButton"));
 		final ClipboardOwner clipboardOwner = this;
-		ctc.setPreferredSize(this.uiSizes.newDimension(100/9, this.uiSizes.getHeight5()));
+		ctc.setPreferredSize(this.uiSizes.newDimension(100/8, this.uiSizes.getHeight5()));
 		ctc.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -312,8 +314,24 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 				
 			}
 		});
+		
+		JButton ctcSingle = new JButton(Messages.getString("ExportOrdersForm.CopyButtonSingle"));
+		ctcSingle.setPreferredSize(this.uiSizes.newDimension(100/9, this.uiSizes.getHeight5()));
+		ctcSingle.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String s = "";
+				s += (ExportOrdersForm.this.orders.getText());
+				StringSelection stringSelection = new StringSelection(s);
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				clipboard.setContents(stringSelection, clipboardOwner);
+				
+			}
+		});
+		
 
 		buttonPanel.add(ctc);
+		buttonPanel.add(ctcSingle);
 		
 		JPanel chkPanel = new JPanel();
 		chkPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -727,6 +745,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		if (pi.isDiploDue() && !pi.isDiploSent()) JOptionPane.showMessageDialog(null, "Remember, a Diplo is due this turn, and you have yet to send one.");
 		
 		this.lastSaveWasNotCancelled = saveAndSendOrders(true);
+		this.orderCheckNations();
 		
 	}
 	
@@ -748,6 +767,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 			
 			if (t.getOrderResults().getResultCont().getOverrideForNation(nationNum)) {
 				this.nationSelectionPanel.setNationOrderCheckerStatus(nationName, OrderResultTypeEnum.Okay);
+				this.overrideRes = true;
 				continue;
 			}
 			
@@ -855,7 +875,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 				if (this.cancelExport)
 					return false;
 			}
-			if (this.ordersWithErrors) {
+			if (this.ordersWithErrors && !this.overrideRes) {
 
 				this.cancelExport = false;
 				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
@@ -895,7 +915,23 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 //					return false;
 //
 //			}
-//			if (this.uncheckedOrders) {
+			if (this.uncheckedOrders) {
+		        int choice = JOptionPane.showOptionDialog(
+		                null,                      // Parent component (null for default)
+		                getMessage("ExportOrdersForm.warning.OrdersNotCheckedWithOC"),                   // Message
+		                getMessage("ExportOrdersForm.warning.OrdersNotCheckedWithOCTitle"),                     // Title
+		                JOptionPane.YES_NO_CANCEL_OPTION,  // Option type
+		                JOptionPane.QUESTION_MESSAGE      // Message type
+, null, null, null
+		        );
+				
+		        if(choice == JOptionPane.YES_OPTION) {
+		        	RunOrdercheckerCommand oCom = new RunOrdercheckerCommand(this.gameHolder);
+		        	oCom.execute();
+		        	this.cancelExport = true;
+		        }
+		        else if (choice == JOptionPane.NO_OPTION) {}
+		        else if (choice == JOptionPane.CANCEL_OPTION) this.cancelExport = true;
 //				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
 //						getMessage("ExportOrdersForm.warning.OrdersNotCheckedWithOC")) {
 //					@Override
@@ -909,9 +945,9 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 //					}
 //				};
 //				dlg.showDialog();
-//				if (this.cancelExport)
-//					return false;
-//			}
+				if (this.cancelExport)
+					return false;
+			}
 		}
 		return true;
 

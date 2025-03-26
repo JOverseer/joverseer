@@ -160,6 +160,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 			}
 			JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
 			this.gameHolder.getGame().getTurn().getOrderResults().getResultCont().removeResultsForOrder(o);
+			this.gameHolder.getGame().getTurn().getOrderResults().getResultCont().overrideResultForNation(o.getCharacter().getNationNo(), false);
 			JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, o);
 			return;
 		} else if (col >= iParamStart && col <= iParamEnd) {

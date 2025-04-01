@@ -55,7 +55,7 @@
 # PCSIZE,"Location, Type","Location = 0 or param #.  Type = 1 = C, 2 = V, 3 = T, 4 = MT, 5 =CY, 8 = T/MT/CY, 9 = MT/CY, 10 = not C.  Checks the size of the city at the given location."
 # PCSTATE,"Location, State","Location = 0 or param #.  State = 0 possibly destroyed, 1 = possibly captured, 2 = possibly influenced away.  Sets PC state information."
 # PRODUCTINFO,"Type, Loc, Prod, Amt, Units","Type 0 = transport, 1 = sell, 2 = buy.  Location = 0 (not used) or param #.  Product = param #.  Amount = param #.  Units = 0 for #, 1 = %.  Gives additional product transfer information."
-# RANK,"Char, Rank, Min, Type, Exclusive, AtCapital","Char = 0 or param #.  Rank 0 = command, 1 = agent, 2 = emissary, 3 = mage, 4 = any.  Min = minimum rank required. Type 0 = normal, 1 = new PC. Exclusive 1=only one order allowed. AtCapital 1=must be at capital. Checks that the specified character has a rank greater than the minimum."
+# RANK,"Char, Rank, Min, Type, Exclusive, AtCapital","Char = 0 or param #.  Rank 0 = command, 1 = agent, 2 = emissary, 3 = mage, 4 = any, 5 = none.  Min = minimum rank required. Type 0 = normal, 1 = new PC. Exclusive 1=only one order allowed. AtCapital 1=must be at capital. Checks that the specified character has a rank greater than the minimum."
 # SETCOMMAND,"Char, Type, Status","Char = 0 or param #.  Type  0 = army CO, 1 = company CO.  Status = 0 to lose it, 1 to gain it.  Indicates a change in command status."
 # SHIPS,"Location, War, Tran, With","Location = 0 or param #.  War = param # for warships.  Tran = param # for transports.  With = 0 in hex, 1 with army/navy.  Checks that the required ships are present."
 # SIEGENOT,"Location, Type","Location = 0 or parm #.  Type 0 = normal, 1 = capital.  Checks to see if the PC at the location is not under siege.  "
@@ -84,6 +84,7 @@ BEGINRULES,,,,,,,,,,,
 116,Spell,NONE,,,,,,,,,
 120,CstHlSp,SPELL,1,,,,,,,,
 120,,CHARACTER,2,0,1,,,,,,
+120,,RANK,0,5,0,0,1,0
 175,ChAlleg,NONE,,,,,,,,,
 175,,RANK,0,0,1,1,1,1
 180,UpStNat,NATION,0,1,,,,,,,
@@ -108,6 +109,7 @@ BEGINRULES,,,,,,,,,,,
 224,Spell,NONE,,,,
 225,CstCbSp,SPELL,1,,,
 225,,COMMANDER,0,0,0,6
+225,,RANK,0,5,0,0,1,0
 226,Spell,NONE,,,,
 228,Spell,NONE,,,,
 230,AttEnmy,COMMANDER,0,0,0,2
@@ -183,6 +185,7 @@ BEGINRULES,,,,,,,,,,,
 320,,PRODUCTINFO,1,0,1,2,0
 325,NatSell,PRODUCTINFO,1,0,1,2,1
 330,CstCjSp,SPELL,1,,,,
+330,,RANK,0,5,0,0,1,0
 340,TrPo2Ar,COMMANDER,0,0,0,3,
 340,,SIEGENOT,0,0,,,
 340,,PC,0,10,,,
@@ -490,18 +493,22 @@ BEGINRULES,,,,,,,,,,,
 825,,SPELL,1,,,
 825,,LAND,0,,,
 825,,LAND,2,,,
+825,,RANK,0,5,0,0,1,0
 830,MovNavy,COMMANDER,0,0,0,1
 830,,NAVYMOVE,,,,
 840,Stand,COMMANDER,0,0,0,0
 850,MovArmy,COMMANDER,0,0,0,7
 850,,ARMYMOVE,0,,,
+850,,RANK,0,5,0,0,1,0
 860,ForcMar,COMMANDER,0,0,0,7
 860,,ARMYMOVE,1,,,
+860,,RANK,0,5,0,0,1,0
 870,MovJoin,COMMANDER,2,1,0,2
 870,,COMMANDERNOT,0,0,0,5
 870,,CHARMOVE,1,12,2,
 870,,LAND,0,,,
 870,,LAND,1,,,
+870,,RANK,0,5,0,0,1,0
 900,FindArt,ARTYFIND,1,,,
 905,ScoArmy,LAND,0,,,
 905,,ARMYSCOUT,1,2,,
@@ -515,6 +522,7 @@ BEGINRULES,,,,,,,,,,,
 930,,RANK,0,1,1,0,1,0
 935,UsScArt,ARTIFACT,1,,,
 940,CstLoSp,SPELL,1,,,
+940,,RANK,0,5,0,0,1,0
 942,MvTnMap,RANK,0,2,1,0,1,1
 945,UsHiArt,ARTIFACT,1,,,
 945,,PC,0,9,,,

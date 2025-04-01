@@ -298,7 +298,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 		JButton ctc = new JButton(Messages.getString("ExportOrdersForm.CopyButton"));
 		final ClipboardOwner clipboardOwner = this;
-		ctc.setPreferredSize(this.uiSizes.newDimension(100/8, this.uiSizes.getHeight5()));
+		ctc.setPreferredSize(this.uiSizes.newDimension(100/10, this.uiSizes.getHeight5()));
 		ctc.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -330,8 +330,8 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		});
 		
 
-		buttonPanel.add(ctc);
 		buttonPanel.add(ctcSingle);
+		buttonPanel.add(ctc);
 		
 		JPanel chkPanel = new JPanel();
 		chkPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -814,9 +814,9 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 					this.missingOrders = true;
 				} else {
 					if (orc.getResultsForOrder(ch.getOrders()[i]).size() == 0) {
-						if (!g.getMetadata().getGameType().equals(GameTypeEnum.gameKS)) {
+						//if (!g.getMetadata().getGameType().equals(GameTypeEnum.gameKS)) {
 							this.uncheckedOrders = true;
-						}
+						//}
 					} else {
 						if (orc.getResultTypeForOrder(ch.getOrders()[i]) == OrderResultTypeEnum.Error) {
 							this.ordersWithErrors = true;
@@ -875,6 +875,41 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 				if (this.cancelExport)
 					return false;
 			}
+			
+			if (this.uncheckedOrders) {
+		        int choice = JOptionPane.showOptionDialog(
+		                null,                      // Parent component (null for default)
+		                getMessage("ExportOrdersForm.warning.OrdersNotCheckedWithOC"),                   // Message
+		                getMessage("ExportOrdersForm.warning.OrdersNotCheckedWithOCTitle"),                     // Title
+		                JOptionPane.YES_NO_CANCEL_OPTION,  // Option type
+		                JOptionPane.QUESTION_MESSAGE      // Message type
+, null, null, null
+		        );
+				
+		        if(choice == JOptionPane.YES_OPTION) {
+		        	RunOrdercheckerCommand oCom = new RunOrdercheckerCommand(this.gameHolder);
+		        	oCom.execute();
+		        	this.cancelExport = true;
+		        }
+		        else if (choice == JOptionPane.NO_OPTION) {}
+		        else if (choice == JOptionPane.CANCEL_OPTION) this.cancelExport = true;
+//				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
+//						getMessage("ExportOrdersForm.warning.OrdersNotCheckedWithOC")) {
+//					@Override
+//					protected void onCancel() {
+//						super.onCancel();
+//						ExportOrdersForm.this.cancelExport = true;
+//					}
+//
+//					@Override
+//					protected void onConfirm() {
+//					}
+//				};
+//				dlg.showDialog();
+				if (this.cancelExport)
+					return false;
+			}
+			
 			if (this.ordersWithErrors && !this.overrideRes) {
 
 				this.cancelExport = false;
@@ -915,39 +950,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 //					return false;
 //
 //			}
-			if (this.uncheckedOrders) {
-		        int choice = JOptionPane.showOptionDialog(
-		                null,                      // Parent component (null for default)
-		                getMessage("ExportOrdersForm.warning.OrdersNotCheckedWithOC"),                   // Message
-		                getMessage("ExportOrdersForm.warning.OrdersNotCheckedWithOCTitle"),                     // Title
-		                JOptionPane.YES_NO_CANCEL_OPTION,  // Option type
-		                JOptionPane.QUESTION_MESSAGE      // Message type
-, null, null, null
-		        );
-				
-		        if(choice == JOptionPane.YES_OPTION) {
-		        	RunOrdercheckerCommand oCom = new RunOrdercheckerCommand(this.gameHolder);
-		        	oCom.execute();
-		        	this.cancelExport = true;
-		        }
-		        else if (choice == JOptionPane.NO_OPTION) {}
-		        else if (choice == JOptionPane.CANCEL_OPTION) this.cancelExport = true;
-//				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
-//						getMessage("ExportOrdersForm.warning.OrdersNotCheckedWithOC")) {
-//					@Override
-//					protected void onCancel() {
-//						super.onCancel();
-//						ExportOrdersForm.this.cancelExport = true;
-//					}
-//
-//					@Override
-//					protected void onConfirm() {
-//					}
-//				};
-//				dlg.showDialog();
-				if (this.cancelExport)
-					return false;
-			}
+
 		}
 		return true;
 

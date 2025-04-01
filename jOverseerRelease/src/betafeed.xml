@@ -12,12 +12,9 @@
 			<description>
 VERSION 1.18.19-rc7
 ---------------
-- Fixed and completed ExportOrders/OrderChecker
-    -Properly displays warning for errors
-    -If unchecked orders, give option to check with them
-- Fix sorting of characters in current hex view
-- If not on correct turn, doesn't allow importing turn results or export orders
-- Add scrollpane to homeview
+- Copy orders button re-format
+- Orderchecker - duplicate order for movement + spells
+- Fix for unchecked orders
 			</description>
 			</item>	
 		<item>

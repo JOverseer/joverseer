@@ -2963,7 +2963,7 @@ public class Rule
                     			break;
                     		}
                     	}
-            		} else if (rank != ANY) {
+            		} else if (rank != ANY && rank != NONE) {
             			//check the major statistic for the order.
             			//by seeing if there's a rank rule for it and what the restriction is!
             			Ruleset otherRuleSet = this.main.getRuleSet().getRulesForOrder(otherOrder, false);

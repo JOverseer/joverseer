@@ -108,7 +108,8 @@ public class GatherSupportDataCommand extends ActionCommand {
             @Override
 			protected Object[] getCommandGroupMembers() {
                 return new AbstractCommand[] {
-                	getBugReportCommand(),getOpenLogCommand(),getFinishCommand()
+                	//getBugReportCommand(),getOpenLogCommand(),getFinishCommand()
+                	getOpenLogCommand(),getFinishCommand()
                 };
             }
 

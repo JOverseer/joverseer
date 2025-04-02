@@ -12,7 +12,7 @@
 
 	<bean id="applicationDescriptor"
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="1.18.19-rc7"/>
+		<property name="version" value="1.18.19-rc8"/>
 		<property name="buildId" value="Sindarin"/>
 	</bean>
 

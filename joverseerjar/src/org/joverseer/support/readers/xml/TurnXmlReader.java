@@ -1058,11 +1058,13 @@ public class TurnXmlReader implements Runnable {
 							if (oldPc.getInfoSource().getTurnNo() < turnNo) {
 								if (newPc.getNationNo() == 0)
 									newPc.setNationNo(oldPc.getNationNo());
+								if (!newPc.isDefaultName()) newPc.setHarbor(oldPc.getHarbor());
 							} else {
 								if (newPc.getLoyalty() < oldPc.getLoyalty())
 									newPc.setLoyalty(oldPc.getLoyalty());
 								if (newPc.getNationNo() == 0)
 									newPc.setNationNo(oldPc.getNationNo());
+								if (!newPc.isDefaultName()) newPc.setHarbor(oldPc.getHarbor());
 								if (newPc.getCapital() != oldPc.getCapital()) {
 									PopulationCenter oldCapital = turn.getCapital(newPc.getNationNo());
 									if (oldCapital != null) {

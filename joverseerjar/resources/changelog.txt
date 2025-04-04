@@ -1,3 +1,6 @@
+VERSION 1.18.20
+---------------
+	* Fix: Kinstrife unknown nation colours were black
 VERSION 1.18.19
 ---------------
 	* Enh: Customise nation colours in 'Edit Nation Details', being able to create different colour sets for different games.

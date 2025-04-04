@@ -290,7 +290,9 @@ public class CustomColourSetsManager {
 			+ "nation.27.color=#fe8787\r\n"
 			+ "nation.27.color2=#000001";
 	
-	static final String defaultKSColour = "nation.1.color=#ff867b\r\n"
+	static final String defaultKSColour = "nation.0.color=#999999\r\n"
+			+ "nation.0.color2=#000001\r\n"
+			+ "nation.1.color=#ff867b\r\n"
 			+ "nation.1.color2=#000001\r\n"
 			+ "nation.2.color=#D67FFF\r\n"
 			+ "nation.2.color2=#000001\r\n"
@@ -322,5 +324,7 @@ public class CustomColourSetsManager {
 			+ "nation.22.color2=#63020d\r\n"
 			+ "\r\n"
 			+ "nation.26.color=#333399\r\n"
-			+ "nation.26.color2=#73b2bd";
+			+ "nation.26.color2=#73b2bd\r\n"
+			+ "nation.27.color=#000001\r\n"
+			+ "nation.27.color2=#000001";
 }

@@ -1,3 +1,11 @@
+VERSION 1.18.21
+---------------
+	* Fix: Unable to send orders on turn 0
+	* Fix: Throwing an error when saving a game before importing any results
+	* Fix: Throwing an error when loading a game which didn't have any imported results.
+VERSION 1.18.20
+---------------
+	* Fix: Kinstrife unknown nation colours were black
 VERSION 1.18.19
 ---------------
 	* Enh: Customise nation colours in 'Edit Nation Details', being able to create different colour sets for different games.

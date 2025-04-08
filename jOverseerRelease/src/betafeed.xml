@@ -6,6 +6,17 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
+				<item>
+			<title>1.18.21-rc1</title>
+			<pubDate>8 April 2025</pubDate>
+			<description>
+VERSION 1.18.21-rc1
+---------------
+- Fix for being unable to send orders on turn 0
+- Fix throwing an error when saving a game before importing any results
+- Fix throwing an error when loading a game which didnt habe any imported results.
+			</description>
+			</item>	
 		<item>
 			<title>1.18.19-rc8</title>
 			<pubDate>2 April 2025</pubDate>

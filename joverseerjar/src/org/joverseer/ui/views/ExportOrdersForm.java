@@ -392,6 +392,11 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 					this.numberOfControlledNations = conNations.length;
 					this.nationSelectionPanel.setSelectedNations(conNations);
 				}
+			} else {
+				this.currentNation.setText(g.getMetadata().getNationByNum(g.getMetadata().getNationNo()).getName());
+				this.numberOfControlledNations = 1;
+				int[] i = {g.getMetadata().getNationNo()};
+				this.nationSelectionPanel.setSelectedNations(i);
 			}
 		}
 		

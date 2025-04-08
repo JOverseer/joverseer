@@ -12,8 +12,9 @@
 
 	<bean id="applicationDescriptor"
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="1.18.19"/>
-		<property name="buildId" value="Sindarin"/>
+		<property name="version" value="1.18.21-rc1"/>
+		<property name="buildId" value="Tengwar"/>
+
 	</bean>
 
 	<!-- JIDE specific replacement of the ApplicationLifecycleAdvisor. Specifies 

@@ -29,5 +29,6 @@ public enum LifecycleEventsEnum {
     EditOrderStartEvent,
     OrderSaveToFileEvent,
     OrderCheckerRunEvent,
-    SaveGameEvent
+    SaveGameEvent,
+    ThemeChangeEvent
 }

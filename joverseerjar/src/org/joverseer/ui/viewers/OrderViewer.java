@@ -24,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.TransferHandler;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 import org.joverseer.JOApplication;
@@ -259,10 +260,10 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
                 JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, getFormObject(), this);
             }
         });
-        this.draw.setPreferredSize(this.uiSizes.newDimension(1, this.uiSizes.getHeight4()));
+        this.draw.setPreferredSize(this.uiSizes.newDimension(2, this.uiSizes.getHeight4()));
         this.draw.setBorder(border);
         this.draw.setOpaque(true);
-        this.draw.setBackground(Color.white);
+        this.draw.setBackground(UIManager.getColor("Panel.background"));
         this.draw.setVisible(true);
         this.draw.setEnabled(false);
         glb.append(this.draw);
@@ -270,7 +271,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         glb.nextLine();
         JPanel p = glb.getPanel();
         //p.setPreferredSize(new Dimension(166, 16));
-        p.setBackground(Color.white);
+        p.setBackground(UIManager.getColor("Panel.background"));
         p.setBorder(border);
 
         p.setFocusTraversalPolicyProvider(true);

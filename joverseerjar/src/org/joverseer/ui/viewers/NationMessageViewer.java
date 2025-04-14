@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.UIManager;
 
 import org.joverseer.domain.NationMessage;
 import org.joverseer.game.Game;
@@ -60,7 +61,7 @@ public class NationMessageViewer extends ObjectViewer {
 //        nation.setBorder(null);
 //        glb.append(nation);
         JPanel p = glb.getPanel();
-        p.setBackground(Color.white);
+        p.setBackground(UIManager.getColor("Panel.background"));
         return p;
     }
 

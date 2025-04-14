@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Image;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.net.URI;
 
@@ -169,6 +171,14 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 		jp.setCaretColor(Color.WHITE);
 		jp.setText("<div style='font-family:MS Sans Serif; font-size:9pt'><i>" + Messages.getString("extraLegal.copyright"));
 		p1.add(jp, BorderLayout.PAGE_END);
+		
+		this.p.addComponentListener(new ComponentAdapter() {
+		    @Override
+			public void componentResized(ComponentEvent componentEvent) {
+		        // do stuff
+		    	HomeView.this.componentFocusGained();
+		    }
+		});
 		
 		return this.p;
 

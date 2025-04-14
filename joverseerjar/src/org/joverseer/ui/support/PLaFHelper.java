@@ -123,21 +123,25 @@ public class PLaFHelper {
 //        }
 	}
 	
-    public static void checkLaFTheme(Component component) {
-        if (component instanceof JComponent) {
-            JComponent jComponent = (JComponent) component;
-            // Check if the component is using a custom Look and Feel
-            if(jComponent.getUI() == null) {}
-            else if (!(jComponent.getUI().getClass().getName().contains("com.formdev.flatlaf.ui"))) {
-                System.out.println(component.getClass().getName() + " is not using the default LaF theme." + jComponent.getUI().getClass().getName());
-            }
-        }
-            if (component instanceof Container) {
-                for (Component child : ((Container) component).getComponents()) {
-                    checkLaFTheme(child);  // Recursive call to check the child component
-                }
-            }
-    }
+	
+	/*
+	 * Debugging function that wouldnt compile
+	 */
+//    public static void checkLaFTheme(Component component) {
+//        if (component instanceof JComponent) {
+//            JComponent jComponent = (JComponent) component;
+//            // Check if the component is using a custom Look and Feel
+//            if(jComponent.getUI() == null) {}
+//            else if (!(jComponent.getUI().getClass().getName().contains("com.formdev.flatlaf.ui"))) {
+//                System.out.println(component.getClass().getName() + " is not using the default LaF theme." + jComponent.getUI().getClass().getName());
+//            }
+//        }
+//            if (component instanceof Container) {
+//                for (Component child : ((Container) component).getComponents()) {
+//                    checkLaFTheme(child);  // Recursive call to check the child component
+//                }
+//            }
+//    }
 
 	public boolean isClassAvailable(String clazz) {
 		Class candidate;

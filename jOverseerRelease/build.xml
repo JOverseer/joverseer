@@ -184,6 +184,7 @@ companyName="Game Systems International" internalName="jOverseer" originalFilena
     <target name="updatezip" depends="WindowsJoverseerLauncher,WindowsUpdaterLauncher">
         <zip destfile="${dist}/latestupdate.zip">
             <fileset file="${dist}/joverseer.jar"/>
+            <fileset file="${lib}/flatlaf-3.0.jar"/>
             <fileset file="${dist}/jOverseerUpdater.exe"/>
             <fileset file="${dist}/jOverseer.exe"/>
             <fileset file="${dist}/orderchecker.jar"/>
@@ -342,6 +343,7 @@ companyName="Game Systems International" internalName="jOverseer" originalFilena
 	<target name="betaupdatezip" depends="WindowsJoverseerLauncher,WindowsUpdaterLauncher">
         <zip destfile="${dist}/latestbetaupdate.zip">
             <fileset file="${dist}/joverseer.jar"/>
+            <fileset file="${lib}/flatlaf-3.0.jar"/>
             <fileset file="${dist}/jOverseerUpdater.exe"/>
             <fileset file="${dist}/jOverseer.exe"/>
             <fileset file="${dist}/orderchecker.jar"/>

@@ -9,7 +9,10 @@ import java.util.Enumeration;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
+import javax.swing.UIManager;
+
 import org.joverseer.JOApplication;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
 import org.joverseer.support.RecentGames.RecentGameInfo;
@@ -148,8 +151,12 @@ public class HomeViewInfoCollector {
 	}
 	
 	private String renderNewsletter() {
-		String cont = getPage(this.newsletterURL);
-		return cont;
+		String page = getPage(this.newsletterURL);
+		
+		String pval = PreferenceRegistry.instance().getPreferenceValue("UI.LookAndFeel");
+		if(pval.equals("com.formdev.flatlaf.FlatDarkLaf") || pval.equals("com.formdev.flatlaf.FlatDarculaLaf")) return darkMode(page);
+		
+		return page;
 	}
 	
 	/**
@@ -164,7 +171,9 @@ public class HomeViewInfoCollector {
 		  connection =  new URI(getFinalURL(Url)).toURL().openConnection();
 		  Scanner scanner = new Scanner(connection.getInputStream(), "UTF-8");
 		  scanner.useDelimiter("\\Z");
+		  
 		  content = scanner.next();
+		  
 		  scanner.close();
 		}catch ( Exception ex ) {
 			content = Messages.getString("homeView.noInternetWelcomeText");
@@ -190,6 +199,17 @@ public class HomeViewInfoCollector {
 		        return getFinalURL(redirectUrl);
 		    }
 		}catch(Exception e) {}
-	    return url;
+	    return url;	
+	}
+	
+	/**
+	 * Does some janky search and replace to make the newsletter 'Dark Mode'
+	 */
+	public String darkMode(String page) {
+		String s = page.replaceAll("<div class=\"text-block\" style=\"", "<div class=\"text-block\" style=\"color: #ffffff; ");
+		s = s.replaceAll("<div class=\"text-block fr-inner\" style=\"", "<div class=\"text-block fr-inner\" style=\"color: #ffffff; ");
+		s = s.replaceAll("bgcolor=\"#ffffff\"", "bgcolor=\"#000000\"");
+		s = s.replaceAll("background-color: #ffffff;", "background-color: #000000;");
+		return s;
 	}
 }

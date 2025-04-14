@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import org.joverseer.JOApplication;
 import org.joverseer.domain.ClimateEnum;
@@ -288,6 +289,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 
 	@Override
 	protected JComponent createFormControl() {
+		Color col = UIManager.getColor("Panel.background");
 		getFormModel().setValidating(false);
 		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
 		glb.setDefaultInsets(new Insets(0, 0, 0, 5));
@@ -299,6 +301,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 		c.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
 		c.setFont(new Font(c.getFont().getName(), Font.BOLD, c.getFont().getSize()));
 		c.setBorder(null);
+		c.setOpaque(false);
 
 		glb.append(this.sizeFort = new JTextField());
 		c = this.sizeFort;
@@ -377,11 +380,11 @@ public class PopulationCenterViewer extends ObjectViewer {
 		this.turnInfo.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
 
 		JPanel pnl = tlb.getPanel();
-		pnl.setBackground(Color.white);
+		pnl.setBackground(col);
 		glb.append(pnl, 2, 1);
 
 		JPanel panel = glb.getPanel();
-		panel.setBackground(Color.white);
+		panel.setBackground(col);
 		return panel;
 	}
 

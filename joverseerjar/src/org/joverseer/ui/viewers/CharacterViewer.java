@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 import org.joverseer.JOApplication;
@@ -186,7 +187,7 @@ public class CharacterViewer extends ObjectViewer {
 			tlb.row();
 		}
 		JPanel pnl = tlb.getPanel();
-		pnl.setBackground(Color.white);
+		pnl.setBackground(UIManager.getColor("Panel.background"));
 		this.orderPanel.add(pnl);
 	}
 
@@ -694,7 +695,7 @@ public class CharacterViewer extends ObjectViewer {
 		tlb.row();
 		this.orderPanel = new JPanel();
 		this.orderPanel.add(tlb.getPanel());
-		this.orderPanel.setBackground(Color.white);
+		this.orderPanel.setBackground(UIManager.getColor("Panel.background"));
 		this.orderPanel.setBorder(border);
 		glb.append(this.orderPanel, 2, 1);
 		glb.append(this.swapOrdersIconCmd = new JLabelButton(new ImageIcon(imgSource.getImage("swapOrders.icon")))); //$NON-NLS-1$
@@ -719,7 +720,7 @@ public class CharacterViewer extends ObjectViewer {
 		tlb = new TableLayoutBuilder();
 		tlb.cell(this.notesViewer.createFormControl(), "colspec=left:285px"); //$NON-NLS-1$
 		JPanel notesPanel = tlb.getPanel();
-		notesPanel.setBackground(Color.white);
+		notesPanel.setBackground(UIManager.getColor("Panel.background"));
 		glb.append(notesPanel, 6, 1);
 
 		// notes = new JTextArea();
@@ -805,7 +806,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		});
 
-		panel.setBackground(Color.white);
+		panel.setBackground(UIManager.getColor("Panel.background"));
 		return panel;
 	}
 

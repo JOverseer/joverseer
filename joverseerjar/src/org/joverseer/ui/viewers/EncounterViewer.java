@@ -10,6 +10,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import org.joverseer.JOApplication;
 import org.joverseer.domain.Challenge;
@@ -73,7 +74,7 @@ public class EncounterViewer extends ObjectViewer {
 		glb.nextLine();
 
 		JPanel p = glb.getPanel();
-		p.setBackground(Color.white);
+		p.setBackground(UIManager.getColor("Panel.background"));
 		return p;
 	}
 

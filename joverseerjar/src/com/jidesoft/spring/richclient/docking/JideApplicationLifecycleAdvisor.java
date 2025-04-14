@@ -25,6 +25,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.RepaintManager;
+import javax.swing.UIManager;
 
 import org.joverseer.JOApplication;
 import org.joverseer.preferences.PreferenceRegistry;
@@ -33,10 +34,12 @@ import org.joverseer.support.JOVersionCompatibility;
 import org.joverseer.support.RecentGames;
 import org.joverseer.support.RecentGames.RecentGameInfo;
 import org.joverseer.ui.JOverseerJIDEClient;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.command.LoadGame;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.PLaFHelper;
 import org.joverseer.ui.support.dialogs.ExitDialog;
 import org.joverseer.ui.support.dialogs.WelcomeDialog;
 import org.springframework.context.ApplicationEvent;
@@ -53,6 +56,9 @@ import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.exceptionhandling.DefaultRegisterableExceptionHandler;
 import org.springframework.richclient.exceptionhandling.RegisterableExceptionHandler;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import com.middleearthgames.updater.UpdateChecker;
 
 /**
@@ -234,6 +240,29 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 	public void onWindowOpened(ApplicationWindow arg0) {
 		super.onWindowOpened(arg0);
 		
+		String pval = PreferenceRegistry.instance().getPreferenceValue("UI.LookAndFeel");
+		if (pval != "" && !pval.equals("Default")) {
+			System.out.println(pval);
+			FlatDarkLaf.setup();
+			FlatLaf.registerCustomDefaultsSource( "ui.themes");
+			
+			try {
+				UIManager.setLookAndFeel(pval);
+		        UIManager.put("MenuItemUI", "com.formdev.flatlaf.ui.FlatMenuItemUI");
+		        UIManager.put("PopupMenuUI", "com.formdev.flatlaf.ui.FlatPopupMenuUI");
+		        UIManager.put("MenuUI", "com.formdev.flatlaf.ui.FlatMenuUI");
+				
+				PLaFHelper PLaF = new PLaFHelper();
+				PLaF.updateAll();
+				
+			} catch( Exception ex ) {
+			    System.err.println( "Failed to initialize LaF" );
+			}		
+			
+		}
+		JOApplication.publishEvent(LifecycleEventsEnum.ThemeChangeEvent, this);
+	
+		
 		if (System.getProperty("java.version").startsWith("1.8.")) {
 			final MessageDialog dlg = new MessageDialog("Java Version Check", "Obsolete java detected.\nYou will experience problems.\nDownload the full setup from https://www.gamesystems.com/gamingsoftware ") {
 				@Override
@@ -257,7 +286,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 
 		// automatic version checking
 		// get preference
-		String pval = PreferenceRegistry.instance().getPreferenceValue("updates.autoCheckForNewVersion");
+		pval = PreferenceRegistry.instance().getPreferenceValue("updates.autoCheckForNewVersion");
 		if (pval == null || pval.equals("")) {
 			// if preference is null, ask user if they want to activate version
 			// checking

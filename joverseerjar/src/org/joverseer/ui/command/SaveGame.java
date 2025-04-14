@@ -96,9 +96,16 @@ public class SaveGame extends ActionCommand {
                 	RecentGames rgs = new RecentGames();
                 	Turn turn = g.getTurn(g.getMaxTurn());
             		String maybeUnknownDate = PlayerInfo.getDueDateDefaulted(turn.getPlayerInfo(g.getMetadata().getNationNo()), "unknown");
-            		boolean ordersSent = turn.getPlayerInfo(g.getMetadata().getNationNo()).getOrdersSentOn() != null;
             		
-            		Date ordersSentOn = turn.getPlayerInfo(g.getMetadata().getNationNo()).getOrdersSentOn();
+            		Date ordersSentOn;
+            		boolean ordersSent;
+            		if(turn.getPlayerInfo(g.getMetadata().getNationNo()) != null) {
+            			ordersSent = turn.getPlayerInfo(g.getMetadata().getNationNo()).getOrdersSentOn() != null;
+            			ordersSentOn = turn.getPlayerInfo(g.getMetadata().getNationNo()).getOrdersSentOn();
+            		} else {
+            			ordersSent = false;
+            			ordersSentOn = null;
+            		}
             		String ordersSentStr;
             		if(ordersSentOn == null) ordersSentStr = null;
             		else {

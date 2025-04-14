@@ -70,14 +70,15 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 		for (int i = 0; i < this.teamEconomyTableModel.getColumnCount(); i++) {
 			this.teamEconomyTable.getColumnModel().getColumn(i).setPreferredWidth(this.teamEconomyTableModel.getColumnWidth(i));
 		}
-		this.teamEconomyTable.setDefaultRenderer(Integer.class, new IntegerTeamEconomyTableRenderer());
-		this.teamEconomyTable.setDefaultRenderer(String.class, new StringTeamEconomyTableRenderer());
+		CellRendererStyle style = new CellRendererStyle();
+		this.teamEconomyTable.setDefaultRenderer(Integer.class, new IntegerTeamEconomyTableRenderer(style));
+		this.teamEconomyTable.setDefaultRenderer(String.class, new StringTeamEconomyTableRenderer(style));
 		this.teamEconomyTable.setBackground(Color.white);
 		// we set up the reference to the NationStatisticsModel once we've created it in the view.
 
 		JScrollPane scp = new JScrollPane(this.teamEconomyTable);
-		scp.setPreferredSize(new Dimension(600, 229));
-		scp.getViewport().setBackground(Color.white);
+		scp.setPreferredSize(new Dimension(600, 250));
+//		scp.getViewport().setBackground(Color.white);
 		scp.getViewport().setOpaque(true);
 		lb.cell(scp);
 
@@ -138,7 +139,7 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 			this.nationEconomyListView = new NationEconomyListView();
 			this.nationEconomyListView.afterPropertiesSet();
 			pnl = (JPanel) this.nationEconomyListView.getControl();
-			pnl.setPreferredSize(new Dimension(300, 220));
+			pnl.setPreferredSize(new Dimension(300, 270));
 			lb.cell(pnl);
 
 			lb.relatedGapRow();
@@ -167,12 +168,7 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 
 		lb.relatedGapRow();
 
-		JPanel p = lb.getPanel();
-		p.setBackground(Color.white);
-		scp = new JScrollPane(p);
-		scp.getViewport().setBackground(Color.white);
-		scp.getViewport().setOpaque(true);
-		
+		scp = new JScrollPane(lb.getPanel());
 		UIUtils.fixScrollPaneMouseScroll(scp);
 		return scp;
 	}
@@ -240,7 +236,82 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 			break;
 		}
 	}
-
+	class CellRendererStyle implements org.joverseer.ui.support.CellRendererStyle {
+		private Color background;
+		private Color warningForeground;
+		private Color warningBackground;
+		private Color selectForeground;
+		private Color selectBackground;
+		private Color foreground;
+		private Color focusBorder;
+		private Color lastRowBackground;
+		private Color taxWarningForeground;
+		
+		public CellRendererStyle() {
+			this.warningForeground = Color.red;
+			this.warningBackground = Color.white;
+			this.selectForeground = Color.black;
+			this.selectBackground = Color.white; 
+			this.foreground = Color.black;
+			this.background = Color.white;
+			this.focusBorder = Color.red;
+			this.lastRowBackground = Color.decode("#d7dfe7");
+			this.taxWarningForeground = Color.decode("#009900");
+		}
+		@Override
+		public Color getBackground() {
+			return this.background;
+		}
+		@Override
+		public Color getForeground() {
+			return this.foreground;
+		}
+		@Override
+		public Color getWarningForeground() {
+			return this.warningForeground;
+		}
+		@Override
+		public Color getWarningBackground() {
+			return this.warningBackground;
+		}
+		@Override
+		public Color getSelectedForeground() {
+			return this.selectForeground;
+		}
+		@Override
+		public Color getSelectedBackground() {
+			return this.selectBackground;
+		}
+		@Override
+		public Color getForeground(boolean isSelected) {
+			if (isSelected) {
+				return getSelectedForeground();
+			} else {
+				return getForeground();
+			}
+		}
+		@Override
+		public Color getBackground(boolean isSelected) {
+			if (isSelected) {
+				return getSelectedBackground();
+			} else {
+				return getBackground();
+			}
+		}
+		@Override
+		public Color getFocusBorder() {
+			return this.focusBorder;
+		}
+		@Override
+		public Color getLastRowBackground() {
+			return this.lastRowBackground;
+		}
+		@Override
+		public Color getTaxWarningForeground() {
+			return this.taxWarningForeground;
+		}
+	}
+	
 	/**
 	 * Renderer for the team economy main table
 	 *
@@ -252,6 +323,11 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 		 */
 		private static final long serialVersionUID = -1808381074745472954L;
 
+		private transient CellRendererStyle style;
+		public IntegerTeamEconomyTableRenderer(CellRendererStyle style2) {
+			super();
+			this.style = style2;
+		}
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -260,26 +336,26 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 			if (column == TeamEconomyTableModel.iFinalGold) {
 				Integer amt = (Integer) value;
 				if (amt < 0) {
-					lbl.setForeground(Color.red);
+					lbl.setForeground(this.style.getWarningForeground());
 				}
 			} else if (column == TeamEconomyTableModel.iMarketSales) {
 				if (row < TeamEconomyView.this.teamEconomyTableModel.getRowCount() - 1) {
 					Integer amt = (Integer) value;
 					if (amt > EconomyCalculator.getMarketLimitWarningThreshhold()) {
-						lbl.setForeground(Color.red);
+						lbl.setForeground(this.style.getWarningForeground());
 					}
 				}
 			} else if (column == TeamEconomyTableModel.iSurplus) {
 				Integer amt = (Integer) value;
 				if (amt < 0) {
-					lbl.setForeground(Color.red);
+					lbl.setForeground(this.style.getWarningForeground());
 				}
 			} else if (column == TeamEconomyTableModel.iTaxRate) {
 				Integer amt = (Integer) value;
 				if (amt < 60) {
-					lbl.setForeground(Color.decode("#009900")); //$NON-NLS-1$
+					lbl.setForeground(this.style.getTaxWarningForeground());
 				} else if (amt > 60) {
-					lbl.setForeground(Color.red);
+					lbl.setForeground(this.style.getWarningForeground());
 				}
 			} else if (column == TeamEconomyTableModel.iHikedTaxRate) {
 				if (row == TeamEconomyView.this.teamEconomyTableModel.getRowCount() - 1) {
@@ -287,17 +363,13 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 				} else {
 					Integer amt = (Integer) value;
 					if (amt >=100) {
-						lbl.setForeground(Color.red);
+						lbl.setForeground(this.style.getWarningForeground());
 					} else if (amt == TeamEconomyView.this.teamEconomyTableModel.getValueAt(row, TeamEconomyTableModel.iTaxRate)) {
 						lbl.setText("");
 					}
 				}
 			} else {
-				if (isSelected) {
-					lbl.setForeground(Color.white);
-				} else {
-					lbl.setForeground(Color.black);
-				}
+				lbl.setForeground(this.style.getForeground(isSelected));
 			}
 
 			if (TeamEconomyView.this.teamEconomyTableModel.getColumnClass(column) == Integer.class) {
@@ -306,13 +378,13 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 
 			if (!isSelected) {
 				if (row == TeamEconomyView.this.teamEconomyTableModel.getRowCount() - 1) {
-					lbl.setBackground(Color.decode("#d7dfe7")); //$NON-NLS-1$
+					lbl.setBackground(this.style.getLastRowBackground());
 				} else {
-					lbl.setBackground(Color.white);
+					lbl.setBackground(this.style.getBackground());
 				}
 			}
 			if (hasFocus) {
-				lbl.setBorder(BorderFactory.createLineBorder(Color.red, 1));
+				lbl.setBorder(BorderFactory.createLineBorder(this.style.getFocusBorder(), 1));
 			}
 			return lbl;
 		}
@@ -324,15 +396,21 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 		 *
 		 */
 		private static final long serialVersionUID = -2226537511337457982L;
+		private transient CellRendererStyle style;
+
+		public StringTeamEconomyTableRenderer(CellRendererStyle style) {
+			super();
+			this.style = style;
+		}
 
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			if (!isSelected) {
 				if (row == TeamEconomyView.this.teamEconomyTableModel.getRowCount() - 1) {
-					lbl.setBackground(Color.decode("#d7dfe7")); //$NON-NLS-1$
+					lbl.setBackground(this.style.getLastRowBackground());
 				} else {
-					lbl.setBackground(Color.white);
+					lbl.setBackground(this.style.getBackground());
 				}
 			}
 			return lbl;

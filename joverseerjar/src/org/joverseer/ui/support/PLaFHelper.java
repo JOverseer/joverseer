@@ -1,42 +1,52 @@
 package org.joverseer.ui.support;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.plaf.UIResource;
 
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.WindowManager;
 
+import com.formdev.flatlaf.FlatLaf;
+import com.jidesoft.plaf.LookAndFeelFactory;
+
 /**
  * Hide/gather all the plaf knowledge.
- * Not ready fro prime time yet ... ApplicationContext has a L&F configurer set.
+ * Not ready for prime time yet ... ApplicationContext has a L&F configurer set.
  * @author Dave
  *
  */
 public class PLaFHelper {
-	UIManager.LookAndFeelInfo[] builtinPlafInfos;
-	String[] plafNames;
 	HashMap<String,String> plaf = new HashMap();
 	
 	public PLaFHelper() {
-		this.builtinPlafInfos = UIManager.getInstalledLookAndFeels();
-        for (int ii=0; ii<this.builtinPlafInfos.length; ii++) {
-        	this.plaf.put(this.builtinPlafInfos[ii].getName(), this.builtinPlafInfos[ii].getClassName());
-        }
+		UIManager.LookAndFeelInfo[] builtinPlafInfos;
+		builtinPlafInfos = UIManager.getInstalledLookAndFeels();
+		this.plaf.put("Default", "Default");
+//        for (UIManager.LookAndFeelInfo info: builtinPlafInfos) {
+//        	this.plaf.put(info.getName(), info.getClassName());
+//        }
         if (isClassAvailable("com.formdev.flatlaf.FlatLightLaf")) {
         	this.plaf.put("Flat Light","com.formdev.flatlaf.FlatLightLaf");
         	this.plaf.put("Flat Dark","com.formdev.flatlaf.FlatDarkLaf");
+        	this.plaf.put("Darcula", "com.formdev.flatlaf.FlatDarculaLaf");
         }
         if (isClassAvailable("com.jgoodies.looks.plastic.PlasticTheme")) {
 
-        	this.plaf.put("JGoodies Plastic","com.jgoodies.looks.plastic.PlasticLookAndFeel");
-        	this.plaf.put("JGoodies Plastic 3D","com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
-        	this.plaf.put("JGoodies Plastic XP","com.jgoodies.looks.plastic.PlasticXPLookAndFeel");
-        	this.plaf.put("JGoodies Windows","com.jgoodies.looks.windows.WindowsLookAndFeel");
+//        	this.plaf.put("JGoodies Plastic","com.jgoodies.looks.plastic.PlasticLookAndFeel");
+//        	this.plaf.put("JGoodies Plastic 3D","com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
+//        	this.plaf.put("JGoodies Plastic XP","com.jgoodies.looks.plastic.PlasticXPLookAndFeel");
+//        	this.plaf.put("JGoodies Windows","com.jgoodies.looks.windows.WindowsLookAndFeel");
 
         	
         	/*
@@ -83,19 +93,53 @@ public class PLaFHelper {
 		}
 		return "";
 	}
-	// this is going to be slow!
+	/**
+	 * call this when the Look and Feel has been changed, and force the UI to respond.
+	 */
 	public void updateAll() {
 		// Update the component tree (frame and its children)
 		final WindowManager wm = Application.instance().getWindowManager();
+		
+		if (isClassAvailable("com.jidesoft.plaf.LookAndFeelFactory")) {
+			// while we're still using jide components with extended L&F properties we need to add them...
+			//TODO: fix this so that the LookAndFeelFactory is invoked via reflection, so we can actually ignore jide one day:)
+			LookAndFeelFactory.installJideExtension(LookAndFeelFactory.XERTO_STYLE);
+		}
+        if (isClassAvailable("com.formdev.flatlaf.FlatLightLaf")) {
+        	FlatLaf.registerCustomDefaultsSource( "ui.themes");
+        }
+        if(UIManager.getLookAndFeel() instanceof FlatLaf) {
+        	UIManager.put("MenuItemUI", "com.formdev.flatlaf.ui.FlatMenuItemUI");
+        }
+        
 		for(ApplicationWindow w :wm.getWindows()) {
 			SwingUtilities.updateComponentTreeUI(w.getControl());
 	        // repack to resize 
 	        w.getControl().pack();
 	    }
+		
+//        for(ApplicationWindow w :wm.getWindows()) {
+//        	checkLaFTheme(w.getControl());
+//        }
 	}
+	
+    public static void checkLaFTheme(Component component) {
+        if (component instanceof JComponent) {
+            JComponent jComponent = (JComponent) component;
+            // Check if the component is using a custom Look and Feel
+            if(jComponent.getUI() == null) {}
+            else if (!(jComponent.getUI().getClass().getName().contains("com.formdev.flatlaf.ui"))) {
+                System.out.println(component.getClass().getName() + " is not using the default LaF theme." + jComponent.getUI().getClass().getName());
+            }
+        }
+            if (component instanceof Container) {
+                for (Component child : ((Container) component).getComponents()) {
+                    checkLaFTheme(child);  // Recursive call to check the child component
+                }
+            }
+    }
 
 	public boolean isClassAvailable(String clazz) {
-		@SuppressWarnings("unused")
 		Class candidate;
 		boolean result = false;
 		try {

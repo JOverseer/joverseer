@@ -15,6 +15,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import org.apache.log4j.LogManager;
 import org.joverseer.JOApplication;
@@ -170,7 +171,7 @@ public class ArmyViewer extends ObjectViewer {
 
 		JPanel panel = glb.getPanel();
 		panel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		panel.setBackground(Color.white);
+		panel.setBackground(UIManager.getColor("Panel.background"));
 		return panel;
 	}
 

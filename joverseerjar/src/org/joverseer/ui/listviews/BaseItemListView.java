@@ -24,6 +24,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.joverseer.JOApplication;
 import org.joverseer.domain.CharacterDeathReasonEnum;
@@ -315,13 +316,14 @@ public abstract class BaseItemListView extends BaseView implements ApplicationLi
 		// create the JTable instance
 		this.table = createTable();
 		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.table, columnWidths());
+		Color background = UIManager.getColor("Panel.background");
 
 		String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");
 		if (pval.equals("yes")) {
 			this.table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		}
 
-		this.table.getTableHeader().setBackground(Color.WHITE);
+		this.table.getTableHeader().setBackground(background);
 		this.table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(this.tableModel));
 		this.table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(this.tableModel));
 		this.table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer(this.tableModel));
@@ -345,10 +347,10 @@ public abstract class BaseItemListView extends BaseView implements ApplicationLi
 			lb.row();
 		}
 		JPanel pnl = lb.getPanel();
-		pnl.setBackground(Color.WHITE);
+		pnl.setBackground(background);
 		tlb.cell(pnl, "colspec=left:30px valign=top");
 		JPanel p = tlb.getPanel();
-		p.setBackground(Color.WHITE);
+		p.setBackground(background);
 		return p;
 	}
 

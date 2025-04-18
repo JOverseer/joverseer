@@ -71,6 +71,7 @@ public class AllegianceColorCellRenderer extends DefaultTableCellRenderer {
             String colorKey = allegiance != null ? "Listview." + allegiance.toString() + ".color" : "ListView.unknownAllegiance.color";
             Color bg = Color.decode(colorSource.getMessage(colorKey, new Object[] {}, Locale.getDefault()));
             c.setBackground(bg);
+            c.setForeground(Color.black);
             return c;
         } else {
             return c;

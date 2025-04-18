@@ -52,9 +52,11 @@ public class OrderInfoView extends InfoView {
         TableLayoutBuilder lb = new TableLayoutBuilder();
 
         lb.separator(Messages.getString("OrderInfoView.Orders"));
-        lb.relatedGapRow();
-        lb.cell(createTableFromResource("classpath:metadata/orders", 700, 2400), "align=left");
-        lb.relatedGapRow();
+        //lb.relatedGapRow();
+        lb.row();
+
+        lb.cell(createTableFromResource("classpath:metadata/orders", 700), "align=left valign=top");
+        //lb.relatedGapRow();
         TableUtils.setTableColumnWidths(this.tables.get(0), new int[]{120, 64, 64, 120, 80, 120, 120, 80});
         
         hackDescriptions();

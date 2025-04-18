@@ -320,7 +320,7 @@ public class CharacterViewer extends ObjectViewer {
 			}
 
 			((BeanTableModel) this.artifactsTable.getModel()).setRows(artis);
-			this.artifactsTable.setPreferredSize(new Dimension((180/16)*this.uiSizes.getHeight4(), this.uiSizes.getHeight4() * artis.size()));
+			this.artifactsTable.setPreferredSize(new Dimension((180/16)*this.uiSizes.getHeight4(), this.uiSizes.getHeight5() * artis.size()));
 			TableUtils.setTableColumnWidths(this.artifactsTable, new int[] { 10, 120, 40 });
 
 			ArrayList<SpellProficiency> spells = new ArrayList<SpellProficiency>();
@@ -328,7 +328,7 @@ public class CharacterViewer extends ObjectViewer {
 				spells.addAll(c.getSpells());
 			}
 			((BeanTableModel) this.spellsTable.getModel()).setRows(spells);
-			this.spellsTable.setPreferredSize(new Dimension(this.spellsTable.getWidth(), this.uiSizes.getHeight4() * spells.size()));
+			this.spellsTable.setPreferredSize(new Dimension(this.spellsTable.getWidth(), this.uiSizes.getHeight5() * spells.size()));
 			TableUtils.setTableColumnWidths(this.spellsTable, new int[] { 10, 120, 40 });
 			Container<Company> companies = game.getTurn().getCompanies();
 			Company company = companies.findFirstByProperty("commander", c.getName()); //$NON-NLS-1$

@@ -49,13 +49,13 @@
 	<bean name="resizeStatusBarItem"
 		class="com.jidesoft.status.ResizeStatusBarItem" />
 
-   	<bean id="lookAndFeelConfigurer"
+   	<!--<bean id="lookAndFeelConfigurer"
 		class="org.springframework.richclient.application.config.JGoodiesLooksConfigurer">
 		<property name="popupDropShadowEnabled" value="true" />
 		<property name="theme">
 			<bean class="com.jgoodies.looks.plastic.theme.ExperienceGreen" />
 		</property>
-	</bean>
+	</bean>-->
 
  
 	<bean id="serviceLocator"

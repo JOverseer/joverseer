@@ -1,5 +1,6 @@
 package org.joverseer.ui.support;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.util.HashMap;
@@ -100,27 +101,44 @@ public class PLaFHelper {
 		// Update the component tree (frame and its children)
 		final WindowManager wm = Application.instance().getWindowManager();
 		
-		if (isClassAvailable("com.jidesoft.plaf.LookAndFeelFactory")) {
-			// while we're still using jide components with extended L&F properties we need to add them...
-			//TODO: fix this so that the LookAndFeelFactory is invoked via reflection, so we can actually ignore jide one day:)
-			LookAndFeelFactory.installJideExtension(LookAndFeelFactory.XERTO_STYLE);
-		}
-        if (isClassAvailable("com.formdev.flatlaf.FlatLightLaf")) {
-        	FlatLaf.registerCustomDefaultsSource( "ui.themes");
-        }
-        if(UIManager.getLookAndFeel() instanceof FlatLaf) {
-        	UIManager.put("MenuItemUI", "com.formdev.flatlaf.ui.FlatMenuItemUI");
-        }
+//		if (isClassAvailable("com.jidesoft.plaf.LookAndFeelFactory")) {
+//			// while we're still using jide components with extended L&F properties we need to add them...
+//			//TODO: fix this so that the LookAndFeelFactory is invoked via reflection, so we can actually ignore jide one day:)
+//			LookAndFeelFactory.installJideExtension(LookAndFeelFactory.XERTO_STYLE);
+//		}
         
+        FlatLaf.registerCustomDefaultsSource( "ui.themes");
+//        if(UIManager.getLookAndFeel() instanceof FlatLaf) {
+//        	UIManager.put("MenuItemUI", "com.formdev.flatlaf.ui.FlatMenuItemUI");
+//        }
+        overwriteJIDELaF();
+
 		for(ApplicationWindow w :wm.getWindows()) {
 			SwingUtilities.updateComponentTreeUI(w.getControl());
 	        // repack to resize 
 	        w.getControl().pack();
 	    }
+		System.out.println("Here");
 		
 //        for(ApplicationWindow w :wm.getWindows()) {
 //        	checkLaFTheme(w.getControl());
 //        }
+	}
+	
+	public static void overwriteJIDELaF() {
+		/*
+		 * Controls colors of the tabbing stuff
+		 */
+//        UIManager.put("DockableFrame.activeTitleBackground", Color.green);
+//        UIManager.put("DockableFrame.inactiveTitleBackground", Color.red);
+//        UIManager.put("JideTabbedPane.tabAreaBackground", Color.blue);
+//        UIManager.put("JideTabbedPane.background", Color.pink);
+//        UIManager.put("JideTabbedPane.tabAreaBackground", Color.red);
+		
+        UIManager.put("MenuItemUI", "com.formdev.flatlaf.ui.FlatMenuItemUI");
+        UIManager.put("PopupMenuUI", "com.formdev.flatlaf.ui.FlatPopupMenuUI");
+        UIManager.put("MenuUI", "com.formdev.flatlaf.ui.FlatMenuUI");
+
 	}
 	
 	

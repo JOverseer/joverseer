@@ -41,7 +41,6 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
         try {
             JPanel pnl = new JPanel();
             //pnl.setBorder(new EmptyBorder(0, 0, 0, 0));
-            pnl.setBackground(Color.white);
             TableLayoutBuilder tlb2 = new TableLayoutBuilder(pnl);
             tlb2.cell(this.parameter = (JFormattedTextField)getPrimaryComponent(o.getParameter(paramNo)), "colspec=left:35px");
             attachAutoUpdateDocumentListener(this.parameter);

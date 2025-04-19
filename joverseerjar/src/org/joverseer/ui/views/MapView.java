@@ -83,7 +83,6 @@ public class MapView extends AbstractView implements ApplicationListener {
 
 		});
 		this.mapPanel.setPreferredSize(new Dimension(1000, 2500));
-		this.mapPanel.setBackground(Color.white);
 		this.scp.setPreferredSize(new Dimension(800, 500));
 		MapMetadata mm = MapMetadata.instance();
 		this.scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize() * 2);

@@ -246,7 +246,6 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 		JLabel lblVersion = new JLabel(Messages.getString("playerInfo.turnVersion")); //$NON-NLS-1$
 		pnlVersion.add(lblVersion);
-		lblVersion.setBackground(Color.WHITE);
 		this.lblVersionValue.setAlignmentX(Component.CENTER_ALIGNMENT);
 		pnlVersion.add(this.lblVersionValue);
 		this.lblVersionValue.setHorizontalAlignment(SwingConstants.CENTER);
@@ -260,7 +259,6 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 		this.lblSent = new JLabel(Messages.getString("playerInfo.ordersSentOn")); //$NON-NLS-1$
 		pnlSent.add(this.lblSent);
-		this.lblSent.setBackground(Color.WHITE);
 		pnlSent.add(this.lblSentValue);
 
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
@@ -272,7 +270,6 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 		this.lblFile = new JLabel(Messages.getString("playerInfo.lastOrderFile")); //$NON-NLS-1$
 		pnlFile.add(this.lblFile);
-		this.lblFile.setBackground(Color.WHITE);
 		pnlFile.add(this.lblFileValue);
 
 		topPanel.add(nationPanel);

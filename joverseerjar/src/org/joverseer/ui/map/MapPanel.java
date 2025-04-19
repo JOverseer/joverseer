@@ -30,6 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JViewport;
 import javax.swing.TransferHandler;
+import javax.swing.UIManager;
 import javax.swing.event.MouseInputListener;
 
 import org.apache.log4j.Logger;
@@ -140,7 +141,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	boolean isDragging;
 
 	java.awt.Container c;
-	Color  backgroundColour = Color.WHITE;
+	Color  backgroundColour = Color.white;
 	boolean saveMap = false;
 
 	//dependencies
@@ -154,6 +155,8 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		this.setDropTarget(new DropTarget(this, new MapPanelDropTargetAdapter()));
 		_instance = this;
 		this.gameHolder = gameHolder;
+		this.backgroundColour = UIManager.getColor("Panel.background");
+		
 	}
 
 	public static MapPanel instance() {

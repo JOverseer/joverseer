@@ -79,6 +79,7 @@ public class JOverseerJIDEClient {
 //		    
 			
 			System.setProperty("java.util.Arrays.useLegacyMergeSort", "true"); // until sorting bug fixed.
+			//System.setProperty( "sun.java2d.uiScale", "1.0" );
 			
 			cmdLineArgs = args; // save as global
 			// now do the command line switches needed before we do much more.

@@ -68,7 +68,6 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 	protected JComponent createControl() {
 		this.p = new JSplitPane();
 		this.p.setResizeWeight(0.5);
-		this.p.setBackground(Color.white);
 		this.p.setEnabled(true);
 		
 		JPanel panel_L = new JPanel();
@@ -109,7 +108,6 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 		
 		JPanel panel_R = new JPanel();
 		panel_R.setOpaque(true);
-		panel_R.setBackground(Color.WHITE);
 		this.p.setRightComponent(panel_R);
 		panel_R.setLayout(new BoxLayout(panel_R, BoxLayout.Y_AXIS));
 		panel_R.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -118,7 +116,6 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 		Image im = i.getImage().getScaledInstance(290, -1, Image.SCALE_SMOOTH);
 		this.lblLogo = new JLabel(new ImageIcon(im));
 		this.lblLogo.setAlignmentX(Component.CENTER_ALIGNMENT);
-		this.lblLogo.setBackground(Color.WHITE);
 		this.lblLogo.setOpaque(true);
 		panel_R.add(this.lblLogo);
 		

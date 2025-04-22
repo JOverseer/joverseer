@@ -8,6 +8,7 @@
  */
 package com.jidesoft.spring.richclient.docking;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -18,6 +19,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -25,6 +27,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.RepaintManager;
+import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
 import org.joverseer.JOApplication;
@@ -58,7 +61,6 @@ import org.springframework.richclient.exceptionhandling.RegisterableExceptionHan
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.FlatLightLaf;
 import com.middleearthgames.updater.UpdateChecker;
 
 /**
@@ -239,29 +241,30 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 	@Override
 	public void onWindowOpened(ApplicationWindow arg0) {
 		super.onWindowOpened(arg0);
+		JOApplication.publishEvent(LifecycleEventsEnum.ThemeChangeEvent, this);
 		
 		String pval = PreferenceRegistry.instance().getPreferenceValue("UI.LookAndFeel");
-		if (pval != "" && !pval.equals("Default")) {
-			System.out.println(pval);
-			FlatDarkLaf.setup();
-			FlatLaf.registerCustomDefaultsSource( "ui.themes");
-			
-			try {
-				UIManager.setLookAndFeel(pval);
-		        UIManager.put("MenuItemUI", "com.formdev.flatlaf.ui.FlatMenuItemUI");
-		        UIManager.put("PopupMenuUI", "com.formdev.flatlaf.ui.FlatPopupMenuUI");
-		        UIManager.put("MenuUI", "com.formdev.flatlaf.ui.FlatMenuUI");
-				
-				PLaFHelper PLaF = new PLaFHelper();
-				PLaF.updateAll();
-				
-			} catch( Exception ex ) {
-			    System.err.println( "Failed to initialize LaF" );
-			}		
-			
-		}
-		JOApplication.publishEvent(LifecycleEventsEnum.ThemeChangeEvent, this);
-	
+//		if (pval != "" && !pval.equals("Default")) {
+//			System.out.println(pval);
+//			FlatDarkLaf.setup();
+//			FlatLaf.registerCustomDefaultsSource( "ui.themes");
+//			
+//			try {
+//				UIManager.setLookAndFeel(pval);
+//		        UIManager.put("MenuItemUI", "com.formdev.flatlaf.ui.FlatMenuItemUI");
+//		        UIManager.put("PopupMenuUI", "com.formdev.flatlaf.ui.FlatPopupMenuUI");
+//		        UIManager.put("MenuUI", "com.formdev.flatlaf.ui.FlatMenuUI");
+//				
+//				PLaFHelper PLaF = new PLaFHelper();
+//				PLaF.updateAll();
+//				
+//			} catch( Exception ex ) {
+//			    System.err.println( "Failed to initialize LaF" );
+//			}		
+//			
+//		}
+//		JOApplication.publishEvent(LifecycleEventsEnum.ThemeChangeEvent, this);
+//	
 		
 		if (System.getProperty("java.version").startsWith("1.8.")) {
 			final MessageDialog dlg = new MessageDialog("Java Version Check", "Obsolete java detected.\nYou will experience problems.\nDownload the full setup from https://www.gamesystems.com/gamingsoftware ") {
@@ -369,9 +372,41 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 		} else if(homePage == false){
 			GraphicUtils.hideView("homeView");
 		}
-		
+
 		GraphicUtils.showView("currentHexDataViewer");
+		
+		//Debugging for inspecting UI components, click on a component 
+//		Toolkit.getDefaultToolkit().addAWTEventListener(e -> {
+//		    if (e instanceof MouseEvent && ((MouseEvent) e).getID() == MouseEvent.MOUSE_CLICKED) {
+//		        Component clicked = ((MouseEvent) e).getComponent();
+//		        inspectComponent(clicked);
+//		    }
+//		}, AWTEvent.MOUSE_EVENT_MASK);
 	}
+	
+	/*
+	 * Debugging function used for figuring out what UI components are for LaF
+	 */
+	public static void inspectComponent(Component comp) {
+	    if (comp == null) {
+	        System.out.println("Component is null");
+	        return;
+	    }
+
+	    UIDefaults defaults = UIManager.getLookAndFeelDefaults();
+	    String uiClassID = (comp instanceof JComponent) ? ((JComponent) comp).getUIClassID() : "n/a";
+
+	    System.out.println("Inspecting: " + comp.getClass().getName());
+	    System.out.println("UIClassID: " + uiClassID);
+	    System.out.println("LookAndFeel defaults related to this component:");
+
+	    for (Object key : defaults.keySet()) {
+	        if (key instanceof String && ((String) key).toLowerCase().contains(uiClassID.toLowerCase())) {
+	            System.out.println(key + " = " + defaults.get(key));
+	        }
+	    }
+	}
+
 
 	public void setRepaintManager(RepaintManager repaintManager) {
 		this.repaintManager = repaintManager;
@@ -406,7 +441,33 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 	@Override
 	public void onPreInitialize(Application arg0) {
 		super.onPreInitialize(arg0);
+		String pval = PreferenceRegistry.instance().getPreferenceValue("UI.LookAndFeel");
+		if(pval.equals("Default")) pval = "com.formdev.flatlaf.FlatLightLaf";
+		if (pval != "" && !pval.equals("Default")) {
+			System.out.println(pval);
+			FlatLaf.registerCustomDefaultsSource( "ui.themes");
+			FlatDarkLaf.setup();
+			
+			
+			try {
+				UIManager.setLookAndFeel(pval);
 
+
+		        //LookAndFeelFactory.installJideExtension();
+		        //UIManager.put("DockableFrame.activeTitleBackground", "com.formdev.flatlaf.ui.FlatMenuUI");
+
+		        //UIManager.put("DockableFrame.activeTitleForeground", "com.formdev.flatlaf.ui.FlatMenuUI");
+		        
+				PLaFHelper PLaF = new PLaFHelper();
+				PLaF.updateAll();
+				
+			} catch( Exception ex ) {
+			    System.err.println( "Failed to initialize LaF" );
+			}		
+			
+		}
+		JOApplication.publishEvent(LifecycleEventsEnum.ThemeChangeEvent, this);
+	
 		devOption = true;
 		if (JOverseerJIDEClient.cmdLineArgs == null || JOverseerJIDEClient.cmdLineArgs.length == 0)
 			devOption = false;

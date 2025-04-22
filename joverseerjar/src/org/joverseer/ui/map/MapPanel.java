@@ -6,6 +6,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -19,6 +20,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JViewport;
 import javax.swing.TransferHandler;
+import javax.swing.UIManager;
 import javax.swing.event.MouseInputListener;
 
 import org.apache.log4j.Logger;
@@ -140,7 +143,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	boolean isDragging;
 
 	java.awt.Container c;
-	Color  backgroundColour = Color.WHITE;
+	Color  backgroundColour = Color.white;
 	boolean saveMap = false;
 
 	//dependencies
@@ -154,6 +157,8 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		this.setDropTarget(new DropTarget(this, new MapPanelDropTargetAdapter()));
 		_instance = this;
 		this.gameHolder = gameHolder;
+		this.backgroundColour = UIManager.getColor("Panel.background");
+		
 	}
 
 	public static MapPanel instance() {
@@ -244,8 +249,8 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		if (this.mapBack == null) {
 			Dimension d = getMapDimension();
 			this.mapBack = new BufferedImage((int) d.getWidth(), (int) d.getHeight(), BufferedImage.TYPE_INT_ARGB);
-			this.setPreferredSize(d);
-			this.setSize(d);
+			//this.setPreferredSize(d);
+			//this.setSize(d);
 		}
 		this.map = this.mapBack;
 
@@ -343,7 +348,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 							try {
 								r.render(o, g, this.location.x, this.location.y);
 							} catch (Exception exc) {
-								logger.error("Error rendering order " + o.getCharacter().getName() + " " + o.getOrderNo() + " " + exc.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+									logger.error("Error rendering order " + o.getCharacter().getName() + " " + o.getOrderNo() + " " + exc.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							}
 						}
 					}
@@ -584,12 +589,21 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	 * @param g
 	 */
 	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
+	protected void paintComponent(Graphics gcc) {
+		super.paintComponent(gcc);
+		Graphics2D g2d = (Graphics2D) gcc.create();
 		
+	    GraphicsConfiguration gc = getGraphicsConfiguration();
+	    AffineTransform transform = gc.getDefaultTransform();
+	    double scaleX = transform.getScaleX();
+	    double scaleY = transform.getScaleY();
+
+	    // Inverse scale to neutralize system DPI scaling
+	    g2d.scale(1 / scaleX, 1 / scaleY);
+	    
 		if (isOpaque()) {
-			g.setColor(getBackground());
-			g.fillRect(0, 0, getWidth(), getHeight());
+			g2d.setColor(this.backgroundColour);
+			g2d.fillRect(0, 0, getWidth(), getHeight());
 		}
 
 		if (this.mapItems == null) {
@@ -607,19 +621,19 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 			return;
 		}
 
-		// g.drawImage(map, 0, 0, this);
-		g.drawImage(this.mapItems, 0, 0, this);
+		g2d.drawImage(this.mapItems, 0, 0, this);
 
 		if (getSelectedHex() != null) {
-			Stroke s = ((Graphics2D) g).getStroke();
+			Stroke s = g2d.getStroke();
 			Stroke r = new BasicStroke(2);
 			setPoints(getSelectedHex().x, getSelectedHex().y);
-			g.setColor(Color.YELLOW);
-			((Graphics2D) g).setStroke(r);
-			g.drawPolygon(this.xPoints, this.yPoints, 6);
-			((Graphics2D) g).setStroke(s);
+			g2d.setColor(Color.YELLOW);
+			g2d.setStroke(r);
+			g2d.drawPolygon(this.xPoints, this.yPoints, 6);
+			g2d.setStroke(s);
 		}
-
+		g2d.dispose();
+		//this.setSize(this.getWidth()-300, this.getHeight()-100);
 	}
 
 	public Point getSelectedHex() {
@@ -652,22 +666,29 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	 * Given a client point (eg from mouse click), it finds the containing hex
 	 * and returns it as a point (i.e. point.x = hex.column, point.y = hex.row)
 	 */
-	private Point getHexFromPoint(Point p) {
-		MapMetadata metadata1 = MapMetadata.instance();
-		int y = p.y / (metadata1.getHexSize() * 3 / 4 * metadata1.getGridCellHeight());
-		int x;
-		if ((y + metadata1.getMinMapRow() + 1) % 2 == 0) {
-			x = p.x / (metadata1.getHexSize() * metadata1.getGridCellWidth());
-		} else {
-			x = (p.x - metadata1.getHexSize() / 2 * metadata1.getGridCellWidth()) / (metadata1.getHexSize() * metadata1.getGridCellWidth());
-		}
-		x += metadata1.getMinMapColumn();
-		y += metadata1.getMinMapRow();
-		if (x > metadata1.getMaxMapColumn())
-			x = metadata1.getMaxMapColumn();
-		if (y > metadata1.getMaxMapRow())
-			y = metadata1.getMaxMapRow();
-		return new Point(x, y);
+	public Point getHexFromPoint(Point p) {
+	    // Correct mouse input from physical → logical space
+	    GraphicsConfiguration gc = getGraphicsConfiguration();
+	    AffineTransform tx = gc.getDefaultTransform();
+	    double scaleX = tx.getScaleX();
+	    double scaleY = tx.getScaleY();
+
+	    int logicalX = (int) (p.x * scaleX);
+	    int logicalY = (int) (p.y * scaleY);
+
+	    MapMetadata metadata1 = MapMetadata.instance();
+	    int y = logicalY / (metadata1.getHexSize() * 3 / 4 * metadata1.getGridCellHeight());
+	    int x;
+	    if ((y + metadata1.getMinMapRow() + 1) % 2 == 0) {
+	        x = logicalX / (metadata1.getHexSize() * metadata1.getGridCellWidth());
+	    } else {
+	        x = (logicalX - metadata1.getHexSize() / 2 * metadata1.getGridCellWidth()) / (metadata1.getHexSize() * metadata1.getGridCellWidth());
+	    }
+	    x += metadata1.getMinMapColumn();
+	    y += metadata1.getMinMapRow();
+	    if (x > metadata1.getMaxMapColumn()) x = metadata1.getMaxMapColumn();
+	    if (y > metadata1.getMaxMapRow()) y = metadata1.getMaxMapRow();
+	    return new Point(x, y);
 	}
 
 	/**
@@ -900,8 +921,20 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	public void mouseMoved(MouseEvent e) {
 		MapTooltipHolder tooltipHolder = MapTooltipHolder.instance();
 		String pval = PreferenceRegistry.instance().getPreferenceValue("map.tooltips"); //$NON-NLS-1$
+		
+	    GraphicsConfiguration gc = getGraphicsConfiguration();
+	    AffineTransform tx = gc.getDefaultTransform();
+	    double scaleX = tx.getScaleX();
+	    double scaleY = tx.getScaleY();
+
+	    int logicalX = (int) (e.getPoint().getX() * scaleX);
+	    int logicalY = (int) (e.getPoint().y * scaleY);
+	    Point p = new Point(logicalX, logicalY);
+		
 		if (pval != null && pval.equals("yes")) //$NON-NLS-1$
-			tooltipHolder.showTooltip(e.getPoint(), e.getPoint());
+			
+			
+			tooltipHolder.showTooltip(p, e.getPoint());
 	}
 
 	public Game getGame() {

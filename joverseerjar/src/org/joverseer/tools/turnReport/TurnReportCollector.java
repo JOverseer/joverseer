@@ -1872,6 +1872,9 @@ public class TurnReportCollector {
 				e.printStackTrace();
 			}
 			ret += "<br/><i>Green: positive events<br/>Red: negative events<br/>Yellow: other</i>";
+			
+			ret = ret.replaceAll("<table style='border-style:solid; border-width:1px'", "<table style='border-style:solid; border-width:1px; border-color:black; color:black'");
+			
 			return ret;
 		} catch (Exception exc) {
 			exc.printStackTrace();

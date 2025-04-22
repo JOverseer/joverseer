@@ -352,8 +352,10 @@ public class PopulationCenterViewer extends ObjectViewer {
 		for (ProductEnum p : ProductEnum.values()) {
 			JTextField tf = new JTextField();
 			tf.setBorder(null);
-			tf.setPreferredSize(this.uiSizes.newDimension(28/16, this.uiSizes.getHeight4()));
+			//tf.setPreferredSize(this.uiSizes.newDimension(28/16, this.uiSizes.getHeight4()));
+			
 			tf.setFont(f);
+			tf.setColumns(4);
 			tlb.cell(tf);
 			this.production.put(p, tf);
 		}
@@ -361,8 +363,9 @@ public class PopulationCenterViewer extends ObjectViewer {
 		for (ProductEnum p : ProductEnum.values()) {
 			JTextField tf = new JTextField();
 			tf.setBorder(null);
-			tf.setPreferredSize(this.uiSizes.newDimension(28/16, this.uiSizes.getHeight4()));
+			//tf.setPreferredSize(this.uiSizes.newDimension(28/16, this.uiSizes.getHeight4()));
 			tf.setFont(f);
+			tf.setColumns(4);
 			tlb.cell(tf);
 			this.stores.put(p, tf);
 		}
@@ -371,13 +374,13 @@ public class PopulationCenterViewer extends ObjectViewer {
 		tlb.cell(this.lostThisTurn = new JTextField());
 		this.lostThisTurn.setBorder(null);
 		this.lostThisTurn.setFont(GraphicUtils.getFont(this.lostThisTurn.getFont().getName(), Font.ITALIC, this.lostThisTurn.getFont().getSize()));
-		this.lostThisTurn.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
+		this.lostThisTurn.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight4()));
 
 		tlb.row();
 		tlb.cell(this.turnInfo = new JTextField());
 		this.turnInfo.setBorder(null);
 		this.turnInfo.setFont(GraphicUtils.getFont(this.lostThisTurn.getFont().getName(), Font.ITALIC, this.lostThisTurn.getFont().getSize()));
-		this.turnInfo.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
+		this.turnInfo.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight4()));
 
 		JPanel pnl = tlb.getPanel();
 		pnl.setBackground(col);

@@ -112,7 +112,6 @@ public class NotesListView extends ItemListView {
             this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         }
 
-        this.table.getTableHeader().setBackground(Color.WHITE);
         this.table.addMouseListener(this);
         JScrollPane scrollPane = new JScrollPane(this.table);
         scrollPane.getViewport().setOpaque(true);
@@ -122,7 +121,6 @@ public class NotesListView extends ItemListView {
         org.joverseer.ui.support.controls.TableUtils.setTableColumnRenderer(this.table, NotesTableModel.iHexNo, new HexNumberCellRenderer(this.tableModel));
 
         JPanel p = tlb.getPanel();
-        p.setBackground(Color.WHITE);
 
         //MultilineTableCellRenderer r = new MultilineTableCellRenderer();
         //r.setWrapStyleWord(true);

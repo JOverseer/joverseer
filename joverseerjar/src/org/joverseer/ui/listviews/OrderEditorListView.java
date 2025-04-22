@@ -94,7 +94,7 @@ public class OrderEditorListView extends ItemListView {
 
 	@Override
 	protected int[] columnWidths() {
-		return new int[] { 32, 64, 32, 64, 80, 48, 48, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 30, 64, 64, 64 };
+		return new int[] { 48, 64, 48, 64, 80, 48, 48, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 30, 64, 64, 64 };
 	}
 
 	@Override
@@ -420,8 +420,10 @@ public class OrderEditorListView extends ItemListView {
 						int charIndex = OrderEditorListView.this.characterIndices.get(order.getCharacter());
 						if (charIndex % 2 == 1) {
 							c.setBackground(Color.decode("#efefef"));
+							c.setForeground(Color.black);
 						} else {
 							c.setBackground(this.normalBackground);
+							c.setForeground(UIManager.getColor("Label.foreground"));
 						}
 					}
 

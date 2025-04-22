@@ -137,7 +137,6 @@ public class EncounterListView extends BaseItemListView {
 			this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		}
 
-		this.table.getTableHeader().setBackground(Color.WHITE);
 		this.table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(this.tableModel));
 		this.table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(this.tableModel));
 		this.table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer(this.tableModel));
@@ -166,7 +165,6 @@ public class EncounterListView extends BaseItemListView {
 			tlb.cell(restoreSorting, "colspec=left:30px valign=top"); //$NON-NLS-1$
 		}
 		JPanel p = tlb.getPanel();
-		p.setBackground(Color.WHITE);
 
 		MultilineTableCellRenderer r = new MultilineTableCellRenderer();
 		r.setWrapStyleWord(true);

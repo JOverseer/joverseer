@@ -43,7 +43,7 @@ public class PopulationCenterRenderer extends ImageRenderer {
 
         BufferedImage fortImage = null;
         if (popCenter.getFortification() != FortificationSizeEnum.none) {
-            fortImage = getImage(popCenter.getFortification().toString() + ".image");
+            fortImage = getImage(popCenter.getFortification().toString() + ".image", 1.2);
         }
 
 
@@ -62,7 +62,7 @@ public class PopulationCenterRenderer extends ImageRenderer {
         if (popCenter.getSize().getCode() < PopulationCenterSizeEnum.majorTown.getCode()) {
         	capital = "";
         }
-        pcImage = getImage(popCenter.getSize().toString() + capital + ".image");
+        pcImage = getImage(popCenter.getSize().toString() + capital + ".image", 1.2);
 
         BufferedImage img = copyImage(pcImage);
         Color color1 = ColorPicker.getInstance().getColor1(popCenter.getNationNo());

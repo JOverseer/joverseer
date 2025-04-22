@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -95,7 +96,7 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
 
         for (int i = 0; i < 20; i++) {
             final JLabelButton l = new JLabelButton(ico);
-            l.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight3()));
+            l.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight5()));
             l.setVerticalAlignment(SwingConstants.TOP);
             l.addActionListener(new PopupMenuActionListener() {
 
@@ -111,7 +112,7 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
             });
             this.icons.add(l);
 
-            tlb.cell(this.icons.get(i), "valign=top colspec=left:12px"); //$NON-NLS-1$
+            tlb.cell(this.icons.get(i), "valign=top colspec=left:50px"); //$NON-NLS-1$
 
             final JTextArea ta = new JTextArea();
             ta.setWrapStyleWord(true);
@@ -165,7 +166,7 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
             tlb.row();
         }
         JPanel p = tlb.getPanel();
-        p.setBackground(Color.white);
+        p.setBackground(UIManager.getColor("TextArea.background"));
         return p;
     }
 

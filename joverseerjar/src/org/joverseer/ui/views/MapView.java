@@ -1,12 +1,14 @@
 package org.joverseer.ui.views;
 
-import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.AffineTransform;
+
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -83,11 +85,11 @@ public class MapView extends AbstractView implements ApplicationListener {
 
 		});
 		this.mapPanel.setPreferredSize(new Dimension(1000, 2500));
-		this.mapPanel.setBackground(Color.white);
 		this.scp.setPreferredSize(new Dimension(800, 500));
 		MapMetadata mm = MapMetadata.instance();
 		this.scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize() * 2);
 		this.scp.getHorizontalScrollBar().setUnitIncrement(mm.getGridCellWidth() * mm.getHexSize() * 2);
+//		this.scp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
 		// Add introduction image to explain to new players what to do
 		ImageSource is = JOApplication.getImageSource();
@@ -148,14 +150,33 @@ public class MapView extends AbstractView implements ApplicationListener {
 			break;
 		case MapMetadataChangedEvent:
 			MapMetadata mm = MapMetadata.instance();
-			this.mapPanel.setPreferredSize(new Dimension(mm.getGridCellWidth() * mm.getHexSize() * (mm.getMaxMapColumn() + 1), mm.getGridCellHeight() * mm.getHexSize() * mm.getMaxMapRow()));
+			this.mapPanel.setPreferredSize(getRealMapDimension(mm));
+			//this.mapPanel.setPreferredSize(new Dimension(w * (mm.getHexSize()) * (mm.getMaxMapColumn() + 1), mm.getGridCellHeight() * mm.getHexSize() * mm.getMaxMapRow()));
 			this.scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize() * 2);
 			this.scp.getHorizontalScrollBar().setUnitIncrement(mm.getGridCellWidth() * mm.getHexSize() * 2);
 			this.mapPanel.invalidateAndReset();
 			this.mapPanel.updateUI();
 			this.scp.updateUI();
+			
+			this.mapPanel.revalidate();
+			this.scp.getVerticalScrollBar().setValue(this.scp.getVerticalScrollBar().getValue()-1);			
+
 			break;
 		}
+	}
+	
+	private Dimension getRealMapDimension(MapMetadata mm) {
+		Point p =this.mapPanel.getHexLocation((mm.getMaxMapColumn()), mm.getMaxMapRow());
+	    GraphicsConfiguration gc = this.mapPanel.getGraphicsConfiguration();
+	    AffineTransform tx = gc.getDefaultTransform();
+	    double scaleX = tx.getScaleX();
+	    double scaleY = tx.getScaleY();
+
+	    int logicalX = (int) (p.x / scaleX) + Math.round(mm.getGridCellWidth() * mm.getHexSize() + 10);
+	    int logicalY = (int) (p.y / scaleY) + Math.round((mm.getGridCellHeight() * mm.getHexSize()) - 8);
+		//Point p = this.mapPanel.getHexFromPoint(p1);
+		
+		return new Dimension(logicalX, logicalY);
 	}
 
 }

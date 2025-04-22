@@ -112,7 +112,6 @@ public class ExportDiploForm extends ScalableAbstractForm {
 
 		this.lbVersion = new JLabel(Messages.getString("playerInfo.turnDiploVersion")); //$NON-NLS-1$
 		pnlVersion.add(this.lbVersion);
-		this.lbVersion.setBackground(Color.WHITE);
 		pnlVersion.add(this.lbVersionV);
 		this.lbVersionV.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -125,7 +124,6 @@ public class ExportDiploForm extends ScalableAbstractForm {
 
 		this.lbSent = new JLabel(Messages.getString("playerInfo.ordersSentOn")); //$NON-NLS-1$
 		pnlSent.add(this.lbSent);
-		this.lbSent.setBackground(Color.WHITE);
 		pnlSent.add(this.lbSentV);
 
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
@@ -137,7 +135,6 @@ public class ExportDiploForm extends ScalableAbstractForm {
 
 		this.lbFile = new JLabel(Messages.getString("playerInfo.lastOrderFile")); //$NON-NLS-1$
 		pnlFile.add(this.lbFile);
-		this.lbFile.setBackground(Color.WHITE);
 		pnlFile.add(this.lbFileV);
 
 		setDiploPlayerInfo();

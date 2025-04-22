@@ -206,6 +206,8 @@ public class HomeViewInfoCollector {
 	 * Does some janky search and replace to make the newsletter 'Dark Mode'
 	 */
 	public String darkMode(String page) {
+		//String backgroundC = 
+		
 		String s = page.replaceAll("<div class=\"text-block\" style=\"", "<div class=\"text-block\" style=\"color: #ffffff; ");
 		s = s.replaceAll("<div class=\"text-block fr-inner\" style=\"", "<div class=\"text-block fr-inner\" style=\"color: #ffffff; ");
 		s = s.replaceAll("bgcolor=\"#ffffff\"", "bgcolor=\"#000000\"");

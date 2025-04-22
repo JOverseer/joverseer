@@ -78,7 +78,7 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 		this.editor = new JEditorPane();
 		this.editor.setContentType("text/html");
 		this.editor.setEditable(false);
-		this.editor.setCaretColor(Color.WHITE);
+		this.editor.setCaretColor(this.editor.getBackground());
 		this.editor.addHyperlinkListener(new HyperlinkListener() {
 
 			@Override
@@ -102,7 +102,7 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 		JEditorPane jp = new JEditorPane();
 		jp.setContentType("text/html");
 		jp.setEditable(false);
-		jp.setCaretColor(Color.WHITE);
+		jp.setCaretColor(this.editor.getBackground());
 		jp.setText("<div style='font-family:MS Sans Serif; font-size:11pt'><i>" + Messages.getString("applicationDescriptor.description"));
 		panel_L.add(jp, BorderLayout.PAGE_END);
 		
@@ -126,7 +126,7 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 		this.sideEditor = new JEditorPane();
 		this.sideEditor.setContentType("text/html");
 		this.sideEditor.setEditable(false);
-		this.sideEditor.setCaretColor(Color.WHITE);
+		this.sideEditor.setCaretColor(this.editor.getBackground());
 		this.sideEditor.addHyperlinkListener(new HyperlinkListener() {
 
 			@Override
@@ -165,7 +165,7 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 		jp = new JEditorPane();
 		jp.setContentType("text/html");
 		jp.setEditable(false);
-		jp.setCaretColor(Color.WHITE);
+		jp.setCaretColor(this.editor.getBackground());
 		jp.setText("<div style='font-family:MS Sans Serif; font-size:9pt'><i>" + Messages.getString("extraLegal.copyright"));
 		p1.add(jp, BorderLayout.PAGE_END);
 		

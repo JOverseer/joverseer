@@ -442,6 +442,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 	public void onPreInitialize(Application arg0) {
 		super.onPreInitialize(arg0);
 		String pval = PreferenceRegistry.instance().getPreferenceValue("UI.LookAndFeel");
+		if(pval.equals("Default")) pval = "com.formdev.flatlaf.FlatLightLaf";
 		if (pval != "" && !pval.equals("Default")) {
 			System.out.println(pval);
 			FlatLaf.registerCustomDefaultsSource( "ui.themes");

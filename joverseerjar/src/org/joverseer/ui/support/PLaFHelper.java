@@ -33,7 +33,7 @@ public class PLaFHelper {
 	public PLaFHelper() {
 		UIManager.LookAndFeelInfo[] builtinPlafInfos;
 		builtinPlafInfos = UIManager.getInstalledLookAndFeels();
-		this.plaf.put("Default", "Default");
+		//this.plaf.put("Default", "Default");
 //        for (UIManager.LookAndFeelInfo info: builtinPlafInfos) {
 //        	this.plaf.put(info.getName(), info.getClassName());
 //        }

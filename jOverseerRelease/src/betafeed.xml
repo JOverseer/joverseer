@@ -6,6 +6,24 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
+		<item>
+			<title>1.18.22-rc2</title>
+			<pubDate>22 April 2025</pubDate>
+			<description>
+VERSION 1.18.22-rc2
+---------------
+- Combat wouldnt open when no PC and an enemy Army (or at least a FP when DS)
+- Applys theme earlier in setup, when opening listviews not open at launch now open with new theme
+-  Fixed OrderInfo + Info having weird gaps
+- Fixed Army Movement buttons
+- Fixed Artifact + spell table for characters
+- Fixed not showing all production of PC in Current Hex View
+- Temporary fix for tables, set text colour to black
+ - Removed white backgrounds from panels
+- Hid cursor in home view
+- Reversed dpi scaling in map view so no blue (had to make sure to compensate for it when translating mouse to actual coordinates)
+			</description>
+			</item>	
 						<item>
 			<title>1.18.22-rc1</title>
 			<pubDate>14 April 2025</pubDate>

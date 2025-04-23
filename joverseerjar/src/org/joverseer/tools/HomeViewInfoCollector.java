@@ -9,8 +9,6 @@ import java.util.Enumeration;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
-import javax.swing.UIManager;
-
 import org.joverseer.JOApplication;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;

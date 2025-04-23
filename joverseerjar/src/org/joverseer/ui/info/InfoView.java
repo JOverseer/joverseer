@@ -1,7 +1,6 @@
 package org.joverseer.ui.info;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;

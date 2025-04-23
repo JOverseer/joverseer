@@ -1,6 +1,5 @@
 package org.joverseer.ui.viewers;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FocusTraversalPolicy;
@@ -330,7 +329,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
 //        final OrderEditor form = new OrderEditor();
 //        FormBackedDialogPage page = new FormBackedDialogPage(form);
 //
-//        TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+//        CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 //            protected void onAboutToShow() {
 //                form.setFormObject(getFormObject());
 //            }

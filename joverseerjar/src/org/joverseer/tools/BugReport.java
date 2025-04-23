@@ -146,7 +146,7 @@ public class BugReport {
 			s.close();
 //			final SubmitOrdersResultsForm frm = new SubmitOrdersResultsForm(FormModelHelper.createFormModel(new Object()));
 //			FormBackedDialogPage page = new FormBackedDialogPage(frm);
-//			TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+//			CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 //
 //				@Override
 //				protected void onAboutToShow() {

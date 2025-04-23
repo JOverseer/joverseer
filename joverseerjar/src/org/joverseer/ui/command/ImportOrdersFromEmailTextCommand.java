@@ -26,11 +26,11 @@ import org.joverseer.support.readers.orders.OrderTextReaderInterface;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.layout.TableLayoutBuilder;
@@ -56,7 +56,7 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 		this.form = new ParseOrdersForm(FormModelHelper.createFormModel(new String()));
 		FormBackedDialogPage pg = new FormBackedDialogPage(this.form);
 		final ClipboardOwner clipboardOwner = this.form;
-		TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
+		CustomTitledPageApplicationDialog dlg = new CustomTitledPageApplicationDialog(pg) {
 			@Override
 			protected boolean onFinish() {
 				loadOrders(ImportOrdersFromEmailTextCommand.this.form.getOrderText(), ImportOrdersFromEmailTextCommand.this.form.getOrderTextType());

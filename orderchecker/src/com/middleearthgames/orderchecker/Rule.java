@@ -5,7 +5,6 @@
 
 package com.middleearthgames.orderchecker;
 
-import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.JCheckBox;

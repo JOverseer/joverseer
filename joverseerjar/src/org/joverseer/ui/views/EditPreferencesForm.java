@@ -13,23 +13,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
-import org.joverseer.JOApplication;
 import org.joverseer.preferences.Preference;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.preferences.PreferenceValue;
-import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.support.PLaFHelper;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
-import com.jgoodies.looks.plastic.theme.DarkStar;
-import com.jgoodies.looks.plastic.theme.ExperienceGreen;
 import com.jidesoft.spring.richclient.docking.JideApplicationLifecycleAdvisor;
 
 /**
@@ -121,7 +113,8 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 						JComboBox combo = new JComboBox();
 						this.plaf.fill(combo);
 						this.currentLook=this.plaf.nameFromClass(reg.getPreferenceValue(p.getKey()));
-						combo.setSelectedItem(this.currentLook);
+						if(this.currentLook.equals("") || this.currentLook.equals("Default")) combo.setSelectedItem("Flat Light");
+						else combo.setSelectedItem(this.currentLook);
 						this.components.put(p.getKey(), combo);
 						tlb.cell(combo, "colspec=left:200px");
 					}

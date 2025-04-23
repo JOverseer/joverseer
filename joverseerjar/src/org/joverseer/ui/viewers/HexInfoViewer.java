@@ -1,6 +1,5 @@
 package org.joverseer.ui.viewers;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -31,12 +31,12 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.TableLayoutBuilder;
@@ -128,7 +128,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
 
                 FormBackedDialogPage page = new FormBackedDialogPage(frm);
 
-                TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+                CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 //                    protected void onAboutToShow() {
 //                    }
 

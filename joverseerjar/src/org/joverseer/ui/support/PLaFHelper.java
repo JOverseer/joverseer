@@ -1,25 +1,16 @@
 package org.joverseer.ui.support;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.plaf.UIResource;
-
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.WindowManager;
 
 import com.formdev.flatlaf.FlatLaf;
-import com.jidesoft.plaf.LookAndFeelFactory;
 
 /**
  * Hide/gather all the plaf knowledge.
@@ -40,7 +31,7 @@ public class PLaFHelper {
         if (isClassAvailable("com.formdev.flatlaf.FlatLightLaf")) {
         	this.plaf.put("Flat Light","com.formdev.flatlaf.FlatLightLaf");
         	this.plaf.put("Flat Dark","com.formdev.flatlaf.FlatDarkLaf");
-        	this.plaf.put("Darcula", "com.formdev.flatlaf.FlatDarculaLaf");
+//        	this.plaf.put("Darcula", "com.formdev.flatlaf.FlatDarculaLaf");
         }
         if (isClassAvailable("com.jgoodies.looks.plastic.PlasticTheme")) {
 

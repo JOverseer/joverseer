@@ -17,10 +17,10 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.orderEditor.OrderEditorAutoNations;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.layout.TableLayoutBuilder;
@@ -46,7 +46,7 @@ public class SetOrderEditorAutoNationsCommand extends ActionCommand {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
         final OrderEditorAutoNationsForm frm = new OrderEditorAutoNationsForm(FormModelHelper.createFormModel(new Army()));
         FormBackedDialogPage pg = new FormBackedDialogPage(frm);
-        TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
+        CustomTitledPageApplicationDialog dlg = new CustomTitledPageApplicationDialog(pg) {
             @Override
 			protected boolean onFinish() {
                 frm.commit();

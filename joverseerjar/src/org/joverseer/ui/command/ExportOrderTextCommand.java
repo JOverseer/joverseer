@@ -21,10 +21,10 @@ import org.joverseer.game.Game;
 import org.joverseer.orders.export.OrderTextGenerator;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
@@ -46,7 +46,7 @@ public class ExportOrderTextCommand extends ActionCommand {
 	protected void doExecuteCommand() {
 		final ExportOrderTextForm form = new ExportOrderTextForm(FormModelHelper.createFormModel(new String()));
 		FormBackedDialogPage pg = new FormBackedDialogPage(form);
-		TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
+		CustomTitledPageApplicationDialog dlg = new CustomTitledPageApplicationDialog(pg) {
 			@Override
 			protected Object[] getCommandGroupMembers() {
 				return new Object[] { getFinishCommand() };

@@ -55,6 +55,7 @@ import org.joverseer.tools.combatCalc.CombatArmy;
 import org.joverseer.tools.combatCalc.CombatPopCenter;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.springframework.binding.form.FormModel;
 import org.springframework.binding.value.ValueModel;
 import org.springframework.binding.value.support.ListListModel;
@@ -64,7 +65,6 @@ import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
@@ -735,7 +735,7 @@ public class CombatForm extends AbstractForm {
 		final CombatLog form = new CombatLog(formModel, ((Combat)this.getFormObject()).logger);
 		FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-		TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+		CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 
 			@Override
 			protected void onAboutToShow() {
@@ -1146,7 +1146,7 @@ public class CombatForm extends AbstractForm {
 			final CombatArmyForm form = new CombatArmyForm(formModel);
 			FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-			TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+			CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 
 				@Override
 				protected void onAboutToShow() {
@@ -1383,7 +1383,7 @@ public class CombatForm extends AbstractForm {
 			final CombatPopCenterForm form = new CombatPopCenterForm(formModel);
 			FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-			TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+			CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 
 				@Override
 				protected void onAboutToShow() {

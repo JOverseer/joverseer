@@ -13,9 +13,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
+import org.joverseer.JOApplication;
 import org.joverseer.preferences.Preference;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.preferences.PreferenceValue;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.support.PLaFHelper;
 import org.springframework.binding.form.FormModel;
@@ -184,18 +188,17 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 					if (combo.getSelectedItem() != null) {
 						String sel=combo.getSelectedItem().toString();
 						if(sel != this.currentLook) {
-
-							//UIManager.setLookAndFeel(this.plaf.fullClassFromName(sel));
-							//this.plaf.updateAll();
-							// only update the preference if it worked.
-							reg.setPreferenceValue(p.getKey(), this.plaf.fullClassFromName(sel));
-							JOptionPane.showMessageDialog(this.getControl(), "To apply a theme change, please restart JOverseer.");
-							//JOApplication.publishEvent(LifecycleEventsEnum.ThemeChangeEvent, this);
+							try {
+//								UIManager.setLookAndFeel(this.plaf.fullClassFromName(sel));
+//								this.plaf.updateAll();
+								// only update the preference if it worked.
+								reg.setPreferenceValue(p.getKey(), this.plaf.fullClassFromName(sel));
+								JOptionPane.showMessageDialog(this.getControl(), "To apply a theme change, please restart JOverseer.");
+//								JOApplication.publishEvent(LifecycleEventsEnum.ThemeChangeEvent, this);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 						}
-//						} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-//								 | UnsupportedLookAndFeelException e) {
-//							e.printStackTrace();
-//						}
 					}
 				}
 		    } else {

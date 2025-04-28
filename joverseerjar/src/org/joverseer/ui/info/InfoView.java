@@ -112,7 +112,7 @@ public class InfoView extends AbstractView {
 		//lb.cell(createTableFromInfo("dragons",850, 1100,null), "align=left valign=top");
 		lb.cell(new JLabel("Click on the link below to open it in your browser:"), "align=left valign=top");
 		lb.relatedGapRow();
-		JLabelButton hyperlinkDragon = new JLabelButton("<html><font color='blue'>https://wiki.mepbm.com/dragons</font><html>");
+		JLabelButton hyperlinkDragon = new JLabelButton("<html><font color='#3a79d1'>https://wiki.mepbm.com/dragons</font><html>");
 		hyperlinkDragon.addActionListener(new ActionListener() {
 			
 	          @Override

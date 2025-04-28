@@ -96,7 +96,7 @@ public class PLaFHelper {
 	/**
 	 * call this when the Look and Feel has been changed, and force the UI to respond.
 	 */
-	public void updateAll() {
+	public static void updateAll() {
 		// Update the component tree (frame and its children)
 		final WindowManager wm = Application.instance().getWindowManager();
 		
@@ -164,7 +164,11 @@ public class PLaFHelper {
         UIManager.put("PopupMenuSeparatorUI", "com.formdev.flatlaf.ui.FlatSeparatorUI");
         UIManager.put("RadioButtonMenuItemUI", "com.formdev.flatlaf.ui.FlatRadioButtonMenuItemUI");
         UIManager.put("CheckBoxMenuItemUI", "com.formdev.flatlaf.ui.FlatCheckBoxMenuItemUI");
-        UIManager.put("PopupMenu.border", "com.formdev.flatlaf.ui.FlatPopupMenuBorderUI");
+//        UIManager.put("PopupMenu.border", "com.formdev.flatlaf.ui.FlatPopupMenuBorderUI");
+        
+//        UIManager.put("Menu.selectionBackground", UIManager.getColor("MenuItem.selectionBackground")); // also match text color
+//        UIManager.put("Menu.selectionForeground", UIManager.getColor("MenuItem.selectionForeground")); // also match text color
+
         
         Icon blankIcon = new Icon() {
 		    @Override
@@ -188,7 +192,6 @@ public class PLaFHelper {
         UIManager.put("MenuItem.checkIconGap", 0);
         UIManager.put("Menu.checkIconGap", 0);
 	}
-	
 	
 	/*
 	 * Debugging function that wouldnt compile

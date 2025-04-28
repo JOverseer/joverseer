@@ -47,7 +47,7 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 	String[] columnHeaderTags = new String[] { "nation", "le", "br", "st", "mi", "fo", "ti", "mo", "cptChars", "reserves", "surplus","marketSpending","marketSales","losses","orders","finalGold","hikedTaxRate", "taxRate", "taxBase"};
 	String[] columnNames;
 
-	int[] columnWidths = new int[] { 42, 42, 42, 42, 42, 42, 42, 42, 58, 54, 54, 74, 74, 54, 42, 64, 60, 42, 48  };
+	int[] columnWidths = new int[] { 42, 42, 42, 42, 42, 42, 42, 42, 58, 54, 54, 74, 74, 54, 42, 64, 64, 48, 60  };
 
 	Class<?>[] classes = new Class[] { String.class, Integer.class, Integer.class, Integer.class,  Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class };
 

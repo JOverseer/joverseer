@@ -207,7 +207,7 @@ public class HomeViewInfoCollector {
 	 */
 	public String darkMode(String page) {
 		//String backgroundC = 
-		String backgroundColor = this.colorToString("Panel.background", true);
+		String backgroundColor = this.colorToString("Panel.background", false);
 		String textColor = this.colorToString("Label.foreground", false);
 		
 		String s = page.replaceAll("<div class=\"text-block\" style=\"", "<div class=\"text-block\" style=\"color: " + textColor + "; ");

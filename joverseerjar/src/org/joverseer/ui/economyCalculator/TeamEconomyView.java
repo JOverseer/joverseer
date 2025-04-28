@@ -73,13 +73,13 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 		CellRendererStyle style = new CellRendererStyle();
 		this.teamEconomyTable.setDefaultRenderer(Integer.class, new IntegerTeamEconomyTableRenderer(style));
 		this.teamEconomyTable.setDefaultRenderer(String.class, new StringTeamEconomyTableRenderer(style));
-		this.teamEconomyTable.setBackground(Color.white);
+//		this.teamEconomyTable.setBackground(Color.white);
 		// we set up the reference to the NationStatisticsModel once we've created it in the view.
 
 		JScrollPane scp = new JScrollPane(this.teamEconomyTable);
 		scp.setPreferredSize(new Dimension(600, 250));
 //		scp.getViewport().setBackground(Color.white);
-		scp.getViewport().setOpaque(true);
+//		scp.getViewport().setOpaque(true);
 		lb.cell(scp);
 
 		lb.row();
@@ -107,15 +107,15 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 		lb.gapCol();
 */
 
-		JButton btn = new JButton(Messages.getString("TeamEconomyView.UpdateMarket")); //$NON-NLS-1$
-		btn.setToolTipText(Messages.getString("TeamEconomyView.UpdateAll")); //$NON-NLS-1$
-		btn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				updateMarketAndOrderCosts();
-			}
-		});
-		btn.setPreferredSize(new Dimension(200, 20));
+//		JButton btn = new JButton(Messages.getString("TeamEconomyView.UpdateMarket")); //$NON-NLS-1$
+//		btn.setToolTipText(Messages.getString("TeamEconomyView.UpdateAll")); //$NON-NLS-1$
+//		btn.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				updateMarketAndOrderCosts();
+//			}
+//		});
+//		btn.setPreferredSize(new Dimension(200, 20));
 //		lb.cell(btn, "colspec=right:200px valign=top"); //$NON-NLS-1$
 		//tlb.cell(this.showProductAsCombo, "colspec=left:230px"); //$NON-NLS-1$
 

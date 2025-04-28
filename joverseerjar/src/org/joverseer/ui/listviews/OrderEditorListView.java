@@ -51,6 +51,7 @@ import org.joverseer.ui.orderEditor.OrderEditorData;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.PLaFHelper;
 import org.joverseer.ui.support.controls.AutocompletionComboBox;
 import org.joverseer.ui.support.controls.JOverseerTable;
 import org.joverseer.ui.support.controls.TableUtils;
@@ -394,6 +395,7 @@ public class OrderEditorListView extends ItemListView {
 				if (isCellSelected(row, column)) {
 					if (!c.getBackground().equals(OrderEditorListView.this.paramErrorColor) && !c.getBackground().equals(OrderEditorListView.this.paramWarningColor) && !c.getBackground().equals(OrderEditorListView.this.paramInfoColor)) {
 						c.setBackground(this.selectionBackground1);
+						c.setForeground(Color.white);
 					}
 				} else {
 					if (!c.getBackground().equals(OrderEditorListView.this.paramErrorColor) && !c.getBackground().equals(OrderEditorListView.this.paramWarningColor) && !c.getBackground().equals(OrderEditorListView.this.paramInfoColor)) {
@@ -414,12 +416,14 @@ public class OrderEditorListView extends ItemListView {
 						int rowI = ((ShuttleSortableTableModel) this.getModel()).convertSortedIndexToDataIndex(row);
 						Order order = (Order) OrderEditorListView.this.tableModel.getRow(rowI);
 						int charIndex = OrderEditorListView.this.characterIndices.get(order.getCharacter());
+						
+						c.setForeground(UIManager.getColor("Label.foreground"));
 						if (charIndex % 2 == 1) {
-							c.setBackground(Color.decode("#efefef"));
-							c.setForeground(Color.black);
+							if(PLaFHelper.isDarkMode()) c.setBackground(Color.decode("#2d2f31"));
+							else c.setBackground(Color.decode("#efefef"));
 						} else {
 							c.setBackground(this.normalBackground);
-							c.setForeground(UIManager.getColor("Label.foreground"));
+							
 						}
 					}
 

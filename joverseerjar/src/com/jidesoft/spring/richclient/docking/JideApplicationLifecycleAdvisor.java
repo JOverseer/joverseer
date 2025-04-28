@@ -244,27 +244,6 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 		JOApplication.publishEvent(LifecycleEventsEnum.ThemeChangeEvent, this);
 		
 		String pval = PreferenceRegistry.instance().getPreferenceValue("UI.LookAndFeel");
-//		if (pval != "" && !pval.equals("Default")) {
-//			System.out.println(pval);
-//			FlatDarkLaf.setup();
-//			FlatLaf.registerCustomDefaultsSource( "ui.themes");
-//			
-//			try {
-//				UIManager.setLookAndFeel(pval);
-//		        UIManager.put("MenuItemUI", "com.formdev.flatlaf.ui.FlatMenuItemUI");
-//		        UIManager.put("PopupMenuUI", "com.formdev.flatlaf.ui.FlatPopupMenuUI");
-//		        UIManager.put("MenuUI", "com.formdev.flatlaf.ui.FlatMenuUI");
-//				
-//				PLaFHelper PLaF = new PLaFHelper();
-//				PLaF.updateAll();
-//				
-//			} catch( Exception ex ) {
-//			    System.err.println( "Failed to initialize LaF" );
-//			}		
-//			
-//		}
-//		JOApplication.publishEvent(LifecycleEventsEnum.ThemeChangeEvent, this);
-//	
 		
 		if (System.getProperty("java.version").startsWith("1.8.")) {
 			final MessageDialog dlg = new MessageDialog("Java Version Check", "Obsolete java detected.\nYou will experience problems.\nDownload the full setup from https://www.gamesystems.com/gamingsoftware ") {
@@ -441,25 +420,17 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 	@Override
 	public void onPreInitialize(Application arg0) {
 		super.onPreInitialize(arg0);
+		
 		String pval = PreferenceRegistry.instance().getPreferenceValue("UI.LookAndFeel");
-		if(pval.equals("Default")) pval = "com.formdev.flatlaf.FlatLightLaf";
+		if (pval.equals("Default")) pval = "com.formdev.flatlaf.FlatLightLaf";
 		if (pval != "" && !pval.equals("Default")) {
-			System.out.println(pval);
 			FlatLaf.registerCustomDefaultsSource( "ui.themes");
 			FlatDarkLaf.setup();
-			
 			
 			try {
 				UIManager.setLookAndFeel(pval);
 
-
-		        //LookAndFeelFactory.installJideExtension();
-		        //UIManager.put("DockableFrame.activeTitleBackground", "com.formdev.flatlaf.ui.FlatMenuUI");
-
-		        //UIManager.put("DockableFrame.activeTitleForeground", "com.formdev.flatlaf.ui.FlatMenuUI");
-		        
-				PLaFHelper PLaF = new PLaFHelper();
-				PLaF.updateAll();
+				PLaFHelper.updateAll();
 				
 			} catch( Exception ex ) {
 			    System.err.println( "Failed to initialize LaF" );

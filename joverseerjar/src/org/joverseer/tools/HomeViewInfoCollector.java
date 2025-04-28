@@ -1,5 +1,6 @@
 package org.joverseer.tools;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -12,10 +13,10 @@ import java.util.Scanner;
 import javax.swing.UIManager;
 
 import org.joverseer.JOApplication;
-import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
 import org.joverseer.support.RecentGames.RecentGameInfo;
+import org.joverseer.ui.support.PLaFHelper;
 import org.joverseer.ui.views.Messages;
 import com.jidesoft.tipoftheday.ResourceBundleTipOfTheDaySource;
 
@@ -153,8 +154,7 @@ public class HomeViewInfoCollector {
 	private String renderNewsletter() {
 		String page = getPage(this.newsletterURL);
 		
-		String pval = PreferenceRegistry.instance().getPreferenceValue("UI.LookAndFeel");
-		if(pval.equals("com.formdev.flatlaf.FlatDarkLaf") || pval.equals("com.formdev.flatlaf.FlatDarculaLaf")) return darkMode(page);
+		if(PLaFHelper.isDarkMode()) return darkMode(page);
 		
 		return page;
 	}
@@ -207,11 +207,25 @@ public class HomeViewInfoCollector {
 	 */
 	public String darkMode(String page) {
 		//String backgroundC = 
+		String backgroundColor = this.colorToString("Panel.background", false);
+		String textColor = this.colorToString("Label.foreground", false);
 		
-		String s = page.replaceAll("<div class=\"text-block\" style=\"", "<div class=\"text-block\" style=\"color: #ffffff; ");
-		s = s.replaceAll("<div class=\"text-block fr-inner\" style=\"", "<div class=\"text-block fr-inner\" style=\"color: #ffffff; ");
-		s = s.replaceAll("bgcolor=\"#ffffff\"", "bgcolor=\"#000000\"");
-		s = s.replaceAll("background-color: #ffffff;", "background-color: #000000;");
+		String s = page.replaceAll("<div class=\"text-block\" style=\"", "<div class=\"text-block\" style=\"color: " + textColor + "; ");
+		s = s.replaceAll("<div class=\"text-block fr-inner\" style=\"", "<div class=\"text-block fr-inner\" style=\"color: " + textColor + "; ");
+		s = s.replaceAll("bgcolor=\"#ffffff\"", "bgcolor=\"" + backgroundColor + "\"");
+		s = s.replaceAll("background-color: #ffffff;", "background-color: "+ backgroundColor +";");
 		return s;
+	}
+	
+	public String colorToString(String code, boolean darken) {
+		Color c = UIManager.getColor(code);
+		if(darken) c = c.darker();
+
+		int R = c.getRed();
+		int G = c.getGreen();
+		int B = c.getBlue();
+
+		return "#" + Integer.toHexString(R) + Integer.toHexString(G) + Integer.toHexString(B);
+
 	}
 }

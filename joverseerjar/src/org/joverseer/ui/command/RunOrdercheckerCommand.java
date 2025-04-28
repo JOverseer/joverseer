@@ -18,12 +18,12 @@ import org.joverseer.tools.ordercheckerIntegration.OrdercheckerProxy;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.views.SelectOrderchekerNationForm;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.support.ApplicationWindowAwareCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.layout.TableLayoutBuilder;
@@ -60,7 +60,7 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 			// show a form so that the user selects the desired nation
 			final SelectOrderchekerNationForm frm = new SelectOrderchekerNationForm(FormModelHelper.createFormModel(0),this.gh);
 			FormBackedDialogPage pg = new FormBackedDialogPage(frm);
-			TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
+			CustomTitledPageApplicationDialog dlg = new CustomTitledPageApplicationDialog(pg) {
 				@Override
 				protected boolean onFinish() {
 					RunOrdercheckerCommand.this.selectedNation = ((org.joverseer.metadata.domain.Nation) frm.getFormObject()).getNumber();
@@ -79,7 +79,7 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 			FormBackedDialogPage page = new FormBackedDialogPage(form);
 			page.setTitle(this.gh.getGame().getMetadata().getNationByNum(this.selectedNation).getName());
 
-			TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+			CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 				@Override
 				protected void onAboutToShow() {
 					try {

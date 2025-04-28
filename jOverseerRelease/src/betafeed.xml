@@ -7,6 +7,24 @@
 			helper program.</description>
 		<language>en</language>
 		<item>
+			<title>1.18.22-rc3</title>
+			<pubDate>28 April 2025</pubDate>
+			<description>
+VERSION 1.18.22-rc3
+---------------
+ - new "CustomTitledPageApplicationDialog" which removes image in banner
+ - also removed unused imports
+ - Fixed Popupmenus so they have Flat separators and removed tickboxes + border
+ - Added isDarkMode function
+ - Adjusted newsletter dark mode colors
+ - Adjusted color scheme of tabs and docking framework in dark mode
+ - Change Alliegance colors in dark mode to contast better
+ - Hyperlink blue color now a better blue for dark mode
+ - Orders for coming turn colors for dark mode fixed
+ - Fix for zooming hex number font size
+			</description>
+		</item>	
+		<item>
 			<title>1.18.22-rc2</title>
 			<pubDate>22 April 2025</pubDate>
 			<description>

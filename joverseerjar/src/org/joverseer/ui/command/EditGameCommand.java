@@ -8,11 +8,11 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.NewGame;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.joverseer.ui.views.NewGameForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
 public class EditGameCommand extends ActionCommand {
@@ -36,7 +36,7 @@ public class EditGameCommand extends ActionCommand {
         final NewGameForm form = new NewGameForm(formModel, true);
         final FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-        final TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+        final CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
             @Override
 			protected void onAboutToShow() {
                 setDescription(Messages.getString(form.getId() + ".description"));

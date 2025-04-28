@@ -14,7 +14,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import org.joverseer.JOApplication;
 import org.joverseer.preferences.Preference;
@@ -27,9 +26,6 @@ import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
-import com.jgoodies.looks.plastic.theme.DarkStar;
-import com.jgoodies.looks.plastic.theme.ExperienceGreen;
 import com.jidesoft.spring.richclient.docking.JideApplicationLifecycleAdvisor;
 
 /**
@@ -121,7 +117,8 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 						JComboBox combo = new JComboBox();
 						this.plaf.fill(combo);
 						this.currentLook=this.plaf.nameFromClass(reg.getPreferenceValue(p.getKey()));
-						combo.setSelectedItem(this.currentLook);
+						if(this.currentLook.equals("") || this.currentLook.equals("Default")) combo.setSelectedItem("Flat Light");
+						else combo.setSelectedItem(this.currentLook);
 						this.components.put(p.getKey(), combo);
 						tlb.cell(combo, "colspec=left:200px");
 					}
@@ -191,18 +188,17 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 					if (combo.getSelectedItem() != null) {
 						String sel=combo.getSelectedItem().toString();
 						if(sel != this.currentLook) {
-
-							//UIManager.setLookAndFeel(this.plaf.fullClassFromName(sel));
-							//this.plaf.updateAll();
-							// only update the preference if it worked.
-							reg.setPreferenceValue(p.getKey(), this.plaf.fullClassFromName(sel));
-							JOptionPane.showMessageDialog(this.getControl(), "To apply a theme change, please restart JOverseer.");
-							//JOApplication.publishEvent(LifecycleEventsEnum.ThemeChangeEvent, this);
+							try {
+//								UIManager.setLookAndFeel(this.plaf.fullClassFromName(sel));
+//								this.plaf.updateAll();
+								// only update the preference if it worked.
+								reg.setPreferenceValue(p.getKey(), this.plaf.fullClassFromName(sel));
+								JOptionPane.showMessageDialog(this.getControl(), "To apply a theme change, please restart JOverseer.");
+//								JOApplication.publishEvent(LifecycleEventsEnum.ThemeChangeEvent, this);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 						}
-//						} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-//								 | UnsupportedLookAndFeelException e) {
-//							e.printStackTrace();
-//						}
 					}
 				}
 		    } else {

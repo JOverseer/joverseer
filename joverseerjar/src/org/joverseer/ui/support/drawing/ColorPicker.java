@@ -12,9 +12,11 @@ import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.CustomColourSetsManager;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.PLaFHelper;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.richclient.application.Application;
 
 /**
@@ -150,6 +152,16 @@ public class ColorPicker implements ApplicationListener {
     }
 
     public Color getColor(String color) {
+    	if(PLaFHelper.isDarkMode()) {
+    		try {
+    			Color c = this.getColorSubroutine(color + ".dark");
+    			return c;
+    		} catch(NoSuchMessageException e) {}
+    	}
+    	return this.getColorSubroutine(color);
+    }
+    
+    private Color getColorSubroutine(String color) throws NoSuchMessageException {
         if (!this.colors.containsKey(color)) {
             String colorStr = getColorSource().getMessage(color + ".color", null, Locale.getDefault());
             this.colors.put(color, Color.decode(colorStr));

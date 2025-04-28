@@ -9,11 +9,11 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.tools.UniqueIdGenerator;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.joverseer.ui.views.EditNoteForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
 /**
@@ -45,7 +45,7 @@ public class AddEditNoteCommand extends ActionCommand {
         final EditNoteForm form = new EditNoteForm(formModel,this.gameHolder);
         FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-        TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+        CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 //            protected void onAboutToShow() {
 //            }
 

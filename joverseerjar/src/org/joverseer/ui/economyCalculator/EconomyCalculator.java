@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.AbstractBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -46,10 +47,12 @@ import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.PLaFHelper;
 import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.controls.JOverseerTable;
 import org.joverseer.ui.support.controls.NationComboBox;
 import org.joverseer.ui.support.controls.TableUtils;
+import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.PageComponentContext;
@@ -520,7 +523,8 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 				Component c = super.prepareRenderer(renderer, row, column);
 				if (this.doHighlight(row, column)) {
 					if (c instanceof JComponent) {
-						((JComponent) c).setBorder(new TopBottomBorder(Color.black, 1));
+						if(PLaFHelper.isDarkMode()) ((JComponent) c).setBorder(new TopBottomBorder(Color.white, 1));
+						else ((JComponent) c).setBorder(new TopBottomBorder(Color.black, 1));
 	                }
 				}
 				return c;
@@ -538,7 +542,6 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 		this.totalsTable.setDefaultRenderer(Integer.class, new TotalsRenderer());
 		scp = new JScrollPane(this.totalsTable);
 		scp.setPreferredSize(new Dimension(590, 124));
-		scp.getViewport().setBackground(Color.white);
 		//scp.getViewport().setOpaque(true);
 		lb.cell(scp);
 
@@ -671,7 +674,12 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 		 */
 		private static final long serialVersionUID = 9079326762672678398L;
 		// TODO export colors to color.properties
-		Color[] rowColors = new Color[] { Color.decode("#ADD3A6"), Color.decode("#ADD3A6"), Color.decode("#FFCCAA"), Color.decode("#FFCCAA"), Color.decode("#ADD3A6"), Color.white, Color.white, Color.decode("#ADD3A6"), Color.decode("#ADD3A6"), Color.white, Color.white, Color.white, Color.lightGray }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+		ColorPicker colorPicker = ColorPicker.getInstance();
+		Color green = this.colorPicker.getColor("EconomyCalculator.green");
+		Color blue = this.colorPicker.getColor("EconomyCalculator.blue");
+		Color grey = this.colorPicker.getColor("EconomyCalculator.grey");
+		Color backgroundC = UIManager.getColor("Table.background");
+		Color[] rowColors = new Color[] { this.green, this.green, this.blue, this.blue, this.green, this.backgroundC, this.backgroundC, this.green, this.green, this.backgroundC, this.backgroundC, this.backgroundC, this.grey }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -685,7 +693,7 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 			}
 			lbl.setHorizontalAlignment(SwingConstants.RIGHT);
 			
-			if(column > 0) c.setForeground(Color.black);
+			if(column > 0) c.setForeground(this.colorPicker.getColor("EconomyCalculator.text"));
 
 			return c;
 		}
@@ -708,7 +716,9 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			
-			c.setForeground(Color.black);
+			
+			ColorPicker colorPicker = ColorPicker.getInstance();
+			c.setForeground(colorPicker.getColor("EconomyCalculator.text"));
 			
 			JLabel lbl = ((JLabel) c);
 			lbl.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -722,7 +732,7 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 				int amount = Integer.parseInt(value.toString());
 				if (amount >= getMarketLimitWarningThreshhold()) {
 					if (!isSelected) {
-						lbl.setBackground(Color.red);
+						lbl.setBackground(colorPicker.getColor("EconomyCalculator.red"));
 						return c;
 					}
 				}
@@ -733,9 +743,10 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 					// ,
 					// gold
 					// production
-					lbl.setBackground(Color.decode("#ADD3A6")); //$NON-NLS-1$
+					lbl.setBackground(colorPicker.getColor("EconomyCalculator.green")); //$NON-NLS-1$
 				} else {
-					lbl.setBackground(Color.white);
+					//lbl.setBackground(Color.white);
+					lbl.setBackground(UIManager.getColor("Table.background"));
 				}
 			}
 			return c;

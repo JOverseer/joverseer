@@ -593,13 +593,10 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		super.paintComponent(gcc);
 		Graphics2D g2d = (Graphics2D) gcc.create();
 		
-	    GraphicsConfiguration gc = getGraphicsConfiguration();
-	    AffineTransform transform = gc.getDefaultTransform();
-	    double scaleX = transform.getScaleX();
-	    double scaleY = transform.getScaleY();
+		double[] scales = this.getScaleTransformation();
 
 	    // Inverse scale to neutralize system DPI scaling
-	    g2d.scale(1 / scaleX, 1 / scaleY);
+	    g2d.scale(1 / scales[0], 1 / scales[1]);
 	    
 		if (isOpaque()) {
 			g2d.setColor(this.backgroundColour);
@@ -654,8 +651,21 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		setHexLocation(getSelectedHex().x, getSelectedHex().y);
 		MapMetadata metadata1;
 		try {
-			metadata1 = MapMetadata.instance();
-			return new Rectangle(this.location.x, this.location.y, metadata1.getHexSize() * metadata1.getGridCellWidth(), metadata1.getHexSize() * metadata1.getGridCellHeight());
+	        metadata1 = MapMetadata.instance();
+	        int logicalX = this.location.x;
+	        int logicalY = this.location.y;
+	        int logicalW = metadata1.getHexSize() * metadata1.getGridCellWidth();
+	        int logicalH = metadata1.getHexSize() * metadata1.getGridCellHeight();
+
+	        // Apply DPI scaling
+	        double[] scales = this.getScaleTransformation();
+	        
+	        return new Rectangle(
+	            (int)(logicalX / scales[0]),
+	            (int)(logicalY / scales[1]),
+	            (int)(logicalW / scales[0]),
+	            (int)(logicalH / scales[1])
+	        );
 		} catch (Exception exc) {
 			// application is not ready
 		}
@@ -668,13 +678,10 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	 */
 	public Point getHexFromPoint(Point p) {
 	    // Correct mouse input from physical → logical space
-	    GraphicsConfiguration gc = getGraphicsConfiguration();
-	    AffineTransform tx = gc.getDefaultTransform();
-	    double scaleX = tx.getScaleX();
-	    double scaleY = tx.getScaleY();
+		double[] scales = this.getScaleTransformation();
 
-	    int logicalX = (int) (p.x * scaleX);
-	    int logicalY = (int) (p.y * scaleY);
+	    int logicalX = (int) (p.x * scales[0]);
+	    int logicalY = (int) (p.y * scales[1]);
 
 	    MapMetadata metadata1 = MapMetadata.instance();
 	    int y = logicalY / (metadata1.getHexSize() * 3 / 4 * metadata1.getGridCellHeight());
@@ -922,19 +929,25 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		MapTooltipHolder tooltipHolder = MapTooltipHolder.instance();
 		String pval = PreferenceRegistry.instance().getPreferenceValue("map.tooltips"); //$NON-NLS-1$
 		
-	    GraphicsConfiguration gc = getGraphicsConfiguration();
-	    AffineTransform tx = gc.getDefaultTransform();
-	    double scaleX = tx.getScaleX();
-	    double scaleY = tx.getScaleY();
+		double[] scales = this.getScaleTransformation();
 
-	    int logicalX = (int) (e.getPoint().getX() * scaleX);
-	    int logicalY = (int) (e.getPoint().y * scaleY);
+	    int logicalX = (int) (e.getPoint().getX() * scales[0]);
+	    int logicalY = (int) (e.getPoint().y * scales[1]);
 	    Point p = new Point(logicalX, logicalY);
 		
 		if (pval != null && pval.equals("yes")) //$NON-NLS-1$
 			
 			
 			tooltipHolder.showTooltip(p, e.getPoint());
+	}
+	
+	public double[] getScaleTransformation() {
+	    GraphicsConfiguration gc = getGraphicsConfiguration();
+	    AffineTransform tx = gc.getDefaultTransform();
+	    double scaleX = tx.getScaleX();
+	    double scaleY = tx.getScaleY();
+	    
+	    return new double[]{scaleX, scaleY};
 	}
 
 	public Game getGame() {

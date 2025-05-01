@@ -1,6 +1,7 @@
 package org.joverseer.ui.info;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -20,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.JOApplication;
@@ -200,6 +202,8 @@ public class InfoView extends AbstractView {
 				@Override
 				public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {
 					JLabel lbl = (JLabel) super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
+					if(arg2) lbl.setForeground(Color.white);
+					else lbl.setForeground(UIManager.getColor("Label.foreground"));
 					if (arg5 > 0) {
 						lbl.setHorizontalAlignment(SwingConstants.CENTER);
 					} else {
@@ -260,6 +264,8 @@ public class InfoView extends AbstractView {
 				@Override
 				public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {
 					JLabel lbl = (JLabel) super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
+					if(arg2) lbl.setForeground(Color.white);
+					else lbl.setForeground(UIManager.getColor("Label.foreground"));
 					if (arg5 > 0) {
 						lbl.setHorizontalAlignment(SwingConstants.CENTER);
 					} else {

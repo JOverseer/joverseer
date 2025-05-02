@@ -19,6 +19,7 @@ import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.PLaFHelper;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.support.AbstractView;
@@ -93,7 +94,9 @@ public class MapView extends AbstractView implements ApplicationListener {
 		
 		// Add introduction image to explain to new players what to do
 		ImageSource is = JOApplication.getImageSource();
-		Image mapIntro = is.getImage("map.intro");
+		Image mapIntro;
+		if(!PLaFHelper.isDarkMode()) mapIntro = is.getImage("map.intro");
+		else mapIntro = is.getImage("map.dark.intro");
 		if (mapIntro != null) {
 			this.introLabel = new JLabel(new ImageIcon(mapIntro));
 			this.mapPanel.add(this.introLabel);
@@ -132,6 +135,7 @@ public class MapView extends AbstractView implements ApplicationListener {
 				this.mapPanel.updateUI();
 				// expand shr
 				Rectangle vr = this.mapPanel.getVisibleRect();
+				
 
 				vr.x = shr.x - (vr.width - shr.width) / 2;
 				vr.y = shr.y - (vr.height - shr.height) / 2;
@@ -167,13 +171,10 @@ public class MapView extends AbstractView implements ApplicationListener {
 	
 	private Dimension getRealMapDimension(MapMetadata mm) {
 		Point p =this.mapPanel.getHexLocation((mm.getMaxMapColumn()), mm.getMaxMapRow());
-	    GraphicsConfiguration gc = this.mapPanel.getGraphicsConfiguration();
-	    AffineTransform tx = gc.getDefaultTransform();
-	    double scaleX = tx.getScaleX();
-	    double scaleY = tx.getScaleY();
+	    double[] scales = this.mapPanel.getScaleTransformation();
 
-	    int logicalX = (int) (p.x / scaleX) + Math.round(mm.getGridCellWidth() * mm.getHexSize() + 10);
-	    int logicalY = (int) (p.y / scaleY) + Math.round((mm.getGridCellHeight() * mm.getHexSize()) - 8);
+	    int logicalX = (int) (p.x / scales[0]) + Math.round(mm.getGridCellWidth() * mm.getHexSize() * 3);
+	    int logicalY = (int) (p.y / scales[1]) + Math.round((mm.getGridCellHeight() * mm.getHexSize()) * 2);
 		//Point p = this.mapPanel.getHexFromPoint(p1);
 		
 		return new Dimension(logicalX, logicalY);

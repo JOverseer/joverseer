@@ -21,6 +21,7 @@ import javax.swing.text.Document;
 
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.PLaFHelper;
 import org.joverseer.ui.support.controls.DualJListSelector;
 import org.joverseer.ui.support.controls.NationDualListSelector;
 import org.joverseer.ui.support.controls.NationJList;
@@ -303,7 +304,9 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 	 * @param len: Current character count 
 	 */
 	private void updateLiveLabel(int len) {
-		String colour = "black";
+		String colour;
+		if(PLaFHelper.isDarkMode()) colour = "white";
+		else colour = "black";
 		String charCount = len + "/" + Integer.toString(Diplo.charPerNation * this.nationsCount);
 		
 		//This if statement changes label red or black depending on if user is over char limit, as well as uncapping the limit if indicated in xml file by '-1'

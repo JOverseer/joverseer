@@ -36,6 +36,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -56,6 +57,7 @@ import org.joverseer.tools.combatCalc.CombatPopCenter;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
+import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.binding.form.FormModel;
 import org.springframework.binding.value.ValueModel;
 import org.springframework.binding.value.support.ListListModel;
@@ -773,14 +775,14 @@ public class CombatForm extends AbstractForm {
 	        CombatArmy ca = (CombatArmy) obj;
 	        
 	        if(!ca.completeInfo()) {
-	            Color bg = Color.decode("#ffff99");
+	            Color bg = ColorPicker.getInstance().getColor("TurnReport.default");
 	        	cellComponent.setBackground(bg);
 	        	
 	        	JLabel lb = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 	        	lb.setToolTipText("Not accurate strength, incomplete data, edit army.");
 	        }
 	        else {
-	        	cellComponent.setBackground(Color.WHITE);
+	        	cellComponent.setBackground(UIManager.getColor("Table.background"));
 	        	JLabel lb = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 	        	lb.setToolTipText(null);
 	        	

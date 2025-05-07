@@ -1579,7 +1579,7 @@ public class TurnReportCollector {
 		for (int i = 0; i < reports.size(); i++) {
 			BaseReportObject bro = reports.get(i);
 			ColorPicker cp = ColorPicker.getInstance();
-			Color c = cp.getColor("TurnReport.default");
+			Color c = cp.getColor("TurnReport.modified");
 			String color = String.format("#%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue());
 			//String color = "#815f28";
 			if (bro.getModification().equals(ObjectModificationType.Lost)) {
@@ -1588,7 +1588,7 @@ public class TurnReportCollector {
 				//color = "#510404";
 			}
 			if (bro.getModification().equals(ObjectModificationType.Modified)) {
-				c = cp.getColor("TurnReport.modified");
+				c = cp.getColor("TurnReport.default");
 				color =  String.format("#%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue());
 			}
 				//color = "#27391C";

@@ -278,15 +278,15 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				}
 			}
 		}
-		Container<Hex> hexOverrides = gm.getHexOverrides(game1.getCurrentTurn());
-		for (Hex h : hexOverrides) {
-			setHexLocation(h.getColumn(), h.getRow());
-			for (org.joverseer.ui.map.renderers.Renderer r : metadata1.getRenderers()) {
-				if (r.appliesTo(h)) {
-					r.render(h, g, this.location.x, this.location.y);
-				}
-			}
-		}
+//		Container<Hex> hexOverrides = gm.getHexOverrides(game1.getCurrentTurn());
+//		for (Hex h : hexOverrides) {
+//			setHexLocation(h.getColumn(), h.getRow());
+//			for (org.joverseer.ui.map.renderers.Renderer r : metadata1.getRenderers()) {
+//				if (r.appliesTo(h)) {
+//					r.render(h, g, this.location.x, this.location.y);
+//				}
+//			}
+//		}
 
 		if (this.saveMap) {
 			File outputFile = new File("map.png"); //$NON-NLS-1$

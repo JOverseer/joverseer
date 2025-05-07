@@ -6,6 +6,16 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
+						<item>
+			<title>1.18.22-rc6</title>
+			<pubDate>8 May 2025</pubDate>
+			<description>
+VERSION 1.18.22-rc6
+---------------
+ - Fix Turn report view coloring being wrong way round
+ - Fix Combat Form dark mode 
+ 			</description>
+		</item>	
 				<item>
 			<title>1.18.22-rc5</title>
 			<pubDate>7 May 2025</pubDate>
@@ -17,6 +27,7 @@ VERSION 1.18.22-rc5
  - Import files window now bigger so can see entire progress bar.
  - Fix bridges being drawn weirdly 
  - Changed Input dialog to remove banner picture
+ 			</description>
  </description>
 		</item>	
 		<item>
@@ -33,6 +44,7 @@ VERSION 1.18.22-rc4
  - More Zoom options
  - Fix Map centering on hex
  - Fix other random colors
+ 			</description>
  </description>
 		</item>	
 		<item>

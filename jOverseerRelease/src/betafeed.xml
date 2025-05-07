@@ -12,7 +12,11 @@
 			<description>
 VERSION 1.18.22-rc5
 ---------------
-
+ - Anchored Ships fix (multiple in the same hex would go overriden)
+ - Allows user to close when changing theme
+ - Import files window now bigger so can see entire progress bar.
+ - Fix bridges being drawn weirdly 
+ - Changed Input dialog to remove banner picture
 		</item>	
 		<item>
 			<title>1.18.22-rc4</title>

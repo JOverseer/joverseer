@@ -7,6 +7,7 @@ import java.util.HashMap;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -26,6 +27,7 @@ import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
+import com.jidesoft.spring.richclient.ExitCommand;
 import com.jidesoft.spring.richclient.docking.JideApplicationLifecycleAdvisor;
 
 /**
@@ -193,8 +195,9 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 //								this.plaf.updateAll();
 								// only update the preference if it worked.
 								reg.setPreferenceValue(p.getKey(), this.plaf.fullClassFromName(sel));
-								JOptionPane.showMessageDialog(this.getControl(), "To apply a theme change, please restart JOverseer.");
+//								JOptionPane.showMessageDialog(this.getControl(), "To apply a theme change, please restart JOverseer.");
 //								JOApplication.publishEvent(LifecycleEventsEnum.ThemeChangeEvent, this);
+								RestartConfirmationDialog.showRestartDialog(this.getControl());
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -208,5 +211,29 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 		}
 		JideApplicationLifecycleAdvisor advisor = (JideApplicationLifecycleAdvisor) Application.instance().getLifecycleAdvisor();
 		advisor.refreshClearMapItemsVisibility();
+	}
+	
+	public static class RestartConfirmationDialog {
+
+	    public static void showRestartDialog(JComponent jComponent) {
+	        String message = Messages.getString("RestartConfirmationDialog.content");
+
+	        String title = Messages.getString("RestartConfirmationDialog.title");
+	        int optionType = JOptionPane.YES_NO_OPTION;
+	        int messageType = JOptionPane.WARNING_MESSAGE;
+
+	        int result = JOptionPane.showConfirmDialog(
+	                jComponent,
+	                message,
+	                title,
+	                optionType,
+	                messageType);
+
+	        if (result == JOptionPane.YES_OPTION) {
+	            // User chose to close the application
+	            ExitCommand eC = new ExitCommand();
+	            eC.execute();
+	        } 
+	    }
 	}
 }

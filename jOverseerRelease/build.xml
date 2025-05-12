@@ -338,7 +338,7 @@ companyName="Game Systems International" internalName="jOverseer" originalFilena
         	  <fileset file="${dist}/spring-richclient-full-1.0.0.jar"/>
         	  <fileset file="${dist}/swingx-0.8.0.jar"/>
         	  <fileset file="${dist}/update.jar"/>
-			  <fileset file="${lib}/flatlaf-3.0.jar"/>
+			  <fileset file="${dist}/flatlaf-3.0.jar"/>
 		</copy>
 		<mkdir dir="${dist}/update/update"/>
 		<copy todir="${dist}/update/update">

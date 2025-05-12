@@ -1,6 +1,5 @@
 package org.joverseer.ui.viewers;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FocusTraversalPolicy;
@@ -24,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.TransferHandler;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 import org.joverseer.JOApplication;
@@ -101,7 +101,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
     	ArrayList<OrderResult> results = new ArrayList<OrderResult>();
     	if (!o.isBlank()) {
 
-	        OrderResultContainer container = OrderResultContainer.instance();
+	        OrderResultContainer container = this.gameHolder.getGame().getTurn().getOrderResults().getResultCont();
 	        orderResultType = container.getResultTypeForOrder(o);
 	        if (orderResultType != null) {
 	        	results = container.getResultsForOrder(o);
@@ -211,9 +211,9 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
                         		no.setCharacter(c);
                         	}                        	
                         }
-
+                        OrderViewer.this.gameHolder.getGame().getTurn().getOrderResults().getResultCont().removeResultsForOrder(o);
                         JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
-
+                        OrderViewer.this.gameHolder.getGame().getTurn().getOrderResults().getResultCont().removeResultsForOrder(no);
                         JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, no, this);
                     }
                 }
@@ -259,10 +259,10 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
                 JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, getFormObject(), this);
             }
         });
-        this.draw.setPreferredSize(this.uiSizes.newDimension(1, this.uiSizes.getHeight4()));
+        this.draw.setPreferredSize(this.uiSizes.newDimension(2, this.uiSizes.getHeight4()));
         this.draw.setBorder(border);
         this.draw.setOpaque(true);
-        this.draw.setBackground(Color.white);
+        this.draw.setBackground(UIManager.getColor("Panel.background"));
         this.draw.setVisible(true);
         this.draw.setEnabled(false);
         glb.append(this.draw);
@@ -270,7 +270,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         glb.nextLine();
         JPanel p = glb.getPanel();
         //p.setPreferredSize(new Dimension(166, 16));
-        p.setBackground(Color.white);
+        p.setBackground(UIManager.getColor("Panel.background"));
         p.setBorder(border);
 
         p.setFocusTraversalPolicyProvider(true);
@@ -329,7 +329,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
 //        final OrderEditor form = new OrderEditor();
 //        FormBackedDialogPage page = new FormBackedDialogPage(form);
 //
-//        TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+//        CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 //            protected void onAboutToShow() {
 //                form.setFormObject(getFormObject());
 //            }

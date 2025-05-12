@@ -20,10 +20,10 @@ import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.HighlightHexesMapItem;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.builder.TableFormBuilder;
@@ -51,7 +51,7 @@ public class HighlightCharacters extends ActionCommand {
 		final HighlightOptionsForm form = new HighlightOptionsForm(formModel);
 		FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-		TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+		CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 			@Override
 			protected void onAboutToShow() {
 			}

@@ -7,23 +7,27 @@ import java.util.HashMap;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
+import org.joverseer.JOApplication;
 import org.joverseer.preferences.Preference;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.preferences.PreferenceValue;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.support.PLaFHelper;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
+import com.jidesoft.spring.richclient.ExitCommand;
 import com.jidesoft.spring.richclient.docking.JideApplicationLifecycleAdvisor;
 
 /**
@@ -42,7 +46,8 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 	private String startingGroup;
 	private PLaFHelper plaf;
 	// note ready for primetime.
-	private boolean enablePlaf=false;
+	private boolean enablePlaf=true;
+	String currentLook;
 
 	public String getStartingGroup() {
 		return this.startingGroup;
@@ -72,10 +77,14 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 			if (!p.getGroup().equals(group)) {
 				if (tlb != null) {
 					// add to tabPane
+					tlb.relatedGapRow();
+					tlb.relatedGapRow();
+					
 					String tabName = group.replace(".", " - ");
 
 					tabPane.addTab(tabName, null, tlb.getPanel(), tabName);
 				}
+				
 				tlb = new TableLayoutBuilder();
 				// if new group, show separator
 				tlb.separator(p.getGroup().replace(".", " - "));
@@ -109,7 +118,9 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 					if (this.enablePlaf) {
 						JComboBox combo = new JComboBox();
 						this.plaf.fill(combo);
-						combo.setSelectedItem(this.plaf.nameFromClass(reg.getPreferenceValue(p.getKey())));
+						this.currentLook=this.plaf.nameFromClass(reg.getPreferenceValue(p.getKey()));
+						if(this.currentLook.equals("") || this.currentLook.equals("Default")) combo.setSelectedItem("Flat Light");
+						else combo.setSelectedItem(this.currentLook);
 						this.components.put(p.getKey(), combo);
 						tlb.cell(combo, "colspec=left:200px");
 					}
@@ -178,14 +189,18 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 					JComboBox combo = (JComboBox) c;
 					if (combo.getSelectedItem() != null) {
 						String sel=combo.getSelectedItem().toString();
-						try {
-							UIManager.setLookAndFeel(this.plaf.fullClassFromName(sel));
-							this.plaf.updateAll();
-							// only update the preference if it worked.
-							reg.setPreferenceValue(p.getKey(), this.plaf.fullClassFromName(sel));
-						} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-								| UnsupportedLookAndFeelException e) {
-							e.printStackTrace();
+						if(sel != this.currentLook) {
+							try {
+//								UIManager.setLookAndFeel(this.plaf.fullClassFromName(sel));
+//								this.plaf.updateAll();
+								// only update the preference if it worked.
+								reg.setPreferenceValue(p.getKey(), this.plaf.fullClassFromName(sel));
+//								JOptionPane.showMessageDialog(this.getControl(), "To apply a theme change, please restart JOverseer.");
+//								JOApplication.publishEvent(LifecycleEventsEnum.ThemeChangeEvent, this);
+								RestartConfirmationDialog.showRestartDialog(this.getControl());
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 						}
 					}
 				}
@@ -196,5 +211,29 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 		}
 		JideApplicationLifecycleAdvisor advisor = (JideApplicationLifecycleAdvisor) Application.instance().getLifecycleAdvisor();
 		advisor.refreshClearMapItemsVisibility();
+	}
+	
+	public static class RestartConfirmationDialog {
+
+	    public static void showRestartDialog(JComponent jComponent) {
+	        String message = Messages.getString("RestartConfirmationDialog.content");
+
+	        String title = Messages.getString("RestartConfirmationDialog.title");
+	        int optionType = JOptionPane.YES_NO_OPTION;
+	        int messageType = JOptionPane.WARNING_MESSAGE;
+
+	        int result = JOptionPane.showConfirmDialog(
+	                jComponent,
+	                message,
+	                title,
+	                optionType,
+	                messageType);
+
+	        if (result == JOptionPane.YES_OPTION) {
+	            // User chose to close the application
+	            ExitCommand eC = new ExitCommand();
+	            eC.execute();
+	        } 
+	    }
 	}
 }

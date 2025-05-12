@@ -1,6 +1,7 @@
 package org.joverseer.ui.info;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -20,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.JOApplication;
@@ -59,63 +61,60 @@ public class InfoView extends AbstractView {
 		//TODO: fix the files so that we can have language bundles.
 		lb.separator(Messages.getString("InfoView.PC"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/popCenters", 700, 100), "align=left");
+		lb.cell(createTableFromResource("classpath:metadata/info/popCenters", 700), "align=left valign=top");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.Fortifications"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/fortifications", 400, 100), "align=left");
+		lb.cell(createTableFromResource("classpath:metadata/info/fortifications", 400), "align=left valign=top");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.GeneralCosts"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/generalCosts", 600, 240), "align=left");
+		lb.cell(createTableFromResource("classpath:metadata/info/generalCosts", 600), "align=left valign=top");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.MaintenanceCosts"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/maintenanceCosts", 400, 200), "align=left");
+		lb.cell(createTableFromResource("classpath:metadata/info/maintenanceCosts", 400), "align=left valign=top");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.CharacterTitles"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromInfo("characterTitles", 400, 200,null), "align=left");
+		lb.cell(createTableFromInfo("characterTitles", 400, null), "align=left valign=top");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.Movement"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/movementCosts", 600, 200), "align=left");
+		lb.cell(createTableFromResource("classpath:metadata/info/movementCosts", 600), "align=left valign=top");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.TacticvsTactic"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/tacticVsTactic", 400, 120), "align=left");
+		lb.cell(createTableFromResource("classpath:metadata/info/tacticVsTactic", 400), "align=left valign=top");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.TroopTypeTactics"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/troopTactics", 600, 120), "align=left");
+		lb.cell(createTableFromResource("classpath:metadata/info/troopTactics", 600), "align=left valign=top");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.TroopCombatStrength"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/armyCombatValues", 300, 120), "align=left");
+		lb.cell(createTableFromResource("classpath:metadata/info/armyCombatValues", 300), "align=left valign=top");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.TroopTerrainModifiers"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromInfo("combat.troopTerrainModifiers", 600, 120,null), "align=left");
-		lb.relatedGapRow();
-
-		lb.separator(Messages.getString("InfoView.ClimateProductionModifiers"));
+		lb.cell(createTableFromInfo("combat.troopTerrainModifiers", 600, null), "align=left valign=top");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.Dragons"));
 		lb.relatedGapRow();
-		//lb.cell(createTableFromInfo("dragons",850, 1100,null), "align=left");
-		lb.cell(new JLabel("Click on the link below to open it in your browser:"), "align=left");
+		//lb.cell(createTableFromInfo("dragons",850, 1100,null), "align=left valign=top");
+		lb.cell(new JLabel("Click on the link below to open it in your browser:"), "align=left valign=top");
 		lb.relatedGapRow();
-		JLabelButton hyperlinkDragon = new JLabelButton("<html><font color='blue'>https://wiki.mepbm.com/dragons</font><html>");
+		JLabelButton hyperlinkDragon = new JLabelButton("<html><font color='#3a79d1'>https://wiki.mepbm.com/dragons</font><html>");
 		hyperlinkDragon.addActionListener(new ActionListener() {
 			
 	          @Override
@@ -139,7 +138,7 @@ public class InfoView extends AbstractView {
 	          }
 			});
 
-		lb.cell(hyperlinkDragon, "align=left");
+		lb.cell(hyperlinkDragon, "align=left valign=top");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.CharactersAllowed"));
@@ -151,9 +150,11 @@ public class InfoView extends AbstractView {
 			GameMetadata gm = JOApplication.getMetadata();
 			selected = gm.getGameType().toMEString();
 		}
-		lb.cell(createTableFromInfo("charactersAllowed",500, 480,selected), "align=left");
+		lb.cell(createTableFromInfo("charactersAllowed",500, selected), "align=left valign=top");
 		lb.relatedGapRow();
-		lb.cell(createTableFromInfo("climateProduction", 600, 140,null), "align=left");
+		lb.separator(Messages.getString("InfoView.ClimateProductionModifiers"));
+		lb.relatedGapRow();
+		lb.cell(createTableFromInfo("climateProduction", 600, null), "align=left valign=top");
 		lb.relatedGapRow();
 
 
@@ -167,7 +168,7 @@ public class InfoView extends AbstractView {
 	 * Creates a jtable for the given dimensions (w, h) using the file found in
 	 * uri
 	 */
-	protected JComponent createTableFromResource(String uri, int w, int h) {
+	protected JComponent createTableFromResource(String uri, int w) {
 		Resource res;
 		Locale current =Locale.getDefault();
 		final String localizedUri = uri + "_" + current.getLanguage() + ".csv";
@@ -201,6 +202,8 @@ public class InfoView extends AbstractView {
 				@Override
 				public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {
 					JLabel lbl = (JLabel) super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
+					if(arg2) lbl.setForeground(Color.white);
+					else lbl.setForeground(UIManager.getColor("Label.foreground"));
 					if (arg5 > 0) {
 						lbl.setHorizontalAlignment(SwingConstants.CENTER);
 					} else {
@@ -213,7 +216,7 @@ public class InfoView extends AbstractView {
 			pnl.add(table.getTableHeader(), BorderLayout.PAGE_START);
 			pnl.add(table, BorderLayout.CENTER);
 
-			table.setPreferredSize(new Dimension(w, h));
+			table.setPreferredSize(new Dimension(w, table.getRowHeight()*table.getRowCount()));
 			TableUtils.sizeColumnsToFitRowData(table);
 			reader.close();
 			return pnl;
@@ -226,7 +229,7 @@ public class InfoView extends AbstractView {
 	// creates a table from an Info table, already loaded from the InfoRegistry.
 	// otherwise the same as createTableFromResource.
 	// if only is not "" then only include those elements of column 0 
-	protected JComponent createTableFromInfo(String key, int w, int h,String only) {
+	protected JComponent createTableFromInfo(String key, int w,String only) {
 		Info info = JOApplication.getInfoRegistry().getInfo(key);
 		try {
 
@@ -261,6 +264,8 @@ public class InfoView extends AbstractView {
 				@Override
 				public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {
 					JLabel lbl = (JLabel) super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
+					if(arg2) lbl.setForeground(Color.white);
+					else lbl.setForeground(UIManager.getColor("Label.foreground"));
 					if (arg5 > 0) {
 						lbl.setHorizontalAlignment(SwingConstants.CENTER);
 					} else {
@@ -273,7 +278,7 @@ public class InfoView extends AbstractView {
 			pnl.add(table.getTableHeader(), BorderLayout.PAGE_START);
 			pnl.add(table, BorderLayout.CENTER);
 
-			table.setPreferredSize(new Dimension(w, h));
+			table.setPreferredSize(new Dimension(w, table.getRowHeight()*table.getRowCount()));
 			TableUtils.sizeColumnsToFitRowData(table);
 			return pnl;
 		} catch (Exception exc) {

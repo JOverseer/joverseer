@@ -12,11 +12,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
 
+import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -234,7 +236,8 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 			throw new IllegalArgumentException(obj.toString());
 		}
 
-		Hex hex = (Hex) obj;
+		Hex hex = GameHolder.instance().getGame().getMetadata().getHex(((Hex) obj).getHexNo());
+		
 		if (!this.mapMetadata.withinMapRange(hex))
 			return;
 
@@ -252,7 +255,7 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 //      g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 //      g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 //      g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        
+
 		if (this.useTexture) {
 			BufferedImage img = getImage(hex.getTerrain().toString() + ".terrain", this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize(), this.mapMetadata.getGridCellHeight() * this.mapMetadata.getHexSize());
 			if (img != null) {

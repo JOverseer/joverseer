@@ -12,8 +12,8 @@
 
 	<bean id="applicationDescriptor"
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="1.18.17"/>
-		<property name="buildId" value="Quendi"/>
+		<property name="version" value="1.19.0"/>
+		<property name="buildId" value="Varda"/>
 
 	</bean>
 
@@ -42,20 +42,20 @@
 
 	<!-- Definition of some provided status bar items that are added to the 
 		status bar in the statusBar definition -->
-	<bean name="memoryStatusBarItem"
+	<!--<bean name="memoryStatusBarItem"
 		class="com.jidesoft.status.MemoryStatusBarItem" />
 	<bean name="timeStatusBarItem"
 		class="com.jidesoft.status.TimeStatusBarItem" />
 	<bean name="resizeStatusBarItem"
-		class="com.jidesoft.status.ResizeStatusBarItem" />
+		class="com.jidesoft.status.ResizeStatusBarItem" />-->
 
-   	<bean id="lookAndFeelConfigurer"
+   	<!--<bean id="lookAndFeelConfigurer"
 		class="org.springframework.richclient.application.config.JGoodiesLooksConfigurer">
 		<property name="popupDropShadowEnabled" value="true" />
 		<property name="theme">
 			<bean class="com.jgoodies.looks.plastic.theme.ExperienceGreen" />
 		</property>
-	</bean>
+	</bean>-->
 
  
 	<bean id="serviceLocator"

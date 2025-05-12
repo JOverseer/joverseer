@@ -10,12 +10,12 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.views.EditArmyForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
 public class CreateArmyCommand extends ActionCommand {
@@ -46,7 +46,7 @@ public class CreateArmyCommand extends ActionCommand {
 		final EditArmyForm form = new EditArmyForm(formModel,this.gameHolder);
 		FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-		TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+		CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 			@Override
 			protected void onAboutToShow() {
 				this.setDescription(this.getDescription().getMessage());

@@ -1,6 +1,7 @@
 package org.joverseer.ui.support.dialogs;
 
 import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
@@ -29,10 +30,12 @@ public class InputDialog extends TitledPageApplicationDialog {
     
     public InputDialog() {
         super();
+        this.setImage(new BufferedImage(1,1,BufferedImage.TYPE_BYTE_BINARY));
     }
     public InputDialog(String titleId) {
         this();
         setTitle(Messages.getString(titleId));
+        this.setImage(new BufferedImage(1,1,BufferedImage.TYPE_BYTE_BINARY));
     }
     
     public void addComponent(String name, JComponent component) {

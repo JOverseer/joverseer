@@ -106,6 +106,46 @@ public abstract class ImageRenderer extends AbstractBaseRenderer {
         }
         return (BufferedImage) this.images.get(imgName);
     }
+    
+    protected BufferedImage getImage(String imgName, double d) {
+        if (!this.images.containsKey(imgName)) {
+            try {
+//                ImageSource imgSource = joApplication.getImageSource();
+                Image img = this.imgSource.getImage(imgName);
+                
+               
+                BufferedImage bimg = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+                Graphics g = bimg.getGraphics();
+                g.drawImage(img, 0, 0, null);
+                g.dispose();
+                
+                int w = (int) (img.getWidth(null) * d);
+                int h = (int) (img.getHeight(null) * d);
+                BufferedImage bufimg2 = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g2d = (Graphics2D) bufimg2.getGraphics();
+                
+                double sw = (double) w / bimg.getWidth();
+                double sh = (double) h / bimg.getHeight();
+                if (sw < 1) {
+                	sw += 1d / bimg.getWidth();
+                }
+                if (sh < 1) {
+                	sh += 1d / bimg.getHeight();	
+                }
+                g2d.scale(sw, sh);
+                g2d.drawImage(img,0,0,null);
+                bimg = bufimg2; 
+                
+                //img = makeColorTransparent(img, Color.white);
+                this.images.put(imgName, bimg);
+                return bimg;
+            }
+            catch (Exception exc) {
+                logger.error(String.format("Error %s loading image %s.", exc.getMessage(), imgName));
+            }
+        }
+        return (BufferedImage) this.images.get(imgName);
+    }
 
     /**
      * Make the given color transparent to the given image

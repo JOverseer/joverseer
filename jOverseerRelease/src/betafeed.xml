@@ -6,6 +6,225 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
+			<item>
+			<title>1.19.0-rc1</title>
+			<pubDate>12 May 2025</pubDate>
+			<description>
+VERSION 1.19.0-rc1
+---------------
+	* Enh: New themes for JOverseer, including a Dark mode. Go to Preferences -> Window Display then change 'Interface Look and Feel'.
+	* QA: Map is no longer blury!
+	* QA: More zoom levels.
+	* Fix: Combat calculator wouldnt open when no PC or Allied Army but an enemy Army (or at least a FP when DS).
+	* Fix: Bridges should be updated and respond more consistently.
+	* Fix: Multiple Anchored Ships on same hex weren't showing up.
+ 			</description>
+		</item>	
+						<item>
+			<title>1.18.22-rc6</title>
+			<pubDate>8 May 2025</pubDate>
+			<description>
+VERSION 1.18.22-rc6
+---------------
+ - Fix Turn report view coloring being wrong way round
+ - Fix Combat Form dark mode 
+ 			</description>
+		</item>	
+				<item>
+			<title>1.18.22-rc5</title>
+			<pubDate>7 May 2025</pubDate>
+			<description>
+VERSION 1.18.22-rc5
+---------------
+ - Anchored Ships fix (multiple in the same hex would go overriden)
+ - Allows user to close when changing theme
+ - Import files window now bigger so can see entire progress bar.
+ - Fix bridges being drawn weirdly 
+ - Changed Input dialog to remove banner picture
+ </description>
+		</item>	
+		<item>
+			<title>1.18.22-rc4</title>
+			<pubDate>2 May 2025</pubDate>
+			<description>
+VERSION 1.18.22-rc4
+---------------
+ - New Intro Map Image for Light and Dark Mode
+ - Tables overhaul for dark mode
+ 	- Turn Report view
+ 	- Economy tables
+ 	- All other tables
+ - More Zoom options
+ - Fix Map centering on hex
+ - Fix other random colors
+ </description>
+		</item>	
+		<item>
+			<title>1.18.22-rc3</title>
+			<pubDate>28 April 2025</pubDate>
+			<description>
+VERSION 1.18.22-rc3
+---------------
+ - new "CustomTitledPageApplicationDialog" which removes image in banner
+ - also removed unused imports
+ - Fixed Popupmenus so they have Flat separators and removed tickboxes + border
+ - Added isDarkMode function
+ - Adjusted newsletter dark mode colors
+ - Adjusted color scheme of tabs and docking framework in dark mode
+ - Change Alliegance colors in dark mode to contast better
+ - Hyperlink blue color now a better blue for dark mode
+ - Orders for coming turn colors for dark mode fixed
+ - Fix for zooming hex number font size
+			</description>
+		</item>	
+		<item>
+			<title>1.18.22-rc2</title>
+			<pubDate>22 April 2025</pubDate>
+			<description>
+VERSION 1.18.22-rc2
+---------------
+- Combat wouldnt open when no PC and an enemy Army (or at least a FP when DS)
+- Applys theme earlier in setup, when opening listviews not open at launch now open with new theme
+-  Fixed OrderInfo + Info having weird gaps
+- Fixed Army Movement buttons
+- Fixed Artifact + spell table for characters
+- Fixed not showing all production of PC in Current Hex View
+- Temporary fix for tables, set text colour to black
+ - Removed white backgrounds from panels
+- Hid cursor in home view
+- Reversed dpi scaling in map view so no blue (had to make sure to compensate for it when translating mouse to actual coordinates)
+			</description>
+			</item>	
+						<item>
+			<title>1.18.22-rc1</title>
+			<pubDate>14 April 2025</pubDate>
+			<description>
+VERSION 1.18.22-rc1
+---------------
+- Themes! In preferences -> Window Display
+- Not complete, still more work, but have changed alot of components and backgrounds to adapt with the theme.
+			</description>
+			</item>	
+				<item>
+			<title>1.18.21-rc1</title>
+			<pubDate>8 April 2025</pubDate>
+			<description>
+VERSION 1.18.21-rc1
+---------------
+- Fix for being unable to send orders on turn 0
+- Fix throwing an error when saving a game before importing any results
+- Fix throwing an error when loading a game which didnt have any imported results.
+			</description>
+			</item>	
+		<item>
+			<title>1.18.19-rc8</title>
+			<pubDate>2 April 2025</pubDate>
+			<description>
+VERSION 1.18.19-rc8
+---------------
+- Fix ports again
+			</description>
+			</item>	
+				<item>
+			<title>1.18.19-rc7</title>
+			<pubDate>1 April 2025</pubDate>
+			<description>
+VERSION 1.18.19-rc7
+---------------
+- Copy orders button re-format
+- Orderchecker - duplicate order for movement + spells
+- Fix for unchecked orders
+			</description>
+			</item>	
+		<item>
+			<title>1.18.19-rc6</title>
+			<pubDate>26 March 2025</pubDate>
+			<description>
+VERSION 1.18.19-rc6
+---------------
+- Fixed and completed ExportOrders/OrderChecker
+    -Properly displays warning for errors
+    -If unchecked orders, give option to check with them
+- Fix sorting of characters in current hex view
+- If not on correct turn, doesn't allow importing turn results or export orders
+- Add scrollpane to homeview
+			</description>
+			</item>	
+		<item>
+			<title>1.18.19-rc5</title>
+			<pubDate>19 March 2025</pubDate>
+			<description>
+VERSION 1.18.19-rc5
+---------------
+ - Change wording on orderchecker tickbox
+ - Fix RCT bug
+ - Fix Army disapearing bug (unknown navy + editing to give it troops was cause)
+ - Warns if there are missing orders
+ - warns if there are errors and havent ticked
+ - Nation Colour improvements, ironing out bugs and making smoother to use
+ - Port not carrying over
+- in Gather Data for Support new button, Send an email with jov, log file oackaged in (work in progress)
+ - In Help -> Useful links more links now there
+ - KS artis spells fixed
+ - 930 scout result fix (characters nation not being updated)
+			</description>
+			</item>	
+				<item>
+			<title>1.18.19-rc4</title>
+			<pubDate>19 February 2025</pubDate>
+			<description>
+VERSION 1.18.19-rc4
+---------------
+- Improvements and bug fixes to Nation Colours 
+	- Auto sets preference to use custo colours on editing colours
+	- New folder location in AppData
+	- Saves which colour file to use for a game file
+	- Can edit file names 
+- HomePage Image width 0 bug fix
+			</description>
+			</item>	
+		<item>
+			<title>1.18.19-rc3</title>
+			<pubDate>7 February 2025</pubDate>
+			<description>
+VERSION 1.18.19-rc3
+---------------
+- Edit Nations Colour in Edit Nation Details!
+- The option to use custom colours is in preferences, Map, and Nation Colours
+- In the Edit Nation Details form, you can create different Colour Sets, the one you use is the one selected in the drop down (becomes the default for the current game)
+			</description>
+			</item>	
+		<item>
+			<title>1.18.19-rc2</title>
+			<pubDate>31 January 2025</pubDate>
+			<description>
+VERSION 1.18.19-rc2
+---------------
+- Orderchecker bug fix for results disapearing/not clearing themselves
+- Fixed Order table autocompletion box being weird with typing (hopefully)
+			</description>
+			</item>	
+						<item>
+			<title>1.18.19-rc1</title>
+			<pubDate>30 January 2025</pubDate>
+			<description>
+VERSION 1.18.19-rc1
+---------------
+- Orderchecker now saves results for each nation orderchecked, for each turn, and stores them in jov file
+- Orderchecker now has a Tick box for saying if you are ok with errors and warnings
+- Submit Orders now doesnt have lots of pop-ups. Just green/yellow/red icon by nation name indicating orderchecker result
+- Orderchecker now has name of nation
+			</description>
+			</item>	
+				<item>
+			<title>1.18.18-rc1</title>
+			<pubDate>27 January 2025</pubDate>
+			<description>
+VERSION 1.18.18-rc1
+---------------
+- Fixes for Other Locales
+			</description>
+			</item>	
 		<item>
 			<title>1.18.17-rc13</title>
 			<pubDate>21 January 2025</pubDate>

@@ -5,7 +5,6 @@ package org.joverseer.ui.views;
 
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -13,7 +12,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.prefs.Preferences;
@@ -47,13 +45,13 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.GamePreference;
 import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.command.OpenGameDirTree;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.support.dialogs.InputDialog;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.progress.BusyIndicator;
 
@@ -113,7 +111,6 @@ public class ExportDiploForm extends ScalableAbstractForm {
 
 		this.lbVersion = new JLabel(Messages.getString("playerInfo.turnDiploVersion")); //$NON-NLS-1$
 		pnlVersion.add(this.lbVersion);
-		this.lbVersion.setBackground(Color.WHITE);
 		pnlVersion.add(this.lbVersionV);
 		this.lbVersionV.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -126,7 +123,6 @@ public class ExportDiploForm extends ScalableAbstractForm {
 
 		this.lbSent = new JLabel(Messages.getString("playerInfo.ordersSentOn")); //$NON-NLS-1$
 		pnlSent.add(this.lbSent);
-		this.lbSent.setBackground(Color.WHITE);
 		pnlSent.add(this.lbSentV);
 
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
@@ -138,7 +134,6 @@ public class ExportDiploForm extends ScalableAbstractForm {
 
 		this.lbFile = new JLabel(Messages.getString("playerInfo.lastOrderFile")); //$NON-NLS-1$
 		pnlFile.add(this.lbFile);
-		this.lbFile.setBackground(Color.WHITE);
 		pnlFile.add(this.lbFileV);
 
 		setDiploPlayerInfo();
@@ -271,7 +266,7 @@ public class ExportDiploForm extends ScalableAbstractForm {
 		if (status == HttpStatus.SC_OK) {
 			final SubmitOrdersResultsForm frm = new SubmitOrdersResultsForm(FormModelHelper.createFormModel(new Object()));
 			FormBackedDialogPage page = new FormBackedDialogPage(frm);
-			TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+			CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 
 				@Override
 				protected void onAboutToShow() {

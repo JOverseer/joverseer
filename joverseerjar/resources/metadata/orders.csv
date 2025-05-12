@@ -105,7 +105,7 @@ Cast Combat Spell*;225;CstCbSp;Spell ID #;Varies ;Improves Cast Rank;MM
 Cast Conjuring Spell*;330;CstCjSp;Spell ID # / [See spell for requirements];Varies ;Improves Cast Rank;MM
 Prentice Magery;710;PrenMgy;None;Automatic ;Own Pop Center;MS
 Name New Mage;737;NamMage;Name (5-17 letters) / Gender;Automatic ;At Capital;MS
-Cast Movement Spell;825;CstMvSp;Spell ID # / Destination Hex # (See spell for ranges);Varies ;Improves Cast Rank;MM
+Cast Movement Spell;825;CstMvSp;Spell ID # / Destination Hex # (See spell for ranges);Varies ;Improves Cast Rank;Move
 Cast Lore Spell*;940;CstLoSp;Spell ID # / [See spell for requirements];Varies ;Improves Cast Rank;MM
 Forget Spell(s);700;ForgtSp;1-6 Spell IDs to be forgotten (1 per line);Automatic ;;MM
 Research Spell;705;RsrchSp;Spell ID #;Varies;Own Pop Center;MM

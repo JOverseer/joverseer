@@ -302,18 +302,57 @@
 				</bean>
 				<value>separator</value>
 				<bean class="org.joverseer.ui.command.ShowTipOfTheDayCommand" />
-				<bean class="org.joverseer.ui.command.ShowMapHelpCommand" >
-					<property name="link">
-					<value>https://github.com/JOverseer/joverseer/wiki/MapInfo</value></property>
-				</bean>
-				<bean class="org.joverseer.ui.command.ShowMEWebsiteCommand" >
-					<property name="link">
-					<value>https://www.gamesystems.com</value></property>
+				<bean id="usefulLinksMenu"
+					class="org.springframework.richclient.command.CommandGroupFactoryBean">
+					<property name="members">
+						<list>
+							<bean class="org.joverseer.ui.command.ShowMapHelpCommand" >
+								<property name="link">
+								<value>https://github.com/JOverseer/joverseer/wiki/MapInfo</value></property>
+							</bean>
+							<bean class="org.joverseer.ui.command.ShowMEWebsiteCommand" >
+								<property name="link">
+								<value>https://www.gamesystems.com</value></property>
+							</bean>
+							<bean class="org.joverseer.ui.command.ShowLinkCommand" >
+								<property name="link">
+								<value>https://gamesystems.com/materials/</value></property>
+								<property name="id">
+								<value>showRulebook</value></property>
+							</bean>
+							<bean class="org.joverseer.ui.command.ShowLinkCommand" >
+								<property name="link">
+								<value>https://gamesystems.com/contact/</value></property>
+								<property name="id">
+								<value>showContactPage</value></property>
+							</bean>
+							<bean class="org.joverseer.ui.command.ShowLinkCommand" >
+								<property name="link">
+								<value>https://gamesystems.com/category/advice/</value></property>
+								<property name="id">
+								<value>showHelpAndAdvice</value></property>
+							</bean>
+							<bean class="org.joverseer.ui.command.ShowLinkCommand" >
+								<property name="link">
+								<value>https://gamesystems.com/add-credit/</value></property>
+								<property name="id">
+								<value>showAddCredit</value></property>
+							</bean>
+							<bean class="org.joverseer.ui.command.ShowLinkCommand" >
+								<property name="link">
+								<value>https://wiki.mepbm.com/</value></property>
+								<property name="id">
+								<value>showWikiWebsite</value></property>
+							</bean>
+						</list>
+					</property>
 				</bean>
 				<bean class="org.joverseer.ui.command.ShowCreditsCommand" />
 				<bean class="org.joverseer.ui.command.ShowChangelogCommand" />
 				<value>separator</value>
-				<bean class="org.joverseer.ui.command.GatherSupportDataCommand" />
+				<bean class="org.joverseer.ui.command.GatherSupportDataCommand" >
+					<constructor-arg index="0" ref="gameHolder" />
+				</bean>
 				<value>separator</value>
 				<bean class="org.joverseer.ui.command.CheckForUpdatesCommand" />
 				<value>separator</value>

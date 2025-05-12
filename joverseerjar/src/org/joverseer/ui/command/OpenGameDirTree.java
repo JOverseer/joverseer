@@ -26,12 +26,12 @@ import org.joverseer.ui.JOverseerClientProgressMonitor;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
 /**
@@ -50,7 +50,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 	File[] files;
 	ArrayList<File> turnFolders = new ArrayList<File>();
 	JOverseerClientProgressMonitor monitor;
-	TitledPageApplicationDialog dialog;
+	CustomTitledPageApplicationDialog dialog;
 	//dependencies
 	GameHolder gh;
 
@@ -138,7 +138,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 			FormModel formModel = FormModelHelper.createFormModel(this);
 			this.monitor = new JOverseerClientProgressMonitor(formModel);
 			FormBackedDialogPage page = new FormBackedDialogPage(this.monitor);
-			this.dialog = new TitledPageApplicationDialog(page) {
+			this.dialog = new CustomTitledPageApplicationDialog(page) {
 				@Override
 				protected void onAboutToShow() {
 					OpenGameDirTree.this.monitor.taskStarted(String.format("Importing Game Tree '%s'.", new Object[] { file.getAbsolutePath() }), 100 * fileCountFinal);

@@ -590,6 +590,14 @@
 									<value>Color/Allegiance</value>
 								</property>
 							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>custom</value>
+								</property>
+								<property name="description">
+									<value>Color/Custom</value>
+								</property>
+							</bean>
 						</list>
 					</property>
 				</bean>
@@ -1515,7 +1523,7 @@
 					<property name="description"><value>Interface look and feel</value></property>
 					<property name="group"><value>Window Display</value></property>
 					<property name="type"><value>LookAndFeel</value></property>
-					<property name="defaultValue"><value>javax.swing.plaf.metal.MetalLookAndFeel</value></property>
+					<property name="defaultValue"><value>Default</value></property>
 				</bean>
 			</list>
 		</property>

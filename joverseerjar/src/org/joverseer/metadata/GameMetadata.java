@@ -47,6 +47,7 @@ public class GameMetadata implements Serializable {
 	int nationNo;
 	String additionalNations;
 	boolean newXmlFormat = false;
+	String colourSet;
 
 	Game game;
 
@@ -169,6 +170,14 @@ public class GameMetadata implements Serializable {
 	public void setNewXmlFormat(boolean newXmlFormat) {
 		this.newXmlFormat = newXmlFormat;
 	}
+	
+	public String getColourSet() {
+		return this.colourSet;
+	}
+
+	public void setColourSet(String colourSet) {
+		this.colourSet = colourSet;
+	}
 
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
 		out.writeObject(getCharacters());
@@ -186,6 +195,7 @@ public class GameMetadata implements Serializable {
 		out.writeObject(this.hexOverrides);
 		out.writeObject(getClimateModifiers());
 		out.writeObject(getTerrainModifiers());
+		out.writeObject(this.colourSet);
 	}
 
 	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException, MetadataReaderException {
@@ -224,6 +234,11 @@ public class GameMetadata implements Serializable {
 		} catch (Exception e) {
 			// do nothing, this may have not been set
 		}	
+		try {
+			setColourSet((String) in.readObject());
+		} catch (Exception e) {
+			
+		}
 		
 	}
 

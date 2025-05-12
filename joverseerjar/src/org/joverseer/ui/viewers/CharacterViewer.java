@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 import org.joverseer.JOApplication;
@@ -77,6 +78,7 @@ import org.joverseer.ui.support.commands.ShowInfoSourcePopupCommand;
 import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.controls.TableUtils;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.joverseer.ui.support.transferHandlers.ArtifactInfoExportTransferHandler;
@@ -90,7 +92,6 @@ import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
@@ -186,7 +187,7 @@ public class CharacterViewer extends ObjectViewer {
 			tlb.row();
 		}
 		JPanel pnl = tlb.getPanel();
-		pnl.setBackground(Color.white);
+		pnl.setBackground(UIManager.getColor("Panel.background"));
 		this.orderPanel.add(pnl);
 	}
 
@@ -319,7 +320,7 @@ public class CharacterViewer extends ObjectViewer {
 			}
 
 			((BeanTableModel) this.artifactsTable.getModel()).setRows(artis);
-			this.artifactsTable.setPreferredSize(new Dimension((180/16)*this.uiSizes.getHeight4(), this.uiSizes.getHeight4() * artis.size()));
+			this.artifactsTable.setPreferredSize(new Dimension((180/16)*this.uiSizes.getHeight4(), this.uiSizes.getHeight5() * artis.size()));
 			TableUtils.setTableColumnWidths(this.artifactsTable, new int[] { 10, 120, 40 });
 
 			ArrayList<SpellProficiency> spells = new ArrayList<SpellProficiency>();
@@ -327,7 +328,7 @@ public class CharacterViewer extends ObjectViewer {
 				spells.addAll(c.getSpells());
 			}
 			((BeanTableModel) this.spellsTable.getModel()).setRows(spells);
-			this.spellsTable.setPreferredSize(new Dimension(this.spellsTable.getWidth(), this.uiSizes.getHeight4() * spells.size()));
+			this.spellsTable.setPreferredSize(new Dimension(this.spellsTable.getWidth(), this.uiSizes.getHeight5() * spells.size()));
 			TableUtils.setTableColumnWidths(this.spellsTable, new int[] { 10, 120, 40 });
 			Container<Company> companies = game.getTurn().getCompanies();
 			Company company = companies.findFirstByProperty("commander", c.getName()); //$NON-NLS-1$
@@ -694,7 +695,7 @@ public class CharacterViewer extends ObjectViewer {
 		tlb.row();
 		this.orderPanel = new JPanel();
 		this.orderPanel.add(tlb.getPanel());
-		this.orderPanel.setBackground(Color.white);
+		this.orderPanel.setBackground(UIManager.getColor("Panel.background"));
 		this.orderPanel.setBorder(border);
 		glb.append(this.orderPanel, 2, 1);
 		glb.append(this.swapOrdersIconCmd = new JLabelButton(new ImageIcon(imgSource.getImage("swapOrders.icon")))); //$NON-NLS-1$
@@ -719,7 +720,7 @@ public class CharacterViewer extends ObjectViewer {
 		tlb = new TableLayoutBuilder();
 		tlb.cell(this.notesViewer.createFormControl(), "colspec=left:285px"); //$NON-NLS-1$
 		JPanel notesPanel = tlb.getPanel();
-		notesPanel.setBackground(Color.white);
+		notesPanel.setBackground(UIManager.getColor("Panel.background"));
 		glb.append(notesPanel, 6, 1);
 
 		// notes = new JTextArea();
@@ -805,7 +806,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		});
 
-		panel.setBackground(Color.white);
+		panel.setBackground(UIManager.getColor("Panel.background"));
 		return panel;
 	}
 
@@ -929,6 +930,7 @@ public class CharacterViewer extends ObjectViewer {
 					c.getOrders()[i].setParameters(this.params);
 					setFormObject(getFormObject());
 					CharacterViewer.this.showOrders = true;
+					CharacterViewer.this.gameHolder.getGame().getTurn().getOrderResults().getResultCont().removeResultsForOrder(c.getOrders()[i]);
 					JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, c.getOrders()[i], this);
 					return;
 				}
@@ -983,7 +985,7 @@ public class CharacterViewer extends ObjectViewer {
 			final EditCharacterForm form = new EditCharacterForm(formModel,CharacterViewer.this.gameHolder);
 			FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-			TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+			CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 				@Override
 				protected void onAboutToShow() {
 				}

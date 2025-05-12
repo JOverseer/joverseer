@@ -6,6 +6,75 @@
 		<description>The latest version of jOverseer, the Middle-Earth PBM game
 			helper program.</description>
 		<language>en</language>
+					<item>
+			<title>1.19.0</title>
+			<pubDate>12 May 2025</pubDate>
+			<description>
+VERSION 1.19.0
+---------------
+	* Enh: New themes for JOverseer, including a Dark mode. Go to Preferences -> Window Display then change 'Interface Look and Feel'.
+	* QA: Map is no longer blurry!
+	* QA: More zoom levels.
+	* Fix: Combat calculator wouldnt open when no PC or Allied Army but an enemy Army (or at least a FP when DS).
+	* Fix: Bridges should be updated and respond more consistently.
+	* Fix: Multiple Anchored Ships on same hex weren't showing up.
+			</description>
+			</item>	
+			<item>
+			<title>1.18.21</title>
+			<pubDate>8 April 2025</pubDate>
+			<description>
+VERSION 1.18.21
+---------------
+	* Fix: Unable to send orders on turn 0
+	* Fix: Throwing an error when saving a game before importing any results
+	* Fix: Throwing an error when loading a game which didn't have any imported results.
+			</description>
+			</item>	
+				<item>
+			<title>1.18.20</title>
+			<pubDate>4 April 2025</pubDate>
+			<description>
+VERSION 1.18.20
+---------------
+	* Fix: Kinstrife unknown nation colours were black
+			</description>
+		</item>	
+		<item>
+			<title>1.18.19</title>
+			<pubDate>3 April 2025</pubDate>
+			<description>
+VERSION 1.18.19
+---------------
+	* Enh: Customise nation colours in 'Edit Nation Details', being able to create different colour sets for different games.
+	* Enh: In Map Preferences, can change between custom colours and default with 'Nation Colours'.
+	* Enh: Sending orders pane now will let you know if a ticked nation has errors or not with a symbol instead of lots of annoying messages.
+	* Enh: Tickbox in the orderchecker to say you are happy with the results, even if there are warnings in them, to not get warned about them later.
+	* Enh: If you haven't orderchecked some orders when sending, it will do so directly from the pane.
+	* QA: Orderchecker results are now saved properly within .jov file and stores results for all nations checked.
+	* QA: Orderchecker now includes name of nation just checked.
+	* QA: New Copy Order button, one for selecting *all* nations selected orders and the other copies the displayed orders only.
+	* Enh: New 'Useful Links' in Help menu.
+	* QA: Now prevents you from sending orders or importing results when on a previous turn.
+	* Fix: RCT not always passing results through.
+	* Fix: Ports being lost between turns.
+	* Fix: Editing an unknown navy caused it to disappear.
+	* Fix: KS artifacts had some incorrect spells
+	* Fix: 930 scout result wasn't always updating characters nation.
+	* Fix: Sometimes neutral characters wouldn't sort properly in Current Hex View.
+	* Fix: Orderchecker now gives an error for duplicate spell castings.
+			</description>
+		</item>	
+		<item>
+			<title>1.18.18</title>
+			<pubDate>29 January 2025</pubDate>
+			<description>
+VERSION 1.18.18
+---------------
+	* Fix: JOverseer wouldn't open if not using English version
+	* Fix: Notepad won't force itself to the front each time opening
+			</description>
+		</item>	
 		<item>
 			<title>1.18.17</title>
 			<pubDate>22 January 2025</pubDate>

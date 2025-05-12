@@ -20,6 +20,7 @@ import org.joverseer.domain.NationMessage;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.Note;
 import org.joverseer.domain.NotepadInfo;
+import org.joverseer.domain.OrderResults;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.ProductEnum;
@@ -28,6 +29,7 @@ import org.joverseer.domain.SeasonEnum;
 import org.joverseer.support.Cloner;
 import org.joverseer.support.Container;
 import org.joverseer.tools.infoCollectors.artifacts.ArtifactUserInfo;
+import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 
 /**
@@ -307,6 +309,20 @@ public class Turn implements Serializable {
 	public NotepadInfo getNotepadInfo() {
 		if(this.getNotepadInfoCont().size() == 0) return null;
 		return this.getNotepadInfoCont().getItems().get(0);
+	}
+	
+	/*
+	 * OrderResults
+	 */
+	public Container<OrderResults> getOrderResultsCont(){
+		return getContainer(TurnElementsEnum.OrderResults);
+	}
+	
+	public OrderResults getOrderResults() {
+		if(this.getOrderResultsCont().size() == 0) {
+			this.getOrderResultsCont().addItem(new OrderResults(this.turnNo, new OrderResultContainer()));
+		}
+		return this.getOrderResultsCont().getItems().get(0);
 	}
 	
 	

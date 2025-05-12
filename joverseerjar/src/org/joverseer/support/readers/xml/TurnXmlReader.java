@@ -517,6 +517,14 @@ public class TurnXmlReader implements Runnable {
 				Army a2 = armiesInHex.get(j);
 				if (a1.getCommanderName().equals(a2.getCommanderName())) {
 					// duplicate army
+					
+					//anchored ships being deleted
+					if(a1.getCommanderName().equals("[Anchored Ships]")) {
+						if (a1.getNationNo() > 0 && a2.getNationNo().equals(a1.getNationNo()));
+						else continue;
+					}
+					
+					
 					toRemoveB = true;
 					// hack for KS - update army size
 					// this is needed because currently in KS when the army's
@@ -1045,6 +1053,7 @@ public class TurnXmlReader implements Runnable {
 							|| (oldPc.getTurnSeenOnMap() == turnNo)){
 							if (newPc.getHarbor().getSize() == 0) {
 								newPc.setHarbor(oldPc.getHarbor());
+								newPc.setTurnSeenOnMap(oldPc.getTurnSeenOnMap());
 							}
 						}
 						
@@ -1057,11 +1066,13 @@ public class TurnXmlReader implements Runnable {
 							if (oldPc.getInfoSource().getTurnNo() < turnNo) {
 								if (newPc.getNationNo() == 0)
 									newPc.setNationNo(oldPc.getNationNo());
+								if (!newPc.isDefaultName()) newPc.setHarbor(oldPc.getHarbor());
 							} else {
 								if (newPc.getLoyalty() < oldPc.getLoyalty())
 									newPc.setLoyalty(oldPc.getLoyalty());
 								if (newPc.getNationNo() == 0)
 									newPc.setNationNo(oldPc.getNationNo());
+								if (!newPc.isDefaultName()) newPc.setHarbor(oldPc.getHarbor());
 								if (newPc.getCapital() != oldPc.getCapital()) {
 									PopulationCenter oldCapital = turn.getCapital(newPc.getNationNo());
 									if (oldCapital != null) {

@@ -1,6 +1,7 @@
 package org.joverseer.ui.viewers;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -10,6 +11,8 @@ import java.util.Collections;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Artifact;
@@ -84,7 +87,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 
 	@Override
 	protected JComponent createControl() {
-		this.background = Color.white;
+		this.background = UIManager.getColor("Panel.background");
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		this.popCenterViewer = new PopulationCenterViewer(FormModelHelper.createFormModel(new PopulationCenter()),this.gameHolder);
 		this.popCenterPanel = new JPanel();
@@ -103,7 +106,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 			this.armyViewers.add(va);
 			JPanel cp = new JPanel();
 			cp.add(va.getControl());
-			cp.setBackground(Color.white);
+			cp.setBackground(this.background);
 			this.armyPanels.add(cp);
 			tlb.cell(cp, "align=left"); //$NON-NLS-1$
 			tlb.row();
@@ -453,8 +456,22 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 				}
 								
 			}
+			if(e.isLifecycleEvent(LifecycleEventsEnum.ThemeChangeEvent)) {
+				removeBordersFromTextFields(this.getControl());
+			}
 		}
 	}
+	
+    public static void removeBordersFromTextFields(JComponent component) {
+        for (Component comp : component.getComponents()) {
+            if (comp instanceof JTextField) {
+                ((JTextField) comp).setBorder(null);
+                ((JTextField) comp).setOpaque(false);
+            } else if (comp instanceof JComponent) {
+                removeBordersFromTextFields((JComponent) comp); // recursive call
+            }
+        }
+    }
 
 	protected void selectCharacter(Character c) {
 		for (int i = 0; i < this.characterViewers.size(); i++) {

@@ -15,6 +15,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import org.apache.log4j.LogManager;
 import org.joverseer.JOApplication;
@@ -50,6 +51,7 @@ import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.commands.ShowInfoSourcePopupCommand;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.joverseer.ui.views.EditArmyForm;
 import org.springframework.binding.form.FormModel;
@@ -59,7 +61,6 @@ import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
@@ -170,7 +171,7 @@ public class ArmyViewer extends ObjectViewer {
 
 		JPanel panel = glb.getPanel();
 		panel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		panel.setBackground(Color.white);
+		panel.setBackground(UIManager.getColor("Panel.background"));
 		return panel;
 	}
 
@@ -296,6 +297,7 @@ public class ArmyViewer extends ObjectViewer {
 				return Messages.getString("ArmyViewer.Navy");
 			}
 			if (a.getElements().size() == 0) {}
+			else if (a.getElement(ArmyElementType.Transports) == null) {}
 			else if(a.getNumberOfRequiredTransports() <= a.getElement(ArmyElementType.Transports).getNumber()) {
 				return Messages.getString("ArmyViewer.Navy");
 			}
@@ -563,7 +565,7 @@ public class ArmyViewer extends ObjectViewer {
 			Army a = (Army) getFormObject();
 			final EditArmyForm form = new EditArmyForm(FormModelHelper.createFormModel(a),ArmyViewer.this.gameHolder);
 			FormBackedDialogPage pg = new FormBackedDialogPage(form);
-			TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
+			CustomTitledPageApplicationDialog dlg = new CustomTitledPageApplicationDialog(pg) {
 
 				@Override
 				protected void onAboutToShow() {

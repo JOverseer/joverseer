@@ -19,8 +19,12 @@ public class ScoutCharsResult implements OrderResult {
 		int hexNo = c.getHexNo();
 		InfoSource is = new PdfTurnInfoSource(turn.getTurnNo(), nationNo);
 		for (Character ch : this.characters) {
-			if (turn.getCharById(ch.getId()) != null)
+			if (turn.getCharById(ch.getId()) != null) {
+				Character tC = turn.getCharById(ch.getId());
+				if(tC.getNationNo() == 0) tC.setNationNo(ch.getNationNo());
+				if(tC.getTitle() == null) tC.setTitle(ch.getTitle());
 				continue;
+			}
 			ch.setInfoSource(is);
 			ch.setHexNo(hexNo);
 			turn.getCharacters().addItem(ch);

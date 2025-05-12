@@ -51,6 +51,7 @@ import org.joverseer.ui.orderEditor.OrderEditorData;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.PLaFHelper;
 import org.joverseer.ui.support.controls.AutocompletionComboBox;
 import org.joverseer.ui.support.controls.JOverseerTable;
 import org.joverseer.ui.support.controls.TableUtils;
@@ -90,7 +91,7 @@ public class OrderEditorListView extends ItemListView {
 
 	@Override
 	protected int[] columnWidths() {
-		return new int[] { 32, 64, 32, 64, 80, 48, 48, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 30, 64, 64, 64 };
+		return new int[] { 48, 64, 48, 64, 80, 48, 48, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 30, 64, 64, 64 };
 	}
 
 	@Override
@@ -394,6 +395,7 @@ public class OrderEditorListView extends ItemListView {
 				if (isCellSelected(row, column)) {
 					if (!c.getBackground().equals(OrderEditorListView.this.paramErrorColor) && !c.getBackground().equals(OrderEditorListView.this.paramWarningColor) && !c.getBackground().equals(OrderEditorListView.this.paramInfoColor)) {
 						c.setBackground(this.selectionBackground1);
+						c.setForeground(Color.white);
 					}
 				} else {
 					if (!c.getBackground().equals(OrderEditorListView.this.paramErrorColor) && !c.getBackground().equals(OrderEditorListView.this.paramWarningColor) && !c.getBackground().equals(OrderEditorListView.this.paramInfoColor)) {
@@ -414,10 +416,14 @@ public class OrderEditorListView extends ItemListView {
 						int rowI = ((ShuttleSortableTableModel) this.getModel()).convertSortedIndexToDataIndex(row);
 						Order order = (Order) OrderEditorListView.this.tableModel.getRow(rowI);
 						int charIndex = OrderEditorListView.this.characterIndices.get(order.getCharacter());
+						
+						c.setForeground(UIManager.getColor("Label.foreground"));
 						if (charIndex % 2 == 1) {
-							c.setBackground(Color.decode("#efefef"));
+							if(PLaFHelper.isDarkMode()) c.setBackground(Color.decode("#2d2f31"));
+							else c.setBackground(Color.decode("#efefef"));
 						} else {
 							c.setBackground(this.normalBackground);
+							
 						}
 					}
 
@@ -493,7 +499,7 @@ public class OrderEditorListView extends ItemListView {
 					JLabel lbl = (JLabel) super.getTableCellRendererComponent(table1, "", isSelected, hasFocus, row, column);
 					lbl.setIcon(ico);
 					if (ico != null) {
-						OrderResultContainer container = OrderResultContainer.instance();
+						OrderResultContainer container = OrderEditorListView.this.gameHolder.getGame().getTurn().getOrderResults().getResultCont();
 						int idx = ((SortableTableModel) table1.getModel()).convertSortedIndexToDataIndex(row);
 						Object obj = OrderEditorListView.this.tableModel.getRow(idx);
 						Order o = (Order) obj;
@@ -712,6 +718,7 @@ public class OrderEditorListView extends ItemListView {
 			if (order != null) {
 				order.clear();
 				((BeanTableModel) OrderEditorListView.this.table.getModel()).fireTableDataChanged();
+				OrderEditorListView.this.gameHolder.getGame().getTurn().getOrderResults().getResultCont().removeResultsForOrder(order);
 				JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, order, this);
 			}
 		}
@@ -976,7 +983,7 @@ public class OrderEditorListView extends ItemListView {
 			return lbl;
 		}
 	}
-
+	
 	class OrderEditingKeyAdapter extends KeyAdapter {
 		CellEditor editor;
 		public OrderEditingKeyAdapter(CellEditor editor) {
@@ -988,20 +995,21 @@ public class OrderEditorListView extends ItemListView {
 			if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE) {
 				this.editor.cancelCellEditing();
 				arg0.consume();
-			} else if (arg0.getKeyCode() == KeyEvent.VK_TAB) {
-				/*							int col = OrderEditorListView.this.table.getSelectedColumn();
-				if (col+1 >= OrderEditorListView.this.table.getColumnCount()) {
-				} else {
-					OrderEditorListView.this.table.changeSelection(row, col+1, false, false);
-				}
-*/						} else if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
-				int col = OrderEditorListView.this.table.getSelectedColumn();
-				if (col+1 > OrderEditorListView.this.lastColumnForSelectedOrder) {
-					OrderEditorListView.this.table.changeSelection(OrderEditorListView.this.table.getSelectedRow()+1, OrderEditorTableModel.iNoAndCode, false, false);
-				} else {
-					OrderEditorListView.this.table.changeSelection(OrderEditorListView.this.table.getSelectedRow(), col+1, false, false);
-				}
-			}
+			} 
+//				else if (arg0.getKeyCode() == KeyEvent.VK_TAB) {
+//				/*							int col = OrderEditorListView.this.table.getSelectedColumn();
+//				if (col+1 >= OrderEditorListView.this.table.getColumnCount()) {
+//				} else {
+//					OrderEditorListView.this.table.changeSelection(row, col+1, false, false);
+//				}
+//*/						} else if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+//				int col = OrderEditorListView.this.table.getSelectedColumn();
+//				if (col+1 > OrderEditorListView.this.lastColumnForSelectedOrder) {
+//					OrderEditorListView.this.table.changeSelection(OrderEditorListView.this.table.getSelectedRow()+1, OrderEditorTableModel.iNoAndCode, false, false);
+//				} else {
+//					OrderEditorListView.this.table.changeSelection(OrderEditorListView.this.table.getSelectedRow(), col+1, false, false);
+//				}
+//			}
 		}
 
 	}

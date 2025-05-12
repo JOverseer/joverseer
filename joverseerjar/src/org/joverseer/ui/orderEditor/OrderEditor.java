@@ -1,6 +1,5 @@
 package org.joverseer.ui.orderEditor;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
@@ -22,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,11 +34,7 @@ import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
-import org.joverseer.tools.OrderParameterValidator;
-import org.joverseer.tools.OrderValidationResult;
-import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
-import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.GraphicUtils;
@@ -280,7 +276,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 		this.chkDraw = new JCheckBox(Messages.getString("OrderEditor.56")); //$NON-NLS-1$
 		this.chkDraw.setPreferredSize(new Dimension(60, 18));
-		this.chkDraw.setBackground(Color.white);
+		this.chkDraw.setBackground(UIManager.getColor("Panel.background"));
 		glb.append(this.chkDraw, 3, 1);
 		this.chkDraw.addActionListener(new ActionListener() {
 
@@ -361,11 +357,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 		glb.nextLine();
 		glb.append(this.subeditorPanel = new JPanel(), 2, 1);
-		this.subeditorPanel.setBackground(Color.white);
+		this.subeditorPanel.setBackground(UIManager.getColor("Panel.background"));
 		glb.nextLine();
 
 		this.myPanel = glb.getPanel();
-		this.myPanel.setBackground(Color.white);
+		this.myPanel.setBackground(UIManager.getColor("Panel.background"));
 
 		this.descriptionLabel.setVisible(true);
 		this.description.setVisible(true);
@@ -492,15 +488,17 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			return;
 		o.setNoAndCode(this.orderCombo.getSelectedItem().toString());
 		o.setParameters(this.parametersInternal.getText());
-		
+		System.out.println("Order");
 		//remove order checker data for this order if present
-		OrderResultContainer container = OrderResultContainer.instance();
+		OrderResultContainer container = this.gameHolder.getGame().getTurn().getOrderResults().getResultCont();
 		if (container.getResultTypeForOrder(o)!=null) {
 			container.removeResultsForOrder(o);
 		}
+		container.overrideResultForNation(o.getCharacter().getNationNo(), false);
+		System.out.println("Size " + container.getContainer().size()+ "    And bool "  + container.getResultsForOrder(o).toString());
 		
-		// validateOrder();
 		// throw an order changed event
+		this.gameHolder.getGame().getTurn().getOrderResults().getResultCont().removeResultsForOrder(o);
 		JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
 		// Point selectedHex = new Point(o.getCharacter().getX(),
 		// o.getCharacter().getY());
@@ -518,6 +516,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		o.setParameters(this.parametersInternal.getText());
 		this.currentOrderNoAndCode = ""; //$NON-NLS-1$
 		// throw an order changed event
+		this.gameHolder.getGame().getTurn().getOrderResults().getResultCont().removeResultsForOrder(o);
 		JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
 		// Point selectedHex = new Point(o.getCharacter().getX(),
 		// o.getCharacter().getY());
@@ -624,41 +623,41 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 	}
 
-	protected void addValidationResult(Order o, OrderValidationResult res, Integer paramI) {
-		if (res == null)
-			return;
-		OrderResultContainer cont = OrderResultContainer.instance();
-		String e = ""; //$NON-NLS-1$
-		if (paramI != null) {
-			e = Messages.getString("OrderEditor.245") + paramI + ": "; //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		e += res.getMessage();
-		if (res.getLevel() == OrderValidationResult.ERROR) {
-			OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Error);
-			cont.addResult(or);
-		} else if (res.getLevel() == OrderValidationResult.WARNING) {
-			OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Warning);
-			cont.addResult(or);
-		} else if (res.getLevel() == OrderValidationResult.INFO) {
-			OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Info);
-			cont.addResult(or);
+//	protected void addValidationResult(Order o, OrderValidationResult res, Integer paramI) {
+//		if (res == null)
+//			return;
+//		OrderResultContainer cont = this.gameHolder.getGame().getTurn().getOrderResults().getResultCont();
+//		String e = ""; //$NON-NLS-1$
+//		if (paramI != null) {
+//			e = Messages.getString("OrderEditor.245") + paramI + ": "; //$NON-NLS-1$ //$NON-NLS-2$
+//		}
+//		e += res.getMessage();
+//		if (res.getLevel() == OrderValidationResult.ERROR) {
+//			OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Error);
+//			cont.addResult(or);
+//		} else if (res.getLevel() == OrderValidationResult.WARNING) {
+//			OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Warning);
+//			cont.addResult(or);
+//		} else if (res.getLevel() == OrderValidationResult.INFO) {
+//			OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Info);
+//			cont.addResult(or);
+//
+//		}
+//
+//	}
 
-		}
-
-	}
-
-	public void validateOrder() {
-		Order o = (Order) getFormObject();
-		OrderParameterValidator opv = new OrderParameterValidator();
-		OrderValidationResult ovr = opv.checkOrder(o);
-		addValidationResult(o, ovr, null);
-		for (int i = 0; i <= o.getLastParamIndex(); i++) {
-			ovr = opv.checkParam(o, i);
-			if (ovr != null) {
-				addValidationResult(o, ovr, i);
-			}
-		}
-	}
+//	public void validateOrder() {
+//		Order o = (Order) getFormObject();
+//		OrderParameterValidator opv = new OrderParameterValidator();
+//		OrderValidationResult ovr = opv.checkOrder(o);
+//		addValidationResult(o, ovr, null);
+//		for (int i = 0; i <= o.getLastParamIndex(); i++) {
+//			ovr = opv.checkParam(o, i);
+//			if (ovr != null) {
+//				addValidationResult(o, ovr, i);
+//			}
+//		}
+//	}
 
 	public ArrayList<JComponent> getSubeditorComponents() {
 		return this.subeditorComponents;

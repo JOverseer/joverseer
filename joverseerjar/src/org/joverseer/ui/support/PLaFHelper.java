@@ -41,8 +41,8 @@ public class PLaFHelper {
         	this.plaf.put("Flat Dark","com.formdev.flatlaf.FlatDarkLaf");
 //        	this.plaf.put("Darcula", "com.formdev.flatlaf.FlatDarculaLaf");
         }
-        if (isClassAvailable("com.jgoodies.looks.plastic.PlasticTheme")) {
-
+//        if (isClassAvailable("com.jgoodies.looks.plastic.PlasticTheme")) {
+//
 //        	this.plaf.put("JGoodies Plastic","com.jgoodies.looks.plastic.PlasticLookAndFeel");
 //        	this.plaf.put("JGoodies Plastic 3D","com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
 //        	this.plaf.put("JGoodies Plastic XP","com.jgoodies.looks.plastic.PlasticXPLookAndFeel");
@@ -72,7 +72,7 @@ public class PLaFHelper {
         	this.plaf.put("SkyRed","com.jgoodies.looks.plastic.theme.SkyRed");
         	this.plaf.put("SkyYellow","com.jgoodies.looks.plastic.theme.SkyYellow");
         	*/
-        }
+//        }
         
 
 	}
@@ -107,9 +107,7 @@ public class PLaFHelper {
 //		}
         
         FlatLaf.registerCustomDefaultsSource( "ui.themes");
-//        if(UIManager.getLookAndFeel() instanceof FlatLaf) {
-//        	UIManager.put("MenuItemUI", "com.formdev.flatlaf.ui.FlatMenuItemUI");
-//        }
+
         overwriteJIDELaF();
 
 		for(ApplicationWindow w :wm.getWindows()) {
@@ -117,11 +115,7 @@ public class PLaFHelper {
 	        // repack to resize 
 	        w.getControl().pack();
 	    }
-		System.out.println("Here");
-		
-//        for(ApplicationWindow w :wm.getWindows()) {
-//        	checkLaFTheme(w.getControl());
-//        }
+
 	}
 	
 	public static void overwriteJIDELaF() {

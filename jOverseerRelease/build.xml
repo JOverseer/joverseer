@@ -107,6 +107,11 @@
 	        <include name="looks-2.0.4.jar"/>
 	    </fileset>
 	</path>
+	<path id="flatLAF.path">
+		<fileset dir="${lib}">
+			<include name="flatlaf-3.0.jar" />
+		</fileset>
+	</path>
 	<!-- run time libraries mentioned in jar file -->
 	<path id="runtime.jars.path">
 		<fileset dir="${lib}">
@@ -394,6 +399,7 @@ companyName="Game Systems International" internalName="jOverseer" originalFilena
    			<path refid="jide.path"/>
    			<path refid="pdfbox.path"/>
    			<path refid="jgoodies.path"/>
+			<path refid="flatLAF.path"/>
    			<path>
    				<pathelement location="${commons_httpclient.path}"/>
    				<pathelement location="${log4j.path}"/>

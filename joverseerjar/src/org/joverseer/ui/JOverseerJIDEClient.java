@@ -120,8 +120,11 @@ public class JOverseerJIDEClient {
 			
 			
 			com.jidesoft.utils.Lm.verifyLicense("Marios Skounakis", "JOverseer", "L1R4Nx7vEp0nMbsoaHdH7nkRrx5F.dO");
-			LookAndFeelFactory.installDefaultLookAndFeelAndExtension();
-			LookAndFeelFactory.installJideExtension(LookAndFeelFactory.XERTO_STYLE);
+
+			if(!System.getProperty("os.name").contains("Mac")) {
+				LookAndFeelFactory.installDefaultLookAndFeelAndExtension();
+				LookAndFeelFactory.installJideExtension(LookAndFeelFactory.XERTO_STYLE);
+			}
 			
 
 /*			try {

@@ -6,6 +6,20 @@
 		<description>The latest version of jOverseer, the Middle-Earth PBM game
 			helper program.</description>
 		<language>en</language>
+					<item>
+			<title>1.19.0</title>
+			<pubDate>12 May 2025</pubDate>
+			<description>
+VERSION 1.19.0
+---------------
+	* Enh: New themes for JOverseer, including a Dark mode. Go to Preferences -> Window Display then change 'Interface Look and Feel'.
+	* QA: Map is no longer blurry!
+	* QA: More zoom levels.
+	* Fix: Combat calculator wouldnt open when no PC or Allied Army but an enemy Army (or at least a FP when DS).
+	* Fix: Bridges should be updated and respond more consistently.
+	* Fix: Multiple Anchored Ships on same hex weren't showing up.
+			</description>
+			</item>	
 			<item>
 			<title>1.18.21</title>
 			<pubDate>8 April 2025</pubDate>

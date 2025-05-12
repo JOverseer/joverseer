@@ -1,3 +1,11 @@
+VERSION 1.19.0
+---------------
+	* Enh: New themes for JOverseer, including a Dark mode. Go to Preferences -> Window Display then change 'Interface Look and Feel'.
+	* QA: Map is no longer blurry!
+	* QA: More zoom levels.
+	* Fix: Combat calculator wouldn't open when no PC or Allied Army but an enemy Army (or at least a FP when DS).
+	* Fix: Bridges should be updated and respond more consistently.
+	* Fix: Multiple Anchored Ships on same hex weren't showing up.
 VERSION 1.18.21
 ---------------
 	* Fix: Unable to send orders on turn 0

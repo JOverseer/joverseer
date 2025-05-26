@@ -9,12 +9,14 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
+import org.joverseer.metadata.MapRegion;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationMapRange;
 import org.joverseer.preferences.PreferenceRegistry;
@@ -41,9 +43,12 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 public class MapOptionsView extends ScalableAbstractView implements ApplicationListener {
 	JComboBox cmbTurns;
 	JComboBox cmbMaps;
+	JComboBox cmbMapsSub;
 	JComboBox zoom;
 	JCheckBox drawOrders;
 	JLabelButton moreMapOptions;
+	String prevMapsValue = "";
+	ActionListener al;
 	/**
 	 * Used internally to turn off propagating events when we know there are going to be a lot of them.
 	 */
@@ -67,7 +72,8 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 		JLabel label;
 		lb.cell(label = new JLabel(Messages.getString("MapOptionsView.TurnColon")), "colspec=left:130px"); //$NON-NLS-1$ //$NON-NLS-2$
 		label.setPreferredSize(this.uiSizes.newDimension(100/16, this.uiSizes.getHeight4()));
-		lb.cell(this.cmbTurns = new JComboBox(), "colspec=left:100px"); //$NON-NLS-1$
+		lb.cell(this.cmbTurns = new JComboBox(), "align=left"); //$NON-NLS-1$
+		lb.cell();
 		lb.relatedGapRow();
 
 		this.cmbTurns.addActionListener(new ActionListener() {
@@ -96,10 +102,11 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 
 		// lb.append(new JLabel("  "));
 		lb.cell(label = new JLabel(Messages.getString("MapOptionsView.MapColon"))); //$NON-NLS-1$
-		lb.cell(this.cmbMaps = new JComboBox(), "align=left"); //$NON-NLS-1$
+		lb.cell(this.cmbMaps = new JComboBox(), "align=left, colspec=left:100px"); //$NON-NLS-1$
+		lb.cell(this.cmbMapsSub = new JComboBox(), "align=left, colspec=left:500px");
 		lb.relatedGapRow();
 		this.cmbMaps.setPreferredSize(this.uiSizes.newDimension(100/16, this.uiSizes.getHeight4()));
-		this.cmbMaps.addActionListener(new ActionListener() {
+		this.al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object obj = MapOptionsView.this.cmbMaps.getSelectedItem();
@@ -108,6 +115,53 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				HashMap mapOptions1 = JOApplication.getMapOptions();
 				Game g = MapOptionsView.this.gameHolder.getGame();
 				String str = obj.toString();
+				String pre = "";
+				
+				//This block of code is kind of a mess, it is exclusively for the 'main' Map Combo box, and it manages 
+				//populating the other Combo box with the correct nations + Regions.
+			    JComboBox source = (JComboBox) e.getSource();
+			    if(source.equals(MapOptionsView.this.cmbMaps)) {
+			    	MapOptionsView.this.cmbMapsSub.removeActionListener(MapOptionsView.this.al);	//Removes actionListener as changing it activates this listener, gets messy.
+
+			    	if(str.equals(Messages.getString("MapOptionsView.RegionOption")) && !str.equals(MapOptionsView.this.prevMapsValue)) {
+			    		MapOptionsView.this.prevMapsValue = str;
+			    		MapOptionsView.this.cmbMapsSub.removeAllItems();
+			    		
+			    		//Adds Map Region data (only FA atm), and if none there just adds the basic Nation Ranges
+			    		for(MapRegion mr : g.getMetadata().getMapRegionsList()) {
+							MapOptionsView.this.cmbMapsSub.addItem(mr.getRegionName());
+						}
+						if(MapOptionsView.this.cmbMapsSub.getItemCount() == 0) {
+							for (NationMapRange nmr : g.getMetadata().getNationMapRanges().getItems()) {
+								Nation n = g.getMetadata().getNationByNum(nmr.getNationNo());
+								MapOptionsView.this.cmbMapsSub.addItem(n.getName());
+							}
+						}
+						MapOptionsView.this.cmbMapsSub.setSelectedIndex(0);
+			    	}
+			    	else if(str.equals(Messages.getString("MapOptionsView.NationOption")) && !str.equals(MapOptionsView.this.prevMapsValue)) {
+			    		MapOptionsView.this.prevMapsValue = str;
+			    		MapOptionsView.this.cmbMapsSub.removeAllItems();
+			    		
+						for (NationMapRange nmr : g.getMetadata().getNationMapRanges().getItems()) {
+							Nation n = g.getMetadata().getNationByNum(nmr.getNationNo());
+							MapOptionsView.this.cmbMapsSub.addItem(n.getName());
+						}
+						MapOptionsView.this.cmbMapsSub.setSelectedIndex(0);
+			    	}
+			    	MapOptionsView.this.cmbMapsSub.addActionListener(MapOptionsView.this.al);
+			    }
+				
+				if(str.equals(Messages.getString("MapOptionsView.RegionOption")) || str.equals(Messages.getString("MapOptionsView.NationOption"))) {
+					if(!MapOptionsView.this.cmbMapsSub.isVisible()) MapOptionsView.this.cmbMapsSub.setVisible(true);
+					pre = str;
+					str = MapOptionsView.this.cmbMapsSub.getSelectedItem().toString();
+				}
+				else {
+					MapOptionsView.this.cmbMapsSub.setVisible(false);
+				}
+				
+				
 				if (str.equals("Current")) { //$NON-NLS-1$
 					mapOptions1.put(MapOptionsEnum.NationMap, null);
 				} else if (str.equals(Messages.getString("MapOptionsView.10"))) { //$NON-NLS-1$
@@ -125,8 +179,17 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				} else if (str.equals(Messages.getString("MapOptionsView.16"))) { //$NON-NLS-1$
 					mapOptions1.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNone);
 				} else {
-					int nationNo = g.getMetadata().getNationByName(str).getNumber();
-					mapOptions1.put(MapOptionsEnum.NationMap, String.valueOf(nationNo));
+					if(pre.equals(Messages.getString("MapOptionsView.RegionOption"))) {
+						int regionNo;
+						MapRegion mr = g.getMetadata().getMapRegionByName(str);
+						if(mr == null) regionNo = g.getMetadata().getNationByName(str).getNumber();
+						else regionNo = mr.getRegionNo();
+						mapOptions1.put(MapOptionsEnum.NationMap, pre + String.valueOf(regionNo));
+					}
+					else if(pre.equals(Messages.getString("MapOptionsView.NationOption"))) {
+						int regionNo = g.getMetadata().getNationByName(str).getNumber();
+						mapOptions1.put(MapOptionsEnum.NationMap, pre + String.valueOf(regionNo));
+					}
 				}
 				int turnNo = g.getCurrentTurn();
 				if (!MapOptionsView.this.fireEvents)
@@ -135,7 +198,11 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo, this);
 			}
 
-		});
+		};
+		this.cmbMaps.addActionListener(this.al);
+		this.cmbMapsSub.setPreferredSize(this.uiSizes.newDimension(100/16, this.uiSizes.getHeight4()));
+		this.cmbMapsSub.addActionListener(this.al);
+		this.cmbMapsSub.setVisible(false);
 		lb.row();
 
 		// lb.append(new JLabel("  "));
@@ -230,29 +297,38 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 		this.fireEvents = false;
 		this.cmbTurns.removeAllItems();
 		this.cmbMaps.removeAllItems();
+		this.cmbMapsSub.removeAllItems();
 		Game g = this.gameHolder.getGame(); //$NON-NLS-1$
 		if (g != null) {
 			ActionListener[] als = this.cmbTurns.getActionListeners();
-			for (ActionListener al : als) {
-				this.cmbTurns.removeActionListener(al);
+			for (ActionListener al1 : als) {
+				this.cmbTurns.removeActionListener(al1);
 			}
 			for (int i = 0; i <= g.getMaxTurn(); i++) {
 				if (g.getTurn(i) != null) {
 					this.cmbTurns.addItem(g.getTurn(i).getTurnNo());
 				}
 			}
-			for (ActionListener al : als) {
-				this.cmbTurns.addActionListener(al);
+			for (ActionListener al1 : als) {
+				this.cmbTurns.addActionListener(al1);
 			}
 			this.cmbTurns.setSelectedItem(g.getCurrentTurn());
 			this.cmbMaps.addItem(Messages.getString("MapOptionsView.Current")); //$NON-NLS-1$
 			this.cmbMaps.addItem(Messages.getString("MapOptionsView.FreePeople")); //$NON-NLS-1$
 			this.cmbMaps.addItem(Messages.getString("MapOptionsView.DS")); //$NON-NLS-1$
 			this.cmbMaps.addItem(Messages.getString("MapOptionsView.Neutral")); //$NON-NLS-1$
-			for (NationMapRange nmr : g.getMetadata().getNationMapRanges().getItems()) {
-				Nation n = g.getMetadata().getNationByNum(nmr.getNationNo());
-				this.cmbMaps.addItem(n.getName());
-			}
+			this.cmbMaps.addItem(Messages.getString("MapOptionsView.RegionOption"));
+			this.cmbMaps.addItem(Messages.getString("MapOptionsView.NationOption"));
+//			for(MapRegion mr : g.getMetadata().getMapRegions().getItems()) {
+//				this.cmbMapsSub.addItem(mr.getRegionName());
+//			}
+//			if(this.cmbMapsSub.getItemCount() == 0) {
+//				for (NationMapRange nmr : g.getMetadata().getNationMapRanges().getItems()) {
+//					Nation n = g.getMetadata().getNationByNum(nmr.getNationNo());
+//					this.cmbMapsSub.addItem(n.getName());
+//				}
+//			}
+//			this.cmbMapsSub.setSelectedIndex(0);
 			this.cmbMaps.addItem(Messages.getString("MapOptionsView.None")); //$NON-NLS-1$
 			this.cmbMaps.addItem(Messages.getString("MapOptionsView.NotFP")); //$NON-NLS-1$
 			this.cmbMaps.addItem(Messages.getString("MapOptionsView.NotDS")); //$NON-NLS-1$
@@ -273,6 +349,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 			this.fireEvents = false;
 			resetGame();
 			this.fireEvents = true;
+			this.prevMapsValue = "";
 			break;
 		case SelectedTurnChangedEvent:
 			this.fireEvents = false;

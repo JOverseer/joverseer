@@ -6,6 +6,16 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
+		<item>
+			<title>1.18.19-rc2</title>
+			<pubDate>31 January 2025</pubDate>
+			<description>
+VERSION 1.18.19-rc2
+---------------
+- Orderchecker bug fix for results disapearing/not clearing themselves
+- Fixed Order table autocompletion box being weird with typing (hopefully)
+			</description>
+			</item>	
 						<item>
 			<title>1.18.19-rc1</title>
 			<pubDate>30 January 2025</pubDate>

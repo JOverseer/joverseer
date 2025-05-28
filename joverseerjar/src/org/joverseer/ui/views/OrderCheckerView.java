@@ -146,6 +146,7 @@ public class OrderCheckerView extends ScalableAbstractView implements Applicatio
 			exc.printStackTrace();
 		}
 		;
+		System.out.println("View");
 		return tlb.getPanel();
     }
 

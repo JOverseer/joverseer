@@ -6,6 +6,18 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
+						<item>
+			<title>1.18.19-rc1</title>
+			<pubDate>30 January 2025</pubDate>
+			<description>
+VERSION 1.18.19-rc1
+---------------
+- Orderchecker now saves results for each nation orderchecked, for each turn, and stores them in jov file
+- Orderchecker now has a Tick box for saying if you are ok with errors and warnings
+- Submit Orders now doesnt have lots of pop-ups. Just green/yellow/red icon by nation name indicating orderchecker result
+- Orderchecker now has name of nation
+			</description>
+			</item>	
 				<item>
 			<title>1.18.18-rc1</title>
 			<pubDate>27 January 2025</pubDate>

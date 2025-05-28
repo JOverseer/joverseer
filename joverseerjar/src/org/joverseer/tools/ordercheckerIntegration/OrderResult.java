@@ -1,5 +1,7 @@
 package org.joverseer.tools.ordercheckerIntegration;
 
+import java.io.Serializable;
+
 import org.joverseer.domain.Order;
 
 /**
@@ -7,12 +9,25 @@ import org.joverseer.domain.Order;
  * 
  * @author Marios Skounakis
  */
-public class OrderResult {
-    Order order;
+public class OrderResult implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1245651465490169390L;
+	Order order;
     String message;
     OrderResultTypeEnum type;
+    int nationNo;
     
-    public String getMessage() {
+    public int getNationNo() {
+		return this.nationNo;
+	}
+
+	public void setNationNo(int nationNo) {
+		this.nationNo = nationNo;
+	}
+
+	public String getMessage() {
         return this.message;
     }
     
@@ -41,6 +56,15 @@ public class OrderResult {
         this.order = order;
         this.message = message;
         this.type = type;
+        this.nationNo = 0;
+    }
+    
+    public OrderResult(Order order, String message, OrderResultTypeEnum type, int NNo) {
+        super();
+        this.order = order;
+        this.message = message;
+        this.type = type;
+        this.nationNo = NNo;
     }
 
     public OrderResult() {

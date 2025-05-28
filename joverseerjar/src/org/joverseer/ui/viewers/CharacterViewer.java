@@ -929,6 +929,7 @@ public class CharacterViewer extends ObjectViewer {
 					c.getOrders()[i].setParameters(this.params);
 					setFormObject(getFormObject());
 					CharacterViewer.this.showOrders = true;
+					CharacterViewer.this.gameHolder.getGame().getTurn().getOrderResults().getResultCont().removeResultsForOrder(c.getOrders()[i]);
 					JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, c.getOrders()[i], this);
 					return;
 				}

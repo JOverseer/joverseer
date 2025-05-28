@@ -47,6 +47,7 @@ public class GameMetadata implements Serializable {
 	int nationNo;
 	String additionalNations;
 	boolean newXmlFormat = false;
+	String colourSet = null;
 
 	Game game;
 
@@ -168,6 +169,14 @@ public class GameMetadata implements Serializable {
 
 	public void setNewXmlFormat(boolean newXmlFormat) {
 		this.newXmlFormat = newXmlFormat;
+	}
+	
+	public String getColourSet() {
+		return this.colourSet;
+	}
+
+	public void setColourSet(String colourSet) {
+		this.colourSet = colourSet;
 	}
 
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException {

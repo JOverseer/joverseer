@@ -1,3 +1,7 @@
+VERSION 1.18.18
+---------------
+	* Fix: JOverseer wouldn't open if not using English version
+	* Fix: Notepad won't force itself to the front each time opening
 VERSION 1.18.17
 ---------------
 	* QA: Send Orders Pane redesigned upon feedback

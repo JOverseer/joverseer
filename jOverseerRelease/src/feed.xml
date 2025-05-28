@@ -7,6 +7,16 @@
 			helper program.</description>
 		<language>en</language>
 		<item>
+			<title>1.18.18</title>
+			<pubDate>29 January 2025</pubDate>
+			<description>
+VERSION 1.18.18
+---------------
+	* Fix: JOverseer wouldn't open if not using English version
+	* Fix: Notepad won't force itself to the front each time opening
+			</description>
+		</item>	
+		<item>
 			<title>1.18.17</title>
 			<pubDate>22 January 2025</pubDate>
 			<description>

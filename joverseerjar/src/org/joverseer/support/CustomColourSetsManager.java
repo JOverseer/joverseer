@@ -99,6 +99,11 @@ public class CustomColourSetsManager {
 		return f.exists();
 	}
 	
+	public static boolean doesSetExist(String name) {
+		File f = new File(getDir() + File.separator + name + FILE_ENDING);
+		return f.exists();
+	}
+	
 	public static ArrayList<String> removeNameEndList(String[] inpList){
 		ArrayList<String> out = new ArrayList<String>();
 		for (String s : inpList) {

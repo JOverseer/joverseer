@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import org.joverseer.JOApplication;
 import org.joverseer.domain.NationRelations;
+import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.CustomColourSetsManager;
@@ -48,19 +49,24 @@ public class ColorPicker implements ApplicationListener {
     }
 
     public Color getColor1(int nationNo) {
+    	GameMetadata gm = this.gameHolder.getGame().getMetadata();
     	String pval = PreferenceRegistry.instance().getPreferenceValue("map.nationColors");
     	if(this.useCustom || pval.equals("custom")) {
-    		if (CustomColourSetsManager.getColourSets(true).size() != 0) {
-
+    		String fileName = gm.getColourSet();
+    		
+    		if (fileName != null) {
     			
-	    		String fileName = this.gameHolder.getGame().getMetadata().getColourSet();
-	    		if (fileName == null) fileName = String.valueOf(this.gameHolder.getGame().getMetadata().getGameNo());
-	    		
-	    		String colourString = CustomColourSetsManager.getColor1(fileName, nationNo);
-	    		if (colourString == null) colourString = CustomColourSetsManager.getColor1("default", nationNo);
-	    		Color c = Color.decode(colourString);
-
-	    		if(c != null) return c;
+	    		if (CustomColourSetsManager.getColourSets().size() != 0) {
+		    		//fileName = String.valueOf(this.gameHolder.getGame().getMetadata().getGameNo());
+		    		
+		    		String colourString = CustomColourSetsManager.getColor1(fileName, nationNo);
+		    		if (colourString == "NO_NATION") colourString = "#000001";
+		    		else if (colourString == null) colourString = CustomColourSetsManager.getColor1(String.valueOf(gm.getGameNo()), nationNo);
+		    		//if (colourString == null) colourString = "#000001";
+		    		Color c = Color.decode(colourString);
+	
+		    		if(c != null) return c;
+	    		}
     		}
     	}
     	
@@ -92,18 +98,24 @@ public class ColorPicker implements ApplicationListener {
     }
 
     public Color getColor2(int nationNo) {
+    	GameMetadata gm = this.gameHolder.getGame().getMetadata();
     	String pval = PreferenceRegistry.instance().getPreferenceValue("map.nationColors");
     	if(this.useCustom || pval.equals("custom")) {
-    		if (CustomColourSetsManager.getColourSets(true).size() != 0) {
-
-	    		String fileName = this.gameHolder.getGame().getMetadata().getColourSet();
-	    		if (fileName == null) fileName = String.valueOf(this.gameHolder.getGame().getMetadata().getGameNo());
-	    		
-	    		String colourString = CustomColourSetsManager.getColor2(fileName, nationNo);
-	    		if (colourString == null) colourString = CustomColourSetsManager.getColor2("default", nationNo);
-	    		Color c = Color.decode(colourString);
-
-	    		if(c != null) return c;
+    		String fileName = gm.getColourSet();
+    		if (fileName != null) {
+    			
+	    		if (CustomColourSetsManager.getColourSets().size() != 0) {
+		    		
+		    		//fileName = String.valueOf(this.gameHolder.getGame().getMetadata().getGameNo());
+		    		
+		    		String colourString = CustomColourSetsManager.getColor2(fileName, nationNo);
+		    		if (colourString == "NO_NATION") colourString = "#000001";
+		    		if (colourString == null) colourString = CustomColourSetsManager.getColor2(String.valueOf(gm.getGameNo()), nationNo);
+		    		//if (colourString == null) colourString = "#000001";
+		    		Color c = Color.decode(colourString);
+	
+		    		if(c != null) return c;
+	    		}
     		}
     	}
     	

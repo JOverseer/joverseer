@@ -132,7 +132,7 @@ Checklist of types of users
 
 Beta
 ----
-The betachannel is similar, but uses betafeed.xml and latestbetaupdate.zip
+The beta channel is similar, but uses betafeed.xml and latestbetaupdate.zip
 
 MacOS
 =====
@@ -147,6 +147,7 @@ you will need to fix the user library locations for your specific install and ve
 you should be able to run and debug.
 If you get exceptions about bad cast for Renderer then copy jide-common-MacOS.jar over jide-common.jar .
 Problems with jGoodies/looks/FontPolicy mean you're missing looks.jar from the User Library JGoodies.
+If you get class not found exception for WindowsLookAndFeel then make sure you are using the patched version of jide-common-MacOS.jar
 
 Run 'brew install ant' if you are going to work outside eclipse.
 
@@ -169,7 +170,7 @@ in the jOverseerRelease/build.xml either inside or outside eclipse.
 Run 'brew install launch4j'
 Run 'brew cask install packages'
 
-At the moment a Mac is required to create the pkg.
+A Mac is required to create the pkg.
 Install 'Packages' from http://s.sudre.free.fr/Software/Packages/about.html (or use brew as above)
 We also use 
 https://github.com/tofi86/universalJavaApplicationStub
@@ -206,7 +207,13 @@ macOS requires
  Java 9+ requires module tweaking as jOverseer is not modular.
  --add-exports java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED
  Otherwise you get illegal access control errors about internal interfaces.
- 
+
+ Java 9+ uses a Runtime Classloader instead of the old BootClassLoader, which can be confusing when debugging.
+ Use JVM args -verbose:class to list when and where classes are loaded to debug.
+
+ The version of jide in use is *very* old and has had to be patched to keep it working as the java environment
+has changed over the years. As a result, jide-common.jar is managed as two separate dedicated patches;
+ one for Mac, one for windows. The installer includes the appropriate version. The updates do *not* contain it.
 
 Autoupdate notes
 ================
@@ -229,7 +236,7 @@ The official beta RSS Feed is
 
 Version numbers are compared numerically.
 The middle 0 was dropped after 1.0.12, the next version being 1.13.0.
-At the same time, it was decided to use odd number versions as beta versions.
+(now deprecated: At the same time, it was decided to use odd number versions as beta versions.)
 That way, the timing of beta and stable releases can be decoupled, and still be consistent numerically.
 
 The checking done in the code:

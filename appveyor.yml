@@ -6,6 +6,7 @@ image:
 branches:
   only:
     - master
+    - 1.18.22
 skip_tags: true
 shallow_clone: true
 

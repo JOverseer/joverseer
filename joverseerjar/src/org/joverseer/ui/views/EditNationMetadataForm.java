@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -24,6 +25,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -170,10 +172,26 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
 					//JColorChooser c1 = EditNationMetadataForm.this.makeColorChooser(b1.getBackground());
-					Color newC = JColorChooser.showDialog(EditNationMetadataForm.this.getControl(), "Colour 1",((JButton)e.getSource()).getBackground());
-					if(newC.getRGB() == -16777216) newC = new Color(-16777215);
-					CustomColourSetsManager.setColor1((String)EditNationMetadataForm.this.colourSet.getSelectedItem(), EditNationMetadataForm.this.colour1.indexOf(((JButton)e.getSource())) + 1, String.valueOf(newC.getRGB()));
-					EditNationMetadataForm.this.applyColourSet();
+					int ind = EditNationMetadataForm.this.colour1.indexOf(((JButton)e.getSource()));
+					JColorChooser ch = new JColorChooser();
+					ch.setColor(EditNationMetadataForm.this.colour1.get(ind).getBackground());
+					ch.setPreviewPanel(EditNationMetadataForm.this.createCustomPreview(ind, ind, true));
+					JDialog d = JColorChooser.createDialog(
+							EditNationMetadataForm.this.getControl(),
+	                        "Main Color",
+	                        true,               // modal
+	                        ch,
+	                        okEvent -> {
+	                            Color selected = ch.getColor();
+	        					if(selected.getRGB() == -16777216) selected = new Color(-16777215);
+	        					CustomColourSetsManager.setColor1((String)EditNationMetadataForm.this.colourSet.getSelectedItem(), ind + 1, String.valueOf(selected.getRGB()));
+	        					EditNationMetadataForm.this.applyColourSet();
+	                        },
+	                        null
+	                );
+
+	                d.setVisible(true);
+
 				}
 			});
 			
@@ -189,10 +207,26 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
 					//JColorChooser c2 = EditNationMetadataForm.this.makeColorChooser(b2.getBackground());
-					Color newC = JColorChooser.showDialog(EditNationMetadataForm.this.getControl(), "Colour 2",((JButton)e.getSource()).getBackground());
-					if(newC.getRGB() == -16777216) newC = new Color(-16777215);
-					CustomColourSetsManager.setColor2((String)EditNationMetadataForm.this.colourSet.getSelectedItem(), EditNationMetadataForm.this.colour2.indexOf(((JButton)e.getSource())) + 1, String.valueOf(newC.getRGB()));
-					EditNationMetadataForm.this.applyColourSet();
+					int ind = EditNationMetadataForm.this.colour2.indexOf(((JButton)e.getSource()));
+					JColorChooser ch = new JColorChooser();
+					ch.setColor(EditNationMetadataForm.this.colour2.get(ind).getBackground());
+					ch.setPreviewPanel(EditNationMetadataForm.this.createCustomPreview(ind, ind, false));
+					JDialog d = JColorChooser.createDialog(
+							EditNationMetadataForm.this.getControl(),
+	                        "Border Color", // dialog title
+	                        true,
+	                        ch,            
+	                        okEvent -> {
+	                            Color selected = ch.getColor();
+	        					if(selected.getRGB() == -16777216) selected = new Color(-16777215);
+	        					CustomColourSetsManager.setColor2((String)EditNationMetadataForm.this.colourSet.getSelectedItem(), ind + 1, String.valueOf(selected.getRGB()));
+	        					EditNationMetadataForm.this.applyColourSet();
+	                        },
+	                        null
+	                );
+
+	                d.setVisible(true);
+
 				}
 				
 			});
@@ -477,6 +511,10 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 		}
 	}
 	
+	public JPanel createCustomPreview (int ind1, int ind2, boolean primary) {
+		return new CustomPreviewPanel(this.colour1.get(ind1).getBackground(), this.colour2.get(ind2).getBackground(), primary);
+	}
+	
 	class AddColourSet extends AbstractAction {
 		private static final long serialVersionUID = 1L;
 		
@@ -543,6 +581,38 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 		
 	}
 	
+    static class CustomPreviewPanel extends JPanel {
+		private static final long serialVersionUID = 1L;
+		private Color currentColor;
+		private Color borderColor;
+		private boolean primaryColor = true;
+
+        public CustomPreviewPanel(Color c, Color borderC, boolean primaryColor) {
+            setPreferredSize(new Dimension(100, 50));
+            this.currentColor = c;
+            this.borderColor = borderC;
+            this.primaryColor = primaryColor;
+        }
+
+        @Override
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            // Fill background with current color
+            Icon ic;
+            if (this.primaryColor) ic = PCRenderer.getPCIcon(this.currentColor, this.borderColor);
+            else ic = PCRenderer.getPCIcon(this.currentColor, this.borderColor);
+            ic.paintIcon(this, g, (getWidth() - ic.getIconWidth()) / 2, (getHeight() - ic.getIconHeight()) / 2);;
+        }
+
+        // This method is called by JColorChooser when the color changes
+        @Override
+        public void setForeground(Color fg) {
+            if(this.primaryColor) this.currentColor = fg;
+            else this.borderColor = fg;
+            repaint();
+        }
+    }
+	
 	static class PCRenderer {
 		static ImageSource imgSource = JOApplication.getImageSource();
 		static String PC_SIZE_PATH = "majorTown.image";
@@ -551,6 +621,14 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 			BufferedImage im = toBufferedImage(imgSource.getImage(PC_SIZE_PATH));
 	        im = changeColor(im, Color.red, getColor1(nationNo));
 	        im = changeColor(im, Color.black, getColor2(nationNo));
+	        
+	        return new ImageIcon(im);
+		}
+		
+		public static Icon getPCIcon(Color c1, Color c2) {
+			BufferedImage im = toBufferedImage(imgSource.getImage(PC_SIZE_PATH));
+	        im = changeColor(im, Color.red, c1);
+	        im = changeColor(im, Color.black, c2);
 	        
 	        return new ImageIcon(im);
 		}

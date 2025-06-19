@@ -52,8 +52,8 @@ VERSION 1.18.22-rc4
  - More Zoom options
  - Fix Map centering on hex
  - Fix other random colors
-<			</description>
->		</item>	
+			</description>
+		</item>	
 		<item>
 			<title>1.18.22-rc3</title>
 			<pubDate>28 April 2025</pubDate>

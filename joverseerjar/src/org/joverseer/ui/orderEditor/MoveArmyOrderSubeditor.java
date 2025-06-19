@@ -1,20 +1,22 @@
 package org.joverseer.ui.orderEditor;
 
-import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
 import org.joverseer.domain.Order;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.UISizes;
 import org.joverseer.ui.support.Messages;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
@@ -60,6 +62,8 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
 		AddMovementButton(String aMessage) {
     		super(aMessage);
     		this.addActionListener(new AddMovementActionListener(aMessage));
+    		UISizes uiSize = new UISizes();
+    		this.setPreferredSize(uiSize.getSquareBtHeight());
     	}
     }
     
@@ -69,7 +73,7 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
 
     @Override
 	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo,boolean applyInitValue) {
-
+    	
         tlb.cell(new JLabel(Messages.getString("MoveArmyOrderSubeditor.StyleColon")), "colspec=left:70px"); //$NON-NLS-1$ //$NON-NLS-2$
         tlb.cell(this.movementStyle = new JComboBox(), "colspec=left:130px"); //$NON-NLS-1$
         this.movementStyle.setPreferredSize(new Dimension(60, 18));
@@ -96,32 +100,41 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         this.directionParams.setText(txt);
 
         tlb.row();
-        TableLayoutBuilder stlb = new TableLayoutBuilder();
+        tlb.cell((JComponent) Box.createVerticalStrut(4));
+        tlb.row();
+        
+        JPanel gridPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        //gbc.insets = new Insets(2, 2, 2, 2); // small padding around buttons
+        gbc.fill = GridBagConstraints.NONE; // don't stretch buttons
+        gbc.anchor = GridBagConstraints.CENTER; // center each button
+
         JButton btn;
-        stlb.cell(btn = new JButton(Messages.getString("MoveArmyOrderSubeditor.direction.nw"))); //$NON-NLS-1$
-        btn.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent arg0) {
-                MoveArmyOrderSubeditor.this.dirs.add(Messages.getString("MoveArmyOrderSubeditor.direction.nw")); //$NON-NLS-1$
-                updateEditor();
-            }
-        });
+        
+        gbc.gridx = 0; gbc.gridy = 0;
+        gridPanel.add(btn = new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.nw")), gbc);
 
-        stlb.cell(new JLabel());
+        gbc.gridx = 1; gbc.gridy = 0;
+        gridPanel.add(Box.createHorizontalStrut(10), gbc); // or just skip it
 
-        stlb.cell(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.ne"))); //$NON-NLS-1$
-        stlb.row();
+        gbc.gridx = 2; gbc.gridy = 0;
+        gridPanel.add(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.ne")), gbc);
 
-        stlb.cell(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.w"))); //$NON-NLS-1$
-        stlb.cell(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.home"))); //$NON-NLS-1$
-        stlb.cell(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.e"))); //$NON-NLS-1$
-
-        stlb.row();
-
-        stlb.cell(btn = new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.sw"))); //$NON-NLS-1$
-
-        //stlb.cell();
-        stlb.cell(btn = new JButton("<--")); //$NON-NLS-1$
+        gbc.gridx = 0; gbc.gridy = 1;
+        gridPanel.add(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.w")), gbc);
+        
+        gbc.gridx = 1; gbc.gridy = 1;
+        gridPanel.add(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.home")), gbc);
+        
+        gbc.gridx = 2; gbc.gridy = 1;
+        gridPanel.add(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.e")), gbc);
+        
+        gbc.gridx = 0; gbc.gridy = 2;
+        gridPanel.add(btn = new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.sw")), gbc);
+        
+        gbc.gridx = 1; gbc.gridy = 2;
+        gridPanel.add(btn = new JButton("<--"), gbc);
         btn.setToolTipText(Messages.getString("MoveArmyOrderSubeditor.back")); //$NON-NLS-1$
         btn.addActionListener(new ActionListener() {
             @Override
@@ -132,16 +145,15 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
                 }
             }
         });
+        UISizes uiSize = new UISizes();
+		btn.setPreferredSize(uiSize.getSquareBtHeight());
 
-        stlb.cell(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.se"))); //$NON-NLS-1$
-
-//        stlb.row();
-
-
+        gbc.gridx = 2; gbc.gridy = 2;
+        gridPanel.add(btn = new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.se")), gbc);
+        
+		
         tlb.cell(new JLabel(" ")); //$NON-NLS-1$
-        JPanel pnl = stlb.getPanel();
-        pnl.setBackground(Color.white);
-        tlb.cell(pnl);
+        tlb.cell(gridPanel);
 
         // note that the order of these add matters...it is the order that the abstractOrtderEditor generates the parameters as text
         components.add(this.directionParams);

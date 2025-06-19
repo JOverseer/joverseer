@@ -6,12 +6,12 @@ package org.joverseer.ui.command;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.views.ExportDiploForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 import org.joverseer.domain.Diplo;
 
@@ -46,7 +46,7 @@ public class ExportDiploCommand extends ActionCommand {
         FormBackedDialogPage page = new FormBackedDialogPage(form);
         page.setTitle(Messages.getString("ExportDiploForm.title", new Object[] {String.join(", ", this.gameHolder.getGame().getTurn().getNationDiplo(this.gameHolder.getGame().getMetadata().getNationNo()).getNations())}));
 
-        TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+        CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
             @Override
 			protected void onAboutToShow() {
             }

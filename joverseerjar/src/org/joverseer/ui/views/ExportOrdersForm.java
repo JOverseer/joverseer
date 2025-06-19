@@ -1,7 +1,6 @@
 package org.joverseer.ui.views;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -51,7 +50,6 @@ import org.joverseer.domain.Character;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.orders.export.OrderFileGenerator;
 import org.joverseer.orders.export.OrderTextGenerator;
@@ -70,6 +68,7 @@ import org.joverseer.ui.command.OpenGameDirTree;
 import org.joverseer.ui.command.RunOrdercheckerCommand;
 import org.joverseer.ui.command.SaveGame;
 import org.joverseer.ui.support.controls.CheckBoxList;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.support.dialogs.InputDialog;
 import org.springframework.binding.form.FormModel;
@@ -78,7 +77,6 @@ import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.progress.BusyIndicator;
 
@@ -246,7 +244,6 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 		JLabel lblVersion = new JLabel(Messages.getString("playerInfo.turnVersion")); //$NON-NLS-1$
 		pnlVersion.add(lblVersion);
-		lblVersion.setBackground(Color.WHITE);
 		this.lblVersionValue.setAlignmentX(Component.CENTER_ALIGNMENT);
 		pnlVersion.add(this.lblVersionValue);
 		this.lblVersionValue.setHorizontalAlignment(SwingConstants.CENTER);
@@ -260,7 +257,6 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 		this.lblSent = new JLabel(Messages.getString("playerInfo.ordersSentOn")); //$NON-NLS-1$
 		pnlSent.add(this.lblSent);
-		this.lblSent.setBackground(Color.WHITE);
 		pnlSent.add(this.lblSentValue);
 
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
@@ -272,7 +268,6 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 		this.lblFile = new JLabel(Messages.getString("playerInfo.lastOrderFile")); //$NON-NLS-1$
 		pnlFile.add(this.lblFile);
-		this.lblFile.setBackground(Color.WHITE);
 		pnlFile.add(this.lblFileValue);
 
 		topPanel.add(nationPanel);
@@ -703,7 +698,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 				
 				final SubmitOrdersResultsForm frm = new SubmitOrdersResultsForm(FormModelHelper.createFormModel(new Object()));
 				FormBackedDialogPage page = new FormBackedDialogPage(frm);
-				TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+				CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 
 					@Override
 					protected void onAboutToShow() {

@@ -27,6 +27,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -34,7 +35,6 @@ import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
 /**
@@ -49,7 +49,7 @@ import org.springframework.richclient.form.FormModelHelper;
 public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 	File[] files;
 	JOverseerClientProgressMonitor monitor;
-	TitledPageApplicationDialog dialog;
+	CustomTitledPageApplicationDialog dialog;
 	//dependencies
 	GameHolder gh;
 
@@ -199,7 +199,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 			FormModel formModel = FormModelHelper.createFormModel(this);
 			this.monitor = new JOverseerClientProgressMonitor(formModel);
 			FormBackedDialogPage page = new FormBackedDialogPage(this.monitor);
-			this.dialog = new TitledPageApplicationDialog(page) {
+			this.dialog = new CustomTitledPageApplicationDialog(page) {
 				@Override
 				protected void onAboutToShow() {
 					OpenXmlAndPdfDir.this.monitor.taskStarted(String.format("Importing Directory '%s'.", new Object[] { file.getAbsolutePath() }), 100 * OpenXmlAndPdfDir.this.files.length);

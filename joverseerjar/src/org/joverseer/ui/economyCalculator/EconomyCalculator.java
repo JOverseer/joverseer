@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.AbstractBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -46,10 +47,12 @@ import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.PLaFHelper;
 import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.controls.JOverseerTable;
 import org.joverseer.ui.support.controls.NationComboBox;
 import org.joverseer.ui.support.controls.TableUtils;
+import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.PageComponentContext;
@@ -359,11 +362,9 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 		this.freeArmyHire = new JCheckBox();
 		this.marketInfluence = new JCheckBox();
 		JPanel snaPanel = new JPanel();
-		snaPanel.setBackground(Color.white);
 		snaPanel.add(this.sellBonus, "align=left"); //$NON-NLS-1$
 		this.sellBonus.setText(Messages.getString("EconomyCalculator.SellBonus")); //$NON-NLS-1$
 		this.sellBonus.setHorizontalTextPosition(SwingConstants.LEFT);
-		this.sellBonus.setBackground(Color.white);
 		this.sellBonus.setEnabled(false);
 		Game g = this.getGame();
 		if (EconomyCalculator.this.nationCombo.getSelectedItem() != null) {
@@ -373,32 +374,26 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 		snaPanel.add(this.cheaperShips, "align=left"); //$NON-NLS-1$
 		this.cheaperShips.setText(Messages.getString("EconomyCalculator.cheaperShips")); //$NON-NLS-1$
 		this.cheaperShips.setHorizontalTextPosition(SwingConstants.LEFT);
-		this.cheaperShips.setBackground(Color.white);
 		this.cheaperShips.setEnabled(false);
 		snaPanel.add(this.cheapestShips, "align=left"); //$NON-NLS-1$
 		this.cheapestShips.setText(Messages.getString("EconomyCalculator.cheapestShips")); //$NON-NLS-1$
 		this.cheapestShips.setHorizontalTextPosition(SwingConstants.LEFT);
-		this.cheapestShips.setBackground(Color.white);
 		this.cheapestShips.setEnabled(false);
 		snaPanel.add(this.cheapFortifications, "align=left"); //$NON-NLS-1$
 		this.cheapFortifications.setText(Messages.getString("EconomyCalculator.cheapFortifications")); //$NON-NLS-1$
 		this.cheapFortifications.setHorizontalTextPosition(SwingConstants.LEFT);
-		this.cheapFortifications.setBackground(Color.white);
 		this.cheapFortifications.setEnabled(false);
 		snaPanel.add(this.freeArmyHire, "align=left"); //$NON-NLS-1$
 		this.freeArmyHire.setText(Messages.getString("EconomyCalculator.freeArmyHire")); //$NON-NLS-1$
 		this.freeArmyHire.setHorizontalTextPosition(SwingConstants.LEFT);
-		this.freeArmyHire.setBackground(Color.white);
 		this.freeArmyHire.setEnabled(false);
 		snaPanel.add(this.marketInfluence, "align=left"); //$NON-NLS-1$
 		this.marketInfluence.setText(Messages.getString("EconomyCalculator.marketInfluence")); //$NON-NLS-1$
 		this.marketInfluence.setHorizontalTextPosition(SwingConstants.LEFT);
-		this.marketInfluence.setBackground(Color.white);
 		this.marketInfluence.setEnabled(false);
 
 		nationPanel.add(snaPanel);
 		nationPanel.getInsets().set(0, 0, 0, 0);
-		nationPanel.setBackground(Color.white);
 		lb.cell(nationPanel,"align=left");
 //		lb.cell(this.nationCombo = new NationComboBox(GameHolder.instance()), "align=left"); //$NON-NLS-1$
 
@@ -443,10 +438,8 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 		}
 		this.marketTable.setDefaultRenderer(Integer.class, new MarketRenderer());
 		this.marketTable.setDefaultRenderer(String.class, new MarketRenderer());
-		this.marketTable.setBackground(Color.white);
 		JScrollPane scp = new JScrollPane(this.marketTable);
-		scp.setPreferredSize(new Dimension(600, 226));
-		scp.getViewport().setBackground(Color.white);
+		scp.setPreferredSize(new Dimension(600, 278));
 		scp.getViewport().setOpaque(true);
 		lb.cell(scp);
 
@@ -530,7 +523,8 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 				Component c = super.prepareRenderer(renderer, row, column);
 				if (this.doHighlight(row, column)) {
 					if (c instanceof JComponent) {
-						((JComponent) c).setBorder(new TopBottomBorder(Color.black, 1));
+						if(PLaFHelper.isDarkMode()) ((JComponent) c).setBorder(new TopBottomBorder(Color.white, 1));
+						else ((JComponent) c).setBorder(new TopBottomBorder(Color.black, 1));
 	                }
 				}
 				return c;
@@ -539,17 +533,16 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 		};
 		ettm.setTable(this.totalsTable);
 		this.totalsTable.getTableHeader().setVisible(false);
+		this.totalsTable.getTableHeader().setPreferredSize(new Dimension(400, 0));
 		for (int i = 0; i < ettm.getColumnCount(); i++) {
 			this.totalsTable.getColumnModel().getColumn(i).setPreferredWidth(ettm.getColumnWidth(i));
 		}
 		this.totalsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		this.totalsTable.setDefaultRenderer(String.class, new TotalsRenderer());
 		this.totalsTable.setDefaultRenderer(Integer.class, new TotalsRenderer());
-		this.totalsTable.setBackground(Color.white);
 		scp = new JScrollPane(this.totalsTable);
-		scp.setPreferredSize(new Dimension(590, 120));
-		scp.getViewport().setBackground(Color.white);
-		scp.getViewport().setOpaque(true);
+		scp.setPreferredSize(new Dimension(590, 124));
+		//scp.getViewport().setOpaque(true);
 		lb.cell(scp);
 
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
@@ -595,7 +588,6 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 		tlb.relatedGapRow();
 
 		JPanel pnl = tlb.getPanel();
-		pnl.setBackground(Color.white);
 		lb.gapCol();
 		lb.cell(pnl, "colspec=left:150px valign=top"); //$NON-NLS-1$
 		lb.row();
@@ -629,7 +621,6 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 		// pcTable = new JTable(lostPopsTableModel);
 		this.pcTable = org.springframework.richclient.table.TableUtils.createStandardSortableTable(this.lostPopsTableModel);
 		this.pcTable.addMouseListener(this);
-		this.pcTable.setBackground(Color.white);
 		this.pcTable.setDefaultRenderer(Boolean.class, this.totalsTable.getDefaultRenderer(Boolean.class));
 		this.pcTable.setDefaultEditor(Boolean.class, this.totalsTable.getDefaultEditor(Boolean.class));
 		TableUtils.setTableColumnRenderer(this.pcTable, LostPopsTableModel.iHex, new HexNumberCellRenderer(this.lostPopsTableModel) );
@@ -640,9 +631,7 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 		lb.row();
 
 		JPanel p = lb.getPanel();
-		p.setBackground(Color.white);
 		scp = new JScrollPane(p);
-		scp.getViewport().setBackground(Color.white);
 		scp.getViewport().setOpaque(true);
 
 		UIUtils.fixScrollPaneMouseScroll(scp);
@@ -685,7 +674,12 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 		 */
 		private static final long serialVersionUID = 9079326762672678398L;
 		// TODO export colors to color.properties
-		Color[] rowColors = new Color[] { Color.decode("#ADD3A6"), Color.decode("#ADD3A6"), Color.decode("#FFCCAA"), Color.decode("#FFCCAA"), Color.decode("#ADD3A6"), Color.white, Color.white, Color.decode("#ADD3A6"), Color.decode("#ADD3A6"), Color.white, Color.white, Color.white, Color.lightGray }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+		ColorPicker colorPicker = ColorPicker.getInstance();
+		Color green = this.colorPicker.getColor("EconomyCalculator.green");
+		Color blue = this.colorPicker.getColor("EconomyCalculator.blue");
+		Color grey = this.colorPicker.getColor("EconomyCalculator.grey");
+		Color backgroundC = UIManager.getColor("Table.background");
+		Color[] rowColors = new Color[] { this.green, this.green, this.blue, this.blue, this.green, this.backgroundC, this.backgroundC, this.green, this.green, this.backgroundC, this.backgroundC, this.backgroundC, this.grey }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -698,6 +692,8 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 				lbl.setBorder(BorderFactory.createLineBorder(Color.red, 1));
 			}
 			lbl.setHorizontalAlignment(SwingConstants.RIGHT);
+			
+			if(column > 0) c.setForeground(this.colorPicker.getColor("EconomyCalculator.text"));
 
 			return c;
 		}
@@ -719,6 +715,11 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			
+			
+			ColorPicker colorPicker = ColorPicker.getInstance();
+			c.setForeground(colorPicker.getColor("EconomyCalculator.text"));
+			
 			JLabel lbl = ((JLabel) c);
 			lbl.setHorizontalAlignment(SwingConstants.RIGHT);
 			if (row == EconomyTotalsTableModel.iOrdersCostRow && column == EconomyTotalsTableModel.iValueCol3
@@ -731,7 +732,7 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 				int amount = Integer.parseInt(value.toString());
 				if (amount >= getMarketLimitWarningThreshhold()) {
 					if (!isSelected) {
-						lbl.setBackground(Color.red);
+						lbl.setBackground(colorPicker.getColor("EconomyCalculator.red"));
 						return c;
 					}
 				}
@@ -742,9 +743,10 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 					// ,
 					// gold
 					// production
-					lbl.setBackground(Color.decode("#ADD3A6")); //$NON-NLS-1$
+					lbl.setBackground(colorPicker.getColor("EconomyCalculator.green")); //$NON-NLS-1$
 				} else {
-					lbl.setBackground(Color.white);
+					//lbl.setBackground(Color.white);
+					lbl.setBackground(UIManager.getColor("Table.background"));
 				}
 			}
 			return c;

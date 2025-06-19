@@ -7,6 +7,7 @@ public class UISizes {
 	private int height4; // default 16
 	private int height5; // default 20
 	private int height6; // default 24
+	private int height7;
 	
 	public Dimension newDimension(float scale,int height) {
 		return new Dimension((int)((scale * height)+0.5),height);
@@ -23,6 +24,7 @@ public class UISizes {
 		this.height4 = 16;
 		this.height5 = 20;
 		this.height6 = 24;
+		this.height7 = 48;
 	}
 	public int getHeight3() {
 		return this.height3;
@@ -51,5 +53,8 @@ public class UISizes {
 	public int getComboxBoxHeight()
 	{
 		return this.height5;
+	}
+	public Dimension getSquareBtHeight() {
+		return new Dimension(42, this.height6);
 	}
 }

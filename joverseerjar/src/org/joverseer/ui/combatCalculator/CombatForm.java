@@ -36,6 +36,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -55,6 +56,8 @@ import org.joverseer.tools.combatCalc.CombatArmy;
 import org.joverseer.tools.combatCalc.CombatPopCenter;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
+import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.binding.form.FormModel;
 import org.springframework.binding.value.ValueModel;
 import org.springframework.binding.value.support.ListListModel;
@@ -64,7 +67,6 @@ import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
@@ -735,7 +737,7 @@ public class CombatForm extends AbstractForm {
 		final CombatLog form = new CombatLog(formModel, ((Combat)this.getFormObject()).logger);
 		FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-		TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+		CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 
 			@Override
 			protected void onAboutToShow() {
@@ -773,14 +775,14 @@ public class CombatForm extends AbstractForm {
 	        CombatArmy ca = (CombatArmy) obj;
 	        
 	        if(!ca.completeInfo()) {
-	            Color bg = Color.decode("#ffff99");
+	            Color bg = ColorPicker.getInstance().getColor("TurnReport.default");
 	        	cellComponent.setBackground(bg);
 	        	
 	        	JLabel lb = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 	        	lb.setToolTipText("Not accurate strength, incomplete data, edit army.");
 	        }
 	        else {
-	        	cellComponent.setBackground(Color.WHITE);
+	        	cellComponent.setBackground(UIManager.getColor("Table.background"));
 	        	JLabel lb = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 	        	lb.setToolTipText(null);
 	        	
@@ -1146,7 +1148,7 @@ public class CombatForm extends AbstractForm {
 			final CombatArmyForm form = new CombatArmyForm(formModel);
 			FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-			TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+			CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 
 				@Override
 				protected void onAboutToShow() {
@@ -1383,7 +1385,7 @@ public class CombatForm extends AbstractForm {
 			final CombatPopCenterForm form = new CombatPopCenterForm(formModel);
 			FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-			TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+			CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 
 				@Override
 				protected void onAboutToShow() {

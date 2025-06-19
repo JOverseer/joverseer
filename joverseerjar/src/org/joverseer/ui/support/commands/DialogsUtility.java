@@ -7,12 +7,12 @@ import org.joverseer.domain.Encounter;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.joverseer.ui.views.NarrationForm;
 import org.joverseer.ui.views.OrderResultsForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
 public class DialogsUtility {
@@ -20,7 +20,7 @@ public class DialogsUtility {
 		final Character c = character;
 		final OrderResultsForm f = new OrderResultsForm(FormModelHelper.createFormModel(c));
     	FormBackedDialogPage pg = new FormBackedDialogPage(f);
-    	TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
+    	CustomTitledPageApplicationDialog dlg = new CustomTitledPageApplicationDialog(pg) {
 			@Override
 			protected boolean onFinish() {
 				return true;
@@ -51,7 +51,7 @@ public class DialogsUtility {
         FormModel formModel = FormModelHelper.createFormModel(narration);
         final NarrationForm form = new NarrationForm(formModel);
         FormBackedDialogPage page = new FormBackedDialogPage(form);
-        TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+        CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
             @Override
 			protected void onAboutToShow() {
                 form.setFormObject(narration);
@@ -85,7 +85,7 @@ public class DialogsUtility {
         FormModel formModel = FormModelHelper.createFormModel(descr);
         final NarrationForm form = new NarrationForm(formModel);
         FormBackedDialogPage page = new FormBackedDialogPage(form);
-        TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+        CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
             @Override
 			protected void onAboutToShow() {
                 form.setFormObject(descr);

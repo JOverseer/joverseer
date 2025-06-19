@@ -517,6 +517,14 @@ public class TurnXmlReader implements Runnable {
 				Army a2 = armiesInHex.get(j);
 				if (a1.getCommanderName().equals(a2.getCommanderName())) {
 					// duplicate army
+					
+					//anchored ships being deleted
+					if(a1.getCommanderName().equals("[Anchored Ships]")) {
+						if (a1.getNationNo() > 0 && a2.getNationNo().equals(a1.getNationNo()));
+						else continue;
+					}
+					
+					
 					toRemoveB = true;
 					// hack for KS - update army size
 					// this is needed because currently in KS when the army's

@@ -1,6 +1,5 @@
 package org.joverseer.ui.orderEditor;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
@@ -22,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -276,7 +276,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 		this.chkDraw = new JCheckBox(Messages.getString("OrderEditor.56")); //$NON-NLS-1$
 		this.chkDraw.setPreferredSize(new Dimension(60, 18));
-		this.chkDraw.setBackground(Color.white);
+		this.chkDraw.setBackground(UIManager.getColor("Panel.background"));
 		glb.append(this.chkDraw, 3, 1);
 		this.chkDraw.addActionListener(new ActionListener() {
 
@@ -357,11 +357,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 		glb.nextLine();
 		glb.append(this.subeditorPanel = new JPanel(), 2, 1);
-		this.subeditorPanel.setBackground(Color.white);
+		this.subeditorPanel.setBackground(UIManager.getColor("Panel.background"));
 		glb.nextLine();
 
 		this.myPanel = glb.getPanel();
-		this.myPanel.setBackground(Color.white);
+		this.myPanel.setBackground(UIManager.getColor("Panel.background"));
 
 		this.descriptionLabel.setVisible(true);
 		this.description.setVisible(true);

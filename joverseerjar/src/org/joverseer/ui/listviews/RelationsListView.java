@@ -11,12 +11,14 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 
 import org.joverseer.JOApplication;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
+import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.table.BeanTableModel;
 
@@ -91,21 +93,21 @@ public class RelationsListView extends ItemListView {
 		public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table1, value, isSelected, hasFocus, row, column);
             if (column < 3) return c;
-            MessageSource colorSource = JOApplication.getColorSource();
+            //c.setForeground(UIManager.getColor("Label.foreground"));
             String relation = value.toString();
-            Color bgColor = Color.WHITE;
+            Color bgColor = UIManager.getColor("Table.background");
             if (relation.equals("F")) {
-                bgColor = Color.decode(colorSource.getMessage("relations.friendly.color", null, Locale.getDefault()));
+                bgColor = ColorPicker.getInstance().getColor("relations.friendly");
             } else if (relation.equals("T")) {
-                bgColor = Color.decode(colorSource.getMessage("relations.tolerated.color", null, Locale.getDefault()));
+                bgColor = ColorPicker.getInstance().getColor("relations.tolerated");
             } else if (relation.equals("D")) {
-                bgColor = Color.decode(colorSource.getMessage("relations.disliked.color", null, Locale.getDefault()));
+                bgColor = ColorPicker.getInstance().getColor("relations.disliked");
             } else if (relation.equals("H")) {
-                bgColor = Color.decode(colorSource.getMessage("relations.hated.color", null, Locale.getDefault()));
-            }
+                bgColor = ColorPicker.getInstance().getColor("relations.hated");
+            }	
             JLabel lbl = ((JLabel)c);
             c.setBackground(bgColor);
-            lbl.setForeground(Color.black);
+            lbl.setForeground(UIManager.getColor("Table.foreground"));
             return lbl;
         }
         

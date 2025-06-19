@@ -12,8 +12,8 @@
 
 	<bean id="applicationDescriptor"
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="1.18.21"/>
-		<property name="buildId" value="Ulmo"/>
+		<property name="version" value="1.19.0"/>
+		<property name="buildId" value="Varda"/>
 
 	</bean>
 
@@ -49,13 +49,13 @@
 	<bean name="resizeStatusBarItem"
 		class="com.jidesoft.status.ResizeStatusBarItem" />
 
-   	<bean id="lookAndFeelConfigurer"
+   	<!--<bean id="lookAndFeelConfigurer"
 		class="org.springframework.richclient.application.config.JGoodiesLooksConfigurer">
 		<property name="popupDropShadowEnabled" value="true" />
 		<property name="theme">
 			<bean class="com.jgoodies.looks.plastic.theme.ExperienceGreen" />
 		</property>
-	</bean>
+	</bean>-->
 
  
 	<bean id="serviceLocator"

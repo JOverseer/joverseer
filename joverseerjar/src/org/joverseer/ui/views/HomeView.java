@@ -1,11 +1,12 @@
 package org.joverseer.ui.views;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Image;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.net.URI;
 
@@ -66,7 +67,6 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 	protected JComponent createControl() {
 		this.p = new JSplitPane();
 		this.p.setResizeWeight(0.5);
-		this.p.setBackground(Color.white);
 		this.p.setEnabled(true);
 		
 		JPanel panel_L = new JPanel();
@@ -77,7 +77,7 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 		this.editor = new JEditorPane();
 		this.editor.setContentType("text/html");
 		this.editor.setEditable(false);
-		this.editor.setCaretColor(Color.WHITE);
+		this.editor.setCaretColor(this.editor.getBackground());
 		this.editor.addHyperlinkListener(new HyperlinkListener() {
 
 			@Override
@@ -101,13 +101,12 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 		JEditorPane jp = new JEditorPane();
 		jp.setContentType("text/html");
 		jp.setEditable(false);
-		jp.setCaretColor(Color.WHITE);
+		jp.setCaretColor(this.editor.getBackground());
 		jp.setText("<div style='font-family:MS Sans Serif; font-size:11pt'><i>" + Messages.getString("applicationDescriptor.description"));
 		panel_L.add(jp, BorderLayout.PAGE_END);
 		
 		JPanel panel_R = new JPanel();
 		panel_R.setOpaque(true);
-		panel_R.setBackground(Color.WHITE);
 		this.p.setRightComponent(panel_R);
 		panel_R.setLayout(new BoxLayout(panel_R, BoxLayout.Y_AXIS));
 		panel_R.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -116,7 +115,6 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 		Image im = i.getImage().getScaledInstance(290, -1, Image.SCALE_SMOOTH);
 		this.lblLogo = new JLabel(new ImageIcon(im));
 		this.lblLogo.setAlignmentX(Component.CENTER_ALIGNMENT);
-		this.lblLogo.setBackground(Color.WHITE);
 		this.lblLogo.setOpaque(true);
 		panel_R.add(this.lblLogo);
 		
@@ -127,7 +125,7 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 		this.sideEditor = new JEditorPane();
 		this.sideEditor.setContentType("text/html");
 		this.sideEditor.setEditable(false);
-		this.sideEditor.setCaretColor(Color.WHITE);
+		this.sideEditor.setCaretColor(this.editor.getBackground());
 		this.sideEditor.addHyperlinkListener(new HyperlinkListener() {
 
 			@Override
@@ -166,9 +164,17 @@ public class HomeView extends ScalableAbstractView implements ApplicationListene
 		jp = new JEditorPane();
 		jp.setContentType("text/html");
 		jp.setEditable(false);
-		jp.setCaretColor(Color.WHITE);
+		jp.setCaretColor(this.editor.getBackground());
 		jp.setText("<div style='font-family:MS Sans Serif; font-size:9pt'><i>" + Messages.getString("extraLegal.copyright"));
 		p1.add(jp, BorderLayout.PAGE_END);
+		
+		this.p.addComponentListener(new ComponentAdapter() {
+		    @Override
+			public void componentResized(ComponentEvent componentEvent) {
+		        // do stuff
+		    	HomeView.this.componentFocusGained();
+		    }
+		});
 		
 		return this.p;
 

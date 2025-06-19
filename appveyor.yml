@@ -6,6 +6,7 @@ image:
 branches:
   only:
     - master
+    - release
 skip_tags: true
 shallow_clone: true
 

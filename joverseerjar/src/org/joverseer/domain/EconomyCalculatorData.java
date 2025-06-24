@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.joverseer.game.Turn;
+import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
@@ -37,6 +38,18 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	int productionFactor = 100;
 	Integer taxRate = null;
 	Integer goldProduction;
+	Integer taxRevenue;
+	
+	public Integer getTaxRevenue() {
+		if(this.taxRevenue == null) {
+			int nationTaxRevenue = 0;
+            for (PopulationCenter pc : (ArrayList<PopulationCenter>)this.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", this.getNationNo().intValue())) {
+                nationTaxRevenue += (pc.getSize().getCode() - 1) * 2500 * this.getNationEconomy().getTaxRate() / 100;
+            }
+            this.taxRevenue = nationTaxRevenue;
+		}
+		return this.taxRevenue;
+	}
 
 	public int getBuyUnits(ProductEnum p) {
 		return this.buyUnits.getProduct(p) == null ? 0 : this.buyUnits.getProduct(p).intValue();

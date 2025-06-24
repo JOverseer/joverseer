@@ -2958,7 +2958,7 @@ public class Rule
             		} else if (isMovement) {
                     	for(int j = 0; j < movementOrders.length; j++) {
                     		if(otherOrder == movementOrders[i]) {
-                    			this.parentOrder.addError("Duplicate order skill");
+                    			this.parentOrder.addError("Duplicate Skill order (2 of the same Skill orders)");
                     			break;
                     		}
                     	}
@@ -2975,7 +2975,7 @@ public class Rule
             						if (otherRank == rank) {
             							if (otherRule.convertParameter(4) != 0) {
             								// same skill and marked as exclusive
-            								this.parentOrder.addError("Duplicate order skill");
+            								this.parentOrder.addError("Duplicate Skill order (2 of the same Skill orders)");
             								break;
             							}
             						}

@@ -24,7 +24,7 @@ public class ExitCommand extends ActionCommand {
 	protected void doExecuteCommand() {
     	ApplicationWindow window =Application.instance().getActiveWindow();
     	if (JideApplicationWindow.class.isInstance(window)) {
-    		((JideApplicationWindow)window).saveLayoutData();
+    		((JideApplicationWindow)window).saveLayoutData(null);
     	}
     	window.close();
     }

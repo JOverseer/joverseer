@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -65,6 +66,7 @@ public class GameMetadata implements Serializable {
 	ArrayList<MetadataReader> readers = new ArrayList<MetadataReader>();
 	Container<TerrainModifier> terrainModifiers = new Container<TerrainModifier>();
 	Container<ClimateModifier> climateModifiers = new Container<ClimateModifier>();
+	Container<MapRegion> mapRegions = new Container<MapRegion>();
 
 	String basePath;
 
@@ -196,6 +198,7 @@ public class GameMetadata implements Serializable {
 		out.writeObject(getClimateModifiers());
 		out.writeObject(getTerrainModifiers());
 		out.writeObject(this.colourSet);
+		out.writeObject(getMapRegions());
 	}
 
 	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException, MetadataReaderException {
@@ -239,6 +242,11 @@ public class GameMetadata implements Serializable {
 		} catch (Exception e) {
 			
 		}
+		try {
+			setMapRegions((Container<MapRegion>) in.readObject());
+		} catch (Exception e) {
+			
+		}
 		
 	}
 
@@ -274,6 +282,45 @@ public class GameMetadata implements Serializable {
 
 	public void setPopulationCenters(Container<PopulationCenter> populationCenters) {
 		this.populationCenters = populationCenters;
+	}
+	
+	/*
+	 * A not very clean way of of checking if a game type has map regions, means other games doesn't have to check it each time.
+	 */
+	private boolean isGameTypeCompatibleForMapRegions() {
+		ArrayList<GameTypeEnum> supportingMapRegions = new ArrayList<GameTypeEnum>(Arrays.asList(GameTypeEnum.game1650, GameTypeEnum.game2950, GameTypeEnum.gameBOFA, GameTypeEnum.gameCME, GameTypeEnum.gameCMF, GameTypeEnum.gameKS, GameTypeEnum.gameUW));
+		return !supportingMapRegions.contains(this.gameType);
+	}
+	
+	public ArrayList<MapRegion> getMapRegionsList(){
+		if(this.getMapRegions() == null) return new ArrayList<MapRegion>(Arrays.asList());
+		else return this.getMapRegions().getItems();
+	}
+	
+	public Container<MapRegion> getMapRegions(){
+		if(isGameTypeCompatibleForMapRegions() && (this.mapRegions == null || this.mapRegions.items.size() == 0)) {
+			MapRegionsReader mrp = new MapRegionsReader();
+			try {
+				this.basePath = "metadata";
+				mrp.load(this);
+			} catch (IOException | MetadataReaderException e) {
+				// Handled in load function
+			}
+		}
+		return this.mapRegions;
+	}
+	
+	public MapRegion getMapRegionByName(String name) {
+		for(MapRegion mr : getMapRegionsList()) {
+			if(mr.getRegionName().equals(name)) {
+				return mr;
+			}
+		}
+		return null;
+	}
+	
+	public void setMapRegions(Container<MapRegion> mapRegions) {
+		this.mapRegions = mapRegions;
 	}
 	
 	public Container<TerrainModifier> getTerrainModifiers() {

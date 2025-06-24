@@ -128,6 +128,12 @@ public class CharacterMessageWrapperTest {
 		or = cmw.getPalantirResult("She was ordered to use a scrying artifact. Palantír of Minas Ithil #190 was used. Foreign armies identified: Elfhelm of the Green Riders with about 700 troops at 3612 Kaigan of the Khazalid with about 2100 troops at 3612 Negarth of the Green Riders with about 2500 troops at 3612 Xmaclian of the Zerinians with about 1100 troops at 3612 Velcoktic of the Zerinians with about 1000 troops at 3713 Yamerca of the Zerinians with about 2400 troops at 3713 . Major Towns and Cities revealed: 3612 4425. See report below.",is,gm);
 		assertNotNull(or);
 		
+		gm.getNations().add(new Nation(16, "Witch Realm of Angmar", "WRoA"));
+		gm.getNations().add(new Nation(20, "Kingdom of Arnor", "KoA"));
+		
+		or = cmw.getScoutAreaResult("He was ordered to scout the area. A scout of the area was attempted.  Foreign armies identified:  Gothmog of the Witch Realm of Angmar with about 1100 troops at 1609  Minasdir of the Kingdom of Arnor with about 3400 troops at 1409 . See Map below.", is, gm);
+		assertEquals("Gothmog",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(0).getCommanderName());
+
 	}
 
 }

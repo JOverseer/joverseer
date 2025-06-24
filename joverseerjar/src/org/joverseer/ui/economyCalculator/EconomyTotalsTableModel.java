@@ -11,6 +11,7 @@ import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.Messages;
@@ -242,11 +243,17 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
      * @return
      */
     public int getTaxRevenue() {
-        NationEconomy ne = getNationEconomy();
-        if (ne == null) {
-        	return 0;
-        }
-        return ne.getTaxBase() * 2500 * getTaxRate() / 100;
+    	EconomyCalculatorData ecd = getEconomyCalculatorData();
+    	if(ecd == null) {
+	        NationEconomy ne = getNationEconomy();
+	        if (ne == null) {
+	        	return 0;
+	        }
+    	
+	        return ne.getTaxBase() * 2500 * getTaxRate() / 100;
+    	}
+    	
+    	return ecd.getTaxRevenue();
     }
 
     @Override
@@ -321,7 +328,8 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
             }
             return ne.getGoldProduction();
         }
-        return ecd.getGoldProduction();
+        if(ecd.getGoldProduction() != null) return ecd.getGoldProduction();
+        return ecd.getProduction(ProductEnum.Gold);
     }
 
     public void setGoldProduction(Integer goldProduction) {

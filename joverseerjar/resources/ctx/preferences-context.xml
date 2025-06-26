@@ -1354,6 +1354,7 @@
 						<value></value>
 					</property>
 				</bean>
+				<!--
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>UIscaling.smalltext</value>
@@ -1418,6 +1419,49 @@
 					<property name="type"><value>text</value></property>
 					<property name="defaultValue">
 						<value>24</value>
+					</property>
+				</bean>
+				-->
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>UIscaling.defaultTextSize</value>
+					</property>
+					<property name="description">
+						<value>Size for text</value>
+					</property>
+					<property name="group">
+						<value>Window Display</value>
+					</property>
+					<property name="defaultValue">
+						<value>12</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>12</value>
+								</property>
+								<property name="description">
+									<value>12 - Recommended</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>13</value>
+								</property>
+								<property name="description">
+									<value>13</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>14</value>
+								</property>
+								<property name="description">
+									<value>14</value>
+								</property>
+							</bean>
+						</list>
 					</property>
 				</bean>
 				<bean class="org.joverseer.preferences.Preference">
@@ -1513,6 +1557,22 @@
 								</property>
 								<property name="description">
 									<value>6</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>10</value>
+								</property>
+								<property name="description">
+									<value>7</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>11</value>
+								</property>
+								<property name="description">
+									<value>8</value>
 								</property>
 							</bean>
 						</list>

@@ -164,6 +164,7 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 		super.commit();
 		PreferenceRegistry reg = (PreferenceRegistry) getFormObject();
 		ArrayList<Preference> prefs = reg.getPreferencesSortedByGroup();
+		boolean restart = false;
 		for (Preference p : prefs) {
 			JComponent c = this.components.get(p.getKey());
 			if (p.getType().equals(Preference.TYPE_DROPDOWN)) {
@@ -173,6 +174,8 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 						// translate the selected combo box value to a
 						// preference value key
 						if (pv.getDescription().equals(combo.getSelectedItem().toString())) {
+							if(p.getDescription().equals("Size for text") && !reg.getPreferenceValue(p.getKey()).equals(pv.getKey())) restart = true;
+							
 							reg.setPreferenceValue(p.getKey(), pv.getKey());
 						}
 					}
@@ -197,7 +200,7 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 								reg.setPreferenceValue(p.getKey(), this.plaf.fullClassFromName(sel));
 //								JOptionPane.showMessageDialog(this.getControl(), "To apply a theme change, please restart JOverseer.");
 //								JOApplication.publishEvent(LifecycleEventsEnum.ThemeChangeEvent, this);
-								RestartConfirmationDialog.showRestartDialog(this.getControl());
+								restart = true;
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -209,6 +212,7 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 				reg.setPreferenceValue(p.getKey(), tf.getText());
 			}
 		}
+		if(restart) RestartConfirmationDialog.showRestartDialog(this.getControl());
 		JideApplicationLifecycleAdvisor advisor = (JideApplicationLifecycleAdvisor) Application.instance().getLifecycleAdvisor();
 		advisor.refreshClearMapItemsVisibility();
 	}

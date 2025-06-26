@@ -421,7 +421,12 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 	public void onPreInitialize(Application arg0) {
 		super.onPreInitialize(arg0);
 		
-		String pval = PreferenceRegistry.instance().getPreferenceValue("UI.LookAndFeel");
+		String pval = PreferenceRegistry.instance().getPreferenceValue("UIscaling.defaultTextSize");
+		if(!pval.equals("12")) {
+			PLaFHelper.setDefaultTextSize(Float.parseFloat(pval));
+		}
+		
+		pval = PreferenceRegistry.instance().getPreferenceValue("UI.LookAndFeel");
 		if (pval.equals("Default")) pval = "com.formdev.flatlaf.FlatLightLaf";
 		if (pval != "" && !pval.equals("Default")) {
 			FlatLaf.registerCustomDefaultsSource( "ui.themes");
@@ -433,7 +438,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 				PLaFHelper.updateAll();
 				
 			} catch( Exception ex ) {
-			    System.err.println( "Failed to initialize LaF" );
+			    System.err.println("Failed to initialize LaF");
 			}		
 			
 		}

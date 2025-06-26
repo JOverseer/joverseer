@@ -3,6 +3,7 @@ package org.joverseer.ui.support;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.util.HashMap;
@@ -13,6 +14,9 @@ import javax.swing.Icon;
 import javax.swing.JComboBox;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+
+import org.joverseer.JOApplication;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.WindowManager;
@@ -39,40 +43,8 @@ public class PLaFHelper {
         if (isClassAvailable("com.formdev.flatlaf.FlatLightLaf")) {
         	this.plaf.put("Flat Light","com.formdev.flatlaf.FlatLightLaf");
         	this.plaf.put("Flat Dark","com.formdev.flatlaf.FlatDarkLaf");
-//        	this.plaf.put("Darcula", "com.formdev.flatlaf.FlatDarculaLaf");
         }
-//        if (isClassAvailable("com.jgoodies.looks.plastic.PlasticTheme")) {
-//
-//        	this.plaf.put("JGoodies Plastic","com.jgoodies.looks.plastic.PlasticLookAndFeel");
-//        	this.plaf.put("JGoodies Plastic 3D","com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
-//        	this.plaf.put("JGoodies Plastic XP","com.jgoodies.looks.plastic.PlasticXPLookAndFeel");
-//        	this.plaf.put("JGoodies Windows","com.jgoodies.looks.windows.WindowsLookAndFeel");
 
-        	
-        	/*
-        	 * com.jgoodies.looks.plastic.theme
-        	 */
-/*        	
-        	this.plaf.put("BrownSugar","com.jgoodies.looks.plastic.theme.BrownSugar");
-        	this.plaf.put("DarkStar","com.jgoodies.looks.plastic.theme.DarkStar");
-        	this.plaf.put("DesertBlue","com.jgoodies.looks.plastic.theme.DesertBlue");
-        	this.plaf.put("DesertBluer","com.jgoodies.looks.plastic.theme.DesertBluer");
-        	this.plaf.put("DesertGreen","com.jgoodies.looks.plastic.theme.DesertGreen");
-        	this.plaf.put("DesertRed","com.jgoodies.looks.plastic.theme.DesertRed");
-        	this.plaf.put("DesertYellow","com.jgoodies.looks.plastic.theme.DesertYellow");
-        	this.plaf.put("ExperienceBlue","com.jgoodies.looks.plastic.theme.ExperienceBlue");
-        	this.plaf.put("ExperienceGreen","com.jgoodies.looks.plastic.theme.ExperienceGreen");
-        	this.plaf.put("ExperienceRoyale","com.jgoodies.looks.plastic.theme.ExperienceRoyale");
-        	this.plaf.put("LightGray","com.jgoodies.looks.plastic.theme.LightGray");
-        	this.plaf.put("Silver","com.jgoodies.looks.plastic.theme.Silver");
-        	this.plaf.put("SkyBlue","com.jgoodies.looks.plastic.theme.SkyBlue");
-        	this.plaf.put("SkyBluer","com.jgoodies.looks.plastic.theme.SkyBluer");
-        	this.plaf.put("SkyKrupp","com.jgoodies.looks.plastic.theme.SkyKrupp");
-        	this.plaf.put("SkyPink","com.jgoodies.looks.plastic.theme.SkyPink");
-        	this.plaf.put("SkyRed","com.jgoodies.looks.plastic.theme.SkyRed");
-        	this.plaf.put("SkyYellow","com.jgoodies.looks.plastic.theme.SkyYellow");
-        	*/
-//        }
         
 
 	}
@@ -116,6 +88,15 @@ public class PLaFHelper {
 	        w.getControl().pack();
 	    }
 
+	}
+	
+	public static void setDefaultTextSize(float size) {
+		Font f = (Font) UIManager.get("defaultFont");
+        if (f == null) {
+            f = new Font("SansSerif", Font.PLAIN, 12); // fallback
+        }
+        Font newF = f.deriveFont(size);
+		UIManager.put("defaultFont", newF);
 	}
 	
 	public static void overwriteJIDELaF() {

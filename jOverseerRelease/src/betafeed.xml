@@ -6,6 +6,26 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
+				<item>
+			<title>1.19.01-rc1</title>
+			<pubDate>30 June 2025</pubDate>
+			<description>
+VERSION 1.19.01-rc1
+---------------
+	* Text size change preference (work in progress)
+	* Can save and load custom layout
+	* Fog of War extension
+		- Add two new option "Regions" and "Nations"
+		- "Regions" shows the Fog of war of the starting regions/nation map ranges
+    	- "Nation" now shows the nations up to date imported Visible Hexes.
+    * Economy Calculator fixed for when PCs are sieged, calculates the tax base and Gold production within JOverseer now.
+	* Edit PC color interface changed, can now see preview of PC
+	* Reading character in from results bug fixed, "A scout of the area was attempted" included in char name, issue with String pattern matching. 
+	* Reword error to do with Duplicate skill orders.
+	* Zoom default preference has other levels added
+ 			</description>
+		</item>	
+		<item>
 		<item>
 			<title>1.19.0-rc1</title>
 			<pubDate>19 June 2025</pubDate>

@@ -301,10 +301,10 @@ public class ConfidenceTest {
 		invokeOrderchecker(main);
 
 		assertOrderResultsCounts(nation.getOrder(0),1,1,0,0);
-		assertEquals("185 error","Duplicate order skill",order1.getErrorResults().get(0));
+		assertEquals("185 error","Duplicate Skill order (2 of the same Skill orders)",order1.getErrorResults().get(0));
 		assertEquals("185 error"," (Free People)",order1.getHelpResults().get(0));
 		assertOrderResultsCounts(nation.getOrder(1),1,1,0,0);
-		assertEquals("725 error","Duplicate order skill",order2.getErrorResults().get(0));
+		assertEquals("725 error","Duplicate Skill order (2 of the same Skill orders)",order2.getErrorResults().get(0));
 		assertEquals("725 error","Creating new character: 30 Command.",order2.getHelpResults().get(0));
 
 	}

@@ -1152,7 +1152,7 @@ public class Rule
             			this.parentOrder.addError(this.parentChar + " is not in a company.");
             		}
             		else {
-            			this.parentOrder.addInfo(this.parentChar + " leaved " + cLeave.getCommander() + "'s company.");
+            			this.parentOrder.addInfo(this.parentChar + " left " + cLeave.getCommander() + "'s company.");
             			cLeave.removeCharacter(this.parentChar.getId());
             		}
             		

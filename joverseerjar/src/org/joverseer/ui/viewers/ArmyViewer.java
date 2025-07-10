@@ -143,7 +143,7 @@ public class ArmyViewer extends ObjectViewer {
 		
 		glb.nextLine();
 		glb.append(this.armyInfoText = new JTextField(), 2, 1);
-		this.armyInfoText.setFont(new Font(this.armyInfoText.getFont().getName(), Font.BOLD, this.armyInfoText.getFont().getSize()));
+		this.armyInfoText.setFont(GraphicUtils.getFont(this.armyInfoText.getFont().getName(), Font.BOLD, this.armyInfoText.getFont().getSize()));
 		this.armyInfoText.setPreferredSize(this.uiSizes.newDimension(120/12, this.uiSizes.getHeight3()));
 		
 		glb.nextLine();
@@ -158,7 +158,7 @@ public class ArmyViewer extends ObjectViewer {
 		
 		glb.append(this.movementType = new JTextField());
 		this.movementType.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
-		Font fon = new Font(this.movementType.getFont().getName(),this.movementType.getFont().getStyle(),11);
+		Font fon = GraphicUtils.getFont(this.movementType.getFont().getName(),this.movementType.getFont().getStyle(),11);
 		this.movementType.setFont(fon);
 		this.movementType.setBorder(null);
 		

@@ -342,7 +342,6 @@ public class CharacterViewer extends ObjectViewer {
 				this.companyMembersTextBox.setText(Messages.getString("CharacterViewer.CompanyColon") + members); //$NON-NLS-1$
 				this.companyMembersTextBox.setCaretPosition(0);
 				this.companyMembersTextBox.setVisible(true);
-				this.companyMembersTextBox.setFont(GraphicUtils.getFont(this.companyMembersTextBox.getFont().getName(), Font.ITALIC, this.companyMembersTextBox.getFont().getSize()));
 			} else {
 				// check if he is travelling with a company or an army...
 				boolean found = false;
@@ -351,7 +350,6 @@ public class CharacterViewer extends ObjectViewer {
 						this.companyMembersTextBox.setVisible(true);
 						this.companyMembersTextBox.setText(Messages.getString("CharacterViewer.InCompany", new Object[] {comp.getCommander()})); //$NON-NLS-1$ //$NON-NLS-2$
 						this.companyMembersTextBox.setCaretPosition(0);
-						this.companyMembersTextBox.setFont(GraphicUtils.getFont(this.companyMembersTextBox.getFont().getName(), Font.ITALIC, this.companyMembersTextBox.getFont().getSize()));
 						found = true;
 						break;
 					}
@@ -364,7 +362,6 @@ public class CharacterViewer extends ObjectViewer {
 								this.companyMembersTextBox.setVisible(true);
 								this.companyMembersTextBox.setText(Messages.getString("CharacterViewer.InArmy", new Object[] {a.getCommanderName()})); //$NON-NLS-1$ //$NON-NLS-2$
 								this.companyMembersTextBox.setCaretPosition(0);
-								this.companyMembersTextBox.setFont(GraphicUtils.getFont(this.companyMembersTextBox.getFont().getName(), Font.ITALIC, this.companyMembersTextBox.getFont().getSize()));
 								found = true;
 								break;
 							}

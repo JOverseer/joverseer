@@ -113,7 +113,7 @@ public class ArmyViewer extends ObjectViewer {
 		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
 		glb.setDefaultInsets(new Insets(0, 0, 0, 5));
 
-		glb.append(this.commanderName = new JTextField(), 1, 1, 4, 0);
+		glb.append(this.commanderName = new JTextField(), 1, 1);
 		this.commanderName.setFont(new Font(this.commanderName.getFont().getName(), Font.BOLD, this.commanderName.getFont().getSize()));
 
 		this.commanderName.setPreferredSize(this.uiSizes.newDimension((this.commanderName.getFontMetrics(this.commanderName.getFont()).charWidth('M') * 24)/12, this.uiSizes.getHeight3()));
@@ -170,7 +170,7 @@ public class ArmyViewer extends ObjectViewer {
 		this.travellingWith.setBorder(null);
 
 		JPanel panel = glb.getPanel();
-		panel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panel.setBackground(UIManager.getColor("Panel.background"));
 		return panel;
 	}

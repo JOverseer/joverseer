@@ -63,8 +63,6 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
 		AddMovementButton(String aMessage) {
     		super(aMessage);
     		this.addActionListener(new AddMovementActionListener(aMessage));
-    		UISizes uiSize = new UISizes();
-    		//this.setPreferredSize(uiSize.getSquareBtHeight());
     	}
     }
     
@@ -114,28 +112,20 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
 
         JButton btn;
         
-        gbc.gridx = 0; gbc.gridy = 0;
         gridPanel.add(btn = new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.nw")));
 
-        gbc.gridx = 1; gbc.gridy = 0;
-        gridPanel.add(Box.createHorizontalStrut(10), gbc); // or just skip it
+        gridPanel.add(Box.createHorizontalStrut(10), gbc); 
 
-        gbc.gridx = 2; gbc.gridy = 0;
         gridPanel.add(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.ne")));
 
-        gbc.gridx = 0; gbc.gridy = 1;
         gridPanel.add(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.w")));
         
-        gbc.gridx = 1; gbc.gridy = 1;
         gridPanel.add(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.home")));
         
-        gbc.gridx = 2; gbc.gridy = 1;
         gridPanel.add(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.e")));
         
-        gbc.gridx = 0; gbc.gridy = 2;
         gridPanel.add(btn = new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.sw")));
         
-        gbc.gridx = 1; gbc.gridy = 2;
         gridPanel.add(btn = new JButton("<-"));
         btn.setToolTipText(Messages.getString("MoveArmyOrderSubeditor.back")); //$NON-NLS-1$
         btn.addActionListener(new ActionListener() {
@@ -147,12 +137,8 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
                 }
             }
         });
-        UISizes uiSize = new UISizes();
-		//btn.setPreferredSize(uiSize.getSquareBtHeight());
 
-        gbc.gridx = 2; gbc.gridy = 2;
         gridPanel.add(btn = new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.se")));
-        
 		
         tlb.cell(new JLabel(" ")); //$NON-NLS-1$
         tlb.cell(gridPanel, "colspan=2");

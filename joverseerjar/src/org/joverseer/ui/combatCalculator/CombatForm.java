@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DropTarget;
@@ -54,6 +57,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.tools.combatCalc.Combat;
 import org.joverseer.tools.combatCalc.CombatArmy;
 import org.joverseer.tools.combatCalc.CombatPopCenter;
+import org.joverseer.ui.UISizes;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
@@ -95,6 +99,8 @@ public class CombatForm extends AbstractForm {
 	int draggedFrom;
 	protected int xDiff;
 	protected int yDiff;
+	
+	UISizes uiS;
 
 	//dependencies
 	GameHolder gameHolder;
@@ -102,10 +108,540 @@ public class CombatForm extends AbstractForm {
 	public CombatForm(FormModel arg0,GameHolder gameHolder) {
 		super(arg0, FORM_ID);
 		this.gameHolder = gameHolder;
+		this.uiS = new UISizes();
 	}
-
+	
 	@Override
 	protected JComponent createFormControl() {
+		SwingBindingFactory sbf = (SwingBindingFactory) getBindingFactory();
+		GraphicUtils.registerIntegerPropertyConverters(this, "hexNo"); //$NON-NLS-1$
+		
+	    JPanel mainPanel = new JPanel(new GridBagLayout());
+	    GridBagConstraints gbc = new GridBagConstraints();
+	    gbc.insets = new Insets(4, 4, 4, 4);
+	    gbc.anchor = GridBagConstraints.WEST;
+	    gbc.fill = GridBagConstraints.NONE;
+	    gbc.weightx = 0;
+	    gbc.weighty = 0;
+	    
+	    int row = 0;
+	    gbc.gridx = 0; gbc.gridy = row;
+	    mainPanel.add(new JLabel(Messages.getString("CombatForm.Description")), gbc);
+	    
+	    gbc.gridx = 1;
+	    gbc.gridwidth = 2;
+	    gbc.fill = GridBagConstraints.HORIZONTAL;
+	    mainPanel.add(sbf.createBoundTextField("description").getControl(), gbc);
+	    
+	    row++;
+	    gbc.gridwidth = 1;
+	    gbc.fill = GridBagConstraints.NONE;
+	    
+	    gbc.gridx = 0; gbc.gridy = row;
+	    mainPanel.add(new JLabel(Messages.getString("CombatForm.Hex")), gbc);
+
+	    gbc.gridx = 1;
+	    gbc.fill = GridBagConstraints.HORIZONTAL;
+	    mainPanel.add(sbf.createBoundTextField("hexNo").getControl(), gbc);
+
+	    row++;
+	    gbc.fill = GridBagConstraints.NONE;
+
+	    // --- Terrain Combo ---
+	    gbc.gridx = 0; gbc.gridy = row;
+	    mainPanel.add(new JLabel(Messages.getString("CombatForm.Terrain")), gbc);
+
+	    gbc.gridx = 1;
+	    gbc.fill = GridBagConstraints.HORIZONTAL;
+	    JComboBox terrainCombo = (JComboBox) sbf.createBoundComboBox("terrain", new ListListModel(Arrays.asList(HexTerrainEnum.landValues())), "renderString").getControl();
+	    terrainCombo.setPreferredSize(this.uiS.getComboBoxDimension());
+	    terrainCombo.addActionListener(e -> {
+	        commit();
+	        runCombat();
+	    });
+	    mainPanel.add(terrainCombo, gbc);
+
+	    row++;
+	    gbc.fill = GridBagConstraints.NONE;
+
+	    // --- Climate Combo ---
+	    gbc.gridx = 0; gbc.gridy = row;
+	    mainPanel.add(new JLabel(Messages.getString("CombatForm.Climate")), gbc);
+
+	    gbc.gridx = 1;
+	    gbc.fill = GridBagConstraints.HORIZONTAL;
+	    JComboBox climateCombo = (JComboBox) sbf.createBoundComboBox("climate", new ListListModel(Arrays.asList(ClimateEnum.values()))).getControl();
+	    climateCombo.setPreferredSize(this.uiS.getComboBoxDimension());
+	    climateCombo.addActionListener(e -> {
+	        commit();
+	        runCombat();
+	    });
+	    mainPanel.add(climateCombo, gbc);
+
+	    row++;
+	    gbc.fill = GridBagConstraints.NONE;
+
+	    // --- Radio Buttons (Before/After) ---
+	    gbc.gridx = 0; gbc.gridy = row;
+	    mainPanel.add(new JLabel("Troops:"), gbc);
+
+	    JPanel paRadioBut = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+	    JRadioButton beforeButton = new JRadioButton("Before");
+	    JRadioButton afterButton = new JRadioButton("After");
+	    ButtonGroup group = new ButtonGroup();
+	    group.add(beforeButton);
+	    group.add(afterButton);
+	    afterButton.setSelected(true);
+
+	    ActionListener radioListener = e -> {
+	        before = beforeButton.isSelected();
+	        commit();
+	        runCombat();
+	    };
+	    beforeButton.addActionListener(radioListener);
+	    afterButton.addActionListener(radioListener);
+	    paRadioBut.add(beforeButton);
+	    paRadioBut.add(afterButton);
+
+	    gbc.gridx = 1;
+	    gbc.fill = GridBagConstraints.HORIZONTAL;
+	    mainPanel.add(paRadioBut, gbc);
+
+	    row++;
+	    gbc.fill = GridBagConstraints.NONE;
+
+	    // --- Attack PopCenter Checkbox ---
+	    gbc.gridx = 0; gbc.gridy = row;
+	    mainPanel.add(new JLabel(Messages.getString("CombatForm.AttackPC")), gbc);
+
+	    gbc.gridx = 1;
+	    gbc.fill = GridBagConstraints.HORIZONTAL;
+	    JCheckBox attackChk = (JCheckBox) sbf.createBoundCheckBox("attackPopCenter").getControl();
+	    attackChk.setPreferredSize(new Dimension(100, 20));
+	    attackChk.addActionListener(e -> {
+	        commit();
+	        runCombat();
+	    });
+	    mainPanel.add(attackChk, gbc);
+	    
+	    gbc.gridx = 3; gbc.gridy = 0;
+	    gbc.fill = GridBagConstraints.BOTH;
+	    gbc.gridwidth = 3; gbc.gridheight = 5;
+		JPanel tp = new JPanel();
+		tp.setBorder(BorderFactory.createTitledBorder(
+			      BorderFactory.createMatteBorder(2, 0, 0, 0, UIManager.getColor("Label.foreground")), "Other armies in hex", TitledBorder.LEFT,
+			      TitledBorder.TOP));
+		MessageSource messageSource = Messages.getMessageSource();
+		this.otherTableModel = new CombatArmyReducedTableModel(this, messageSource);
+		this.otherTable = TableUtils.createStandardSortableTable(this.otherTableModel);
+//		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.otherTable, this.otherTableModel.getColumnWidths());
+
+		this.otherTable.setDragEnabled(true);
+		this.otherTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		this.otherTable.setDropMode(DropMode.INSERT_ROWS);
+		this.otherTable.setDropTarget(new DropTarget(this.otherTable, new AddArmyDropTargetAdapter(2)));
+		this.otherTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					CombatForm.this.xDiff = e.getX();
+					CombatForm.this.yDiff = e.getY();
+				}
+			};
+		});
+		this.otherTable.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				int dx = Math.abs(e.getX() - CombatForm.this.xDiff);
+				int dy = Math.abs(e.getY() - CombatForm.this.yDiff);
+				if (dx > 5 || dy > 5) {
+					CombatForm.this.draggedFrom = 2;
+					CombatForm.this.otherTableModel.startDragAndDropAction(e, CombatForm.this.otherTable, 2);
+
+				}
+			}
+		});
+		
+		JScrollPane scp = new JScrollPane(this.otherTable);
+		scp.setPreferredSize(new Dimension(350, 130));
+		scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(2)));
+//		tp.add(scp, BorderLayout.CENTER);
+		tp.add(scp);
+		mainPanel.add(tp, gbc);
+	    
+	    gbc.gridx = 0; gbc.gridy = 6;
+	    gbc.gridwidth = 6; gbc.gridheight = 4;
+	    
+	    this.side1TableModel = new CombatArmyTableModel(this, messageSource);
+		this.side1Table = TableUtils.createStandardSortableTable(this.side1TableModel);
+//		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.side1Table, this.side1TableModel.getColumnWidths());
+		this.side1Table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					CombatForm.this.xDiff = e.getX();
+					CombatForm.this.yDiff = e.getY();
+				}
+				if (e.getClickCount() == 1 && e.getButton() == 3) {
+					int idx = CombatForm.this.side1Table.rowAtPoint(e.getPoint());
+					CombatForm.this.side1Table.getSelectionModel().setSelectionInterval(idx, idx);
+					showContextMenu(0, e);
+				}
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2 && e.getButton() == 1) {
+					int idx = CombatForm.this.side1Table.rowAtPoint(e.getPoint());
+					CombatForm.this.side1Table.getSelectionModel().setSelectionInterval(idx, idx);
+					new EditSelectedArmyCommand(0).doExecuteCommand();
+				}
+			};
+		});
+		this.side1Table.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				int dx = Math.abs(e.getX() - CombatForm.this.xDiff);
+				int dy = Math.abs(e.getY() - CombatForm.this.yDiff);
+				if (dx > 5 || dy > 5) {
+					CombatForm.this.draggedFrom = 0;
+					CombatForm.this.side1TableModel.startDragAndDropAction(e, CombatForm.this.side1Table, 0);
+				}
+			}
+		});
+		this.side1Table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		this.side1Table.setDropTarget(new DropTarget(this.side1Table, new AddArmyDropTargetAdapter(0)));
+		this.side1Table.setDragEnabled(true);
+		this.side1Table.setDropMode(DropMode.INSERT_ROWS);
+		
+		this.side1Table.setDefaultRenderer(String.class, new IncompleteArmyRenderer(this.side1TableModel));
+		
+		scp = new JScrollPane(this.side1Table);
+//		scp.setBorder(BorderFactory.createTitledBorder(
+//			      BorderFactory.createMatteBorder(2, 0, 0, 0, UIManager.getColor("Label.foreground")), "Other armies in hex", TitledBorder.LEFT,
+//			      TitledBorder.TOP));
+		
+		scp.setPreferredSize(new Dimension(700, 130));
+		scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(0)));
+		mainPanel.add(scp, gbc);
+
+		ImageSource imgSource = JOApplication.getImageSource();
+		Icon ico;
+		JButton btn;
+		gbc.fill = GridBagConstraints.NONE;
+		
+		gbc.gridx = 7; gbc.gridy = 6;
+	    gbc.gridwidth = 2; gbc.gridheight = 3;
+	    
+		TableLayoutBuilder lb = new TableLayoutBuilder();
+		ico = new ImageIcon(imgSource.getImage("edit.image")); //$NON-NLS-1$
+		btn = new JButton(ico);
+		btn.setToolTipText(Messages.getString("CombatForm.EditArmyToolTip")); //$NON-NLS-1$
+		btn.setPreferredSize(new Dimension(20, 20));
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new EditSelectedArmyCommand(0).doExecuteCommand();
+			}
+		});
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
+		lb.gapCol();
+
+		ico = new ImageIcon(imgSource.getImage("add.icon")); //$NON-NLS-1$
+		btn = new JButton(ico);
+		btn.setToolTipText(Messages.getString("CombatForm.AddNewArmyToolTip")); //$NON-NLS-1$
+		btn.setPreferredSize(new Dimension(20, 20));
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new AddArmyCommand(0).doExecuteCommand();
+			}
+		});
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
+		lb.relatedGapRow();
+
+		ico = new ImageIcon(imgSource.getImage("remove.icon")); //$NON-NLS-1$
+		btn = new JButton(ico);
+		btn.setToolTipText(Messages.getString("CombatForm.RemoveArmyToolTip")); //$NON-NLS-1$
+		btn.setPreferredSize(new Dimension(20, 20));
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new RemoveSelectedArmyCommand(0).doExecuteCommand();
+			}
+		});
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
+		lb.gapCol();
+
+		ico = new ImageIcon(imgSource.getImage("switch.icon")); //$NON-NLS-1$
+		btn = new JButton(ico);
+		btn.setToolTipText(Messages.getString("CombatForm.SwitchSidesToolTip")); //$NON-NLS-1$
+		btn.setPreferredSize(new Dimension(20, 20));
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new SwitchSideCommand(0).doExecuteCommand();
+			}
+		});
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
+		lb.relatedGapRow();
+
+		ico = new ImageIcon(imgSource.getImage("relations.icon")); //$NON-NLS-1$
+		btn = new JButton(ico);
+		btn.setToolTipText(Messages.getString("CombatForm.ChangeRelationsToolTip")); //$NON-NLS-1$
+		btn.setPreferredSize(new Dimension(20, 20));
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new EditSelectedArmyRelationsCommand(0).doExecuteCommand();
+			}
+		});
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
+		lb.gapCol();
+		lb.cell(new JLabel(" ")); //$NON-NLS-1$
+		lb.relatedGapRow();
+
+		lb.cell(new JLabel(" ")); //$NON-NLS-1$
+		lb.relatedGapRow();
+		lb.row();
+
+		mainPanel.add(lb.getPanel(), gbc);
+
+		gbc.fill = GridBagConstraints.BOTH;
+		
+		gbc.gridx = 0; gbc.gridy = 10;
+	    gbc.gridwidth = 6; gbc.gridheight = 4;
+		
+		this.side2TableModel = new CombatArmyTableModel(this, messageSource);
+		this.side2Table = TableUtils.createStandardSortableTable(this.side2TableModel);
+//		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.side2Table, this.side2TableModel.getColumnWidths());
+		this.side2Table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					CombatForm.this.xDiff = e.getX();
+					CombatForm.this.yDiff = e.getY();
+				}
+				if (e.getClickCount() == 1 && e.getButton() == 3) {
+					int idx = CombatForm.this.side2Table.rowAtPoint(e.getPoint());
+					CombatForm.this.side2Table.getSelectionModel().setSelectionInterval(idx, idx);
+					showContextMenu(1, e);
+				}
+			};
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2 && e.getButton() == 1) {
+					int idx = CombatForm.this.side2Table.rowAtPoint(e.getPoint());
+					CombatForm.this.side2Table.getSelectionModel().setSelectionInterval(idx, idx);
+					new EditSelectedArmyCommand(1).doExecuteCommand();
+				}
+			};
+		});
+		this.side2Table.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				int dx = Math.abs(e.getX() - CombatForm.this.xDiff);
+				int dy = Math.abs(e.getY() - CombatForm.this.yDiff);
+				if (dx > 5 || dy > 5) {
+					CombatForm.this.draggedFrom = 1;
+					CombatForm.this.side2TableModel.startDragAndDropAction(e, CombatForm.this.side2Table, 1);
+				}
+			}
+		});
+		this.side2Table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		this.side2Table.setDropTarget(new DropTarget(this.side2Table, new AddArmyDropTargetAdapter(1)));
+		this.side2Table.setDragEnabled(true);
+		this.side2Table.setDropMode(DropMode.INSERT_ROWS);
+		
+		this.side2Table.setDefaultRenderer(String.class, new IncompleteArmyRenderer(this.side2TableModel));
+		
+		scp = new JScrollPane(this.side2Table);
+//		scp.setBorder(BorderFactory.createTitledBorder(
+//			      BorderFactory.createMatteBorder(2, 0, 0, 0, UIManager.getColor("Label.foreground")), "Other armies in hex", TitledBorder.LEFT,
+//			      TitledBorder.TOP));
+		scp.setPreferredSize(new Dimension(700, 130));
+		scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(1)));
+		mainPanel.add(scp, gbc);
+		
+		gbc.fill = GridBagConstraints.NONE;
+		
+		gbc.gridx = 7; gbc.gridy = 10;
+	    gbc.gridwidth = 2; gbc.gridheight = 3;
+	    
+		lb = new TableLayoutBuilder();
+		ico = new ImageIcon(imgSource.getImage("edit.image")); //$NON-NLS-1$
+		btn = new JButton(ico);
+		btn.setToolTipText("Edit Army");
+		btn.setPreferredSize(new Dimension(20, 20));
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new EditSelectedArmyCommand(1).doExecuteCommand();
+			}
+		});
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
+		lb.gapCol();
+
+		ico = new ImageIcon(imgSource.getImage("add.icon")); //$NON-NLS-1$
+		btn = new JButton(ico);
+		btn.setToolTipText("Add New Army");
+		btn.setPreferredSize(new Dimension(20, 20));
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new AddArmyCommand(1).doExecuteCommand();
+			}
+		});
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
+		lb.relatedGapRow();
+
+		ico = new ImageIcon(imgSource.getImage("remove.icon")); //$NON-NLS-1$
+		btn = new JButton(ico);
+		btn.setPreferredSize(new Dimension(20, 20));
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new RemoveSelectedArmyCommand(1).doExecuteCommand();
+			}
+		});
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
+		lb.gapCol();
+
+		ico = new ImageIcon(imgSource.getImage("switch.icon")); //$NON-NLS-1$
+		btn = new JButton(ico);
+		btn.setToolTipText("Switch Sides (Sends Army to other side)");
+		btn.setPreferredSize(new Dimension(20, 20));
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new SwitchSideCommand(1).doExecuteCommand();
+			}
+		});
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
+		lb.relatedGapRow();
+
+		ico = new ImageIcon(imgSource.getImage("relations.icon")); //$NON-NLS-1$
+		btn = new JButton(ico);
+		btn.setToolTipText("Change Relations for Army");
+		btn.setPreferredSize(new Dimension(20, 20));
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new EditSelectedArmyRelationsCommand(1).doExecuteCommand();
+			}
+		});
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
+		lb.gapCol();
+		lb.cell(new JLabel(" ")); //$NON-NLS-1$
+		lb.relatedGapRow();
+
+		lb.cell(new JLabel(" ")); //$NON-NLS-1$
+		lb.relatedGapRow();
+		lb.row();
+
+		mainPanel.add(lb.getPanel(), gbc);
+		
+		gbc.fill = GridBagConstraints.BOTH;
+		
+		gbc.gridx = 0; gbc.gridy = 14;
+	    gbc.gridwidth = 6; gbc.gridheight = 2;
+	    
+	    this.popCenterTableModel = new PopCenterTableModel(this, messageSource);
+		this.pcTable = TableUtils.createStandardSortableTable(this.popCenterTableModel);
+		this.pcTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2 && e.getButton() == 1) {
+					int idx = CombatForm.this.side1Table.rowAtPoint(e.getPoint());
+					CombatForm.this.side1Table.getSelectionModel().setSelectionInterval(idx, idx);
+					new EditPopCenterCommand().doExecuteCommand();
+				}
+			};
+		});
+//		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.pcTable, this.popCenterTableModel.getColumnWidths());
+		scp = new JScrollPane(this.pcTable);
+		scp.setPreferredSize(new Dimension(700, 20));
+
+		scp.setDropTarget(new DropTarget(scp, new SetPopCenterDropTargetAdapter()));
+		scp.setDropTarget(new DropTarget(this.pcTable, new SetPopCenterDropTargetAdapter()));
+
+		mainPanel.add(scp, gbc);
+		
+		gbc.fill = GridBagConstraints.NONE;
+		
+		gbc.gridx = 7; gbc.gridy = 14;
+	    gbc.gridwidth = 2; gbc.gridheight = 2;
+	    
+	    lb = new TableLayoutBuilder();
+		ico = new ImageIcon(imgSource.getImage("edit.image")); //$NON-NLS-1$
+		btn = new JButton(ico);
+		btn.setPreferredSize(new Dimension(20, 20));
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new EditPopCenterCommand().doExecuteCommand();
+			}
+		});
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
+		lb.gapCol();
+
+		ico = new ImageIcon(imgSource.getImage("remove.icon")); //$NON-NLS-1$
+		btn = new JButton(ico);
+		btn.setPreferredSize(new Dimension(20, 20));
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new RemovePopCenterCommand().doExecuteCommand();
+			}
+		});
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
+		lb.gapCol();
+		
+		lb.relatedGapRow();
+
+		ico = new ImageIcon(imgSource.getImage("relations.icon")); //$NON-NLS-1$
+		btn = new JButton(ico);
+		btn.setToolTipText("Change Relations for Army");
+		btn.setPreferredSize(new Dimension(20, 20));
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new EditPopCenterRelationsCommand().doExecuteCommand();
+			}
+		});
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
+		lb.gapCol();
+		lb.cell(new JLabel(" ")); //$NON-NLS-1$
+		lb.relatedGapRow();
+
+		lb.cell(new JLabel(" ")); //$NON-NLS-1$
+		lb.relatedGapRow();
+
+		lb.row();
+
+		mainPanel.add(lb.getPanel(), gbc);
+
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		
+		gbc.gridx = 0; gbc.gridy = 16;
+	    gbc.gridwidth = 1; gbc.gridheight = 1;
+	    
+	    
+		mainPanel.add(new JLabel(Messages.getString("CombatForm.Rounds")), gbc); //$NON-NLS-1$ //$NON-NLS-2$
+		this.rounds = (JTextField) sbf.createBoundTextField("rounds").getControl(); //$NON-NLS-1$
+
+		this.rounds.setEditable(false);
+		gbc.gridx = 1; gbc.gridy = 16;
+		mainPanel.add(this.rounds, gbc); //$NON-NLS-1$
+
+	    JScrollPane wrapper = new JScrollPane(mainPanel);
+	    return wrapper;
+	    
+	}
+
+//	@Override
+	protected JComponent createFormControl3() {
 		SwingBindingFactory sbf = (SwingBindingFactory) getBindingFactory();
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 
@@ -525,7 +1061,7 @@ public class CombatForm extends AbstractForm {
 		});
 		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.pcTable, this.popCenterTableModel.getColumnWidths());
 		scp = new JScrollPane(this.pcTable);
-		scp.setPreferredSize(new Dimension(650, 48));
+		scp.setPreferredSize(new Dimension(700, 60));
 
 		scp.setDropTarget(new DropTarget(scp, new SetPopCenterDropTargetAdapter()));
 		scp.setDropTarget(new DropTarget(this.pcTable, new SetPopCenterDropTargetAdapter()));
@@ -601,7 +1137,7 @@ public class CombatForm extends AbstractForm {
 		tlb.gapCol();
 		tlb.relatedGapRow();
 
-		return tlb.getPanel();
+		return new JScrollPane(tlb.getPanel());
 
 	}
 	

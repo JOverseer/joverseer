@@ -6,6 +6,21 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
+						<item>
+			<title>1.19.01-rc2</title>
+			<pubDate>15 July 2025</pubDate>
+			<description>
+VERSION 1.19.01-rc2
+---------------
+	* Panels which now scale with size:
+		* Current Hex View - Fit things properly horizontally and vertically now
+		* Combat calculator
+		* Map Options view 
+		* Table headers scale with size
+	* New size 16
+	* Map Preferences, can adjust scale of various Map icons.
+ 			</description>
+		</item>	
 				<item>
 			<title>1.19.01-rc1</title>
 			<pubDate>30 June 2025</pubDate>
@@ -25,7 +40,6 @@ VERSION 1.19.01-rc1
 	* Zoom default preference has other levels added
  			</description>
 		</item>	
-		<item>
 		<item>
 			<title>1.19.0-rc1</title>
 			<pubDate>19 June 2025</pubDate>

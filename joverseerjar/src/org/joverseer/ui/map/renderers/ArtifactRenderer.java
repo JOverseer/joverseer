@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.RoundRectangle2D;
 
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.ui.support.drawing.ColorPicker;
 
 /**
@@ -22,9 +23,13 @@ public class ArtifactRenderer extends AbstractBaseRenderer {
 	public void render(Object obj, Graphics2D g, int x, int y) {
 
         //Artifact a = (Artifact)obj;
+    	
+        
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.artiSize");
+        double mod = 1.0 + (Double.parseDouble(pval2)/5.0);
 
-        int w = this.mapMetadata.getGridCellWidth() / 3;
-        int h = this.mapMetadata.getGridCellHeight() / 3;
+        int w = (int)Math.round((this.mapMetadata.getGridCellWidth() / 3) * mod);
+        int h = (int)Math.round((this.mapMetadata.getGridCellHeight() / 3) * mod);
         int dx = this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() * 1/10;
         int dy = this.mapMetadata.getGridCellHeight() * this.mapMetadata.getHexSize() * 1 / 2 - h / 2;
 

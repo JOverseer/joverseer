@@ -113,7 +113,7 @@ public class ArmyViewer extends ObjectViewer {
 		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
 		glb.setDefaultInsets(new Insets(0, 0, 0, 5));
 
-		glb.append(this.commanderName = new JTextField(), 1, 1, 4, 0);
+		glb.append(this.commanderName = new JTextField(), 1, 1);
 		this.commanderName.setFont(new Font(this.commanderName.getFont().getName(), Font.BOLD, this.commanderName.getFont().getSize()));
 
 		this.commanderName.setPreferredSize(this.uiSizes.newDimension((this.commanderName.getFontMetrics(this.commanderName.getFont()).charWidth('M') * 24)/12, this.uiSizes.getHeight3()));
@@ -143,7 +143,7 @@ public class ArmyViewer extends ObjectViewer {
 		
 		glb.nextLine();
 		glb.append(this.armyInfoText = new JTextField(), 2, 1);
-		this.armyInfoText.setFont(new Font(this.armyInfoText.getFont().getName(), Font.BOLD, this.armyInfoText.getFont().getSize()));
+		this.armyInfoText.setFont(GraphicUtils.getFont(this.armyInfoText.getFont().getName(), Font.BOLD, this.armyInfoText.getFont().getSize()));
 		this.armyInfoText.setPreferredSize(this.uiSizes.newDimension(120/12, this.uiSizes.getHeight3()));
 		
 		glb.nextLine();
@@ -158,7 +158,7 @@ public class ArmyViewer extends ObjectViewer {
 		
 		glb.append(this.movementType = new JTextField());
 		this.movementType.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
-		Font fon = new Font(this.movementType.getFont().getName(),this.movementType.getFont().getStyle(),11);
+		Font fon = GraphicUtils.getFont(this.movementType.getFont().getName(),this.movementType.getFont().getStyle(),11);
 		this.movementType.setFont(fon);
 		this.movementType.setBorder(null);
 		
@@ -170,7 +170,7 @@ public class ArmyViewer extends ObjectViewer {
 		this.travellingWith.setBorder(null);
 
 		JPanel panel = glb.getPanel();
-		panel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panel.setBackground(UIManager.getColor("Panel.background"));
 		return panel;
 	}

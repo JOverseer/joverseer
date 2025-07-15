@@ -40,19 +40,25 @@ public class PopulationCenterRenderer extends ImageRenderer {
 	public void render(Object obj, Graphics2D g, int x, int y) {
 
         PopulationCenter popCenter = (PopulationCenter)obj;
+        
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.popSize");
+        double mod = Double.parseDouble(pval2)/10;
 
         BufferedImage fortImage = null;
         if (popCenter.getFortification() != FortificationSizeEnum.none) {
-            fortImage = getImage(popCenter.getFortification().toString() + ".image", 1.2);
+            fortImage = getImage(popCenter.getFortification().toString() + ".image", 1.2 + mod);
         }
-
 
         Point hexCenter = new Point(x + this.mapMetadata.getHexSize() / 2 * this.mapMetadata.getGridCellWidth(),
                                     y + this.mapMetadata.getHexSize() / 2 * this.mapMetadata.getGridCellHeight());
 
         // docks
         if (popCenter.getHarbor() != HarborSizeEnum.none) {
-            BufferedImage dockImage = getImage(popCenter.getHarbor().toString() + ".icon");
+            String pval3 = PreferenceRegistry.instance().getPreferenceValue("map.harbourSize");
+            double mod2 = Double.parseDouble(pval3)/5;
+        	
+        	
+            BufferedImage dockImage = getImage(popCenter.getHarbor().toString() + ".icon", 1.0 + mod2);
             g.drawImage(dockImage, x + 5, hexCenter.y, null); 
         }
 
@@ -62,7 +68,8 @@ public class PopulationCenterRenderer extends ImageRenderer {
         if (popCenter.getSize().getCode() < PopulationCenterSizeEnum.majorTown.getCode()) {
         	capital = "";
         }
-        pcImage = getImage(popCenter.getSize().toString() + capital + ".image", 1.2);
+        
+        pcImage = getImage(popCenter.getSize().toString() + capital + ".image", 1.2  + mod);
 
         BufferedImage img = copyImage(pcImage);
         Color color1 = ColorPicker.getInstance().getColor1(popCenter.getNationNo());
@@ -113,7 +120,7 @@ public class PopulationCenterRenderer extends ImageRenderer {
         }
         MapTooltipHolder.instance().addTooltipObject(new Rectangle(px, py, img.getWidth(), img.getHeight()), popCenter);
 
-        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.showPCNames");
+        pval2 = PreferenceRegistry.instance().getPreferenceValue("map.showPCNames");
         if(pval2.equals("yes")) {
 	        String pcName = popCenter.getName();
 	        if (!pcName.toUpperCase().startsWith("UNKNOWN")) {

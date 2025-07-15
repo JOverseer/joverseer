@@ -1,6 +1,8 @@
 package org.joverseer.ui.map.renderers;
 
 import org.joverseer.metadata.domain.Hex;
+import org.joverseer.preferences.PreferenceRegistry;
+
 import java.awt.*;
 
 /**
@@ -63,7 +65,10 @@ public class HexNumberRenderer extends AbstractBaseRenderer {
 //        	this.fontSize = 13;
 //        	break;
 //        }
-        this.fontSize = Math.round(this.mapMetadata.getGridCellWidth() / 2f) + 1;
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.hexNumSize");
+        int mod = Integer.parseInt(pval2);
+        
+        this.fontSize = Math.round(this.mapMetadata.getGridCellWidth() / 2f) + 1 + mod;
         //Font f = new Font(this.fontName, this.fontStyle, this.mapMetadata.getGridCellWidth() < 10 ? 7 : this.fontSize);
         
         Font f = new Font(this.fontName, this.fontStyle, this.fontSize);

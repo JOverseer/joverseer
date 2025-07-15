@@ -613,6 +613,14 @@
 						<value>true</value>
 					</property>
 					<property name="group">
+						<value>Display.Map Scale</value>
+					</property>
+				</bean>
+				<bean class="org.joverseer.ui.command.EditPreferencesCommand">
+					<property name="enabled">
+						<value>true</value>
+					</property>
+					<property name="group">
 						<value>Economy Calculator</value>
 					</property>
 				</bean>

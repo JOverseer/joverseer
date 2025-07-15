@@ -38,12 +38,22 @@ public class GraphicUtils {
 	public final static String UNKNOWN_ARMY_MAP_ICON = "Unknown (Map Icon)";
 	public final static String UNKNOWN_PC_MAP_ICON = "Unknown (Map Icon)";
 
+	public static int adjustTextSize(int size) {
+		String pval = PreferenceRegistry.instance().getPreferenceValue("UIscaling.defaultTextSize");
+		if(!pval.equals("12")) {
+			if(Integer.parseInt(pval) == size) return size;
+			int diff = Integer.parseInt(pval) - 12;
+			return diff + size;
+		}
+		return size;
+		
+	}
 
 	/**
 	 * Returns a font with the given params
 	 */
 	public static Font getFont(String name, int style, int size) {
-		return new Font(name, style, size);
+		return new Font(name, style, adjustTextSize(size));
 	}
 
 	/**

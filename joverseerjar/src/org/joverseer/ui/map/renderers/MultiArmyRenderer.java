@@ -105,7 +105,11 @@ public class MultiArmyRenderer extends ImageRenderer {
 //                allegiance = NationAllegianceEnum.DarkServants;
 //            }
 //        }
-        armyImage = getImage(type + "." + info + "." + allegiance.toString() + ".image");
+        
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.armySize");
+        double mod = Double.parseDouble(pval2)/9.0;
+        
+        armyImage = getImage(type + "." + info + "." + allegiance.toString() + ".image", 1.0 + mod);
 
         BufferedImage img = copyImage(armyImage);
         Color color1 = ColorPicker.getInstance().getColor1(army.getNationNo());
@@ -118,9 +122,8 @@ public class MultiArmyRenderer extends ImageRenderer {
             changeColor(img, Color.black, color1);
         }
 
-
-        int w = 9;
-        int h = 9;
+        int w = img.getWidth();
+        int h = img.getHeight();
         int dx = this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() * 1 / 5;
         int dy = this.mapMetadata.getGridCellHeight() * this.mapMetadata.getHexSize() * 13 / 20 + h * j;
 

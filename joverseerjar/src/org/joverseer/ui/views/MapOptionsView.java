@@ -286,8 +286,10 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 			});
 
 		resetGame();
+		lb.row();
+		lb.row();
 		JPanel panel = lb.getPanel();
-		panel.setPreferredSize(new Dimension(130, 100));
+		panel.setPreferredSize(new Dimension(130, 180));
 		panel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		return new JScrollPane(panel);

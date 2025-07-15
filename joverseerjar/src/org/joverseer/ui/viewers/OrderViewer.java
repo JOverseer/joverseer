@@ -1,7 +1,9 @@
 package org.joverseer.ui.viewers;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.FlowLayout;
 import java.awt.FocusTraversalPolicy;
 import java.awt.Insets;
 import java.awt.datatransfer.Transferable;
@@ -14,6 +16,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -166,16 +170,15 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
 
     @Override
 	protected JComponent createFormControl() {
-        GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
-        glb.setDefaultInsets(new Insets(1, 1, 1, 3));
-        glb.append(this.orderText = new JTextField());
-		// diagnostic border
+        JPanel flowPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 4, 2));
+        flowPanel.add(Box.createHorizontalStrut(10));
+        flowPanel.add(this.orderText = new JTextField());
 		Border  border = null;//BorderFactory.createLineBorder(Color.green);
-
-		this.orderText.setBorder(border);
+		
+		this.orderText.setBorder(BorderFactory.createLineBorder(Color.green));
         this.orderText.setPreferredSize(this.uiSizes.newDimension(170/16, this.uiSizes.getHeight4()));
         this.orderText.setText(Messages.getString("OrderViewer.NA")); //$NON-NLS-1$
-
+        
         this.orderText.addMouseListener(new MouseAdapter() {
             @Override
 			public void mousePressed(MouseEvent e) {
@@ -225,7 +228,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         this.orderResultIcon = new JLabel(""); //$NON-NLS-1$
         this.orderResultIcon.setPreferredSize(this.uiSizes.newDimension(1, this.uiSizes.getHeight4()));
         this.orderResultIcon.setBorder(border);
-        glb.append(this.orderResultIcon);
+        flowPanel.add(this.orderResultIcon);
 
         ImageSource imgSource = JOApplication.getImageSource();
         Icon ico = new ImageIcon(imgSource.getImage("edit.image")); //$NON-NLS-1$
@@ -241,7 +244,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
 
         this.btn.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
         this.btn.setBorder(border);
-        glb.append(this.btn);
+        flowPanel.add(this.btn);
 
 //        imgSource = joApplication.getImageSource();
 //        ico = new ImageIcon(imgSource.getImage("selectHexCommand.icon"));
@@ -265,16 +268,13 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         this.draw.setBackground(UIManager.getColor("Panel.background"));
         this.draw.setVisible(true);
         this.draw.setEnabled(false);
-        glb.append(this.draw);
+        flowPanel.add(this.draw);
 
-        glb.nextLine();
-        JPanel p = glb.getPanel();
-        //p.setPreferredSize(new Dimension(166, 16));
-        p.setBackground(UIManager.getColor("Panel.background"));
-        p.setBorder(border);
+        flowPanel.setBackground(UIManager.getColor("Panel.background"));
+        flowPanel.setBorder(border);
 
-        p.setFocusTraversalPolicyProvider(true);
-        p.setFocusTraversalPolicy(new FocusTraversalPolicy() {
+        flowPanel.setFocusTraversalPolicyProvider(true);
+        flowPanel.setFocusTraversalPolicy(new FocusTraversalPolicy() {
             @Override
 			public Component getComponentAfter(Container aContainer, Component aComponent) {
                 if (aComponent == OrderViewer.this.btn) {
@@ -312,7 +312,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
             }
 
         });
-        return p;
+        return flowPanel;
     }
 
     public void setEnabledButton(boolean b) {

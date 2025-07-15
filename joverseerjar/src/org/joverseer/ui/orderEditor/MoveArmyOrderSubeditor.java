@@ -3,6 +3,7 @@ package org.joverseer.ui.orderEditor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -62,8 +63,6 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
 		AddMovementButton(String aMessage) {
     		super(aMessage);
     		this.addActionListener(new AddMovementActionListener(aMessage));
-    		UISizes uiSize = new UISizes();
-    		this.setPreferredSize(uiSize.getSquareBtHeight());
     	}
     }
     
@@ -103,38 +102,31 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         tlb.cell((JComponent) Box.createVerticalStrut(4));
         tlb.row();
         
-        JPanel gridPanel = new JPanel(new GridBagLayout());
+        JPanel gridPanel = new JPanel(new GridLayout(3,3));
         GridBagConstraints gbc = new GridBagConstraints();
 
         //gbc.insets = new Insets(2, 2, 2, 2); // small padding around buttons
-        gbc.fill = GridBagConstraints.NONE; // don't stretch buttons
+        gbc.fill = GridBagConstraints.BOTH; // don't stretch buttons
         gbc.anchor = GridBagConstraints.CENTER; // center each button
+        
 
         JButton btn;
         
-        gbc.gridx = 0; gbc.gridy = 0;
-        gridPanel.add(btn = new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.nw")), gbc);
+        gridPanel.add(btn = new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.nw")));
 
-        gbc.gridx = 1; gbc.gridy = 0;
-        gridPanel.add(Box.createHorizontalStrut(10), gbc); // or just skip it
+        gridPanel.add(Box.createHorizontalStrut(10), gbc); 
 
-        gbc.gridx = 2; gbc.gridy = 0;
-        gridPanel.add(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.ne")), gbc);
+        gridPanel.add(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.ne")));
 
-        gbc.gridx = 0; gbc.gridy = 1;
-        gridPanel.add(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.w")), gbc);
+        gridPanel.add(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.w")));
         
-        gbc.gridx = 1; gbc.gridy = 1;
-        gridPanel.add(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.home")), gbc);
+        gridPanel.add(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.home")));
         
-        gbc.gridx = 2; gbc.gridy = 1;
-        gridPanel.add(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.e")), gbc);
+        gridPanel.add(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.e")));
         
-        gbc.gridx = 0; gbc.gridy = 2;
-        gridPanel.add(btn = new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.sw")), gbc);
+        gridPanel.add(btn = new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.sw")));
         
-        gbc.gridx = 1; gbc.gridy = 2;
-        gridPanel.add(btn = new JButton("<--"), gbc);
+        gridPanel.add(btn = new JButton("<-"));
         btn.setToolTipText(Messages.getString("MoveArmyOrderSubeditor.back")); //$NON-NLS-1$
         btn.addActionListener(new ActionListener() {
             @Override
@@ -145,15 +137,11 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
                 }
             }
         });
-        UISizes uiSize = new UISizes();
-		btn.setPreferredSize(uiSize.getSquareBtHeight());
 
-        gbc.gridx = 2; gbc.gridy = 2;
-        gridPanel.add(btn = new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.se")), gbc);
-        
+        gridPanel.add(btn = new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.se")));
 		
         tlb.cell(new JLabel(" ")); //$NON-NLS-1$
-        tlb.cell(gridPanel);
+        tlb.cell(gridPanel, "colspan=2");
 
         // note that the order of these add matters...it is the order that the abstractOrtderEditor generates the parameters as text
         components.add(this.directionParams);

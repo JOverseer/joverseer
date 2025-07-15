@@ -12,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -149,9 +150,12 @@ public class CharacterViewer extends ObjectViewer {
 	ActionCommand addRefuseChallengesCommand = new AddOrderCommand(215, ""); //$NON-NLS-1$
 	ActionCommand editCharacterCommand = new EditCharacterCommand();
 	ActionCommand sendOrdersByChatCommand = new SendOrdersByChatCommand();
+	
+	CurrentHexDataViewer parentViewer;
 
-	public CharacterViewer(FormModel formModel,GameHolder gameHolder) {
+	public CharacterViewer(FormModel formModel,GameHolder gameHolder, CurrentHexDataViewer ref) {
 		super(formModel, FORM_PAGE,gameHolder);
+		this.parentViewer = ref;
 	}
 
 	@Override
@@ -338,7 +342,6 @@ public class CharacterViewer extends ObjectViewer {
 				this.companyMembersTextBox.setText(Messages.getString("CharacterViewer.CompanyColon") + members); //$NON-NLS-1$
 				this.companyMembersTextBox.setCaretPosition(0);
 				this.companyMembersTextBox.setVisible(true);
-				this.companyMembersTextBox.setFont(GraphicUtils.getFont(this.companyMembersTextBox.getFont().getName(), Font.ITALIC, this.companyMembersTextBox.getFont().getSize()));
 			} else {
 				// check if he is travelling with a company or an army...
 				boolean found = false;
@@ -347,7 +350,6 @@ public class CharacterViewer extends ObjectViewer {
 						this.companyMembersTextBox.setVisible(true);
 						this.companyMembersTextBox.setText(Messages.getString("CharacterViewer.InCompany", new Object[] {comp.getCommander()})); //$NON-NLS-1$ //$NON-NLS-2$
 						this.companyMembersTextBox.setCaretPosition(0);
-						this.companyMembersTextBox.setFont(GraphicUtils.getFont(this.companyMembersTextBox.getFont().getName(), Font.ITALIC, this.companyMembersTextBox.getFont().getSize()));
 						found = true;
 						break;
 					}
@@ -360,7 +362,6 @@ public class CharacterViewer extends ObjectViewer {
 								this.companyMembersTextBox.setVisible(true);
 								this.companyMembersTextBox.setText(Messages.getString("CharacterViewer.InArmy", new Object[] {a.getCommanderName()})); //$NON-NLS-1$ //$NON-NLS-2$
 								this.companyMembersTextBox.setCaretPosition(0);
-								this.companyMembersTextBox.setFont(GraphicUtils.getFont(this.companyMembersTextBox.getFont().getName(), Font.ITALIC, this.companyMembersTextBox.getFont().getSize()));
 								found = true;
 								break;
 							}
@@ -434,6 +435,7 @@ public class CharacterViewer extends ObjectViewer {
 				this.order3.setEnabledButton(true);
 				this.btnCharDetails.setToolTipText(null);
 			}
+			this.parentViewer.resetScrollPane();
 		}
 
 	}
@@ -684,17 +686,23 @@ public class CharacterViewer extends ObjectViewer {
 		glb.nextLine();
 
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
+		JPanel tempOrderPanel = new JPanel();
+		tempOrderPanel.setLayout(new BoxLayout(tempOrderPanel, BoxLayout.Y_AXIS));
 		this.order1 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())),this.gameHolder);
-		tlb.cell(this.order1comp = this.order1.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
-		tlb.row();
+//		tlb.cell(this.order1comp = this.order1.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
+//		tlb.row();
+		tempOrderPanel.add(this.order1comp = this.order1.createFormControl());
 		this.order2 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())),this.gameHolder);
-		tlb.cell(this.order2comp = this.order2.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
-		tlb.row();
+//		tlb.cell(this.order2comp = this.order2.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
+//		tlb.row();
+		tempOrderPanel.add(this.order2comp = this.order2.createFormControl());
 		this.order3 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())),this.gameHolder);
-		tlb.cell(this.order3comp = this.order3.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
-		tlb.row();
+//		tlb.cell(this.order3comp = this.order3.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
+//		tlb.row();
+		tempOrderPanel.add(this.order3comp = this.order3.createFormControl());
 		this.orderPanel = new JPanel();
-		this.orderPanel.add(tlb.getPanel());
+//		this.orderPanel.add(tlb.getPanel());
+		this.orderPanel.add(tempOrderPanel);
 		this.orderPanel.setBackground(UIManager.getColor("Panel.background"));
 		this.orderPanel.setBorder(border);
 		glb.append(this.orderPanel, 2, 1);

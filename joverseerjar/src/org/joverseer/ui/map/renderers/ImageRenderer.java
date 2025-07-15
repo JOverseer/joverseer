@@ -108,7 +108,7 @@ public abstract class ImageRenderer extends AbstractBaseRenderer {
     }
     
     protected BufferedImage getImage(String imgName, double d) {
-        if (!this.images.containsKey(imgName)) {
+        if (!this.images.containsKey(imgName + " scale=" + String.valueOf(d))) {
             try {
 //                ImageSource imgSource = joApplication.getImageSource();
                 Image img = this.imgSource.getImage(imgName);

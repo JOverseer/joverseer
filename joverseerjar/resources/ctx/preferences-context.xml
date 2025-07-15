@@ -380,6 +380,832 @@
 						</list>
 					</property>
 				</bean>
+								
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.harbourSize</value>
+					</property>
+					<property name="description">
+						<value>Size of Harbour Icon</value>
+					</property>
+					<property name="group">
+						<value>Display.Map Scale</value>
+					</property>
+					<property name="defaultValue">
+						<value>0</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-2</value>
+								</property>
+								<property name="description">
+									<value>-2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-1</value>
+								</property>
+								<property name="description">
+									<value>-1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>0</value>
+								</property>
+								<property name="description">
+									<value>0</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>1</value>
+								</property>
+								<property name="description">
+									<value>+1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>2</value>
+								</property>
+								<property name="description">
+									<value>+2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>3</value>
+								</property>
+								<property name="description">
+									<value>+3</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>4</value>
+								</property>
+								<property name="description">
+									<value>+4</value>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.movementOrderCostSize</value>
+					</property>
+					<property name="description">
+						<value>Size of Order Text</value>
+					</property>
+					<property name="group">
+						<value>Display.Map Scale</value>
+					</property>
+					<property name="defaultValue">
+						<value>0</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-2</value>
+								</property>
+								<property name="description">
+									<value>-2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-1</value>
+								</property>
+								<property name="description">
+									<value>-1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>0</value>
+								</property>
+								<property name="description">
+									<value>0</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>1</value>
+								</property>
+								<property name="description">
+									<value>+1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>2</value>
+								</property>
+								<property name="description">
+									<value>+2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>3</value>
+								</property>
+								<property name="description">
+									<value>+3</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>4</value>
+								</property>
+								<property name="description">
+									<value>+4</value>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.movementArrowSize</value>
+					</property>
+					<property name="description">
+						<value>Size of Movement Arrows</value>
+					</property>
+					<property name="group">
+						<value>Display.Map Scale</value>
+					</property>
+					<property name="defaultValue">
+						<value>0</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-2</value>
+								</property>
+								<property name="description">
+									<value>-2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-1</value>
+								</property>
+								<property name="description">
+									<value>-1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>0</value>
+								</property>
+								<property name="description">
+									<value>0</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>1</value>
+								</property>
+								<property name="description">
+									<value>+1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>2</value>
+								</property>
+								<property name="description">
+									<value>+2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>3</value>
+								</property>
+								<property name="description">
+									<value>+3</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>4</value>
+								</property>
+								<property name="description">
+									<value>+4</value>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.bridgeSize</value>
+					</property>
+					<property name="description">
+						<value>Size of Bridges</value>
+					</property>
+					<property name="group">
+						<value>Display.Map Scale</value>
+					</property>
+					<property name="defaultValue">
+						<value>0</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-2</value>
+								</property>
+								<property name="description">
+									<value>-2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-1</value>
+								</property>
+								<property name="description">
+									<value>-1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>0</value>
+								</property>
+								<property name="description">
+									<value>0</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>1</value>
+								</property>
+								<property name="description">
+									<value>+1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>2</value>
+								</property>
+								<property name="description">
+									<value>+2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>3</value>
+								</property>
+								<property name="description">
+									<value>+3</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>4</value>
+								</property>
+								<property name="description">
+									<value>+4</value>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+				
+								
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.roadSize</value>
+					</property>
+					<property name="description">
+						<value>Size of Roads</value>
+					</property>
+					<property name="group">
+						<value>Display.Map Scale</value>
+					</property>
+					<property name="defaultValue">
+						<value>0</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-2</value>
+								</property>
+								<property name="description">
+									<value>-2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-1</value>
+								</property>
+								<property name="description">
+									<value>-1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>0</value>
+								</property>
+								<property name="description">
+									<value>0</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>1</value>
+								</property>
+								<property name="description">
+									<value>+1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>2</value>
+								</property>
+								<property name="description">
+									<value>+2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>3</value>
+								</property>
+								<property name="description">
+									<value>+3</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>4</value>
+								</property>
+								<property name="description">
+									<value>+4</value>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.riverSize</value>
+					</property>
+					<property name="description">
+						<value>Size of Rivers</value>
+					</property>
+					<property name="group">
+						<value>Display.Map Scale</value>
+					</property>
+					<property name="defaultValue">
+						<value>0</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-2</value>
+								</property>
+								<property name="description">
+									<value>-2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-1</value>
+								</property>
+								<property name="description">
+									<value>-1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>0</value>
+								</property>
+								<property name="description">
+									<value>0</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>1</value>
+								</property>
+								<property name="description">
+									<value>+1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>2</value>
+								</property>
+								<property name="description">
+									<value>+2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>3</value>
+								</property>
+								<property name="description">
+									<value>+3</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>4</value>
+								</property>
+								<property name="description">
+									<value>+4</value>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.artiSize</value>
+					</property>
+					<property name="description">
+						<value>Size of Artifacts</value>
+					</property>
+					<property name="group">
+						<value>Display.Map Scale</value>
+					</property>
+					<property name="defaultValue">
+						<value>0</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-2</value>
+								</property>
+								<property name="description">
+									<value>-2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-1</value>
+								</property>
+								<property name="description">
+									<value>-1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>0</value>
+								</property>
+								<property name="description">
+									<value>0</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>1</value>
+								</property>
+								<property name="description">
+									<value>+1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>2</value>
+								</property>
+								<property name="description">
+									<value>+2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>3</value>
+								</property>
+								<property name="description">
+									<value>+3</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>4</value>
+								</property>
+								<property name="description">
+									<value>+4</value>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.hexNumSize</value>
+					</property>
+					<property name="description">
+						<value>Size of Hex Numbers</value>
+					</property>
+					<property name="group">
+						<value>Display.Map Scale</value>
+					</property>
+					<property name="defaultValue">
+						<value>0</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-2</value>
+								</property>
+								<property name="description">
+									<value>-2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-1</value>
+								</property>
+								<property name="description">
+									<value>-1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>0</value>
+								</property>
+								<property name="description">
+									<value>0</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>1</value>
+								</property>
+								<property name="description">
+									<value>+1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>2</value>
+								</property>
+								<property name="description">
+									<value>+2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>3</value>
+								</property>
+								<property name="description">
+									<value>+3</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>4</value>
+								</property>
+								<property name="description">
+									<value>+4</value>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.charSize</value>
+					</property>
+					<property name="description">
+						<value>Size of Character Icons</value>
+					</property>
+					<property name="group">
+						<value>Display.Map Scale</value>
+					</property>
+					<property name="defaultValue">
+						<value>0</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-2</value>
+								</property>
+								<property name="description">
+									<value>-2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-1</value>
+								</property>
+								<property name="description">
+									<value>-1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>0</value>
+								</property>
+								<property name="description">
+									<value>0</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>1</value>
+								</property>
+								<property name="description">
+									<value>+1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>2</value>
+								</property>
+								<property name="description">
+									<value>+2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>3</value>
+								</property>
+								<property name="description">
+									<value>+3</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>4</value>
+								</property>
+								<property name="description">
+									<value>+4</value>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.armySize</value>
+					</property>
+					<property name="description">
+						<value>Size of Army Icons</value>
+					</property>
+					<property name="group">
+						<value>Display.Map Scale</value>
+					</property>
+					<property name="defaultValue">
+						<value>0</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-2</value>
+								</property>
+								<property name="description">
+									<value>-2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-1</value>
+								</property>
+								<property name="description">
+									<value>-1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>0</value>
+								</property>
+								<property name="description">
+									<value>0</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>1</value>
+								</property>
+								<property name="description">
+									<value>+1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>2</value>
+								</property>
+								<property name="description">
+									<value>+2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>3</value>
+								</property>
+								<property name="description">
+									<value>+3</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>4</value>
+								</property>
+								<property name="description">
+									<value>+4</value>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.popSize</value>
+					</property>
+					<property name="description">
+						<value>Size of PC Icons</value>
+					</property>
+					<property name="group">
+						<value>Display.Map Scale</value>
+					</property>
+					<property name="defaultValue">
+						<value>0</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-2</value>
+								</property>
+								<property name="description">
+									<value>-2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>-1</value>
+								</property>
+								<property name="description">
+									<value>-1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>0</value>
+								</property>
+								<property name="description">
+									<value>0</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>1</value>
+								</property>
+								<property name="description">
+									<value>+1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>2</value>
+								</property>
+								<property name="description">
+									<value>+2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>3</value>
+								</property>
+								<property name="description">
+									<value>+3</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>4</value>
+								</property>
+								<property name="description">
+									<value>+4</value>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
 
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">

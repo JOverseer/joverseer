@@ -255,7 +255,11 @@ public class OrderRenderer extends DefaultHexRenderer {
 
 				p2.x += displacementX;
 				p2.y += displacementY;
-				g.setStroke(GraphicUtils.getDashStroke(3, 8));
+				
+		        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.movementArrowSize");
+		        int mod = Integer.parseInt(pval2);
+				
+				g.setStroke(GraphicUtils.getDashStroke(3 + mod, 8 + mod));
 				int curCost = 0;
 				if (!isNavy) {
 					curCost = MovementUtils.calculateMovementCostForArmy(currentHexNo, dir, cav, fed, true, null, currentHexNo);
@@ -282,7 +286,7 @@ public class OrderRenderer extends DefaultHexRenderer {
 				if (i == lastUsefulParamIndex - 2) {
 					// last segment
 					double theta = Math.atan2((p2.y - p1.y), (p2.x - p1.x));
-					Shape a = Arrow.getArrowHead(p2.x, p2.y, 10, 15, theta);
+					Shape a = Arrow.getArrowHead(p2.x, p2.y, 10 + mod, 15 + mod, theta);
 					g.fill(a);
 				}
 				if (i > 0 && cost > 0) {
@@ -318,8 +322,12 @@ public class OrderRenderer extends DefaultHexRenderer {
 
 	private void drawString(Graphics2D g, String str, Point p1, Point p2) {
 		// calculate and prepare character name rendering
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.movementOrderCostSize");
+//        double mod = 1.0 + (Double.parseDouble(pval2)/5.0);
+        int mod = Integer.parseInt(pval2);
+		
 		Point p = new Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
-		Font f = GraphicUtils.getFont("Microsoft Sans Serif", Font.PLAIN, 9);
+		Font f = GraphicUtils.getFont("Microsoft Sans Serif", Font.PLAIN, 9 + mod);
 		FontMetrics fm = g.getFontMetrics(f);
 		Rectangle2D bb = fm.getStringBounds(str, g);
 		Rectangle b = new Rectangle(((Double) bb.getX()).intValue(), ((Double) bb.getY()).intValue(), ((Double) bb.getWidth()).intValue(), ((Double) bb.getHeight()).intValue());
@@ -378,7 +386,11 @@ public class OrderRenderer extends DefaultHexRenderer {
 				color = Color.GRAY;
 			}
 			g.setColor(color);
-			Stroke s = GraphicUtils.getDashStroke(3, 8);
+			
+	        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.movementArrowSize");
+	        int mod = Integer.parseInt(pval2);
+			
+			Stroke s = GraphicUtils.getDashStroke(3 + mod, 8 + mod);
 			Arrow.renderArrow(p1, p2, color, s, g);
 			if (drawCharNames()) {
 				String name = order.getCharacter().getName();
@@ -411,13 +423,17 @@ public class OrderRenderer extends DefaultHexRenderer {
 			} else {
 				g.setColor(Color.GRAY);
 			}
+			
+	        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.movementArrowSize");
+	        int mod = Integer.parseInt(pval2);
+			
 			// draw arrowhead
 			double theta = Math.atan2((p1.y - p2.y), (p1.x - p2.x));
 			g.setStroke(new BasicStroke(1));
-			Shape arrowHead = Arrow.getArrowHead(p1.x, p1.y, 10, 15, theta);
+			Shape arrowHead = Arrow.getArrowHead(p1.x, p1.y, 10 + mod, 15 + mod, theta);
 			g.fill(arrowHead);
-
-			Stroke s = GraphicUtils.getDashStroke(3, 8);
+			
+			Stroke s = GraphicUtils.getDashStroke(3 + mod, 8 + mod);
 			g.setStroke(s);
 			// draw line
 			g.drawLine(p1.x, p1.y, p2.x, p2.y);

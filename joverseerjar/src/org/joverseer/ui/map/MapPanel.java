@@ -450,7 +450,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				}
 			}
 		} catch (Exception exc) {
-			logger.error("Error rendering pop centers " + exc.getMessage()); //$NON-NLS-1$
+			logger.error("Error rendering characters " + exc.getMessage()); //$NON-NLS-1$
 		}
 
 		try {
@@ -467,7 +467,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				}
 			}
 		} catch (Exception exc) {
-			logger.error("Error rendering pop centers " + exc.getMessage()); //$NON-NLS-1$
+			logger.error("Error rendering armies " + exc.getMessage()); //$NON-NLS-1$
 		}
 
 		try {

@@ -35,7 +35,11 @@ public class ArmyIconRenderer extends ImageRenderer {
 
 		BufferedImage armyImage = null;
 		NationAllegianceEnum allegiance = army.getNationAllegiance();
-		armyImage = getImage("army." + allegiance.toString() + ".image");
+		
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.armySize");
+        double mod = Double.parseDouble(pval2)/10;
+		
+		armyImage = getImage("army." + allegiance.toString() + ".image", 1.0 + mod);
 
 		BufferedImage img = copyImage(armyImage);
 		Color color1 = ColorPicker.getInstance().getColor1(army.getNationNo());

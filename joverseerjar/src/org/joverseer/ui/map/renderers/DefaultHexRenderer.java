@@ -164,8 +164,11 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 	}
 
 	public void renderRoad(Graphics2D g, HexSideEnum side, int x, int y) {
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.roadSize");
+        int mod = Integer.parseInt(pval2);
+		
 		Stroke s = g.getStroke();
-		Stroke r = new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+		Stroke r = new BasicStroke(4 + mod, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		Point sideCenter = getSideCenter(side);
 		Point center = new Point(this.hexCenter);
 		sideCenter.translate(x, y);
@@ -178,8 +181,11 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 	}
 
 	public void renderMajorRiver(Graphics2D g, HexSideEnum side, int x, int y) {
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.riverSize");
+        int mod = Integer.parseInt(pval2);
+		
 		Stroke s = g.getStroke();
-		Stroke r = new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+		Stroke r = new BasicStroke(4 + mod, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		Polygon sp = getSidePolygon(side);
 		sp.translate(x, y);
 		g.setColor(getMajorRiverColor());
@@ -190,8 +196,11 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 	}
 
 	public void renderMinorRiver(Graphics2D g, HexSideEnum side, int x, int y) {
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.riverSize");
+        int mod = Integer.parseInt(pval2);
+		
 		Stroke s = g.getStroke();
-		Stroke r = new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+		Stroke r = new BasicStroke(3 + mod, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		Polygon sp = getSidePolygon(side);
 		sp.translate(x, y);
 		g.setColor(getMinorRiverColor());
@@ -201,8 +210,11 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 	}
 
 	public void renderBridge(Graphics2D g, HexSideEnum side, int x, int y) {
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.bridgeSize");
+        int mod = Integer.parseInt(pval2);
+		
 		Stroke s = g.getStroke();
-		Stroke r = new BasicStroke(6);
+		Stroke r = new BasicStroke(6 + mod);
 		Point sideCenter = getSideCenter(side);
 		Point center = new Point(this.hexCenter);
 		Point start = new Point((center.x + 2 * sideCenter.x) / 3, (center.y + 2 * sideCenter.y) / 3);
@@ -215,8 +227,11 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 	}
 
 	public void renderFord(Graphics2D g, HexSideEnum side, int x, int y) {
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.bridgeSize");
+        int mod = Integer.parseInt(pval2);
+		
 		Stroke s = g.getStroke();
-		Stroke r = new BasicStroke(6);
+		Stroke r = new BasicStroke(6 + mod);
 		Point sideCenter = getSideCenter(side);
 		Point center = new Point(this.hexCenter);
 		Point start = new Point((center.x + 2 * sideCenter.x) / 3, (center.y + 2 * sideCenter.y) / 3);

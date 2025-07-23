@@ -94,7 +94,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 					if (r.getErrorOccured()) {
 						errorOccurred = true;
 					}
-					if (game.getMetadata().getNewXmlFormat()) {
+					if (game.getMetadata().getNewXmlFormat() && !r.turnWarning) {
 						final TurnNewXmlReader xr = new TurnNewXmlReader(game, "file:///" + f.getCanonicalPath(), r.getTurnInfo().getNationNo());
 						xr.setMonitor(this.monitor);
 						xr.run();

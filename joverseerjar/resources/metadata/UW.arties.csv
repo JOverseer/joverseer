@@ -4,7 +4,7 @@
 4;Ring of Impersonati;None;Agent;+25;;
 5;Ring of Barahir;Good;Command;+35;;Rangers
 6;Ring of Axardil;None;Command;+10;;
-7;Nazguaga;Evil;Mage;+35;;B.Sorcerer
+7;Nazgauga;Evil;Mage;+35;;B.Sorcerer
 8;Lorglin;None;Mage;+10;;Noldo
 9;Elenya;None;Stealth;+15;;
 10;Wolor Priest Ring;None;Mage;+25;;Dog Lord
@@ -20,7 +20,7 @@
 20;Staff of the Serpen;None;Mage;+10;;Ice King
 21;Staff of Earthmast;None;Mage;+20;;
 22;Rauzgnagli;Evil;Combat;+1750;;B.Sorcerer
-23;Nedelhach;None;Combat;+750;;
+23;Neldelhach;None;Combat;+750;;
 24;Ghostbane;None;Combat;+750;;Dunlendings
 25;Staff of Bronze;None;Mage;+25;;Ice King
 26;Mallorn Staff;None;Mage;+30;;Noldo
@@ -86,7 +86,7 @@
 87;Morlhach;Evil;Combat;+500;;
 88;Macirille;None;Combat;+750;;
 89;Macrilomen;None;Combat;+1000;;Noldo
-90;Helkaluin;None;Combat;+1250;;Noldo
+90;Helkaluine;None;Combat;+1250;;Noldo
 91;Gordur;Good;Combat;+500;;Rangers
 92;Horsetamer;None;Combat;+500;;Long Rider
 93;Gurthdur;Good;Combat;+500;;Rangers
@@ -106,10 +106,10 @@
 107;Curaran;None;Combat;+500;;Rangers
 108;Craig-olf-Ti;None;Combat;+500;;
 109;Cloud Bow;None;Combat;+750;;Cloud Lord
-110;Craig-olf-ti;None;Combat;+500;;
+110;Craig-olf-Ti;None;Combat;+500;;
 111;Believer's Bane;Evil;Combat;+500;;Fire King
 112;Burning Bane;None;Combat;+500;;Fire King
-113;Ar-Sil;Good;Combat;+750;;
+113;Ar-sil;Good;Combat;+750;;
 114;Angian;Good;Combat;+500;;
 115;Fire Mace;None;Combat;+750;;
 116;Blood Spike;None;Combat;+750;;
@@ -160,7 +160,7 @@
 161;Erivagil;None;Combat;+1500;;
 162;Glosvagil;None;Combat;+1500;;White Wizard 
 163;Mirror of Galadriel;Good;Mage;+40;;Sinda
-164;Tintelpe;Good;Combat;+1750;;Sinda
+164;Tintelpë;Good;Combat;+1750;;Sinda
 165;Cuiviegurth;Evil;Combat;+750;;
 166;Calris;Evil;Combat;+750;;
 167;Aedring;Good;Combat;+1000;;
@@ -176,7 +176,7 @@
 177;Calninque;Good;Combat;+1500;;
 178;Cubeleg;None;Combat;+750;;
 179;Durcarak;Evil;Combat;+1250;;
-180;Fuinrako;Evil;Combat;+2000;;
+180;Fuinrauko;Evil;Combat;+2000;;
 181;Herugrim;Good;Combat;+1000;;Rohan
 182;Morgurth;None;Combat;+1000;;
 183;Silmaruth;None;Combat;+2000;;

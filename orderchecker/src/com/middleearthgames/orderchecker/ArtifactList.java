@@ -53,7 +53,7 @@ public class ArtifactList
         this.artifacts.add(((Object) (new Artifact(4, "Ring of Impersonation", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+25 Agent"))));
         this.artifacts.add(((Object) (new Artifact(5, "Ring of Barahir", GAME_WTR, Artifact.ALIGNMENT_GOOD, "+35 Command"))));
         this.artifacts.add(((Object) (new Artifact(6, "Ring of Axardil", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+10 Command,Allows learning of Teleport"))));
-        this.artifacts.add(((Object) (new Artifact(7, "Nazguaga", GAME_WTR, Artifact.ALIGNMENT_EVIL, "+30 Mage,Allows learning of Dark Summons spells"))));
+        this.artifacts.add(((Object) (new Artifact(7, "Nazgauga", GAME_WTR, Artifact.ALIGNMENT_EVIL, "+30 Mage,Allows learning of Dark Summons spells"))));
         this.artifacts.add(((Object) (new Artifact(8, "Lorgl\356n", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+15 Mage"))));
         this.artifacts.add(((Object) (new Artifact(9, "Elenya", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+15 Stealth"))));
         this.artifacts.add(((Object) (new Artifact(10, "W\364lor Priest Ring", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+20 Mage"))));
@@ -69,7 +69,7 @@ public class ArtifactList
         this.artifacts.add(((Object) (new Artifact(20, "Staff of the Serpent", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+10 Mage"))));
         this.artifacts.add(((Object) (new Artifact(21, "Staff of Earthmastery", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+20 Mage,Allows learning of Conjuring Ways spells"))));
         this.artifacts.add(((Object) (new Artifact(22, "Rauzgnagli", GAME_WTR, Artifact.ALIGNMENT_EVIL, "+1750 Combat"))));
-        this.artifacts.add(((Object) (new Artifact(23, "Nedelhach", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+750 Combat"))));
+        this.artifacts.add(((Object) (new Artifact(23, "Neldelhach", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+750 Combat"))));
         this.artifacts.add(((Object) (new Artifact(24, "Ghostbane", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+750 Combat"))));
         this.artifacts.add(((Object) (new Artifact(25, "Staff of Bronze", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+20 Mage"))));
         this.artifacts.add(((Object) (new Artifact(26, "Mallorn Staff", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+25 Mage"))));
@@ -106,7 +106,7 @@ public class ArtifactList
         this.artifacts.add(((Object) (new Artifact(57, "Helm of Isildur", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+20 Command"))));
         this.artifacts.add(((Object) (new Artifact(58, "Helm of the Dark", GAME_WTR, Artifact.ALIGNMENT_EVIL, "+15 Command"))));
         this.artifacts.add(((Object) (new Artifact(59, "Gaerennon", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+15 Command"))));
-        this.artifacts.add(((Object) (new Artifact(60, "Durin's Armor and Shield", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+15 Command"))));
+        this.artifacts.add(((Object) (new Artifact(60, "Durin's Armor/Shield", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+15 Command"))));
         this.artifacts.add(((Object) (new Artifact(61, "Dragon Helm of Dor-L\363min", GAME_WTR, Artifact.ALIGNMENT_GOOD, "+20 Command"))));
         this.artifacts.add(((Object) (new Artifact(62, "Dragon Helm and Armor", GAME_WTR, Artifact.ALIGNMENT_EVIL, "+30 Mage"))));
         this.artifacts.add(((Object) (new Artifact(63, "Deepwood Bracelet", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+10 Mage"))));
@@ -136,7 +136,7 @@ public class ArtifactList
         this.artifacts.add(((Object) (new Artifact(87, "Morlhach", GAME_WTR, Artifact.ALIGNMENT_EVIL, "+500 Combat"))));
         this.artifacts.add(((Object) (new Artifact(88, "Macirill\353", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+750 Combat"))));
         this.artifacts.add(((Object) (new Artifact(89, "Macilr\363men", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+1000 Combat"))));
-        this.artifacts.add(((Object) (new Artifact(90, "Helkaluin", GAME_WTR, Artifact.ALIGNMENT_GOOD, "+1250 Combat"))));
+        this.artifacts.add(((Object) (new Artifact(90, "Helkaluine", GAME_WTR, Artifact.ALIGNMENT_GOOD, "+1250 Combat"))));
         this.artifacts.add(((Object) (new Artifact(91, "Gordur", GAME_WTR, Artifact.ALIGNMENT_GOOD, "+500 Combat"))));
         this.artifacts.add(((Object) (new Artifact(92, "Horse-tamer", GAME_WTR, Artifact.ALIGNMENT_NEUTRAL, "+500 Combat"))));
         this.artifacts.add(((Object) (new Artifact(93, "Gurthdur", GAME_WTR, Artifact.ALIGNMENT_GOOD, "+500 Combat"))));
@@ -266,7 +266,7 @@ public class ArtifactList
         this.artifacts.add(((Object) (new Artifact(4, "Ring of Impersonation", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+25 Agent"))));
         this.artifacts.add(((Object) (new Artifact(5, "Ring of Barahir", GAME_PBM, Artifact.ALIGNMENT_GOOD, "+35 Command"))));
         this.artifacts.add(((Object) (new Artifact(6, "Ring of Axardil", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+10 Command,Allows learning of Teleport"))));
-        this.artifacts.add(((Object) (new Artifact(7, "Nazguaga", GAME_PBM, Artifact.ALIGNMENT_EVIL, "+30 Mage,Allows learning of Dark Summons List"))));
+        this.artifacts.add(((Object) (new Artifact(7, "Nazgauga", GAME_PBM, Artifact.ALIGNMENT_EVIL, "+30 Mage,Allows learning of Dark Summons List"))));
         this.artifacts.add(((Object) (new Artifact(8, "Lorgl\356n", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+15 Mage"))));
         this.artifacts.add(((Object) (new Artifact(9, "Elenya", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+15 Stealth"))));
         this.artifacts.add(((Object) (new Artifact(10, "Dwarven Ring of Power", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+40 Command"))));
@@ -282,7 +282,7 @@ public class ArtifactList
         this.artifacts.add(((Object) (new Artifact(20, "Staff of the Serpent", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+10 Mage"))));
         this.artifacts.add(((Object) (new Artifact(21, "Staff of Earthmastery", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+20 Mage,Allows learning of Conjuring Ways List"))));
         this.artifacts.add(((Object) (new Artifact(22, "Rauzgnagli", GAME_PBM, Artifact.ALIGNMENT_EVIL, "+1750 Combat"))));
-        this.artifacts.add(((Object) (new Artifact(23, "Nedelhach", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+750 Combat"))));
+        this.artifacts.add(((Object) (new Artifact(23, "Neldelhach", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+750 Combat"))));
         this.artifacts.add(((Object) (new Artifact(24, "Ghostbane", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+750 Combat"))));
         this.artifacts.add(((Object) (new Artifact(25, "Staff of Bronze", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+20 Mage"))));
         this.artifacts.add(((Object) (new Artifact(26, "Mallorn Staff", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+25 Mage"))));
@@ -319,7 +319,7 @@ public class ArtifactList
         this.artifacts.add(((Object) (new Artifact(57, "Helm of Isildur", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+20 Command"))));
         this.artifacts.add(((Object) (new Artifact(58, "Helm of the Dark", GAME_PBM, Artifact.ALIGNMENT_EVIL, "+15 Command"))));
         this.artifacts.add(((Object) (new Artifact(59, "Gaerennon", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+20 Command"))));
-        this.artifacts.add(((Object) (new Artifact(60, "Durin's Armor and Shield", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+15 Command"))));
+        this.artifacts.add(((Object) (new Artifact(60, "Durin's Armor/Shield", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+15 Command"))));
         this.artifacts.add(((Object) (new Artifact(61, "Dragon Helm of Dor-L\363min", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+15 Command"))));
         this.artifacts.add(((Object) (new Artifact(62, "Dragon Helm and Armor", GAME_PBM, Artifact.ALIGNMENT_EVIL, "+30 Mage"))));
         this.artifacts.add(((Object) (new Artifact(63, "Cu-Saggha-brath", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+10 Command"))));
@@ -349,7 +349,7 @@ public class ArtifactList
         this.artifacts.add(((Object) (new Artifact(87, "Morlhach", GAME_PBM, Artifact.ALIGNMENT_EVIL, "+500 Combat"))));
         this.artifacts.add(((Object) (new Artifact(88, "Macirill\353", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+750 Combat"))));
         this.artifacts.add(((Object) (new Artifact(89, "Macilr\363men", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+1000 Combat"))));
-        this.artifacts.add(((Object) (new Artifact(90, "Helkaluin", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+1250 Combat"))));
+        this.artifacts.add(((Object) (new Artifact(90, "Helkaluine", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+1250 Combat"))));
         this.artifacts.add(((Object) (new Artifact(91, "Gordur", GAME_PBM, Artifact.ALIGNMENT_GOOD, "+500 Combat"))));
         this.artifacts.add(((Object) (new Artifact(92, "Horse-Tamer", GAME_PBM, Artifact.ALIGNMENT_NEUTRAL, "+500 Combat"))));
         this.artifacts.add(((Object) (new Artifact(93, "Gurthdur", GAME_PBM, Artifact.ALIGNMENT_GOOD, "+500 Combat"))));

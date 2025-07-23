@@ -149,9 +149,9 @@ public class RecentGames {
 	        	if(shouldDeleteRecentGame(rg)) rgisToRemove.add(rg);
 	        }
 	        rgis.removeAll(rgisToRemove);
-	        
-	        rgiStr = getRecentGameInfoString(rgis);
         }
+        
+        rgiStr = getRecentGameInfoString(rgis);
         
         Preferences.userNodeForPackage(JOverseerJIDEClient.class).put("recentGames", rgiStr);
     }

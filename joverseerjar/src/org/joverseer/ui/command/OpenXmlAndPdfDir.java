@@ -3,6 +3,7 @@ package org.joverseer.ui.command;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileFilter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -82,6 +83,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 		int pdfCount = 0;
 		boolean errorOccurred = false;
 		boolean warningOccurred = false;
+		LocalDateTime dt = null;
 		for (File f : this.files) {
 			try {
 				if (f.getAbsolutePath().endsWith(".xml")) {
@@ -91,6 +93,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 					r.setMonitor(this.monitor);
 					//this may change game.metadata.NewXMLFormat!
 					r.run();
+					dt = r.getTurnInfo().getDatePublishedDate();
 					if (r.getErrorOccured()) {
 						errorOccurred = true;
 					}
@@ -109,6 +112,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 					pdfCount++;
 					final TurnPdfReader r = new TurnPdfReader(game, f.getCanonicalPath());
 					r.setMonitor(this.monitor);
+					r.setPublishDate(dt);
 					r.run();
 					if (r.getErrorOccurred()) {
 						warningOccurred = true;

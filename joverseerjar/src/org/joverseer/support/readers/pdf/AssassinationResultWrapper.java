@@ -2,6 +2,9 @@ package org.joverseer.support.readers.pdf;
 
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
+
+import java.time.LocalDateTime;
+
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.game.TurnElementsEnum;
@@ -17,14 +20,14 @@ public class AssassinationResultWrapper implements OrderResult {
         String character;
         
         @Override
-		public void updateGame(Game game, Turn turn, int nationNo, String orderCharacter) {
+		public void updateGame(Game game, Turn turn, int nationNo, String orderCharacter, LocalDateTime dt) {
             Character c = (Character)turn.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", this.character);
             if (c == null) {
                 c = new Character();
                 c.setName(this.character);
                 c.setId(Character.getIdFromName(this.character));
                 c.setNationNo(0);
-                c.setInfoSource(new PdfTurnInfoSource(turn.getTurnNo(), nationNo));
+                c.setInfoSource(new PdfTurnInfoSource(turn.getTurnNo(), nationNo, dt));
                 turn.getContainer(TurnElementsEnum.Character).addItem(c);
             }
             c.setDeathReason(CharacterDeathReasonEnum.Assassinated);

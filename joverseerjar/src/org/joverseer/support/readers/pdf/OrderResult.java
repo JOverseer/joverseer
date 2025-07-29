@@ -1,5 +1,7 @@
 package org.joverseer.support.readers.pdf;
 
+import java.time.LocalDateTime;
+
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 
@@ -10,4 +12,7 @@ import org.joverseer.game.Turn;
  */
 public interface OrderResult {
     public void updateGame(Game game, Turn turn, int nationNo, String character);
+    
+    public void updateGame(Game game, Turn turn, LocalDateTime dt, int nationNo, String character);
+
 }

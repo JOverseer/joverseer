@@ -1,5 +1,8 @@
 package org.joverseer.support.readers.pdf;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+
 import org.joverseer.support.Container;
 
 /**
@@ -27,6 +30,16 @@ public class TurnInfo {
     String date;
     String season;
     String nationName;
+    LocalDateTime publishDate = null;
+    
+    public void setPublishDate(LocalDateTime dt) {
+    	this.publishDate = dt;
+    }
+    
+    public LocalDateTime getPublishDate() {
+    	if(this.publishDate == null) this.publishDate = LocalDateTime.of(2010, Month.JANUARY, 1, 0, 0);
+    	return this.publishDate;
+    }
 
     public String getAllegiance() {
         return this.allegiance;

@@ -1,5 +1,6 @@
 package org.joverseer.support.readers.pdf;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import org.joverseer.domain.Army;
@@ -119,7 +120,7 @@ public class CharacterWrapper {
 		this.artifacts = artifacts;
 	}
 
-	public void parsePopCenter(Game game, InfoSource infoSource, Character c) {
+	public void parsePopCenter(Game game, InfoSource infoSource, Character c, LocalDateTime dt) {
 		String orders1 = getCleanOrders();
 		if (orders1 == null)
 			return;
@@ -183,7 +184,7 @@ public class CharacterWrapper {
 			popCenter.setFortification(fort);
 			popCenter.setHarbor(HarborSizeEnum.none);
 			popCenter.setNationNo(nationNo);
-			popCenter.setInfoSource(new XmlTurnInfoSource(infoSource.getTurnNo(), 0));
+			popCenter.setInfoSource(new XmlTurnInfoSource(infoSource.getTurnNo(), 0, dt));
 			popCenter.setHexNo(c.getHexNo());
 			popCenter.setInformationSource(InformationSourceEnum.detailed);
 

@@ -1,6 +1,7 @@
 package org.joverseer.support.infoSources;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * Specialized info source for Pop Centers read from xml files
@@ -15,8 +16,8 @@ public class PopCenterXmlInfoSource extends XmlTurnInfoSource implements Seriali
 	int previousTurnNo;
 
     
-    public PopCenterXmlInfoSource(int turnNo, int nationNo, int previousTurnNo) {
-        super(turnNo, nationNo);
+    public PopCenterXmlInfoSource(int turnNo, int nationNo, int previousTurnNo, LocalDateTime dt) {
+        super(turnNo, nationNo, dt);
         this.previousTurnNo = previousTurnNo;
     }
 

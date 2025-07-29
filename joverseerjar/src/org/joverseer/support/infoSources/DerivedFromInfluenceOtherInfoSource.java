@@ -1,5 +1,7 @@
 package org.joverseer.support.infoSources;
 
+import java.time.LocalDateTime;
+
 /**
  * Information derived from an Influence Other order report. Contains:
  * - the name of the character
@@ -29,8 +31,8 @@ public class DerivedFromInfluenceOtherInfoSource extends PdfTurnInfoSource {
 		this.charName = charName;
 	}
 
-	public DerivedFromInfluenceOtherInfoSource(int turnNo, int nationNo, String charName, String loyaltyResult) {
-		super(turnNo, nationNo);
+	public DerivedFromInfluenceOtherInfoSource(int turnNo, int nationNo, LocalDateTime dt, String charName, String loyaltyResult) {
+		super(turnNo, nationNo, dt);
 		this.charName = charName;
 		this.loyaltyResult = loyaltyResult;
 	}

@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import org.apache.commons.digester.Digester;
@@ -97,7 +98,8 @@ public class TurnPdfReader implements Runnable {
     PDDocument document;
     boolean errorOccurred = false;
 	boolean turnWarining = false;
-    
+    LocalDateTime dt = null;
+	
     public TurnPdfReader(Game game, String filename) {
         this.game = game;
         this.filename = filename;
@@ -507,6 +509,10 @@ public class TurnPdfReader implements Runnable {
     	}
     }
     
+    public void setPublishDate(LocalDateTime dt) {
+    	this.dt = dt;
+    }
+    
     @Override
 	public void run() {
         try {
@@ -543,6 +549,7 @@ public class TurnPdfReader implements Runnable {
                     getMonitor().subTaskStarted("Parsing Pdf file...");
                 }
                 readFile();
+                this.turnInfo.setPublishDate(this.dt);
                 updateGame(this.game);
                 this.game.setCurrentTurn(this.game.getMaxTurn());
             }
@@ -1154,7 +1161,7 @@ public class TurnPdfReader implements Runnable {
 	            for (OrderResult orderResult : cw.getOrderResults()) {
 	                orderResult.updateGame(game1, this.turn, this.nationNo, cw.getName());
 	            }
-	            cw.parsePopCenter(game1, this.infoSource, c);
+	            cw.parsePopCenter(game1, this.infoSource, c, this.turnInfo.getPublishDate());
 	            cw.parseScoHexOrScoPop(game1, this.infoSource, c);
 	            cw.parseArmiesFromDivineNationForces(game1, this.infoSource, c);
 	            cw.parseDivineCharsWithForces(game1, this.infoSource, c);

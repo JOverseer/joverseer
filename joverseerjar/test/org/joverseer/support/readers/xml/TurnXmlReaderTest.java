@@ -1,6 +1,8 @@
 package org.joverseer.support.readers.xml;
 
 import static org.junit.Assert.assertEquals;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import org.joverseer.domain.HarborSizeEnum;
@@ -21,6 +23,7 @@ public class TurnXmlReaderTest {
 		//<PopCentre HexID="3028"><Name>Unknown (Map Icon)</Name><Nation>0</Nation><NationAllegience>0</NationAllegience><FortificationLevel>1</FortificationLevel><Size>3</Size><Dock>0</Dock><Capital>0</Capital><Loyalty>0</Loyalty><InformationSource>4</InformationSource><Hidden>0</Hidden></PopCentre>
 		//<PopCentre HexID="3028"><Name>Tir Ethraid</Name><Nation>18</Nation><NationAllegience>0</NationAllegience><FortificationLevel>1</FortificationLevel><Size>3</Size><Dock>0</Dock><Capital>0</Capital><Loyalty>0</Loyalty><InformationSource>1</InformationSource><Hidden>0</Hidden></PopCentre>
 		int turnNo=1, tiNationNo=1, nationCapitalHex=101;
+		LocalDateTime dt = LocalDateTime.now();
 		ArrayList<PopCenterWrapper> pcws = new ArrayList<PopCenterWrapper>();
 		ArrayList<PopulationCenter> currentNationPops = new ArrayList<PopulationCenter>();
 		GameMetadata gm = new GameMetadata();
@@ -60,7 +63,7 @@ public class TurnXmlReaderTest {
 		assertEquals("failed to set nation", 0 ,pcUnderTest.getNationNo().intValue());
 		assertEquals("failed to set name", "Unknown (Map Icon)" ,pcUnderTest.getName());
 		
-		TurnXmlReader.updateOldPCs(turn, turnNo, tiNationNo, nationCapitalHex, pcws, infoSourceT20, currentNationPops, gm);
+		TurnXmlReader.updateOldPCs(turn, turnNo, tiNationNo, nationCapitalHex, pcws, dt, infoSourceT20, currentNationPops, gm);
 		
 		pcUnderTest = turn.getPopCenter(pcT0.getHexNo());
 		assertEquals("failed to spot nation information", 18,pcUnderTest.getNationNo().intValue());
@@ -114,6 +117,7 @@ public class TurnXmlReaderTest {
 		pcwT2.setSize(PopulationCenterSizeEnum.village.getCode());
 		pcwT2.setDock(0);
 		pcws.add(pcwT2);
+		LocalDateTime dt = LocalDateTime.now();
 		
 		//check the mistaken mapping of XML InformationSource to enum is as expected.
 		// PopCenterWrapper.getPopulationCenter() is slight
@@ -121,7 +125,7 @@ public class TurnXmlReaderTest {
 		assertEquals("Information source of T1",InformationSourceEnum.limited, tempPC.getInformationSource());
 		tempPC = pcwT2.getPopulationCenter();
 		assertEquals("Information source of T2",InformationSourceEnum.exhaustive, tempPC.getInformationSource());
-		TurnXmlReader.updateOldPCs(turn, turnNo, tiNationNo, nationCapitalHex, pcws, infoSourceT8, currentNationPops, gm);
+		TurnXmlReader.updateOldPCs(turn, turnNo, tiNationNo, nationCapitalHex, pcws, dt, infoSourceT8, currentNationPops, gm);
 		
 		pcUnderTest = turn.getPopCenter(pcT0.getHexNo());
 		assertEquals("failed to remove dock", HarborSizeEnum.none ,pcUnderTest.getHarbor());
@@ -176,13 +180,15 @@ public class TurnXmlReaderTest {
 		pcwT2.setDock(0);
 		pcws.add(pcwT2);
 		
+		LocalDateTime dt = LocalDateTime.now();
+		
 		//check the mistaken mapping of XML InformationSource to enum is as expected.
 		// PopCenterWrapper.getPopulationCenter() is slight
 		//PopulationCenter tempPC = pcwT1.getPopulationCenter();
 		//assertEquals("Information source of T1",InformationSourceEnum.limited, tempPC.getInformationSource());
 		PopulationCenter tempPC = pcwT2.getPopulationCenter();
 		assertEquals("Information source of T2",InformationSourceEnum.exhaustive, tempPC.getInformationSource());
-		TurnXmlReader.updateOldPCs(turn, turnNo, tiNationNo, nationCapitalHex, pcws, infoSourceT8, currentNationPops, gm);
+		TurnXmlReader.updateOldPCs(turn, turnNo, tiNationNo, nationCapitalHex, pcws, dt, infoSourceT8, currentNationPops, gm);
 		
 		pcUnderTest = turn.getPopCenter(pcT0.getHexNo());
 		assertEquals("failed to keep dock", HarborSizeEnum.harbor ,pcUnderTest.getHarbor());

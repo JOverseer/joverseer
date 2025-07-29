@@ -1,5 +1,6 @@
 package org.joverseer.support.readers.xml;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -117,7 +118,7 @@ public class TurnXmlReader implements Runnable {
 			this.digester.addCallMethod("METurn/More/TurnInfo/XXMLVersion","setXxmlversion",0); //$NON-NLS-1$ //$NON-NLS-2$
 			// parse turn info attributes
 			SetNestedPropertiesRule snpr = new SetNestedPropertiesRule();
-			snpr = new SetNestedPropertiesRule(new String[] { "GameNo", "TurnNo", "NationNo", "GameType", "Secret", "DueDate", "Player", "Account", "NationCapitalHex" }, new String[] { "gameNo", "turnNo", "nationNo", "gameType", "securityCode", "dueDate", "playerName", "accountNo", "nationCapitalHex" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$ //$NON-NLS-17$ //$NON-NLS-18$
+			snpr = new SetNestedPropertiesRule(new String[] { "GameNo", "TurnNo", "NationNo", "GameType", "Secret", "DueDate", "Player", "Account", "NationCapitalHex", "DatePublished" }, new String[] { "gameNo", "turnNo", "nationNo", "gameType", "securityCode", "dueDate", "playerName", "accountNo", "nationCapitalHex", "datePublished" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$ //$NON-NLS-17$ //$NON-NLS-18$ //$NON-NLS-19$
 			snpr.setAllowUnknownChildElements(true);
 			this.digester.addRule("METurn/TurnInfo", snpr); //$NON-NLS-1$
 
@@ -261,6 +262,8 @@ public class TurnXmlReader implements Runnable {
 	}
 	// warning: updates newXMLFormat to true if a version is set.
 	public void updateGame(Game game1) throws Exception {
+		System.out.println(this.turnInfo.getDatePublished());
+		System.out.println(this.turnInfo.getDatePublishedDate());
 		if (this.turnInfo.getTurnNo() < game1.getMaxTurn()) {
 			getMonitor().subTaskStarted("File skipped, previous turn.");
 			
@@ -276,24 +279,7 @@ public class TurnXmlReader implements Runnable {
 		}
 		try {
 			this.turn = null;
-			System.out.println(this.turnInfo.turnNo + "sssss " + game1.getMaxTurn());
 			if (this.turnInfo.getTurnNo() == game1.getMaxTurn()){
-				
-//				if(this.turnInfo.getTurnNo() == 0 && ) {
-//					this.turn = new Turn();
-//					this.turn.setTurnNo(0);
-//					Turn lastTurn = game1.getTurn();
-//					TurnInitializer.initializeTurnWith(this.turn, lastTurn, this.game.getMetadata());
-//					
-//					this.game.getTurns().removeItem(this.game.getTurn(0));
-//					int newMaxTurn = -1;
-//					if (this.game.getCurrentTurn() == this.game.getMaxTurn()) {
-//						this.game.setCurrentTurn(newMaxTurn);
-//					}
-//					this.game.setMaxTurn(newMaxTurn);
-//
-//					game1.addTurn(this.turn);
-//				}
 				this.turn = game1.getTurn(game1.getMaxTurn());
 			} else {
 				this.turn = new Turn();
@@ -325,7 +311,7 @@ public class TurnXmlReader implements Runnable {
 			
 			this.turn.getPlayerInfo().addItem(pi);
 
-			this.infoSource = new XmlTurnInfoSource(this.turnInfo.getTurnNo(), this.turnInfo.getNationNo());
+			this.infoSource = new XmlTurnInfoSource(this.turnInfo.getTurnNo(), this.turnInfo.getNationNo(), this.turnInfo.getDatePublishedDate());
 			if (getMonitor() != null) {
 				getMonitor().worked(20);
 				getMonitor().subTaskStarted(Messages.getString("subTask.UpdatingNations")); //$NON-NLS-1$
@@ -371,7 +357,7 @@ public class TurnXmlReader implements Runnable {
 	}
 
 	private void updatePCs() throws Exception {
-		updateOldPCs(this.turn, this.turnInfo.getTurnNo(),this.turnInfo.getNationNo(), this.turnInfo.getNationCapitalHex(),this.turnInfo.getPopCentres().getItems(),this.infoSource, this.currentNationPops, this.game.getMetadata());
+		updateOldPCs(this.turn, this.turnInfo.getTurnNo(),this.turnInfo.getNationNo(), this.turnInfo.getNationCapitalHex(),this.turnInfo.getPopCentres().getItems(), this.turnInfo.getDatePublishedDate(), this.infoSource, this.currentNationPops, this.game.getMetadata());
 	}
 
 	private boolean willCharacterBeOverwrittenT0(Character c) {
@@ -1014,12 +1000,12 @@ public class TurnXmlReader implements Runnable {
 	public void setErrorOccured(boolean errorOccured) {
 		this.errorOccured = errorOccured;
 	}
-	public static void updateOldPCs(Turn turn,int turnNo,int tiNationNo,int nationCapitalHex,ArrayList<PopCenterWrapper> pcws,InfoSource infoSource,ArrayList<PopulationCenter> currentNationPops,GameMetadata gm) {
+	public static void updateOldPCs(Turn turn,int turnNo,int tiNationNo,int nationCapitalHex,ArrayList<PopCenterWrapper> pcws, LocalDateTime dt, InfoSource infoSource,ArrayList<PopulationCenter> currentNationPops,GameMetadata gm) {
 		// some workarounds here.
 		// Historically, XML with information source == 1 has been marked as exhaustive, which is not always correct.
 		Container<PopulationCenter> pcs = turn.getPopulationCenters();
 		for (PopCenterWrapper pcw : pcws) {
-			PopCenterXmlInfoSource pcInfoSource = new PopCenterXmlInfoSource(infoSource.getTurnNo(), tiNationNo, infoSource.getTurnNo());
+			PopCenterXmlInfoSource pcInfoSource = new PopCenterXmlInfoSource(infoSource.getTurnNo(), tiNationNo, infoSource.getTurnNo(), dt);
 			PopulationCenter newPc;
 			try {
 				newPc = pcw.getPopulationCenter();

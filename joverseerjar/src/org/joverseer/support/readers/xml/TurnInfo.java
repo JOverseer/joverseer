@@ -1,5 +1,8 @@
 package org.joverseer.support.readers.xml;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.joverseer.support.Container;
 
 /**
@@ -25,7 +28,9 @@ public class TurnInfo {
 	String securityCode;
 	String dueDate;
 	int nationCapitalHex;
+	String datePublished;
 
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	String xxmlversion;
 
 	public String getXxmlversion() {
@@ -154,6 +159,19 @@ public class TurnInfo {
 
 	public void setNationCapitalHex(int nationCapitalHex) {
 		this.nationCapitalHex = nationCapitalHex;
+	}
+	
+	public void setDatePublished(String datePublished) {
+		this.datePublished = datePublished;
+	}
+	
+	public String getDatePublished() {
+		return this.datePublished;
+	}
+	
+	public LocalDateTime getDatePublishedDate() {
+		LocalDateTime dateTime = LocalDateTime.parse(this.datePublished, this.formatter);
+		return dateTime;
 	}
 
 }

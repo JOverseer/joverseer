@@ -1,5 +1,7 @@
 package org.joverseer.support.infoSources;
 
+import java.time.LocalDateTime;
+
 /**
  * Information derived from combat narrations.
  * 
@@ -12,8 +14,8 @@ public class DerivedFromCombatNarrationInfoSource extends PdfTurnInfoSource {
 	private static final long serialVersionUID = -5626983766267969103L;
 	String lossesDescription;
 
-	public DerivedFromCombatNarrationInfoSource(int turnNo, int nationNo) {
-		super(turnNo, nationNo);
+	public DerivedFromCombatNarrationInfoSource(int turnNo, int nationNo, LocalDateTime dt) {
+		super(turnNo, nationNo, dt);
 	}
 
 	public String getLossesDescription() {

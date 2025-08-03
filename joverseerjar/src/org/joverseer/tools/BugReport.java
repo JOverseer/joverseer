@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,10 @@ import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
@@ -26,6 +30,7 @@ import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
 import org.joverseer.support.AppDataManager;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.command.GatherSupportDataCommand;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.progress.BusyIndicator;
 
@@ -45,11 +50,23 @@ public class BugReport {
 		this.addFiles = additionalFiles;
 	}
 	
-	public String zipReport(String message) throws IOException {
-		System.out.println(this.gameHolder.getFile());
+	public String zipReport(String message, boolean customSaveLocation) throws IOException {
 		List<File> filesToZip = collectFiles(message);
+		String fileName = "BUGREPORT-" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + ".zip";
 		
-		String path = AppDataManager.getPath() + File.separator + "BUGREPORT-" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + ".zip";
+		String path;
+		if(customSaveLocation) {
+			final JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+//			fileChooser.setApproveButtonText(getMessage("standardActions.SaveAs"));
+			fileChooser.setSelectedFile(new File(fileName));
+			if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) != JFileChooser.APPROVE_OPTION) {
+				return null;
+			}
+			path = fileChooser.getSelectedFile().getPath();
+		}
+		else path = AppDataManager.getPath() + File.separator + fileName;
+		
         final FileOutputStream fos = new FileOutputStream(path);
         ZipOutputStream zipOut = new ZipOutputStream(fos);
         
@@ -80,6 +97,7 @@ public class BugReport {
 	}
 	
 	private List<File> collectFiles(String msgContent){
+		List<File> filesToSubmit = new ArrayList();
 
 		String logFile = null;
 		try {
@@ -90,30 +108,46 @@ public class BugReport {
 				if (a1 instanceof org.apache.log4j.FileAppender) {
 					org.apache.log4j.FileAppender fileAppender = (org.apache.log4j.FileAppender)a1;
 					logFile = (fileAppender.getFile());
+					filesToSubmit.add(new File(logFile));
 				}
 			}
 		} catch (Exception e) {
-			
+			// TODO Auto-generated catch block
 		}
 		
-		File msgFile = new File(AppDataManager.getPath() + File.separator + "report.txt");
+		if(!msgContent.equals(null)) {
+			File msgFile = new File(AppDataManager.getPath() + File.separator + "report.txt");
+			try {
+				FileWriter wr = new FileWriter(msgFile);
+				wr.write(msgContent);
+				wr.flush();
+				wr.close();
+				filesToSubmit.add(msgFile);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		File systemEnvFile = new File(AppDataManager.getPath() + File.separator + "systemEnv.txt");
 		try {
-			FileWriter wr = new FileWriter(msgFile);
-			wr.write(msgContent);
+			FileWriter wr = new FileWriter(systemEnvFile);
+			wr.write(GatherSupportDataCommand.SystemProperties());
 			wr.flush();
 			wr.close();
-		} catch (IOException e) {
+			filesToSubmit.add(systemEnvFile);
+		} catch (IOException e){
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		try {
 			File f = new File(this.gameHolder.getFile());
-			return Arrays.asList(msgFile, new File(logFile));
-			
+			filesToSubmit.add(f);
 		}catch(NullPointerException e){
-			return Arrays.asList(msgFile, new File(logFile));
+			// TODO Auto-generated catch block
 		}
+		return filesToSubmit;
 		
 //		if (this.gameHolder == null) return Arrays.asList(msgFile, new File(logFile));
 //		

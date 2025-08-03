@@ -15,11 +15,23 @@
  */
 package org.joverseer.ui;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.UIManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,7 +39,12 @@ import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
+import org.joverseer.tools.BugReport;
+import org.joverseer.ui.views.Messages;
 import org.springframework.richclient.application.ApplicationLauncher;
+import org.springframework.richclient.command.AbstractCommand;
+import org.springframework.richclient.command.ActionCommand;
+import org.springframework.richclient.dialog.ApplicationDialog;
 
 import com.jidesoft.plaf.LookAndFeelFactory;
 /**
@@ -48,7 +65,6 @@ public class JOverseerJIDEClient {
 	public static String[] cmdLineArgs;
 
 	private static final Log _logger = LogFactory.getLog(JOverseerJIDEClient.class);
-
 	/**
 	 * Main routine for the simple sample application.
 	 * 
@@ -57,6 +73,9 @@ public class JOverseerJIDEClient {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws Exception {
 		try {
+			Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
+			    showErrorDialog(throwable);
+			});
 			
 			SimpleDateFormat format = new SimpleDateFormat("M-d_HHmmss");
 			FileAppender fileAppender = new FileAppender(new SimpleLayout(), getLogFilename());
@@ -188,4 +207,70 @@ public class JOverseerJIDEClient {
 			_logger.error("Exception on AWT Event Thread", e);
 		}
 	}
+	
+    public static void showErrorDialog(Throwable t) {
+		ApplicationDialog dialog = new ApplicationDialog() {
+			ActionCommand saveDiagnosticsCommand = new ActionCommand("saveDiagnostics") {
+
+				@Override
+				protected void doExecuteCommand() {
+					// TODO Auto-generated method stub
+					BugReport br = new BugReport();
+					try {
+						String location = br.zipReport(getStackTrace(t), true);
+						if(!location.equals(null)) {
+					        JOptionPane.showMessageDialog(
+					            null,
+					            new JLabel(Messages.getString("diagnosticFile.success")),
+					            Messages.getString("diagnosticFile.success.title"),
+					            JOptionPane.INFORMATION_MESSAGE
+					        );
+						}
+					} catch (IOException e) {
+				        JOptionPane.showMessageDialog(
+				            null,
+				            new JLabel(Messages.getString("diagnosticFile.fail")),
+				            Messages.getString("jOverseerCrashOccurred.message"),
+				            JOptionPane.ERROR_MESSAGE
+				        );
+					}
+				}
+			};
+
+			@Override
+			protected JComponent createDialogContentPane() {
+				JTextArea area = new JTextArea(Messages.getString("jOverseerCrashOccurred.message"));
+				area.setEditable(false);
+				area.setWrapStyleWord(true);
+				area.setCaretColor(UIManager.getColor("Panel.background"));
+				return area;
+			}
+
+			@Override
+			protected boolean onFinish() {
+				// TODO Auto-generated method stub
+				return true;
+			}
+			
+			protected ActionCommand getSaveDiagnostics() {
+				return this.saveDiagnosticsCommand;
+			}
+			
+            @Override
+			protected Object[] getCommandGroupMembers() {
+                return new AbstractCommand[] {
+                	getSaveDiagnostics(),getFinishCommand()
+                };
+            }
+		};
+		dialog.setTitle(Messages.getString("standardMessages.Error.title"));
+		dialog.showDialog();
+    }
+    
+    private static String getStackTrace(Throwable t) {
+    	StringWriter sw = new StringWriter();
+    	t.printStackTrace(new PrintWriter(sw));
+    	String sStackTrace = sw.toString();
+        return sStackTrace;
+    }
 }

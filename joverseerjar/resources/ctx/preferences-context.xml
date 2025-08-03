@@ -344,6 +344,41 @@
 						</list>
 					</property>
 				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>currentHexView.sortArmies</value>
+					</property>
+					<property name="description">
+						<value>Sort Armies By</value>
+					</property>
+					<property name="group">
+						<value>Display.Current Hex View</value>
+					</property>
+					<property name="defaultValue">
+						<value>allegianceName</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>allegianceName</value>
+								</property>
+								<property name="description">
+									<value>Allegiance, Name</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>allegianceNationName</value>
+								</property>
+								<property name="description">
+									<value>Allegiance, Nation, Name</value>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
 
 
 				<bean class="org.joverseer.preferences.Preference">

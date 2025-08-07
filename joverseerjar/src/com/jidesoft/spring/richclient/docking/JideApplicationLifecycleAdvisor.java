@@ -241,6 +241,10 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 	@Override
 	public void onWindowOpened(ApplicationWindow arg0) {
 		super.onWindowOpened(arg0);
+		
+		//Disables crash-catcher
+		Thread.setDefaultUncaughtExceptionHandler(null);
+		
 		JOApplication.publishEvent(LifecycleEventsEnum.ThemeChangeEvent, this);
 		
 		String pval = PreferenceRegistry.instance().getPreferenceValue("UI.LookAndFeel");
@@ -339,7 +343,6 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 		
 		boolean homePage = true;
 		for (String c : JOverseerJIDEClient.cmdLineArgs) {
-			System.out.println(c);
 			if(c.equals("-disableHome")) {
 				homePage = false;
 				break;

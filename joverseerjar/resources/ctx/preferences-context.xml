@@ -415,7 +415,7 @@
 						</list>
 					</property>
 				</bean>
-								
+			
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>map.harbourSize</value>
@@ -429,6 +429,9 @@
 					<property name="defaultValue">
 						<value>0</value>
 					</property>
+					<property name="type">
+						<value>slider</value>
+					</property>
 					<property name="domain">
 						<list>
 							<bean class="org.joverseer.preferences.PreferenceValue">
@@ -441,42 +444,40 @@
 							</bean>
 							<bean class="org.joverseer.preferences.PreferenceValue">
 								<property name="key">
-									<value>-1</value>
+									<value>4</value>
 								</property>
 								<property name="description">
-									<value>-1</value>
+									<value>4</value>
 								</property>
 							</bean>
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.pcNameSize</value>
+					</property>
+					<property name="description">
+						<value>Size of PC Names</value>
+					</property>
+					<property name="group">
+						<value>Display.Map Scale</value>
+					</property>
+					<property name="defaultValue">
+						<value>0</value>
+					</property>
+					<property name="type">
+						<value>slider</value>
+					</property>
+					<property name="domain">
+						<list>
 							<bean class="org.joverseer.preferences.PreferenceValue">
 								<property name="key">
-									<value>0</value>
+									<value>-2</value>
 								</property>
 								<property name="description">
-									<value>0</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>1</value>
-								</property>
-								<property name="description">
-									<value>+1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>2</value>
-								</property>
-								<property name="description">
-									<value>+2</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>3</value>
-								</property>
-								<property name="description">
-									<value>+3</value>
+									<value>-2</value>
 								</property>
 							</bean>
 							<bean class="org.joverseer.preferences.PreferenceValue">
@@ -484,7 +485,7 @@
 									<value>4</value>
 								</property>
 								<property name="description">
-									<value>+4</value>
+									<value>4</value>
 								</property>
 							</bean>
 						</list>
@@ -504,6 +505,9 @@
 					<property name="defaultValue">
 						<value>0</value>
 					</property>
+					<property name="type">
+						<value>slider</value>
+					</property>
 					<property name="domain">
 						<list>
 							<bean class="org.joverseer.preferences.PreferenceValue">
@@ -516,50 +520,10 @@
 							</bean>
 							<bean class="org.joverseer.preferences.PreferenceValue">
 								<property name="key">
-									<value>-1</value>
-								</property>
-								<property name="description">
-									<value>-1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>0</value>
-								</property>
-								<property name="description">
-									<value>0</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>1</value>
-								</property>
-								<property name="description">
-									<value>+1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>2</value>
-								</property>
-								<property name="description">
-									<value>+2</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>3</value>
-								</property>
-								<property name="description">
-									<value>+3</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
 									<value>4</value>
 								</property>
 								<property name="description">
-									<value>+4</value>
+									<value>4</value>
 								</property>
 							</bean>
 						</list>
@@ -579,6 +543,9 @@
 					<property name="defaultValue">
 						<value>0</value>
 					</property>
+					<property name="type">
+						<value>slider</value>
+					</property>
 					<property name="domain">
 						<list>
 							<bean class="org.joverseer.preferences.PreferenceValue">
@@ -591,50 +558,10 @@
 							</bean>
 							<bean class="org.joverseer.preferences.PreferenceValue">
 								<property name="key">
-									<value>-1</value>
-								</property>
-								<property name="description">
-									<value>-1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>0</value>
-								</property>
-								<property name="description">
-									<value>0</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>1</value>
-								</property>
-								<property name="description">
-									<value>+1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>2</value>
-								</property>
-								<property name="description">
-									<value>+2</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>3</value>
-								</property>
-								<property name="description">
-									<value>+3</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
 									<value>4</value>
 								</property>
 								<property name="description">
-									<value>+4</value>
+									<value>4</value>
 								</property>
 							</bean>
 						</list>
@@ -654,6 +581,9 @@
 					<property name="defaultValue">
 						<value>0</value>
 					</property>
+					<property name="type">
+						<value>slider</value>
+					</property>
 					<property name="domain">
 						<list>
 							<bean class="org.joverseer.preferences.PreferenceValue">
@@ -666,50 +596,10 @@
 							</bean>
 							<bean class="org.joverseer.preferences.PreferenceValue">
 								<property name="key">
-									<value>-1</value>
-								</property>
-								<property name="description">
-									<value>-1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>0</value>
-								</property>
-								<property name="description">
-									<value>0</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>1</value>
-								</property>
-								<property name="description">
-									<value>+1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>2</value>
-								</property>
-								<property name="description">
-									<value>+2</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>3</value>
-								</property>
-								<property name="description">
-									<value>+3</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
 									<value>4</value>
 								</property>
 								<property name="description">
-									<value>+4</value>
+									<value>4</value>
 								</property>
 							</bean>
 						</list>
@@ -730,6 +620,9 @@
 					<property name="defaultValue">
 						<value>0</value>
 					</property>
+					<property name="type">
+						<value>slider</value>
+					</property>
 					<property name="domain">
 						<list>
 							<bean class="org.joverseer.preferences.PreferenceValue">
@@ -742,50 +635,10 @@
 							</bean>
 							<bean class="org.joverseer.preferences.PreferenceValue">
 								<property name="key">
-									<value>-1</value>
-								</property>
-								<property name="description">
-									<value>-1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>0</value>
-								</property>
-								<property name="description">
-									<value>0</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>1</value>
-								</property>
-								<property name="description">
-									<value>+1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>2</value>
-								</property>
-								<property name="description">
-									<value>+2</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>3</value>
-								</property>
-								<property name="description">
-									<value>+3</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
 									<value>4</value>
 								</property>
 								<property name="description">
-									<value>+4</value>
+									<value>4</value>
 								</property>
 							</bean>
 						</list>
@@ -805,6 +658,9 @@
 					<property name="defaultValue">
 						<value>0</value>
 					</property>
+					<property name="type">
+						<value>slider</value>
+					</property>
 					<property name="domain">
 						<list>
 							<bean class="org.joverseer.preferences.PreferenceValue">
@@ -817,50 +673,10 @@
 							</bean>
 							<bean class="org.joverseer.preferences.PreferenceValue">
 								<property name="key">
-									<value>-1</value>
-								</property>
-								<property name="description">
-									<value>-1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>0</value>
-								</property>
-								<property name="description">
-									<value>0</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>1</value>
-								</property>
-								<property name="description">
-									<value>+1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>2</value>
-								</property>
-								<property name="description">
-									<value>+2</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>3</value>
-								</property>
-								<property name="description">
-									<value>+3</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
 									<value>4</value>
 								</property>
 								<property name="description">
-									<value>+4</value>
+									<value>4</value>
 								</property>
 							</bean>
 						</list>
@@ -880,6 +696,9 @@
 					<property name="defaultValue">
 						<value>0</value>
 					</property>
+					<property name="type">
+						<value>slider</value>
+					</property>
 					<property name="domain">
 						<list>
 							<bean class="org.joverseer.preferences.PreferenceValue">
@@ -892,50 +711,10 @@
 							</bean>
 							<bean class="org.joverseer.preferences.PreferenceValue">
 								<property name="key">
-									<value>-1</value>
-								</property>
-								<property name="description">
-									<value>-1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>0</value>
-								</property>
-								<property name="description">
-									<value>0</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>1</value>
-								</property>
-								<property name="description">
-									<value>+1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>2</value>
-								</property>
-								<property name="description">
-									<value>+2</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>3</value>
-								</property>
-								<property name="description">
-									<value>+3</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
 									<value>4</value>
 								</property>
 								<property name="description">
-									<value>+4</value>
+									<value>4</value>
 								</property>
 							</bean>
 						</list>
@@ -955,6 +734,9 @@
 					<property name="defaultValue">
 						<value>0</value>
 					</property>
+					<property name="type">
+						<value>slider</value>
+					</property>
 					<property name="domain">
 						<list>
 							<bean class="org.joverseer.preferences.PreferenceValue">
@@ -967,50 +749,10 @@
 							</bean>
 							<bean class="org.joverseer.preferences.PreferenceValue">
 								<property name="key">
-									<value>-1</value>
-								</property>
-								<property name="description">
-									<value>-1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>0</value>
-								</property>
-								<property name="description">
-									<value>0</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>1</value>
-								</property>
-								<property name="description">
-									<value>+1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>2</value>
-								</property>
-								<property name="description">
-									<value>+2</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>3</value>
-								</property>
-								<property name="description">
-									<value>+3</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
 									<value>4</value>
 								</property>
 								<property name="description">
-									<value>+4</value>
+									<value>4</value>
 								</property>
 							</bean>
 						</list>
@@ -1030,6 +772,9 @@
 					<property name="defaultValue">
 						<value>0</value>
 					</property>
+					<property name="type">
+						<value>slider</value>
+					</property>
 					<property name="domain">
 						<list>
 							<bean class="org.joverseer.preferences.PreferenceValue">
@@ -1042,50 +787,10 @@
 							</bean>
 							<bean class="org.joverseer.preferences.PreferenceValue">
 								<property name="key">
-									<value>-1</value>
-								</property>
-								<property name="description">
-									<value>-1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>0</value>
-								</property>
-								<property name="description">
-									<value>0</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>1</value>
-								</property>
-								<property name="description">
-									<value>+1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>2</value>
-								</property>
-								<property name="description">
-									<value>+2</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>3</value>
-								</property>
-								<property name="description">
-									<value>+3</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
 									<value>4</value>
 								</property>
 								<property name="description">
-									<value>+4</value>
+									<value>4</value>
 								</property>
 							</bean>
 						</list>
@@ -1105,6 +810,9 @@
 					<property name="defaultValue">
 						<value>0</value>
 					</property>
+					<property name="type">
+						<value>slider</value>
+					</property>
 					<property name="domain">
 						<list>
 							<bean class="org.joverseer.preferences.PreferenceValue">
@@ -1117,50 +825,10 @@
 							</bean>
 							<bean class="org.joverseer.preferences.PreferenceValue">
 								<property name="key">
-									<value>-1</value>
-								</property>
-								<property name="description">
-									<value>-1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>0</value>
-								</property>
-								<property name="description">
-									<value>0</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>1</value>
-								</property>
-								<property name="description">
-									<value>+1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>2</value>
-								</property>
-								<property name="description">
-									<value>+2</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>3</value>
-								</property>
-								<property name="description">
-									<value>+3</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
 									<value>4</value>
 								</property>
 								<property name="description">
-									<value>+4</value>
+									<value>4</value>
 								</property>
 							</bean>
 						</list>
@@ -1180,6 +848,9 @@
 					<property name="defaultValue">
 						<value>0</value>
 					</property>
+					<property name="type">
+						<value>slider</value>
+					</property>
 					<property name="domain">
 						<list>
 							<bean class="org.joverseer.preferences.PreferenceValue">
@@ -1192,56 +863,15 @@
 							</bean>
 							<bean class="org.joverseer.preferences.PreferenceValue">
 								<property name="key">
-									<value>-1</value>
-								</property>
-								<property name="description">
-									<value>-1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>0</value>
-								</property>
-								<property name="description">
-									<value>0</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>1</value>
-								</property>
-								<property name="description">
-									<value>+1</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>2</value>
-								</property>
-								<property name="description">
-									<value>+2</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
-									<value>3</value>
-								</property>
-								<property name="description">
-									<value>+3</value>
-								</property>
-							</bean>
-							<bean class="org.joverseer.preferences.PreferenceValue">
-								<property name="key">
 									<value>4</value>
 								</property>
 								<property name="description">
-									<value>+4</value>
+									<value>4</value>
 								</property>
 							</bean>
 						</list>
 					</property>
 				</bean>
-
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>map.hiddenPops</value>

@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -114,6 +115,16 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 					check.setSelected(reg.getPreferenceValue(p.getKey()).equals("yes"));
 					this.components.put(p.getKey(), check);
 					tlb.cell(check);
+				} else if (p.getType().equals(Preference.TYPE_SLIDER)) {
+					int min = Integer.parseInt((p.getDomain()[0]).getDescription());
+					int max = Integer.parseInt((p.getDomain()[1]).getDescription());
+					int currentValue = Integer.parseInt(reg.getPreferenceValue(p.getKey()));
+					JSlider slider = new JSlider(min, max, currentValue);
+					slider.setMajorTickSpacing(1);
+					slider.setPaintTicks(true);
+					slider.setPaintLabels(true);
+					this.components.put(p.getKey(), slider);
+					tlb.cell(slider);
 				} else if (p.getType().equals(Preference.TYPE_LAF)) {
 					if (this.enablePlaf) {
 						JComboBox combo = new JComboBox();
@@ -187,6 +198,9 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 				} else {
 					reg.setPreferenceValue(p.getKey(), "no");
 				}
+			} else if (p.getType().equals(Preference.TYPE_SLIDER)) {
+				JSlider slider = (JSlider) c;
+				reg.setPreferenceValue(p.getKey(), Integer.toString(slider.getValue()));
 			} else if (p.getType().equals(Preference.TYPE_LAF)) {
 				if (this.enablePlaf) {
 					JComboBox combo = (JComboBox) c;

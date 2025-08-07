@@ -37,7 +37,7 @@ import org.springframework.richclient.progress.BusyIndicator;
 public class BugReport {
 	GameHolder gameHolder;
 	String emailAddress;
-	List<File> addFiles;
+	List<File> addFiles;		//not implemented
 	
 	public BugReport() {
 		this.gameHolder = null;
@@ -48,6 +48,12 @@ public class BugReport {
 		this.gameHolder = gh;
 		this.emailAddress = email;
 		this.addFiles = additionalFiles;
+	}
+	
+	public BugReport(GameHolder gh) {
+		this.gameHolder = gh;
+		this.addFiles = null;
+		this.emailAddress = null;
 	}
 	
 	public String zipReport(String message, boolean customSaveLocation) throws IOException {
@@ -115,7 +121,7 @@ public class BugReport {
 			// TODO Auto-generated catch block
 		}
 		
-		if(!msgContent.equals(null)) {
+		if(msgContent != null) {
 			File msgFile = new File(AppDataManager.getPath() + File.separator + "report.txt");
 			try {
 				FileWriter wr = new FileWriter(msgFile);
@@ -146,6 +152,7 @@ public class BugReport {
 			filesToSubmit.add(f);
 		}catch(NullPointerException e){
 			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return filesToSubmit;
 		

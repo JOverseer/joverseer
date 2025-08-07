@@ -15,7 +15,15 @@
  */
 package org.joverseer.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Dialog;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,12 +34,17 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,6 +54,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.joverseer.tools.BugReport;
 import org.joverseer.ui.views.Messages;
+import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationLauncher;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
@@ -209,62 +223,61 @@ public class JOverseerJIDEClient {
 	}
 	
     public static void showErrorDialog(Throwable t) {
-		ApplicationDialog dialog = new ApplicationDialog() {
-			ActionCommand saveDiagnosticsCommand = new ActionCommand("saveDiagnostics") {
-
-				@Override
-				protected void doExecuteCommand() {
-					// TODO Auto-generated method stub
-					BugReport br = new BugReport();
-					try {
-						String location = br.zipReport(getStackTrace(t), true);
-						if(!location.equals(null)) {
-					        JOptionPane.showMessageDialog(
-					            null,
-					            new JLabel(Messages.getString("diagnosticFile.success")),
-					            Messages.getString("diagnosticFile.success.title"),
-					            JOptionPane.INFORMATION_MESSAGE
-					        );
-						}
-					} catch (IOException e) {
+    	t.printStackTrace();
+    	JDialog dialog = new JDialog(null, Messages.getString("standardMessages.Error.title"), Dialog.ModalityType.APPLICATION_MODAL);
+    	
+    	JPanel panel = new JPanel(new BorderLayout(0, 16));
+    	
+		JTextArea area = new JTextArea(Messages.getString("jOverseerCrashOccurred.message"));
+		area.setEditable(false);
+		area.setWrapStyleWord(true);
+		area.setCaretColor(UIManager.getColor("Panel.background"));
+		panel.add(area, BorderLayout.CENTER);
+		
+		JPanel buttonPannel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		panel.add(buttonPannel, BorderLayout.PAGE_END);
+		
+		JButton createFile = new JButton(Messages.getString("saveDiagnostics.label"));
+		createFile.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				BugReport br = new BugReport();
+				try {
+					String location = br.zipReport(getStackTrace(t), true);
+					if(location != null) {
 				        JOptionPane.showMessageDialog(
 				            null,
-				            new JLabel(Messages.getString("diagnosticFile.fail")),
-				            Messages.getString("jOverseerCrashOccurred.message"),
-				            JOptionPane.ERROR_MESSAGE
+				            new JLabel(Messages.getString("diagnosticFile.success")),
+				            Messages.getString("diagnosticFile.success.title"),
+				            JOptionPane.INFORMATION_MESSAGE
 				        );
+				        Application.instance().close();
 					}
+				} catch (IOException e2) {
+			        JOptionPane.showMessageDialog(
+			            null,
+			            new JLabel(Messages.getString("diagnosticFile.fail")),
+			            Messages.getString("jOverseerCrashOccurred.message"),
+			            JOptionPane.ERROR_MESSAGE
+			        );
 				}
-			};
-
+			}
+		});
+		
+		buttonPannel.add(createFile);
+		
+		dialog.addWindowListener(new WindowAdapter() {
 			@Override
-			protected JComponent createDialogContentPane() {
-				JTextArea area = new JTextArea(Messages.getString("jOverseerCrashOccurred.message"));
-				area.setEditable(false);
-				area.setWrapStyleWord(true);
-				area.setCaretColor(UIManager.getColor("Panel.background"));
-				return area;
+			public void windowClosed(WindowEvent e) {
+				Application.instance().close();
 			}
-
-			@Override
-			protected boolean onFinish() {
-				// TODO Auto-generated method stub
-				return true;
-			}
-			
-			protected ActionCommand getSaveDiagnostics() {
-				return this.saveDiagnosticsCommand;
-			}
-			
-            @Override
-			protected Object[] getCommandGroupMembers() {
-                return new AbstractCommand[] {
-                	getSaveDiagnostics(),getFinishCommand()
-                };
-            }
-		};
-		dialog.setTitle(Messages.getString("standardMessages.Error.title"));
-		dialog.showDialog();
+		});
+		
+		dialog.setContentPane(panel);
+		dialog.pack();
+		dialog.setLocationRelativeTo(null);
+		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		dialog.setVisible(true);
     }
     
     private static String getStackTrace(Throwable t) {

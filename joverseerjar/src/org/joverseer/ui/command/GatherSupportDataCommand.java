@@ -12,6 +12,7 @@ import java.util.prefs.Preferences;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -24,6 +25,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.tools.BugReport;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.ExportDiploForm;
+import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationDescriptor;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
@@ -34,6 +36,7 @@ public class GatherSupportDataCommand extends ActionCommand {
 	protected static final String OPEN_LOG_COMMAND_ID = "openLogCommand";
 	protected static final String OPEN_BUG_REPORT_COMMAND_ID = "openBugReportCommand";
 	protected static final String SEND_BUG_REPORT_COMMAND_ID = "sendBugReportCommand";
+	protected static final String SAVE_DIAGNOSTIC_FILE_COMMAND_ID = "saveDiagnostics";
 	static String EOL="\r\n";
 	JTextArea textArea;
 	GameHolder gameHolder;
@@ -52,10 +55,6 @@ public class GatherSupportDataCommand extends ActionCommand {
 
 	@Override
 	protected void doExecuteCommand() {
-//		ApplicationDescriptor descriptor = JOApplication.getApplicationDescriptor();
-
-//		String report = "Version:" +descriptor.getVersion() + GatherSupportDataCommand.EOL
-//				+ SystemProperties();
 		String report = SystemProperties();
 		this.textArea = new JTextArea();
 		this.textArea.append(report);
@@ -98,6 +97,32 @@ public class GatherSupportDataCommand extends ActionCommand {
 				}
         		
         	};
+        	ActionCommand saveDiagnosticsFile = new ActionCommand(SAVE_DIAGNOSTIC_FILE_COMMAND_ID) {
+
+				@Override
+				protected void doExecuteCommand() {
+					BugReport br = new BugReport(GatherSupportDataCommand.this.gameHolder);
+					try {
+						String location = br.zipReport(null, true);
+						if(location != null) {
+					        JOptionPane.showMessageDialog(
+					            null,
+					            new JLabel(Messages.getString("diagnosticFile.success")),
+					            Messages.getString("diagnosticFile.success.title"),
+					            JOptionPane.INFORMATION_MESSAGE
+					        );
+						}
+					} catch (IOException e2) {
+				        JOptionPane.showMessageDialog(
+				            null,
+				            new JLabel(Messages.getString("diagnosticFile.fail")),
+				            Messages.getString("jOverseerCrashOccurred.message"),
+				            JOptionPane.ERROR_MESSAGE
+				        );
+					}
+				}
+        		
+        	};
         	
             @Override
 			protected boolean onFinish() {
@@ -108,7 +133,7 @@ public class GatherSupportDataCommand extends ActionCommand {
 			protected Object[] getCommandGroupMembers() {
                 return new AbstractCommand[] {
                 	//getBugReportCommand(),getOpenLogCommand(),getFinishCommand()
-                	getOpenLogCommand(),getFinishCommand()
+                	getSaveDiagnosticFileCommand(),getOpenLogCommand(),getFinishCommand()
                 };
             }
 
@@ -121,6 +146,9 @@ public class GatherSupportDataCommand extends ActionCommand {
 			}
 			ActionCommand getBugReportCommand() {
 				return this.openBugReportCommand;
+			}
+			ActionCommand getSaveDiagnosticFileCommand() {
+				return this.saveDiagnosticsFile;
 			}
         };
         dialog.setTitle(Messages.getString("GatherSupportDataCommand.title"));

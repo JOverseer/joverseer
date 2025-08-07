@@ -140,9 +140,11 @@ public class PopulationCenterRenderer extends ImageRenderer {
     }
     
     private void drawString(Graphics2D g, String str, Point p1, Point p2) {
+    	String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.pcNameSize");
+    	int mod = Integer.parseInt(pval2);
         // calculate and prepare character name rendering
         Point p = new Point((p1.x + p2.x)/2, (p1.y + p2.y)/2);
-        Font f = GraphicUtils.getFont("Microsoft Sans Serif", Font.PLAIN, 9);
+        Font f = GraphicUtils.getFont("Microsoft Sans Serif", Font.PLAIN, 9 + mod);
         FontMetrics fm = g.getFontMetrics(f);
         Rectangle2D bb = fm.getStringBounds(str, g);
         Rectangle b = new Rectangle(((Double)bb.getX()).intValue(),

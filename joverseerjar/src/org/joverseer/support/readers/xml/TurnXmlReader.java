@@ -48,6 +48,7 @@ import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.infoSources.XmlExtraTurnInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.tools.nationMessages.NationMessageParser;
+import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.views.Messages;
 import org.springframework.richclient.progress.ProgressMonitor;
 
@@ -78,6 +79,7 @@ public class TurnXmlReader implements Runnable {
 	ProgressMonitor monitor;
 
 	boolean errorOccured = false;
+	public boolean turnWarning = false;
 
 	public TurnXmlReader(Game game, String filename) {
 		this.game = game;
@@ -253,13 +255,16 @@ public class TurnXmlReader implements Runnable {
 			this.game.setCurrentTurn(this.game.getMaxTurn());
 			Thread.sleep(100);
 		} catch (Exception exc) {
-			this.errorOccured = true;
+			if(exc.getMessage().equals(Messages.getString("subTask.NoPastTurnImport"))) this.turnWarning = true;
+			else this.errorOccured = true;
 		}
 	}
 	// warning: updates newXMLFormat to true if a version is set.
 	public void updateGame(Game game1) throws Exception {
 		if (this.turnInfo.getTurnNo() < game1.getMaxTurn()) {
-			// todo fix
+			getMonitor().subTaskStarted("File skipped, previous turn.");
+			
+			getMonitor().worked(100);
 			throw new Exception(Messages.getString("subTask.NoPastTurnImport")); //$NON-NLS-1$
 		}
 		if (this.turnInfo.getXxmlversion() != null) {
@@ -271,13 +276,31 @@ public class TurnXmlReader implements Runnable {
 		}
 		try {
 			this.turn = null;
-			if (this.turnInfo.getTurnNo() == game1.getMaxTurn()) {
+			System.out.println(this.turnInfo.turnNo + "sssss " + game1.getMaxTurn());
+			if (this.turnInfo.getTurnNo() == game1.getMaxTurn()){
+				
+//				if(this.turnInfo.getTurnNo() == 0 && ) {
+//					this.turn = new Turn();
+//					this.turn.setTurnNo(0);
+//					Turn lastTurn = game1.getTurn();
+//					TurnInitializer.initializeTurnWith(this.turn, lastTurn, this.game.getMetadata());
+//					
+//					this.game.getTurns().removeItem(this.game.getTurn(0));
+//					int newMaxTurn = -1;
+//					if (this.game.getCurrentTurn() == this.game.getMaxTurn()) {
+//						this.game.setCurrentTurn(newMaxTurn);
+//					}
+//					this.game.setMaxTurn(newMaxTurn);
+//
+//					game1.addTurn(this.turn);
+//				}
 				this.turn = game1.getTurn(game1.getMaxTurn());
 			} else {
 				this.turn = new Turn();
 				this.turn.setTurnNo(this.turnInfo.getTurnNo());
 				Turn lastTurn = game1.getTurn();
 				TurnInitializer.initializeTurnWith(this.turn, lastTurn, this.game.getMetadata());
+				
 				game1.addTurn(this.turn);
 			}
 			this.currentNationPops = new ArrayList<PopulationCenter>();

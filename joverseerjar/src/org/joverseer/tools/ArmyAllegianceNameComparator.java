@@ -3,10 +3,12 @@ package org.joverseer.tools;
 import java.util.Comparator;
 
 import org.joverseer.domain.Army;
+import org.joverseer.domain.Character;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 
 /**
@@ -20,11 +22,30 @@ public class ArmyAllegianceNameComparator implements Comparator<Army> {
 	@Override
 	public int compare(Army c1, Army c2) {
 		int i = compareAllegiance(c1, c2);
-		if (i == 0) {
-			return c1.getCommanderName().compareTo(c2.getCommanderName());
+		if (i != 0) {
+			return i;
+		}		
+		
+		String pval = PreferenceRegistry.instance().getPreferenceValue("currentHexView.sortArmies");
+		if (pval != null && pval.equals("allegianceNationName")) {
+			i = compareNation(c1, c2);
+			if (i != 0)
+				return i;
 		}
-		return i;
+		
+		return c1.getCommanderName().compareTo(c2.getCommanderName());
 	}
+	
+	private int compareNation(Army c1, Army c2) {
+		if (c1.getNationNo() == null || c1.getNationNo() == 0) {
+			return 1;
+		}
+		if (c2.getNationNo() == null || c2.getNationNo() == 0) {
+			return -1;
+		}
+		return c1.getNationNo() - c2.getNationNo();
+	}
+
 
 	private int compareAllegiance(Army c1, Army c2) {
 

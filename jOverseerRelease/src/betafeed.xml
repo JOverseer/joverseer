@@ -6,7 +6,24 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
-						<item>
+		<item>
+			<title>1.19.01-rc3</title>
+			<pubDate>8 August 2025</pubDate>
+			<description>
+VERSION 1.19.01-rc3
+---------------
+	* Fix Artifact typos + changing secondary power of Duv Ho'ath in CMF
+	* Fix recent games not updating with the delete old recent games preference on
+	* Crash report window for when JOverseer crashes during bootup.
+	* Add sort army option
+	* Prevent reading of old turn files into a newer turn
+	* 'Create Diagnsotic File' now in Crash report screen and Gather Data for Support
+	* Can use slider as input options in Preferences now, which Map Scale options do.
+	* 'Copy to Clipboard' button on team economy view
+	* Can change size of PC names
+ 			</description>
+		</item>	
+		<item>
 			<title>1.19.01-rc2</title>
 			<pubDate>15 July 2025</pubDate>
 			<description>

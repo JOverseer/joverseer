@@ -12,6 +12,7 @@ import java.util.prefs.Preferences;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -24,6 +25,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.tools.BugReport;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.ExportDiploForm;
+import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationDescriptor;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
@@ -34,7 +36,8 @@ public class GatherSupportDataCommand extends ActionCommand {
 	protected static final String OPEN_LOG_COMMAND_ID = "openLogCommand";
 	protected static final String OPEN_BUG_REPORT_COMMAND_ID = "openBugReportCommand";
 	protected static final String SEND_BUG_REPORT_COMMAND_ID = "sendBugReportCommand";
-	final String EOL="\r\n";
+	protected static final String SAVE_DIAGNOSTIC_FILE_COMMAND_ID = "saveDiagnostics";
+	static String EOL="\r\n";
 	JTextArea textArea;
 	GameHolder gameHolder;
 	
@@ -52,10 +55,7 @@ public class GatherSupportDataCommand extends ActionCommand {
 
 	@Override
 	protected void doExecuteCommand() {
-		ApplicationDescriptor descriptor = JOApplication.getApplicationDescriptor();
-
-		String report = "Version:" +descriptor.getVersion() + this.EOL
-				+ SystemProperties();
+		String report = SystemProperties();
 		this.textArea = new JTextArea();
 		this.textArea.append(report);
 		this.textArea.append(this.ScreenInfo());
@@ -97,6 +97,32 @@ public class GatherSupportDataCommand extends ActionCommand {
 				}
         		
         	};
+        	ActionCommand saveDiagnosticsFile = new ActionCommand(SAVE_DIAGNOSTIC_FILE_COMMAND_ID) {
+
+				@Override
+				protected void doExecuteCommand() {
+					BugReport br = new BugReport(GatherSupportDataCommand.this.gameHolder);
+					try {
+						String location = br.zipReport(null, true);
+						if(location != null) {
+					        JOptionPane.showMessageDialog(
+					            null,
+					            new JLabel(Messages.getString("diagnosticFile.success")),
+					            Messages.getString("diagnosticFile.success.title"),
+					            JOptionPane.INFORMATION_MESSAGE
+					        );
+						}
+					} catch (IOException e2) {
+				        JOptionPane.showMessageDialog(
+				            null,
+				            new JLabel(Messages.getString("diagnosticFile.fail")),
+				            Messages.getString("jOverseerCrashOccurred.message"),
+				            JOptionPane.ERROR_MESSAGE
+				        );
+					}
+				}
+        		
+        	};
         	
             @Override
 			protected boolean onFinish() {
@@ -107,7 +133,7 @@ public class GatherSupportDataCommand extends ActionCommand {
 			protected Object[] getCommandGroupMembers() {
                 return new AbstractCommand[] {
                 	//getBugReportCommand(),getOpenLogCommand(),getFinishCommand()
-                	getOpenLogCommand(),getFinishCommand()
+                	getSaveDiagnosticFileCommand(),getOpenLogCommand(),getFinishCommand()
                 };
             }
 
@@ -121,26 +147,29 @@ public class GatherSupportDataCommand extends ActionCommand {
 			ActionCommand getBugReportCommand() {
 				return this.openBugReportCommand;
 			}
+			ActionCommand getSaveDiagnosticFileCommand() {
+				return this.saveDiagnosticsFile;
+			}
         };
         dialog.setTitle(Messages.getString("GatherSupportDataCommand.title"));
         dialog.showDialog();
 
 	}
-	private void reportProperty(StringBuilder sb,String prop)
+	private static void reportProperty(StringBuilder sb,String prop)
 	{
 		sb.append(prop);
 		sb.append(":");
 		sb.append(System.getProperty(prop));
-		sb.append(this.EOL);
+		sb.append(GatherSupportDataCommand.EOL);
 	}
-	private void reportEnvironmentVariable(StringBuilder sb,String name)
+	private static void reportEnvironmentVariable(StringBuilder sb,String name)
 	{
 		sb.append(name);
 		sb.append(":");
 		wordWrap(sb,System.getenv(name),80);
-		sb.append(this.EOL);
+		sb.append(GatherSupportDataCommand.EOL);
 	}
-	private void wordWrap(StringBuilder sb,String value,int limit)
+	private static void wordWrap(StringBuilder sb,String value,int limit)
 	{
 		int start,stop,remaining;
 		start = 0;
@@ -156,21 +185,24 @@ public class GatherSupportDataCommand extends ActionCommand {
 				stop = start + limit -1; // -1 because we count from 0
 			}
 			sb.append(value.substring(start, stop));
-			sb.append(this.EOL);
+			sb.append(GatherSupportDataCommand.EOL);
 			start = stop; //no +1 as we start from 0
 			// note the last time through, remaining goes -ve.
 			remaining -= limit; 
 		}
 	}
 //TODO: maybe use https://github.com/oshi/oshi for diagnostics.
-	public String SystemProperties()
+	public static String SystemProperties()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append("Environment variables"+this.EOL);
+		ApplicationDescriptor descriptor = JOApplication.getApplicationDescriptor();
+
+		sb.append("Version:" +descriptor.getVersion() + GatherSupportDataCommand.EOL);
+		sb.append("Environment variables"+GatherSupportDataCommand.EOL);
 		reportEnvironmentVariable(sb, "PATH");
 		reportEnvironmentVariable(sb, "JREHOMEDIR");
 		reportEnvironmentVariable(sb, "JAVA_HOME");
-		sb.append("system properties"+this.EOL);
+		sb.append("system properties"+GatherSupportDataCommand.EOL);
 		reportProperty(sb,"java.home");
 		reportProperty(sb,"java.vendor");
 		reportProperty(sb,"java.vendor.url");
@@ -178,7 +210,7 @@ public class GatherSupportDataCommand extends ActionCommand {
 		reportProperty(sb,"os.arch");
 		reportProperty(sb,"os.name");
 		
-		sb.append("Note: some versions of java incorrectly report Windows 11 as 10."+this.EOL);
+		sb.append("Note: some versions of java incorrectly report Windows 11 as 10."+GatherSupportDataCommand.EOL);
 		reportProperty(sb,"os.version");
 		reportProperty(sb,"sun.java2d.uiScale");
 		reportProperty(sb,"sun.java2d.dpiaware");
@@ -259,7 +291,7 @@ public class GatherSupportDataCommand extends ActionCommand {
 				BugReport br = new BugReport(gh, BugReportEmail.this.attatchments, BugReportEmail.this.emailAddress.getText());
 				
 				try {
-					String zipLocation = br.zipReport(BugReportEmail.this.emailContent.getText());
+					String zipLocation = br.zipReport(BugReportEmail.this.emailContent.getText(), false);
 					
 					String name = gh.getGame().getTurn().getPlayerInfo(gh.getGame().getMetadata().getNationNo()).getPlayerName();
 					if (name == null)

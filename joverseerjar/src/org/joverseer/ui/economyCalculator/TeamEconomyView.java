@@ -29,6 +29,7 @@ import org.joverseer.ui.BaseView;
 import org.joverseer.ui.listviews.NationEconomyListView;
 import org.joverseer.ui.listviews.NationProductionListView;
 import org.joverseer.ui.listviews.NationStatisticsListView;
+import org.joverseer.ui.listviews.commands.GenericCopyToClipboardCommand;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
@@ -67,6 +68,19 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 
 		this.teamEconomyTableModel = new TeamEconomyTableModel(this.gameHolder);
 		this.teamEconomyTable = new JOverseerTable(new com.jidesoft.grid.SortableTableModel(this.teamEconomyTableModel));
+		
+		JButton btCopy = new JButton(Messages.getString("standardActions.CopyToClipboard"));
+		btCopy.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				GenericCopyToClipboardCommand ac = new GenericCopyToClipboardCommand(TeamEconomyView.this.teamEconomyTable, TeamEconomyView.this.gameHolder);
+				ac.execute();
+			}
+			
+		});
+
 		this.teamEconomyTable.getTableHeader().setPreferredSize(new Dimension(400, 16));
 		this.teamEconomyTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		for (int i = 0; i < this.teamEconomyTableModel.getColumnCount(); i++) {
@@ -85,6 +99,7 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 		lb.cell(scp);
 
 		lb.row();
+		lb.cell(btCopy);
 		lb.relatedGapRow();
 
 		this.teamEconomyTableModel.setShowProductsAs(SummaryTypeEnum.Total);

@@ -276,7 +276,6 @@ public class TurnXmlReader implements Runnable {
 		}
 		try {
 			this.turn = null;
-			System.out.println(this.turnInfo.turnNo + "sssss " + game1.getMaxTurn());
 			if (this.turnInfo.getTurnNo() == game1.getMaxTurn()){
 				
 //				if(this.turnInfo.getTurnNo() == 0 && ) {
@@ -1086,6 +1085,7 @@ public class TurnXmlReader implements Runnable {
 						// the PC reported in the XML part of a subsequently
 						// imported turn
 						if (newPc.getInformationSource().getValue() == InformationSourceEnum.exhaustive.getValue() && newPc.getNationNo() != tiNationNo) {
+							//TODO: this code has duplicate bits of code that run regardless
 							if (oldPc.getInfoSource().getTurnNo() < turnNo) {
 								if (newPc.getNationNo() == 0)
 									newPc.setNationNo(oldPc.getNationNo());

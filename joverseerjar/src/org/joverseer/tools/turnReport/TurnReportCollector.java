@@ -1652,6 +1652,8 @@ public class TurnReportCollector {
 			losses.put(s, 0);
 		}
 		int taxBaseDelta = 0;
+		int modifDelta = 0;
+		
 		for (BaseReportObject bro : pops) {
 			PopCenterReport pcr = (PopCenterReport) bro;
 			if (pcr.getModification().equals(ObjectModificationType.Gained) && pcr.getPc() != null && pcr.getPc().getSize().equals(PopulationCenterSizeEnum.camp) && pcr.isCreated()) {
@@ -1670,9 +1672,11 @@ public class TurnReportCollector {
 			} else if (pcr.getModification().equals(ObjectModificationType.Modified) && pcr.getPrevPc() != null) {
 				int pcTaxBase = Math.max(pcr.getPc().getSize().getCode() - 1, 0);
 				int prevTaxBase = Math.max(pcr.getPrevPc().getSize().getCode() - 1, 0);
+				modifDelta += pcTaxBase - prevTaxBase;
 				taxBaseDelta += pcTaxBase - prevTaxBase;
 			}
 		}
+		String mstr = Integer.toString(modifDelta);
 		String gstr = "";
 		String lstr = "";
 		for (PopulationCenterSizeEnum s : PopulationCenterSizeEnum.values()) {
@@ -1685,7 +1689,7 @@ public class TurnReportCollector {
 			if (l > 0)
 				lstr += (lstr.equals("") ? "" : ", ") + s.getRenderString() + ": " + l;
 		}
-		return "<div style='font-family:Tahoma; font-size:11pt'><b>" + "Camps created: " + campsCreated + "<br/>" + "Gains: " + gstr + "<br/>" + "Losses: " + lstr + "<br/>" + "Tax base delta: " + taxBaseDelta + "</b></div>";
+		return "<div style='font-family:Tahoma; font-size:11pt'><b>" + "Camps created: " + campsCreated + "<br/>" + "Gains: " + gstr + "<br/>" + "Size increased/reduced: " + mstr + "<br/>" + "Losses: " + lstr + "<br/>" + "Tax base delta: " + taxBaseDelta + "</b></div>";
 	}
 	
 	public String getHighlights(Turn t) {

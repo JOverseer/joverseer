@@ -2105,17 +2105,11 @@ public class Rule
                 int amounts[] = army.getTroopContent(this.parentOrder.getOrder());
                 int cavalry = amounts[0] + amounts[1];
                 int grunts = amounts[2] + amounts[3] + amounts[4] + amounts[5];
-                int cavships = cavalry != 0 ? cavalry / 150 : 0;
-                if(cavalry % 150 > 0)
-                {
-                    cavships++;
-                }
-                int gruntships = grunts != 0 ? grunts / 250 : 0;
-                if(grunts % 250 > 0)
-                {
-                    gruntships++;
-                }
-                int ships = cavships + gruntships;
+                
+                double cavships = cavalry != 0 ? ((double)cavalry) / 150.0 : 0;
+                double gruntships = grunts != 0 ? ((double)grunts) / 250.0 : 0;
+                int ships = (int) Math.ceil(cavships + gruntships);
+                
                 String msg = "NAVY:Does " + this.parentChar + "'s navy have enough " + "transports? (needs " + ships + ")";
                 addAdditionalInfo(msg, false);
                 if(army.getFoodRequired() == 0)
@@ -2958,7 +2952,7 @@ public class Rule
             		} else if (isMovement) {
                     	for(int j = 0; j < movementOrders.length; j++) {
                     		if(otherOrder == movementOrders[i]) {
-                    			this.parentOrder.addError("Duplicate Skill order (2 of the same Skill orders)");
+                    			this.parentOrder.addError("Two skill, spell or movement orders");
                     			break;
                     		}
                     	}
@@ -2975,7 +2969,7 @@ public class Rule
             						if (otherRank == rank) {
             							if (otherRule.convertParameter(4) != 0) {
             								// same skill and marked as exclusive
-            								this.parentOrder.addError("Duplicate Skill order (2 of the same Skill orders)");
+            								this.parentOrder.addError("Two skill, spell or movement orders");
             								break;
             							}
             						}

@@ -125,6 +125,13 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		}
 		return this.gm;
 	}
+	
+//	private GameHolder getGameHolder() {
+//		Game g = this.gameHolder.getGame();
+//		if (!Game.isInitialized(g))
+//			return null;
+//		return this.gameHolder;
+//	}
 
 	/**
 	 * Refresh the order combo box to show orders valid for the selected
@@ -136,10 +143,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		if (order != null) {
 			c = order.getCharacter();
 		}
-		this.orderCombo.setModel(createOrderCombo(c,getGameMetadata()));
+		this.orderCombo.setModel(createOrderCombo(c,this.gameHolder));
 	}
 	// useful utility function
-	public static ComboBoxListModelAdapter createOrderCombo(Character c,GameMetadata gm) {
+	public static ComboBoxListModelAdapter createOrderCombo(Character c, GameHolder gh) {
+		GameMetadata gm = gh.getGame().getMetadata();
 		Container<OrderMetadata> orderMetadata = gm.getOrders();
 
 		ListListModel orders = new ListListModel();
@@ -151,6 +159,10 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 						|| om.orderAllowedDueToUncoverSecretsSNA(c)
 						|| om.orderAllowedDueToScoutingSNA(c)) {
 						orders.add(om.getNumber() + " " + om.getCode()); //$NON-NLS-1$
+					} else if(om.getSkillRequirement().equals("MM")) {
+						if(artifactTrading(c, gh) || mightPickUpArtifact(c)) {
+							orders.add(om.getNumber() + " " + om.getCode()); //$NON-NLS-1$
+						}
 					}
 				} else {
 					orders.add(om.getNumber() + " " + om.getCode()); //$NON-NLS-1$
@@ -160,7 +172,34 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		SortedListModel slm = new SortedListModel(orders);
 		return new ComboBoxListModelAdapter(slm);
 	}
+	
+	/*
+	 * Checks if another character is sending them an artifact, which is important because it would allow them to cast a spell this turn
+	 */
+	public static boolean artifactTrading(Character c, GameHolder gh) {
+		for(Character otherChar: gh.getGame().getTurn().getCharactersAtHex(c.getHexNo())) {
+			for(Order o : otherChar.getOrders()) {
+				if(!o.isBlank()) {
+					if(o.getOrderNo() == 360) {
+						if(o.getParameters().contains(c.getId())) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
 
+	public static boolean mightPickUpArtifact(Character c) {
+		for(Order o : c.getOrders()) {
+			if(!o.isBlank()) {
+				if(o.getOrderNo() == 285 || o.getOrderNo() == 796 || o.getOrderNo() == 900) return true;
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	protected JComponent createFormControl() {
 		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
@@ -488,14 +527,12 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			return;
 		o.setNoAndCode(this.orderCombo.getSelectedItem().toString());
 		o.setParameters(this.parametersInternal.getText());
-		System.out.println("Order");
 		//remove order checker data for this order if present
 		OrderResultContainer container = this.gameHolder.getGame().getTurn().getOrderResults().getResultCont();
 		if (container.getResultTypeForOrder(o)!=null) {
 			container.removeResultsForOrder(o);
 		}
 		container.overrideResultForNation(o.getCharacter().getNationNo(), false);
-		System.out.println("Size " + container.getContainer().size()+ "    And bool "  + container.getResultsForOrder(o).toString());
 		
 		// throw an order changed event
 		this.gameHolder.getGame().getTurn().getOrderResults().getResultCont().removeResultsForOrder(o);

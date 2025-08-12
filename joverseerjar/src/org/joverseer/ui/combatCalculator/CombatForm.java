@@ -1311,7 +1311,7 @@ public class CombatForm extends AbstractForm {
 	        CombatArmy ca = (CombatArmy) obj;
 	        
 	        if(!ca.completeInfo()) {
-	            Color bg = ColorPicker.getInstance().getColor("TurnReport.default");
+	            Color bg = ColorPicker.getInstance().getColor("CombatCalc.incomplete");
 	        	cellComponent.setBackground(bg);
 	        	
 	        	JLabel lb = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);

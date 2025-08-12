@@ -253,7 +253,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
 	        return ne.getTaxBase() * 2500 * getTaxRate() / 100;
     	}
     	
-    	return ecd.getTaxRevenue();
+    	return ecd.getTaxRevenue(getTaxRate());
     }
 
     @Override

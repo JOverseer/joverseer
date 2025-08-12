@@ -127,37 +127,38 @@ public class OrderParameterValidator {
 			return null;
 		// check for duplicate skill order
 		Character c = o.getCharacter();
-		int i = o.getCharacter().getOrders()[0] == o ? 1 : 0;
-		Order o1 = c.getOrders()[i];
-		if (!o1.isBlank()) {
-			OrderMetadata om1 = GameHolder.instance().getGame().getMetadata().getOrders().findFirstByProperty("number", o1.getOrderNo());
-			if (om1 == null)
-				return null;
-			if (om1.getSkillRequirement().equals(om.getSkillRequirement()) && om1.getSkillRequirement().endsWith("S")) {
-				String type = "";
-				if (om.getSkillRequirement().equals("CS")) {
-					type = "Command skill";
-				} else if (om.getSkillRequirement().equals("AS")) {
-					type = "Agent skill";
-				} else if (om.getSkillRequirement().equals("MS")) {
-					type = "Mage skill";
-				} else if (om.getSkillRequirement().equals("ES")) {
-					type = "Emmisary skill";
-				} else if (om.getSkillRequirement().equals("ECS")) {
-					type = "Command/Emmisary skill";
+		for (Order o1 : c.getOrders()) {
+			if(o1 == o) continue;
+			if (!o1.isBlank()) {
+				OrderMetadata om1 = GameHolder.instance().getGame().getMetadata().getOrders().findFirstByProperty("number", o1.getOrderNo());
+				if (om1 == null)
+					continue;
+				if (om1.getSkillRequirement().equals(om.getSkillRequirement()) && om1.getSkillRequirement().endsWith("S")) {
+					String type = "";
+					if (om.getSkillRequirement().equals("CS")) {
+						type = "Command skill";
+					} else if (om.getSkillRequirement().equals("AS")) {
+						type = "Agent skill";
+					} else if (om.getSkillRequirement().equals("MS")) {
+						type = "Mage skill";
+					} else if (om.getSkillRequirement().equals("ES")) {
+						type = "Emmisary skill";
+					} else if (om.getSkillRequirement().equals("ECS")) {
+						type = "Command/Emmisary skill";
+					}
+					return new OrderValidationResult(OrderValidationResult.ERROR, "Character is trying to issue two " + type + " orders.");
 				}
-				return new OrderValidationResult(OrderValidationResult.ERROR, "Character is trying to issue two " + type + " orders.");
-			}
-			// check for duplicate movement orders
-			boolean o1IsMove = om1.getSkillRequirement().equals("Move") || o1.getOrderNo() == 825;
-			boolean o2IsMove = om.getSkillRequirement().equals("Move") || o.getOrderNo() == 825;
-			if (o1IsMove && o2IsMove) {
-				return new OrderValidationResult(OrderValidationResult.ERROR, "Character is trying to issue two Move orders.");
-			}
-			// check for miscellaneous mage orders
-			boolean o1IsCastSpell = o1.getOrderNo() == 120 || o1.getOrderNo() == 225 || o1.getOrderNo() == 330 || o1.getOrderNo() == 940;
-			if (o1IsCastSpell && o1.getOrderNo() == o.getOrderNo()) {
-				return new OrderValidationResult(OrderValidationResult.ERROR, "Character is trying to issue two Casting orders of the same type of spell.");
+				// check for duplicate movement orders
+				boolean o1IsMove = om1.getSkillRequirement().equals("Move") || o1.getOrderNo() == 825;
+				boolean o2IsMove = om.getSkillRequirement().equals("Move") || o.getOrderNo() == 825;
+				if (o1IsMove && o2IsMove) {
+					return new OrderValidationResult(OrderValidationResult.ERROR, "Character is trying to issue two Move orders.");
+				}
+				// check for miscellaneous mage orders
+				boolean o1IsCastSpell = o1.getOrderNo() == 120 || o1.getOrderNo() == 225 || o1.getOrderNo() == 330 || o1.getOrderNo() == 940;
+				if (o1IsCastSpell && o1.getOrderNo() == o.getOrderNo()) {
+					return new OrderValidationResult(OrderValidationResult.ERROR, "Character is trying to issue two Casting orders of the same type of spell.");
+				}
 			}
 		}
 		return null;

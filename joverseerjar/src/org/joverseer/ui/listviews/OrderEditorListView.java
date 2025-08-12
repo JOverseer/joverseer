@@ -614,7 +614,7 @@ public class OrderEditorListView extends ItemListView {
 				}
 			}
 
-			final JComboBox comboBox = new AutocompletionComboBox(OrderEditor.createOrderCombo(c, gm));
+			final JComboBox comboBox = new AutocompletionComboBox(OrderEditor.createOrderCombo(c,this.gameHolder));
 			comboBox.setEditable(true);
 			comboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
 			final ComboBoxCellEditor editor = new ComboBoxCellEditor(comboBox);

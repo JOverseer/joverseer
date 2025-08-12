@@ -323,18 +323,25 @@ public class CharacterMessageWrapper {
 			return null;
 		}
 	}
-	static protected String extract2ndPower(String powers2) {
+	static protected String extract2ndPower(String powers2, String nextLine) {
 		int pos; 
 		if (powers2.length() >0) {
-			final String seek = "Possession of the artifact can allow casting of the spell ";
+			String seek = "Possession of the artifact can allow casting of the spell ";
 			pos = powers2.indexOf(seek);
 			if (pos >-1) {
 				return powers2.substring(pos+seek.length()); 
-			} else {
+			}
+			seek = "Possession of the artifact can allow access to the lost spell list ";
+			pos = powers2.indexOf(seek);
+			if(pos > -1) {
+				return "Access to " + powers2.substring(pos + seek.length());
+			}
+			else {
 				final String fail = "He was not able to cast the spell";
 				pos = powers2.indexOf(fail);
 				if (pos < 0) {
-					return powers2;
+					if (nextLine.equals("")) return "Unknown";
+					else return extract2ndPower(nextLine, "");
 				}
 			}
 		}
@@ -380,8 +387,12 @@ public class CharacterMessageWrapper {
 				}
 			}
 		}
+		
 		if (powers.length > 1) {
-			aw.latent = extract2ndPower(powers[1]);
+			String nextLine;
+			if (powers.length > 2) nextLine = powers[2];
+			else nextLine = "";
+			aw.latent = extract2ndPower(powers[1], nextLine);
 		}
 	}
 	protected OrderResult getRAResult(String line, InfoSource infoSource) {
@@ -410,13 +421,17 @@ public class CharacterMessageWrapper {
 					continue;
 				}
 				ArtifactWrapper aw = rrw.getArtifactMatching(art);
-				if (aw != null)
-					continue; // already present - ignore.
-				rrw.Add(name, art);
-				aw = rrw.getArtifactMatching(art);
+				if (aw == null) {
+//					continue; // already present - ignore.
+					rrw.Add(name, art);
+					aw = rrw.getArtifactMatching(art);
+				}
 				if (parts.length > 1) {
 					String allegiance = parts[1].trim(); // still includes tag
 					if (parts.length> 2) {
+						if (parts.length > 3) {
+							parts[2] = parts[2].concat(" " + parts[3]);
+						}
 						extractPowers(parts[2].trim(),aw);
 					}
 				}
@@ -622,7 +637,7 @@ public class CharacterMessageWrapper {
 						if (nn != null && nn.equals(n.getName())) {
 							part = part.replace(" of the " + n.getName(), "#nation#").replace(" of " + n.getName(), "#nation#");
 							String character = StringUtils.getUniquePart(part, "^", "#nation#", false, false);
-							if(character.length() > 13) { 
+							if(character.length() > 17) { 
 								i = character.indexOf(":");
 								character = character.substring(i + 2, character.length());
 							}

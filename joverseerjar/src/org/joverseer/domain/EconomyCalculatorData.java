@@ -39,14 +39,17 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	Integer taxRate = null;
 	Integer goldProduction;
 	Integer taxRevenue;
+	int prevTaxRate = -1;
 	
-	public Integer getTaxRevenue() {
-		if(this.taxRevenue == null) {
+	public Integer getTaxRevenue(int overrideTaxRate) {
+		
+		if(this.taxRevenue == null || this.prevTaxRate != overrideTaxRate) {
 			int nationTaxRevenue = 0;
             for (PopulationCenter pc : (ArrayList<PopulationCenter>)this.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", this.getNationNo().intValue())) {
-                nationTaxRevenue += (pc.getSize().getCode() - 1) * 2500 * this.getNationEconomy().getTaxRate() / 100;
+                nationTaxRevenue += (pc.getSize().getCode() - 1) * 2500 * overrideTaxRate / 100;
             }
             this.taxRevenue = nationTaxRevenue;
+            this.prevTaxRate = overrideTaxRate;
 		}
 		return this.taxRevenue;
 	}

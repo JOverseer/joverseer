@@ -7,6 +7,23 @@
 			helper program.</description>
 		<language>en</language>
 		<item>
+			<title>1.19.01-rc4</title>
+			<pubDate>12 August 2025</pubDate>
+			<description>
+VERSION 1.19.01-rc4
+---------------
+	* Combat calculator "incomplete data" color now darker
+	* Fix from previous change in beta: Economy calculator now updates tax revenue based on inputted tax rate
+	* Properly extracts secondary power for artifacts that give access to a list
+	* Powers now update and override starting info
+ 	* increased length of name accepted for armies, which was cutting off longer names
+ 	* Current Hex View, when detecting orders of same skill type, assumed characters only had 2 orders, fixed to work with up to 3 orders
+ 	* Turn report view -> PC now has a size increase/decrease bit
+ 	* When populating order combo box, checks to see if a character might be getting an artifact either through another character trading it, or them picking it up, and allows them access to casting orders accordingly.
+ 	* Orderchecker now does correct calculation for cavalry ships + infantry ships
+ 			</description>
+		</item>	
+		<item>
 			<title>1.19.01-rc3</title>
 			<pubDate>8 August 2025</pubDate>
 			<description>

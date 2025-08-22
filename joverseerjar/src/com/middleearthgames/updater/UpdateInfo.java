@@ -28,6 +28,8 @@ import org.apache.commons.logging.LogFactory;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 
+import com.jidesoft.spring.richclient.ExitCommand;
+
 /**
  *
  * @author Thomas Otero H3R3T1C productised for jOverseer and UAC stuff by Dave Spring.
@@ -247,7 +249,13 @@ public class UpdateInfo extends JFrame{
 			log.error(ErrorDialog.getCustomStackTrace(ex));
         }
         log.info("closing down");
-        System.exit(0);
+        
+        try {
+	        ExitCommand eC = new ExitCommand();
+	        eC.execute();
+        } catch(Exception e) {
+        	System.exit(0);
+        }
     }
     // a utility function to switch an 'address' matching 'match' to https
     // caller should typically compare lengths to see if the change was performed.

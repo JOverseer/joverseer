@@ -481,6 +481,8 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 						continue;
 					Character c = (Character) this.characterViewers.get(i).getFormObject();
 					if (c == o.getCharacter()) {
+						Point p = MapPanel.instance().getSelectedHex();
+						refresh(p);
 						this.characterViewers.get(i).refreshOrders(c);
 						break;
 					}

@@ -81,6 +81,8 @@ import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.progress.BusyIndicator;
 
 import java.awt.Component;
+import java.awt.Cursor;
+
 import javax.swing.Box;
 import javax.swing.JCheckBox;
 
@@ -634,6 +636,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 							} while (!Pattern.matches(emailRegex, email));
 							prefs.put("useremail", email);
 						}
+						this.getControl().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 						String name = this.gameHolder.getGame().getTurn().getPlayerInfo(g.getMetadata().getNationNo()).getPlayerName();
 						if (name == null)
 							name = "null";
@@ -673,6 +676,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 							this.cancel=true;
 							send = false;
 							filePost.releaseConnection();
+							this.getControl().setCursor(Cursor.getDefaultCursor());
 							this.logger.error(String.format("Status: %d",status ));
 							ErrorDialog.showErrorDialog("Unexpected Error",String.format("Status: %d",status ));
 						}
@@ -681,6 +685,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 						if(this.index + 1 == this.numberOfControlledNations) break;
 						this.arrowAction("forward");
 					}
+					this.getControl().setCursor(Cursor.getDefaultCursor());
 				} while(sendAll);
 
 				String temp = "<br/>";
@@ -883,7 +888,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		                getMessage("ExportOrdersForm.warning.OrdersNotCheckedWithOCTitle"),                     // Title
 		                JOptionPane.YES_NO_CANCEL_OPTION,  // Option type
 		                JOptionPane.QUESTION_MESSAGE      // Message type
-, null, null, null
+		                , null, null, null
 		        );
 				
 		        if(choice == JOptionPane.YES_OPTION) {

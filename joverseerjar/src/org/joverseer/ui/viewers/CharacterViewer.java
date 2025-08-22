@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FocusTraversalPolicy;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -181,18 +183,42 @@ public class CharacterViewer extends ObjectViewer {
 
 	private void resetOrderPanel(int numberOfOrders) {
 		this.orderPanel.removeAll();
-		TableLayoutBuilder tlb = new TableLayoutBuilder();
-		tlb.cell(this.order1comp, "rowspec=top:20px"); //$NON-NLS-1$
-		tlb.row();
-		tlb.cell(this.order2comp, "rowspec=top:20px"); //$NON-NLS-1$
-		tlb.row();
-		if (numberOfOrders == 3) {
-			tlb.cell(this.order3comp, "rowspec=top:20px"); //$NON-NLS-1$
-			tlb.row();
-		}
-		JPanel pnl = tlb.getPanel();
-		pnl.setBackground(UIManager.getColor("Panel.background"));
-		this.orderPanel.add(pnl);
+	    this.orderPanel.setLayout(new GridBagLayout());
+
+	    GridBagConstraints gbc = new GridBagConstraints();
+	    gbc.gridx = 0;
+	    gbc.gridy = 0;
+	    gbc.anchor = GridBagConstraints.WEST;
+	    gbc.insets = new Insets(2, 2, 2, 2); 
+
+	    this.orderPanel.add(this.swapOrdersIconCmd, gbc);
+
+	    JPanel tempOrderPanel = new JPanel(new GridBagLayout());
+	    tempOrderPanel.setBackground(UIManager.getColor("Panel.background"));
+
+	    GridBagConstraints ogbc = new GridBagConstraints();
+	    ogbc.gridx = 0;
+	    ogbc.gridy = 0;
+	    ogbc.anchor = GridBagConstraints.WEST; 
+	    ogbc.fill = GridBagConstraints.HORIZONTAL;
+	    ogbc.weightx = 1.0; 
+
+	    tempOrderPanel.add(this.order1comp, ogbc);
+
+	    ogbc.gridy++;
+	    tempOrderPanel.add(this.order2comp, ogbc);
+
+	    if (numberOfOrders == 3) {
+	        ogbc.gridy++;
+	        tempOrderPanel.add(this.order3comp, ogbc);
+	    }
+
+	    gbc.gridx = 1;
+	    gbc.gridy = 0;
+	    gbc.fill = GridBagConstraints.HORIZONTAL;
+	    gbc.weightx = 1.0;
+
+	    this.orderPanel.add(tempOrderPanel, gbc);
 	}
 
 	public void reset(Character c) {
@@ -684,29 +710,28 @@ public class CharacterViewer extends ObjectViewer {
 		this.hostagesPane.setBorder(BorderFactory.createEmptyBorder());
 		glb.append(this.hostagesPane, 6, 1);
 		glb.nextLine();
-
-		TableLayoutBuilder tlb = new TableLayoutBuilder();
-		JPanel tempOrderPanel = new JPanel();
-		tempOrderPanel.setLayout(new BoxLayout(tempOrderPanel, BoxLayout.Y_AXIS));
+		
+//		TableLayoutBuilder tlb = new TableLayoutBuilder();
+//		JPanel tempOrderPanel = new JPanel();
+//		tempOrderPanel.setLayout(new BoxLayout(tempOrderPanel, BoxLayout.Y_AXIS));
+//		tempOrderPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		this.order1 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())),this.gameHolder);
-//		tlb.cell(this.order1comp = this.order1.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
-//		tlb.row();
-		tempOrderPanel.add(this.order1comp = this.order1.createFormControl());
+		this.order1comp = this.order1.createFormControl();
+//		this.order1comp.setAlignmentX(Component.LEFT_ALIGNMENT);
 		this.order2 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())),this.gameHolder);
-//		tlb.cell(this.order2comp = this.order2.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
-//		tlb.row();
-		tempOrderPanel.add(this.order2comp = this.order2.createFormControl());
+////		tlb.cell(this.order2comp = this.order2.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
+////		tlb.row();
+		this.order2comp = this.order2.createFormControl();
+//		this.order2comp.setAlignmentX(Component.LEFT_ALIGNMENT);
 		this.order3 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())),this.gameHolder);
-//		tlb.cell(this.order3comp = this.order3.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
-//		tlb.row();
-		tempOrderPanel.add(this.order3comp = this.order3.createFormControl());
-		this.orderPanel = new JPanel();
-//		this.orderPanel.add(tlb.getPanel());
-		this.orderPanel.add(tempOrderPanel);
-		this.orderPanel.setBackground(UIManager.getColor("Panel.background"));
-		this.orderPanel.setBorder(border);
-		glb.append(this.orderPanel, 2, 1);
-		glb.append(this.swapOrdersIconCmd = new JLabelButton(new ImageIcon(imgSource.getImage("swapOrders.icon")))); //$NON-NLS-1$
+////		tlb.cell(this.order3comp = this.order3.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
+////		tlb.row();
+		this.order3comp = this.order3.createFormControl();
+//		this.order3comp.setAlignmentX(Component.LEFT_ALIGNMENT);
+////		this.orderPanel.add(tlb.getPanel());
+//		
+		this.swapOrdersIconCmd = new JLabelButton(new ImageIcon(imgSource.getImage("swapOrders.icon"))); //$NON-NLS-1$
+//		this.swapOrdersIconCmd.setAlignmentX(Component.LEFT_ALIGNMENT);
 		this.swapOrdersIconCmd.setVerticalAlignment(SwingConstants.CENTER);
 		this.swapOrdersIconCmd.setToolTipText(Messages.getString("CharacterViewer.SwapOrders.tooltip")); //$NON-NLS-1$
 		this.swapOrdersIconCmd.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
@@ -721,10 +746,20 @@ public class CharacterViewer extends ObjectViewer {
 				JOApplication.publishEvent(LifecycleEventsEnum.RefreshHexItems, MapPanel.instance().getSelectedHex(), this);
 			}
 		});
+//		this.orderPanel = new JPanel();
+//		this.orderPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+//		this.orderPanel.add(this.swapOrdersIconCmd);
+//		this.orderPanel.add(tempOrderPanel);
+		this.orderPanel = new JPanel();
+		this.resetOrderPanel(3);
+		this.orderPanel.setBackground(UIManager.getColor("Panel.background"));
+		this.orderPanel.setBorder(border);
+		glb.append(this.orderPanel, 2, 1);
 
 		glb.nextLine();
 
 		this.notesViewer = new NotesViewer(FormModelHelper.createFormModel(new ArrayList<Note>()),this.gameHolder);
+		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		tlb = new TableLayoutBuilder();
 		tlb.cell(this.notesViewer.createFormControl(), "colspec=left:285px"); //$NON-NLS-1$
 		JPanel notesPanel = tlb.getPanel();

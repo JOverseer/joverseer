@@ -171,12 +171,56 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
     @Override
 	protected JComponent createFormControl() {
         JPanel flowPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 4, 2));
-        flowPanel.add(Box.createHorizontalStrut(10));
-        flowPanel.add(this.orderText = new JTextField());
 		Border  border = null;//BorderFactory.createLineBorder(Color.green);
+//        flowPanel.add(Box.createHorizontalStrut(10));
+        
+        ImageSource imgSource = JOApplication.getImageSource();
+        Icon ico = new ImageIcon(imgSource.getImage("edit.image")); //$NON-NLS-1$
+        this.btn = new JButton(ico);
+        this.btn.setToolTipText(Messages.getString("OrderViewer.EditOrder")); //$NON-NLS-1$
+        this.btn.addActionListener(new ActionListener() {
+            @Override
+			public void actionPerformed(ActionEvent e) {
+                Order order = (Order)getFormObject();
+                JOApplication.publishEvent(LifecycleEventsEnum.EditOrderEvent, order, this);
+            }
+        });
+
+        this.btn.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
+        this.btn.setBorder(border);
+        flowPanel.add(this.btn);
+        
+        this.draw = new JCheckBox();
+        this.draw.setToolTipText(Messages.getString("OrderViewer.DrawOrder")); //$NON-NLS-1$
+        this.draw.addActionListener(new ActionListener() {
+            @Override
+			public void actionPerformed(ActionEvent e) {
+                OrderVisualizationData ovd = OrderVisualizationData.instance();
+                if (OrderViewer.this.draw.isSelected()) {
+                    ovd.addOrder((Order)getFormObject());
+                } else {
+                    ovd.removeOrder((Order)getFormObject());
+                }
+                JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, getFormObject(), this);
+            }
+        });
+        this.draw.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
+        this.draw.setBorder(border);
+        this.draw.setOpaque(true);
+        this.draw.setBackground(UIManager.getColor("Panel.background"));
+        this.draw.setVisible(true);
+        this.draw.setEnabled(false);
+        flowPanel.add(this.draw);
+        
+        this.orderResultIcon = new JLabel(" "); //$NON-NLS-1$
+        this.orderResultIcon.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
+        this.orderResultIcon.setBorder(border);
+        flowPanel.add(this.orderResultIcon);
+        
+        flowPanel.add(this.orderText = new JTextField());
 		
 		this.orderText.setBorder(BorderFactory.createLineBorder(Color.green));
-        this.orderText.setPreferredSize(this.uiSizes.newDimension(170/16, this.uiSizes.getHeight4()));
+//        this.orderText.setPreferredSize(this.uiSizes.newDimension(170/16, this.uiSizes.getHeight4()));
         this.orderText.setText(Messages.getString("OrderViewer.NA")); //$NON-NLS-1$
         
         this.orderText.addMouseListener(new MouseAdapter() {
@@ -225,50 +269,11 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
             }
         }));
 
-        this.orderResultIcon = new JLabel(""); //$NON-NLS-1$
-        this.orderResultIcon.setPreferredSize(this.uiSizes.newDimension(1, this.uiSizes.getHeight4()));
-        this.orderResultIcon.setBorder(border);
-        flowPanel.add(this.orderResultIcon);
 
-        ImageSource imgSource = JOApplication.getImageSource();
-        Icon ico = new ImageIcon(imgSource.getImage("edit.image")); //$NON-NLS-1$
-        this.btn = new JButton(ico);
-        this.btn.setToolTipText(Messages.getString("OrderViewer.EditOrder")); //$NON-NLS-1$
-        this.btn.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent e) {
-                Order order = (Order)getFormObject();
-                JOApplication.publishEvent(LifecycleEventsEnum.EditOrderEvent, order, this);
-            }
-        });
-
-        this.btn.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
-        this.btn.setBorder(border);
-        flowPanel.add(this.btn);
 
 //        imgSource = joApplication.getImageSource();
 //        ico = new ImageIcon(imgSource.getImage("selectHexCommand.icon"));
-        this.draw = new JCheckBox();
-        this.draw.setToolTipText(Messages.getString("OrderViewer.DrawOrder")); //$NON-NLS-1$
-        this.draw.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent e) {
-                OrderVisualizationData ovd = OrderVisualizationData.instance();
-                if (OrderViewer.this.draw.isSelected()) {
-                    ovd.addOrder((Order)getFormObject());
-                } else {
-                    ovd.removeOrder((Order)getFormObject());
-                }
-                JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, getFormObject(), this);
-            }
-        });
-        this.draw.setPreferredSize(this.uiSizes.newDimension(2, this.uiSizes.getHeight4()));
-        this.draw.setBorder(border);
-        this.draw.setOpaque(true);
-        this.draw.setBackground(UIManager.getColor("Panel.background"));
-        this.draw.setVisible(true);
-        this.draw.setEnabled(false);
-        flowPanel.add(this.draw);
+
 
         flowPanel.setBackground(UIManager.getColor("Panel.background"));
         flowPanel.setBorder(border);

@@ -38,6 +38,7 @@ Source: {#InputBuild}\lo*.jar; DestDir: {app}
 Source: {#InputBuild}\PDF*.jar; DestDir: {app}
 Source: {#InputBuild}\skin*.jar; DestDir: {app}
 Source: {#InputBuild}\spring*.jar; DestDir: {app}
+Source: {#InputBuild}\flatlaf*.jar; DestDir {app}
 Source: {#InputBuild}\swing*.jar; DestDir: {app}
 Source: {#InputBuild}\txt2xml.jar; DestDir: {app}
 Source: {#InputBuild}\update.jar; DestDir: {app}

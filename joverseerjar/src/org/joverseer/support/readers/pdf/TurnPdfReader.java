@@ -1156,7 +1156,7 @@ public class TurnPdfReader implements Runnable {
 	            }
 	            cw.parsePopCenter(game1, this.infoSource, c);
 	            cw.parseScoHexOrScoPop(game1, this.infoSource, c);
-	            cw.parseArmiesFromDivineNationForces(game1, this.infoSource, c);
+//	            cw.parseArmiesFromDivineNationForces(game1, this.infoSource, c);
 	            cw.parseDivineCharsWithForces(game1, this.infoSource, c);
         	}
         	catch (Exception exc) {

@@ -429,6 +429,17 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 		this.scp.getVerticalScrollBar().setValue(0);
 	}
 	
+	private void refreshCharacterViewer(Character c) {
+		for (int i = 0; i < this.characterViewers.size(); i++) {
+			if (this.characterPanels.get(i).isVisible()) {
+				Character ch = (Character) this.characterViewers.get(i).getFormObject();
+				if (c == ch) {
+					this.characterPanels.get(i).setVisible(false);
+					showCharacter(ch);
+				}
+			}
+		}
+	}
 	public void resetScrollPane() {
 		SwingUtilities.invokeLater(new Runnable(){
 			@Override
@@ -481,8 +492,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 						continue;
 					Character c = (Character) this.characterViewers.get(i).getFormObject();
 					if (c == o.getCharacter()) {
-						Point p = MapPanel.instance().getSelectedHex();
-						refresh(p);
+						this.refreshCharacterViewer(c);
 						this.characterViewers.get(i).refreshOrders(c);
 						break;
 					}

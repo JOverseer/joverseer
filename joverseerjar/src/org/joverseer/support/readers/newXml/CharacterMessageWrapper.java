@@ -28,6 +28,7 @@ import org.joverseer.support.readers.pdf.LocateArtifactTrueResultWrapper;
 import org.joverseer.support.readers.pdf.OrderResult;
 import org.joverseer.support.readers.pdf.RevealCharacterResultWrapper;
 import org.joverseer.support.readers.pdf.RevealCharacterTrueResultWrapper;
+import org.joverseer.support.readers.xml.TurnXmlReader;
 
 public class CharacterMessageWrapper {
 	String charId;
@@ -184,6 +185,8 @@ public class CharacterMessageWrapper {
 				or = getRCTOrderResult(line);
 			if (or == null)
 				or = getRCOrderResult(line);
+			if (or == null)
+				or = getDivineNationForces(line, infoSource, gm);
 			if (or == null)
 				or = getReconResult(line, infoSource,gm);
 			if (or == null)
@@ -440,6 +443,52 @@ public class CharacterMessageWrapper {
 		}
 		return null;
 	}
+	
+	protected OrderResult getDivineNationForces(String line, InfoSource infoSource,GameMetadata gm) {
+		String orders1 = line;
+		String dnf = "was ordered to cast a lore spell. Divine Nation Forces - ";
+		int i = orders1.indexOf(dnf);
+		if (i == -1)
+			return null;
+		String p = orders1.substring(i + dnf.length());
+		if (orders1.indexOf("A scout of the area was attempted.") != -1)
+			return null;
+		String split = " - ";
+		int k = p.indexOf(split);
+		if (k == -1)
+			return null;
+		String firstPart = p.substring(0, k);
+		String armiesPart = p.substring(k + split.length());
+		int l = firstPart.indexOf("forces near");
+		String nation = firstPart.substring(0, l).trim();
+		Nation n = gm.getNationByName(nation);
+		if (n == null)
+			return null;
+
+		ReconResultWrapper rrw = new ReconResultWrapper();
+		String[] armies = armiesPart.split(" at \\d{4}");
+		for (String army : armies) {
+			String name1 = army.trim();
+			if (name1.length() < 5 || name1.length() > 17)
+				continue;
+			String namePlusAt = name1 + " at ";
+			int namei = armiesPart.indexOf(namePlusAt);
+			String hexNoStr = armiesPart.substring(namei + namePlusAt.length(), namei + namePlusAt.length() + 4);
+			
+			Army a = new Army();
+			a.setInformationSource(InformationSourceEnum.some);
+			a.setInfoSource(infoSource);
+			a.setCommanderName(name1);
+			a.setCommanderTitle("");
+			a.setSize(ArmySizeEnum.unknown);
+			a.setTroopCount(0);
+			a.setHexNo(hexNoStr);
+			a.setNationNo(n.getNumber());
+			a.setNationAllegiance(n.getAllegiance());
+			rrw.addArmy(a);
+		}
+		return rrw;
+	}
 
 	protected OrderResult getScoArmyResult(String line, InfoSource infoSource) {
 		try {
@@ -633,16 +682,18 @@ public class CharacterMessageWrapper {
 				ArrayList<String> parts = StringUtils.getParts(line, "(^)|(at \\d{4})", "at \\d{4}", false, true);
 				for (String part : parts) {
 					for (Nation n : nationList) {
-						String nn = StringUtils.getUniquePart(part, " " + n.getName(), " with about", true, false);
-						if (nn != null && nn.equals(n.getName())) {
+						if(part.indexOf(n.getName()) != -1) {
 							part = part.replace(" of the " + n.getName(), "#nation#").replace(" of " + n.getName(), "#nation#");
 							String character = StringUtils.getUniquePart(part, "^", "#nation#", false, false);
+							if(character.indexOf("- ") == 0) character = character.substring(2);
 							if(character.length() > 17) { 
 								i = character.indexOf(":");
 								character = character.substring(i + 2, character.length());
 							}
+							part = part.replace(character, "");
 							String troops = StringUtils.getUniquePart(part, " with about ", " troops ", false, false);
-							String hex = StringUtils.getUniquePart(part, " troops at ", "(\\.)|$", false, false);
+							String hex = StringUtils.getUniquePart(part, " at ", "(\\.)|$", false, false);
+							
 							Army a = new Army();
 							a.setInformationSource(InformationSourceEnum.some);
 							a.setInfoSource(infoSource);

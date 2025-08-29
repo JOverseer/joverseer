@@ -180,10 +180,17 @@ public class StringUtils extends org.springframework.util.StringUtils {
 		int pos=text.indexOf(start);
 		if (pos >-1) {
 			String rest= text.substring(pos+start.length());
-			return StringUtils.getFirstWord(rest);
+			if(getWordCount(rest) > 1) return StringUtils.getFirstWord(rest);
+			return rest;
 		}
 		return "";
-		
+	}
+	
+	public static int getWordCount(String text) {
+		String trim = text.trim();
+		if (trim.isEmpty())
+		    return 0;
+		return trim.split("\\s+").length;
 	}
 	
 	public static String stripFirstWordCond(String text, String firstWord) {

@@ -2,7 +2,12 @@ package org.joverseer.support.readers.newXml;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.GameTypeEnum;
+import org.joverseer.metadata.MetadataReaderException;
+import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.readers.pdf.OrderResult;
@@ -133,7 +138,60 @@ public class CharacterMessageWrapperTest {
 		
 		or = cmw.getScoutAreaResult("He was ordered to scout the area. A scout of the area was attempted.  Foreign armies identified:  Gothmog of the Witch Realm of Angmar with about 1100 troops at 1609  Minasdir of the Kingdom of Arnor with about 3400 troops at 1409 . See Map below.", is, gm);
 		assertEquals("Gothmog",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(0).getCommanderName());
+		
+		gm.getNations().add(new Nation(21, "Merchant Guild", "MG"));
+		or = cmw.getReconResult("He was ordered to recon the area. - Vandiver of the Merchant Guild at 4125 . See Map below.", is, gm);
+		assertEquals("Vandiver",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(0).getCommanderName());
+		
+		gm.getNations().add(new Nation(22, "Khand Easterlings", "KE"));
+		or = cmw.getReconResult("He was ordered to recon the area.  - Itana Ovan of the Khand Easterlings at 4429"
+				+ "Urdrath of the Khand Easterlings with about 500 troops at 4228"
+				+ ". See Map below.", is, gm);
+		assertEquals("Itana Ovan",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(0).getCommanderName());
+		assertEquals("4429",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(0).getHexNo());
+		assertEquals("4228",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(1).getHexNo());
+		assertEquals(500,((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(1).getTroopCount());
+		
+		gm.getNations().add(new Nation(23, "Dark Lieutenants", "DL"));
+		or= cmw.getDivineNationForces("He was ordered to cast a lore spell. Divine Nation Forces - Dark Lieutenants forces near 3220 - lelind at 3423 Grishnäkh at 3622. He suffered a loss of health due to casting two spells.", is, gm);
+		assertEquals(2,((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.size());
+		assertEquals("lelind",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(0).getCommanderName());
+		assertEquals("Grishnäkh",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(1).getCommanderName());
 
+		or = cmw.getDivineNationForces("He was ordered to cast a lore spell. Divine Nation Forces - A scout of the area was attempted.", is, gm);
+		assertNull(or);
+		
+		testOverridePowers();
+	}
+	
+	public void testOverridePowers() {
+		CharacterMessageWrapper cmw = new CharacterMessageWrapper();
+		OrderResult or = null;
+		InfoSource is = new InfoSource();
+		is.setTurnNo(1);
+		GameMetadata gm = new GameMetadata();
+		gm.setGameType(GameTypeEnum.game2950);
+		
+//		ArtifactInfo ai = new ArtifactInfo(); 
+//		ai.setName("Mallorn Staff");
+//		ai.setNo(26);
+//		ai.setAlignment("None");
+//		ai.setPower(0, "Mage 30");
+//		
+//		gm.getArtifacts().addItem(ai);
+//		
+//		ArtifactInfo ai2 = gm.getArtifacts().findFirstByProperty("number", 26);
+//		assertEquals("Mage 30", ai2.getPower1());
+		or = cmw.getRAResult("He was ordered to cast a lore spell. Research Artifact - Elenrûth #125 is a Sword - allegiance: None - increases combat damage by 750 pts. This artifact will aid in the research of spells 502, 504, 506. Possession of the artifact can allow access to the lost spell list - Spirit Mastery. Research Artifact - Elfbane #111 is a Sword - allegiance: Evil - increases combat damage by 500 pts. Possession of the artifact can allow casting of the spell Perceive Nationality. Research Artifact - Mallorn Staff #109 is a Staff - allegiance: None - increases Mage Rank by 25. Research Artifact - Orb of Dark Seeing #102 is an Orb - allegiance: Evil - increases Mage Rank by 25. Research Artifact - Spear of Following #96 is a Spear - allegiance: None - increases combat damage by 500 pts. Possession of the artifact can allow casting of the spell Perceive Relations. He was not able to cast the spell. Continued efforts may succeed.", is);
+		assertNotNull(or);
+		assertEquals("org.joverseer.support.readers.newXml.RAResultWrapper", or.getClass().getName());
+		org.joverseer.support.readers.newXml.RAResultWrapper ra = (org.joverseer.support.readers.newXml.RAResultWrapper)or;
+		ArtifactWrapper aw = ra.artifacts.get(0);
+		assertEquals("Access to Spirit Mastery", aw.getLatent());
+		assertEquals("Combat 750", aw.getPower());
+		aw = ra.artifacts.get(2);
+		assertEquals("Mallorn Staff", aw.getName());
+		assertEquals("Mage 25", aw.getPower());
 	}
 
 }

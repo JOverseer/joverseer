@@ -267,6 +267,15 @@ public class GameMetadata implements Serializable {
 		}
 		return null;
 	}
+	
+	public Nation getNationByShortName(String name) {
+		for (Nation n : getNations()) {
+			if (n.getShortName().equals(name)) {
+				return n;
+			}
+		}
+		return null;
+	}
 
 	public Container<ArtifactInfo> getArtifacts() {
 		return this.artifacts;

@@ -3,8 +3,11 @@ package org.joverseer.ui.economyCalculator;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -20,20 +23,27 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import org.joverseer.JOApplication;
 import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
+import org.joverseer.domain.PopulationCenter;
+import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.tools.orderCostCalculator.OrderCostCalculator;
 import org.joverseer.ui.BaseView;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.listviews.NationEconomyListView;
 import org.joverseer.ui.listviews.NationProductionListView;
 import org.joverseer.ui.listviews.NationStatisticsListView;
 import org.joverseer.ui.listviews.commands.GenericCopyToClipboardCommand;
+import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.controls.JOverseerTable;
+import org.joverseer.ui.support.controls.TableUtils;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -89,6 +99,26 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 		CellRendererStyle style = new CellRendererStyle();
 		this.teamEconomyTable.setDefaultRenderer(Integer.class, new IntegerTeamEconomyTableRenderer(style));
 		this.teamEconomyTable.setDefaultRenderer(String.class, new StringTeamEconomyTableRenderer(style));
+		this.teamEconomyTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				if (me.getClickCount() == 2) {     
+					JTable target = (JTable)me.getSource();
+					
+					Game g = TeamEconomyView.this.gameHolder.getGame();
+					
+					int row = target.getSelectedRow(); 
+					int column = 0;
+					
+					Nation n = g.getMetadata().getNationByShortName((String) teamEconomyTable.getValueAt(row, column));
+					if (n == null) return;
+					PopulationCenter capitalHex = (PopulationCenter) g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[] { "nationNo", "capital" }, new Object[] { n.getNumber(), Boolean.TRUE });
+					
+					Point selectedHex = new Point(capitalHex.getX(), capitalHex.getY());
+					JOApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, selectedHex, this);
+				}
+			}
+		});
 //		this.teamEconomyTable.setBackground(Color.white);
 		// we set up the reference to the NationStatisticsModel once we've created it in the view.
 

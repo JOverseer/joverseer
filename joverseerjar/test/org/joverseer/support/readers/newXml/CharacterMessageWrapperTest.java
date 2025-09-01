@@ -161,6 +161,11 @@ public class CharacterMessageWrapperTest {
 		or = cmw.getDivineNationForces("He was ordered to cast a lore spell. Divine Nation Forces - A scout of the area was attempted.", is, gm);
 		assertNull(or);
 		
+		gm.getNations().add(new Nation(24, "Escer", "E"));
+		or = cmw.getPerceiveNationalityResult("He was ordered to cast a lore spell. Perceive Nationality - Jouruscu is found to be of the Escer.", gm);
+		assertEquals("Jouruscu", ((org.joverseer.support.readers.newXml.PerceiveNationalityResultWrapper) or).getCharacterName());
+		assertEquals(24, ((org.joverseer.support.readers.newXml.PerceiveNationalityResultWrapper) or).getNationNo());
+		
 		testOverridePowers();
 	}
 	

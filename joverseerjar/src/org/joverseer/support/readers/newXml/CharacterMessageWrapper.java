@@ -186,6 +186,8 @@ public class CharacterMessageWrapper {
 			if (or == null)
 				or = getRCOrderResult(line);
 			if (or == null)
+				getPerceiveNationalityResult(line, gm);
+			if (or == null)
 				or = getDivineNationForces(line, infoSource, gm);
 			if (or == null)
 				or = getReconResult(line, infoSource,gm);
@@ -750,6 +752,19 @@ public class CharacterMessageWrapper {
 			rw.setCharacterName(matches[0]);
 			rw.setHexNo(Integer.parseInt(matches[1]));
 			return rw;
+		}
+		return null;
+	}
+	
+	protected OrderResult getPerceiveNationalityResult(String line, GameMetadata gm) {
+		String ptr[] = new String[] { "was ordered to cast a lore spell. Perceive Nationality - ", "is found to be of the ", "." };
+		String matches[] = matchPattern(line, ptr);
+		if (matches != null) {
+			PerceiveNationalityResultWrapper pnrw = new PerceiveNationalityResultWrapper();
+			pnrw.setCharacterName(matches[0]);
+			gm.getNationByName(matches[1]).getNumber();
+			pnrw.setNationNo(gm.getNationByName(matches[1]).getNumber());
+			return pnrw;
 		}
 		return null;
 	}

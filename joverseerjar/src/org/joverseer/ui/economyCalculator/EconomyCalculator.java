@@ -430,7 +430,7 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 		MarketTableModel mtm = new MarketTableModel(this.gameHolder);
 		this.marketTable = new JOverseerTable(mtm);
 		mtm.setTable(this.marketTable);
-
+		
 		this.marketTable.getTableHeader().setPreferredSize(new Dimension(400, 16));
 		this.marketTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		for (int i = 0; i < mtm.getColumnCount(); i++) {
@@ -439,7 +439,7 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 		this.marketTable.setDefaultRenderer(Integer.class, new MarketRenderer());
 		this.marketTable.setDefaultRenderer(String.class, new MarketRenderer());
 		JScrollPane scp = new JScrollPane(this.marketTable);
-		scp.setPreferredSize(new Dimension(600, 278));
+		scp.setPreferredSize(new Dimension(600, this.marketTable.getRowHeight() * this.marketTable.getRowCount() + 18));
 		scp.getViewport().setOpaque(true);
 		lb.cell(scp);
 
@@ -541,7 +541,7 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 		this.totalsTable.setDefaultRenderer(String.class, new TotalsRenderer());
 		this.totalsTable.setDefaultRenderer(Integer.class, new TotalsRenderer());
 		scp = new JScrollPane(this.totalsTable);
-		scp.setPreferredSize(new Dimension(590, 124));
+		scp.setPreferredSize(new Dimension(590, this.totalsTable.getRowHeight() * this.totalsTable.getRowCount() + 2));
 		//scp.getViewport().setOpaque(true);
 		lb.cell(scp);
 

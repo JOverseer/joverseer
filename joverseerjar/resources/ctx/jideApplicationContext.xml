@@ -12,8 +12,8 @@
 
 	<bean id="applicationDescriptor"
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="1.19.01-rc4"/>
-		<property name="buildId" value="Varda"/>
+		<property name="version" value="1.19.01"/>
+		<property name="buildId" value="Wormtongue"/>
 
 	</bean>
 

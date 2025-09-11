@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import org.joverseer.JOApplication;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
 import org.joverseer.ui.JOverseerJIDEClient;
@@ -73,6 +74,9 @@ public class LoadGame extends ActionCommand {
             loadGame();
         }
         GraphicUtils.showView("mapView");
+        
+		if(PreferenceRegistry.instance().getPreferenceValue("defaultPage.TRDefault").equals("CHV")) GraphicUtils.showView("currentHexDataViewer");
+		else GraphicUtils.showView("notePad");
     }
 
 

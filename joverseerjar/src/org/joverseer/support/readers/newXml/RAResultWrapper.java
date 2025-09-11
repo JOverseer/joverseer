@@ -37,6 +37,7 @@ public class RAResultWrapper implements OrderResult {
 			ai = gm.findFirstArtifactByName(aw.getName());
 			if (ai != null) {
 				if(ai.getNo() == 0) ai.setNo(aw.getId());
+				ai.setPower(0, aw.getPower());
 				ai.setPower(1, aw.latent);
 			} else {
 				if (ai == null) {

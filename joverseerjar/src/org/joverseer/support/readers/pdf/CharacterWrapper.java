@@ -414,6 +414,9 @@ public class CharacterWrapper {
 
 	}
 
+	/*
+	 * Not used now, function has been moved to the new XML reader
+	 */
 	public void parseArmiesFromDivineNationForces(Game game, InfoSource infoSource, Character ch) {
 		String orders1 = getCleanOrders();
 		String dnf = "was ordered to cast a lore spell. Divine Nation Forces - ";

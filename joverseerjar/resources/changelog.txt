@@ -1,3 +1,21 @@
+VERSION 1.19.01
+---------------
+	* Enh: Map Icons can now be resized in Preferences -> Map Scale.
+	* Enh: Text Size also can now be changed in Preferences -> Windows Display.
+	* Enh: New Custom Layout! Save your current layout and it is saved as 'Custom Layout'
+	* Enh: Fog of War now has 'Regions' and 'Nations' showing you fog of war for starting regions or a nations current fog of war.
+	* QA: Spelling of artifacts in JOverseer is more consistent with rulebook.
+	* QA: Clearer wording for duplicate skill orders.
+	* QA: Can copy team economy table.
+	* QA: If JOverseer crashes on boot-up a pop-up appears informing of the crash, and creating a 'diagnostics file'.
+	* QA: New option to sort Armies by Nation and Name in Current Hex View.
+	* QA: Default Zoom now shows all zoom levels accessible.
+	* Fix: Research artifact should now properly extract secondary power and update existing info.
+	* Fix: Economy Calculator properly works out revenue when PC is sieged.
+	* Fix: Tax Base Delta in Turn Report View calculated correctly.
+	* Fix: Reading in character names from scouting and recon results sometimes wrong, now fixed.
+	* Fix: Allows casting of spells in order entry if the character has or is getting an artifact this turn.
+	* Fix: Number of transports now calculated correctly in Order Checker.
 VERSION 1.19.0
 ---------------
 	* Enh: New themes for JOverseer, including a Dark mode. Go to Preferences -> Window Display then change 'Interface Look and Feel'.

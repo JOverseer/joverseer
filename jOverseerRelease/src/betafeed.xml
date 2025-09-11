@@ -7,6 +7,23 @@
 			helper program.</description>
 		<language>en</language>
 		<item>
+			<title>1.19.02-rc1</title>
+			<pubDate>12 September 2025</pubDate>
+			<description>
+VERSION 1.19.02-rc1
+---------------
+	* Preference for default view on opening game, CHV or Notepad.
+	* Changed formatting of orders in CHV to improve space usage.
+	* Fixed recon errors when parsing in info, both in terms of formatting and if there are not troops reported (but an army is).
+	* Double clicking on row in Team Economy Table takes you to nation capital.
+	* JOverseer safely closes when updating (asks if you want to save game).
+	* Artifact table now properly updates powers 1 and 2 when RA done.
+	* Indication that orders are being sent ('Waiting' cursor).
+	* Divine Nation Forces wasn't being parsed, now is.
+	* Percieve Nationality wasn't being parsed, now is.
+ 			</description>
+		</item>	
+		<item>
 			<title>1.19.01-rc4</title>
 			<pubDate>12 August 2025</pubDate>
 			<description>

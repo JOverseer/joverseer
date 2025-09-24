@@ -64,6 +64,23 @@ public class CharacterMessageWrapperTest {
 		assertEquals(165,aw.id );
 		assertEquals(15,aw.combat);
 		assertEquals("Heal True",aw.latent);
+		
+		or = cmw.getRAResult("He was ordered to cast a lore spell.  Research Artifact -  K'Purian Battle Mace #82 is a Mace - allegiance: None - increases combat damage by 750 pts. Possession of the artifact can allow casting of the spell Long Stride.  Research Artifact -  Ar-sil #111 is a Sword - allegiance: Good - increases combat damage by 750 pts.  Research Artifact -  Ann uiug #226 is a Jewel - allegiance: Good - increases Emissary Rank by 10.  Research Artifact -  Ann minig #227 is a Jewel - allegiance: Good - increases Emissary Rank by 10. He was not able to cast the spell. Continued efforts may succeed. He was not able to cast the spell. Continued efforts may succeed.", is);
+		assertNotNull(or);
+		assertEquals("org.joverseer.support.readers.newXml.RAResultWrapper", or.getClass().getName());
+		ra = (org.joverseer.support.readers.newXml.RAResultWrapper)or;
+		assertEquals(4, ra.artifacts.size());
+		aw = ra.artifacts.get(0);
+		assertEquals("K'Purian Battle Mace",aw.name );
+		assertEquals(82,aw.id );
+		assertNull(aw.alignment);
+//		assertEquals(750,aw.combat);
+		aw = ra.artifacts.get(2);
+		assertEquals("Ann uiug",aw.name );
+		assertEquals(226,aw.id );
+		assertEquals(10,aw.emissary);
+		aw = ra.getArtifacts().get(3);
+		assertEquals("Ann minig", aw.getName());
 
 		or = cmw.getOwnedLAOrderResult("She was ordered to cast a lore spell. Locate Artifact - Dwarven Ring of Power #10may be possessed by\r\nThrelin at or near 3218.");
 		assertNotNull(or);
@@ -139,6 +156,11 @@ public class CharacterMessageWrapperTest {
 		or = cmw.getScoutAreaResult("He was ordered to scout the area. A scout of the area was attempted.  Foreign armies identified:  Gothmog of the Witch Realm of Angmar with about 1100 troops at 1609  Minasdir of the Kingdom of Arnor with about 3400 troops at 1409 . See Map below.", is, gm);
 		assertEquals("Gothmog",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(0).getCommanderName());
 		
+		gm.getNations().add(new Nation(30, "Daen Lintis", "DL"));
+		or = cmw.getScoutAreaResult("He was ordered to scout the area. A scout of the area was attempted. Foreign armies identified: Helin of the Daen Lintis with about 500 troops at 1716 . See Map below.", is, gm);
+		assertEquals("Helin",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(0).getCommanderName());
+		
+		
 		gm.getNations().add(new Nation(21, "Merchant Guild", "MG"));
 		or = cmw.getReconResult("He was ordered to recon the area. - Vandiver of the Merchant Guild at 4125 . See Map below.", is, gm);
 		assertEquals("Vandiver",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(0).getCommanderName());
@@ -151,6 +173,8 @@ public class CharacterMessageWrapperTest {
 		assertEquals("4429",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(0).getHexNo());
 		assertEquals("4228",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(1).getHexNo());
 		assertEquals(500,((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(1).getTroopCount());
+		
+		
 		
 		gm.getNations().add(new Nation(23, "Dark Lieutenants", "DL"));
 		or= cmw.getDivineNationForces("He was ordered to cast a lore spell. Divine Nation Forces - Dark Lieutenants forces near 3220 - lelind at 3423 Grishnäkh at 3622. He suffered a loss of health due to casting two spells.", is, gm);

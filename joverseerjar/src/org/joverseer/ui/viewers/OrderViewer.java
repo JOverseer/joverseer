@@ -186,7 +186,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
             }
         });
 
-        this.btn.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
+//        this.btn.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
         this.btn.setBorder(border);
         flowPanel.add(this.btn);
         
@@ -204,7 +204,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
                 JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, getFormObject(), this);
             }
         });
-        this.draw.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
+//        this.draw.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
         this.draw.setBorder(border);
         this.draw.setOpaque(true);
         this.draw.setBackground(UIManager.getColor("Panel.background"));

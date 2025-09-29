@@ -16,6 +16,35 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
  * 
  */
 public class NationReader implements MetadataReader {
+	Object[][] nations_OOE = new Object[][] {
+		{ "Unknown", "Un", new Object[] {} },
+		{ "Line of Eldacar", "Eld", new Object[] {} },
+		{ "Rebels of Ered Lithui", "Reb", new Object[] {} },
+		{ "Rhovanion", "Rho", new Object[] {} }, 
+		{ "Horselords of Rhovanion", "HoR", new Object[] {} }, 
+		{ "Kingdom of Arnor", "KoA", new Object[] {} },
+		{ "Quendi", "Que", new Object[] {} },
+		{ "Nation VII", "N07", new Object[] {} },
+		{ "Nation VIII", "N08", new Object[] {} },
+		{ "Nation IX", "N09", new Object[] {} },
+		{ "Nation X", "N10", new Object[] {} },
+		{ "Line of Castamir", "Cas", new Object[] {} },
+		{ "Line of Morlaen", "Mor", new Object[] {} },
+		{ "Line of Elendin", "Ele", new Object[] {} },
+		{ "Southron Kingdoms", "SKi", new Object[] {} },
+		{ "Hithlum", "Hit", new Object[] {} },
+		{ "Witch-realm of Angmar", "WiA", new Object[] {} },
+		{ "NationXVII", "N17", new Object[] {} },
+		{ "NationXVIII", "N18", new Object[] {} },
+		{ "NationXIX", "N19", new Object[] {} },
+		{ "NationXX", "N20", new Object[] {} },
+		{ "Line of Tirkhor", "LoT", new Object[] {} },
+		{ "Khazad", "Kha", new Object[] {} },
+		{ "NationXXIII", "N23", new Object[] {} },
+		{ "NationXXVI", "N24", new Object[] {} },
+		{ "NationXXV", "N25", new Object[] {} },
+	};
+	
 	Object[][] nations_2950 = new Object[][] {
 		{ "Unknown", "Un", new Object[] {} },
 		{ "Woodmen", "Woo", new Object[] { SNAEnum.StealthBonus, SNAEnum.ChallengeBonus, SNAEnum.ScoutReconAtDouble, SNAEnum.BetterMoraleAtNoFood, SNAEnum.NoMoraleLossOnFM } },
@@ -285,6 +314,22 @@ public class NationReader implements MetadataReader {
 			for (int i = 0; i < 26; i++) {
 				String shortName = (String) this.nations_1650[i][1];
 				String name = (String) this.nations_1650[i][0];
+				Nation n = new Nation(i, name, shortName);
+				number = n.getNumber().intValue();
+				if (number <= 10) {
+					n.setAllegiance(NationAllegianceEnum.FreePeople);
+				} else if (number <= 20) {
+					n.setAllegiance(NationAllegianceEnum.DarkServants);
+				} else {
+					n.setAllegiance(NationAllegianceEnum.Neutral);
+				}
+				addSNAs(n, (Object[]) this.nations_1650[i][2]);
+				nations.add(n);
+			}
+		} else if (gm.getGameType() == GameTypeEnum.gameOOE) {
+			for (int i = 0; i < 26; i++) {
+				String shortName = (String) this.nations_OOE[i][1];
+				String name = (String) this.nations_OOE[i][0];
 				Nation n = new Nation(i, name, shortName);
 				number = n.getNumber().intValue();
 				if (number <= 10) {

@@ -15,7 +15,8 @@ public enum GameTypeEnum {
     gameUW("UW"),
     gameKS("KS"),
     gameCME("CME"),
-    gameCMF("CMF");
+    gameCMF("CMF"),
+	gameOOE("OOE");
 
     private final String myName;
 
@@ -57,6 +58,9 @@ public enum GameTypeEnum {
 		}
 		if (this.equals(GameTypeEnum.gameCMF)) {
 			return "CMF";
+		}
+		if (this.equals(GameTypeEnum.gameOOE)) {
+			return "Out of the East";
 		}
 		return "unknown";
     }

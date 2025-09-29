@@ -69,19 +69,23 @@ public class NationMapRange implements Serializable {
     }
 
 	public boolean containsHex(Hex hex) {
-
 		// For non-FA games, simply check if the hex is in the rectangle
 		if (this.getRectangle().contains(hex.getColumn(), hex.getRow())) {
             if (this.getRectangle().getX() + this.getRectangle().getWidth() == hex.getColumn() + 1) {
             	if (hex.getRow() % 2 == 1) {
             		return true;
             	} else {
-            		return false;
+            		return this.pointsContainHex(hex);
             	}
             }
             return true;
         }
 		
+		return this.pointsContainHex(hex);
+		
+	}
+	
+	private boolean pointsContainHex(Hex hex) {
 		// For FA games run through all the additional hexes in the list
 		if (this.points!=null) {
 			for (int i=0; i<this.points.size();i=i+2) {
@@ -93,7 +97,6 @@ public class NationMapRange implements Serializable {
 			}
 		}
 		return false;
-		
 	}
 
 	public void setPoints(List<Integer> points) {

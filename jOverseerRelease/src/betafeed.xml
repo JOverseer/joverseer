@@ -6,6 +6,18 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
+				<item>
+			<title>1.19.02-rc2</title>
+			<pubDate>3 October 2025</pubDate>
+			<description>
+VERSION 1.19.02-rc2
+---------------
+	* When compiling info for characters going through the turns, if it finds a character with the same name was dead at some point it will ignore all previous info about the character.
+	* OOE added + their starting regions
+	* Can now delete turn 0, which refreshed the game and loads base data again.
+	* Now when importing turn 0 files can delete old imports.
+ 			</description>
+		</item>	
 		<item>
 			<title>1.19.02-rc1</title>
 			<pubDate>12 September 2025</pubDate>

@@ -13,10 +13,12 @@ import javax.swing.JOptionPane;
 
 import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameFileComparator;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.GamePreference;
+import org.joverseer.support.TurnInitializer;
 import org.joverseer.support.TurnPostProcessor;
 import org.joverseer.support.XmlAndPdfFileFilter;
 import org.joverseer.support.readers.newXml.TurnNewXmlReader;
@@ -28,6 +30,7 @@ import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
+import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -78,6 +81,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 		if (game == null) {
 			return;
 		}
+		
 		int xmlCount = 0;
 		int pdfCount = 0;
 		boolean errorOccurred = false;
@@ -175,6 +179,28 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 				dlg.setPreferredSize(new Dimension(500, 70));
 				dlg.showDialog();
 			}
+		}
+		
+		
+		if(g.getMaxTurn() == 0) {
+            int result = JOptionPane.showConfirmDialog(
+                    null,
+                    "If you are importing another turn 0 result file, we reccomend deleting any previous import by pressing 'yes'. Warning, this deletes any edits you have made so far.",
+                    "Confirm",
+                    JOptionPane.YES_NO_CANCEL_OPTION
+                );
+            if(result == JOptionPane.CANCEL_OPTION) return;
+            if(result == JOptionPane.YES_OPTION) {
+				Turn t0 = new Turn();
+				t0.setTurnNo(0);
+				TurnInitializer.initializeTurnWith(t0, null, g.getMetadata());
+				try {
+					g.getTurns().removeItem(g.getTurn(g.getMaxTurn()));
+					g.addTurn(t0);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+            }
 		}
 
 		JFileChooser fileChooser = new JFileChooser();

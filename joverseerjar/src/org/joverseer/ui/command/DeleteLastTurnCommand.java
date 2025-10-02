@@ -2,7 +2,9 @@ package org.joverseer.ui.command;
 
 import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.TurnInitializer;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
@@ -29,15 +31,31 @@ public class DeleteLastTurnCommand extends ActionCommand {
 		if (!ActiveGameChecker.checkActiveGameExists())
 			return;
 		final Game g = this.gameHolder.getGame();
-		if (g.getMaxTurn() == 0) {
-    		ErrorDialog.showErrorDialog("standardErrors.NoTurnsInGame");
-			return;
-		}
+//		if (g.getMaxTurn() == 0) {
+//    		ErrorDialog.showErrorDialog("standardErrors.NoTurnsInGame");
+//			return;
+//		}
 		ConfirmationDialog dlg = new ConfirmationDialog(Messages.getString("deleteLastTurnCommand.ConfirmationTitle"),
 				Messages.getString("deleteLastTurnCommand.ConfirmationMessage")) {
 			@Override
 			protected void onConfirm() {
-
+				
+				if(g.getMaxTurn() == 0) {
+        			Turn t0 = new Turn();
+        			t0.setTurnNo(0);
+        			TurnInitializer.initializeTurnWith(t0, null, g.getMetadata());
+        			try {
+        				g.getTurns().removeItem(g.getTurn(g.getMaxTurn()));
+						g.addTurn(t0);
+	        			JOApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, g, this);
+//	        			JOApplication.publishEvent(LifecycleEventsEnum.GameLoadedEvent, g, this);
+					} catch (Exception e) {
+						ErrorDialog.showErrorDialog(e,e.getMessage());
+            			return;
+					}
+        			return;
+				}
+				
 				g.getTurns().removeItem(g.getTurn(g.getMaxTurn()));
 				int newMaxTurn = 0;
 				for (int i = 0; i < g.getMaxTurn(); i++) {

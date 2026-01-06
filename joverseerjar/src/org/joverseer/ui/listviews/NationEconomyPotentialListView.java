@@ -48,6 +48,7 @@ public class NationEconomyPotentialListView extends BaseItemListView {
                 for (ProductEnum pe : ProductEnum.values()) {
                     if (pe == ProductEnum.Gold) continue;
                     ProductPrice pp = (ProductPrice)t.getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", pe);
+                    if (pp == null) continue;
                     int amt = pp.getSellPrice() * (ne.getStores(pe) + ne.getProduction(pe));
                     if (amt > bestNatSell) {
                         secondBestNatSell = bestNatSell;

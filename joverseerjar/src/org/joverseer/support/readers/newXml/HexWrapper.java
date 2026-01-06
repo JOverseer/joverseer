@@ -6,6 +6,7 @@ import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
+import org.joverseer.metadata.domain.HexTerrainEnum;
 
 public class HexWrapper {
 	int hexID;
@@ -110,12 +111,16 @@ public class HexWrapper {
 
 	public void updateGame(Game game) {
 		Hex hex = game.getMetadata().getHex(getHexID());
+		if (hex == null) {
+			System.out.print(getHexID());
+		}
 		hex.clearHexSideElements();
 		addElementToSides(hex, HexSideElementEnum.Bridge, getSidesFromInteger(getBridges()));
 		addElementToSides(hex, HexSideElementEnum.Ford, getSidesFromInteger(getFords()));
 		addElementToSides(hex, HexSideElementEnum.Road, getSidesFromInteger(getRoads()));
 		addElementToSides(hex, HexSideElementEnum.MinorRiver, getSidesFromInteger(getMinorRivers()));
 		addElementToSides(hex, HexSideElementEnum.MajorRiver, getSidesFromInteger(getMajorRivers()));
+		hex.setTerrain(XMLTerrainToEnum(terrain));
 	}
 
 	protected void addElementToSides(Hex hex, HexSideElementEnum element, ArrayList<HexSideEnum> sides) {
@@ -140,5 +145,25 @@ public class HexWrapper {
 			ret.add(HexSideEnum.TopLeft);
 		return ret;
 	}
-
+	
+	static final public HexTerrainEnum XMLTerrainToEnum(int terrainID) {
+		final int[] lookup = { 
+				HexTerrainEnum.ocean.getTerrain(), //0
+				HexTerrainEnum.sea.getTerrain(),   //1
+				HexTerrainEnum.shore.getTerrain(), //2
+				HexTerrainEnum.plains.getTerrain(), //3
+				HexTerrainEnum.hillsNrough.getTerrain(), //4
+				HexTerrainEnum.forest.getTerrain(), //5
+				HexTerrainEnum.desert.getTerrain(), //6
+				HexTerrainEnum.swamp.getTerrain(),  //7
+				HexTerrainEnum.mountains.getTerrain() //8
+		};
+		if ((terrainID < 0) || (terrainID > 8)) {
+			// default to something obviously wrong.
+			return HexTerrainEnum.ocean; 
+		}
+		return  HexTerrainEnum.fromValue(lookup[terrainID]);
+	}
+	
 }
+

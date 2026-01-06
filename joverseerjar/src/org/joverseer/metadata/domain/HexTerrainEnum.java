@@ -7,7 +7,9 @@ import org.joverseer.ui.support.UIUtils;
 /**
  * Enumeration for hex terains
  * 
- * Values are according to the palantir data files. 
+ * Values are according to the palantir data files.
+ * This is NOT the same as the XML files.
+ * See HexWrapper. 
  * 
  * @author Marios Skounakis
  *

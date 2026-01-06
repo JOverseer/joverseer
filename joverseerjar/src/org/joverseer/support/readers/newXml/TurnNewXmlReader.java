@@ -730,46 +730,8 @@ public class TurnNewXmlReader implements Runnable {
 					m.setNationNo(this.turnInfo.nationNo);
 					m.setModifier(modifier.getModifier());
 					
-					switch(TerrainID) {
-					// The Terrain in the data file is different to the JO Enum
-					case 0:
-						m.setTerrain(HexTerrainEnum.ocean);
-						break;
-
-					case 1:
-						m.setTerrain(HexTerrainEnum.sea);
-						break;
-						
-					case 2:
-						m.setTerrain(HexTerrainEnum.shore);
-						break;
-
-					case 3:
-						m.setTerrain(HexTerrainEnum.plains);
-						break;
-					
-					case 4:
-						m.setTerrain(HexTerrainEnum.hillsNrough);
-						break;
-					
-					case 5:
-						m.setTerrain(HexTerrainEnum.forest);
-						break;
-						
-					case 6:
-						m.setTerrain(HexTerrainEnum.desert);
-						break;
-						
-					case 7:
-						m.setTerrain(HexTerrainEnum.swamp);
-						break;
-						
-					case 8:
-						m.setTerrain(HexTerrainEnum.mountains);
-						break;
-						
-					}
-					
+					m.setTerrain(HexWrapper.XMLTerrainToEnum(TerrainID));
+										
 					game1.getMetadata().getTerrainModifiers().addItem(m);
 				}
 			}

@@ -45,27 +45,28 @@ public class NationInfoWrapper {
 		String[] popHexes1 = getPopHexes().split(",");
 
 		// check for degenerate case
-		if ((emptyHexes.length == 1) && (emptyHexes[0].length()==0)) {
-			return ret;
-		}
-		for (String eh : emptyHexes) {
-			int ehi = Integer.parseInt(eh);
-			HexInfo hi = new HexInfo();
-			hi.getNationSources().add(nationNo);
-			hi.setVisible(true);
-			hi.setHasPopulationCenter(false);
-			hi.setHexNo(ehi);
-			ret.add(hi);
+		if (!((emptyHexes.length == 1) && (emptyHexes[0].length()==0))) {
+			for (String eh : emptyHexes) {
+				int ehi = Integer.parseInt(eh);
+				HexInfo hi = new HexInfo();
+				hi.getNationSources().add(nationNo);
+				hi.setVisible(true);
+				hi.setHasPopulationCenter(false);
+				hi.setHexNo(ehi);
+				ret.add(hi);
+			}
 		}
 
-		for (String ph : popHexes1) {
-			int phi = Integer.parseInt(ph);
-			HexInfo hi = new HexInfo();
-			hi.getNationSources().add(nationNo);
-			hi.setVisible(true);
-			hi.setHasPopulationCenter(true);
-			hi.setHexNo(phi);
-			ret.add(hi);
+		if (!((popHexes1.length == 1) && (popHexes1[0].length()==0))) {
+			for (String ph : popHexes1) {
+				int phi = Integer.parseInt(ph);
+				HexInfo hi = new HexInfo();
+				hi.getNationSources().add(nationNo);
+				hi.setVisible(true);
+				hi.setHasPopulationCenter(true);
+				hi.setHexNo(phi);
+				ret.add(hi);
+			}
 		}
 		return ret;
 	}

@@ -55,6 +55,7 @@ public class PopCenterWrapper {
 	}
 
 	public void updatePopCenter(PopulationCenter pc) {
+		//TODO: shouldn't we be updating more than just production?
 		for (ProductionWrapper pw : this.products) {
 			pw.updatePopCenter(pc);
 		}

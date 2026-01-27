@@ -48,7 +48,6 @@ import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.infoSources.XmlExtraTurnInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.tools.nationMessages.NationMessageParser;
-import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.views.Messages;
 import org.springframework.richclient.progress.ProgressMonitor;
 

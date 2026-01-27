@@ -5,13 +5,10 @@ import java.util.Locale;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
-import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.support.ApplicationWindowAwareCommand;
-import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.MessageDialog;
 
-import com.jidesoft.docking.DockingManager;
 import com.jidesoft.spring.richclient.docking.JideApplicationWindow;
 
 public class SaveCustomLayoutCommand extends ApplicationWindowAwareCommand {

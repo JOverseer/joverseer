@@ -15,6 +15,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileWriter;
+import java.net.URI;
+import java.net.URL;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -643,8 +646,11 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 						String acct = this.gameHolder.getGame().getTurn().getPlayerInfo(g.getMetadata().getNationNo()).getAccountNo();
 						if (acct == null)
 							acct = "null";
-						String url = "http://www.meturn.com/cgi-bin/HUpload.exe";
-						final PostMethod filePost = new PostMethod(url);
+						String prefEndpoint = PreferenceRegistry.instance().getPreferenceValue("submitOrders.url");
+//						String url = "http://www.meturn.com/cgi-bin/HUpload.exe";
+//						String url = "http://18.168.101.186/cgi-bin/HUpload.exe";
+//						String url = "http://localhost/";
+						final PostMethod filePost = new PostMethod(prefEndpoint+"/cgi-bin/HUpload.exe");
 						Part[] parts = { new StringPart("emailaddr", email), new StringPart("name", name), new StringPart("account", acct), new FilePart(file.getName(), file) };
 						filePost.setRequestEntity(new MultipartRequestEntity(parts, filePost.getParams()));
 						// final GetMethod filePost = new
@@ -652,21 +658,27 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 						HttpClient client = new HttpClient();
 						client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
 						BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
-						int status = client.executeMethod(filePost);
+						int status = HttpStatus.SC_SERVICE_UNAVAILABLE;
+						try {
+							status = client.executeMethod(filePost);
+						} catch (java.net.ConnectException conEx) {
+							//TODO: log this error.
+							status = HttpStatus.SC_SERVICE_UNAVAILABLE;
+						}
 						if (status == HttpStatus.SC_OK) {
 
-							Scanner s = new Scanner(filePost.getResponseBodyAsStream()).useDelimiter("\\A");
-							String result = s.hasNext() ? s.next() : "";
+							try (Scanner s = new Scanner(filePost.getResponseBodyAsStream()).useDelimiter("\\A")) {
+								String result = s.hasNext() ? s.next() : "";
 
-							if(result.indexOf("Submitting ...Success") == -1) {
-								this.cancel = true;
+								if(result.indexOf("Submitting ...Success") == -1) {
+									this.cancel = true;
+								}
+								else successes[this.index] = true;
+								
+								if(this.index == 0 || successes[this.index] == false || sendAll == false) {
+									this.serverResponse = result; 
+								}
 							}
-							else successes[this.index] = true;
-							
-							if(this.index == 0 || successes[this.index] == false || sendAll == false) {
-								this.serverResponse = result; 
-							}
-
 							if (!this.cancel) {
 								increaseVersionNumber(pi);
 								filePost.releaseConnection();
@@ -697,8 +709,12 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 					temp += "<br/>";
 				}
 				
-			    String bagBegin = this.serverResponse.substring(0,this.serverResponse.lastIndexOf('/')-8);
-			    String bagEnd = this.serverResponse.substring(this.serverResponse.lastIndexOf('/')-8);
+				String bagBegin = "";
+				String bagEnd = "";
+				if (this.serverResponse.length() > 8) {
+					bagBegin = this.serverResponse.substring(0,this.serverResponse.lastIndexOf('/')-8);
+					bagEnd = this.serverResponse.substring(this.serverResponse.lastIndexOf('/')-8);
+				}
 			    this.serverResponse = bagBegin + temp + bagEnd;
 				
 				final SubmitOrdersResultsForm frm = new SubmitOrdersResultsForm(FormModelHelper.createFormModel(new Object()));

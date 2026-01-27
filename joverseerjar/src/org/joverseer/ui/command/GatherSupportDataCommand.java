@@ -25,7 +25,6 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.tools.BugReport;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.ExportDiploForm;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationDescriptor;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;

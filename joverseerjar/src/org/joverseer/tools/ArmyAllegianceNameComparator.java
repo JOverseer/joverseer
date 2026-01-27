@@ -3,7 +3,6 @@ package org.joverseer.tools;
 import java.util.Comparator;
 
 import org.joverseer.domain.Army;
-import org.joverseer.domain.Character;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;

@@ -5,7 +5,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.FocusTraversalPolicy;
-import java.awt.Insets;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetAdapter;
@@ -17,7 +16,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -46,7 +44,6 @@ import org.joverseer.ui.support.dataFlavors.OrderDataFlavor;
 import org.joverseer.ui.support.transferHandlers.OrderExportTransferHandler;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.image.ImageSource;
-import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 /**
  * Shows orders

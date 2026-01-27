@@ -16,8 +16,6 @@
 package org.joverseer.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Desktop;
 import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -26,22 +24,17 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
@@ -56,9 +49,6 @@ import org.joverseer.tools.BugReport;
 import org.joverseer.ui.views.Messages;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationLauncher;
-import org.springframework.richclient.command.AbstractCommand;
-import org.springframework.richclient.command.ActionCommand;
-import org.springframework.richclient.dialog.ApplicationDialog;
 
 import com.jidesoft.plaf.LookAndFeelFactory;
 /**

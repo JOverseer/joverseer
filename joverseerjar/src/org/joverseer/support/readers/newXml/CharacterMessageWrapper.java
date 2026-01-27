@@ -28,7 +28,6 @@ import org.joverseer.support.readers.pdf.LocateArtifactTrueResultWrapper;
 import org.joverseer.support.readers.pdf.OrderResult;
 import org.joverseer.support.readers.pdf.RevealCharacterResultWrapper;
 import org.joverseer.support.readers.pdf.RevealCharacterTrueResultWrapper;
-import org.joverseer.support.readers.xml.TurnXmlReader;
 
 public class CharacterMessageWrapper {
 	String charId;

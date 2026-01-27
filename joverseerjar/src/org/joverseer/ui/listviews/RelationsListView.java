@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -13,13 +12,11 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 
-import org.joverseer.JOApplication;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.support.drawing.ColorPicker;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.table.BeanTableModel;
 
 /**

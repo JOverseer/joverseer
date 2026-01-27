@@ -10,6 +10,16 @@
 			<title>1.19.02-rc2</title>
 			<pubDate>3 October 2025</pubDate>
 			<description>
+VERSION 1.19.02-rc3
+---------------
+	* OOE default hex range and terrain (seas) added.
+	* Terrain changes are now imported properly.
+	 			</description>
+		</item>	
+				<item>
+			<title>1.19.02-rc2</title>
+			<pubDate>3 October 2025</pubDate>
+			<description>
 VERSION 1.19.02-rc2
 ---------------
 	* When compiling info for characters going through the turns, if it finds a character with the same name was dead at some point it will ignore all previous info about the character.

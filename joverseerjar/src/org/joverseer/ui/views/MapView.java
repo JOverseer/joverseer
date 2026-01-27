@@ -1,13 +1,11 @@
 package org.joverseer.ui.views;
 
 import java.awt.Dimension;
-import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.AffineTransform;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;

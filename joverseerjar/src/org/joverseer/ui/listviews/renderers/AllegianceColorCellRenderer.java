@@ -2,13 +2,11 @@ package org.joverseer.ui.listviews.renderers;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.util.Locale;
 
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import org.joverseer.JOApplication;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.game.Game;
@@ -17,7 +15,6 @@ import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.listviews.AdvancedArtifactTableModel;
 import org.joverseer.ui.support.drawing.ColorPicker;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.SortableTableModel;
 

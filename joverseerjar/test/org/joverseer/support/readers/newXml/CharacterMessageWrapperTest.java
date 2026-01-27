@@ -2,12 +2,8 @@ package org.joverseer.support.readers.newXml;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
-
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.GameTypeEnum;
-import org.joverseer.metadata.MetadataReaderException;
-import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.readers.pdf.OrderResult;

@@ -12,7 +12,7 @@
 
 	<bean id="applicationDescriptor"
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="1.19.02-rc2"/>
+		<property name="version" value="1.19.02-rc3"/>
 		<property name="buildId" value="Wormtongue"/>
 
 	</bean>

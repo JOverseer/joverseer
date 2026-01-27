@@ -2,7 +2,6 @@ package org.joverseer.ui.support;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Insets;
@@ -15,14 +14,11 @@ import javax.swing.JComboBox;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.joverseer.JOApplication;
-import org.joverseer.ui.LifecycleEventsEnum;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.WindowManager;
 
 import com.formdev.flatlaf.FlatLaf;
-import com.jgoodies.looks.BorderStyle;
 
 /**
  * Hide/gather all the plaf knowledge.

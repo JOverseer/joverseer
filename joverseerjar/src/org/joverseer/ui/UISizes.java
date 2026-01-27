@@ -3,7 +3,6 @@ package org.joverseer.ui;
 import java.awt.Dimension;
 
 import org.joverseer.preferences.PreferenceRegistry;
-import org.joverseer.ui.support.PLaFHelper;
 
 public class UISizes {
 	private int height3; // default 12

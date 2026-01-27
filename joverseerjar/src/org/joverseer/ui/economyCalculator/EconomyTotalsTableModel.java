@@ -11,7 +11,6 @@ import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.Messages;

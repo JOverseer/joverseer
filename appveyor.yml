@@ -92,8 +92,15 @@ for:
     - java --version
     - pwd
     - ls -F
+    - curl -L https://downloads.sourceforge.net/project/launch4j/launch4j-3/3.50/launch4j-3.50-linux-x64.tgz --output launch4j.tgz
+    - tar xf launch4j.tgz
 
   build_script:
     - ant test
+    - ant -f joverseerRelease/build.xml LinuxBYOJavaTar
+
+  artifacts:
+    - path: jOverseerRelease/dist/joverseer-BYOJ-*.tar.gz
+      name: Linux-Bring-Your-Own-Java
 
 

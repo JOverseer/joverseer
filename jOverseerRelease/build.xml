@@ -2,7 +2,7 @@
 <project name="joverseerRelease" default="BuildAll" basedir=".">
     <description>
         Build file for the release parts of joverseer.
-    	Tested with Launch4j v3.14
+    	Tested with Launch4j v3.50
     </description>
     <property name="updater.dir">../joverseerupdaterjar/dist/lib</property>
 	<property name="jojar.project.dir">../joverseerjar/</property>
@@ -30,11 +30,11 @@
 	<condition property="is.macos">
 		<os family="mac"/>
 	</condition>
-	<!-- note test for mac must be before as mac is unix-like
+	<!-- note test for mac must be before as mac is unix-like -->
 	<condition property="is.linux">
 		<os family="unix"/>
 	</condition>
--->
+	
 	<macrodef name="assertLaunch4jAvailable">
     	<attribute name="dir" />
     	<sequential>
@@ -125,7 +125,7 @@
    <!-- Main targets -->
    <!--  java doc disabled: eclipse bug with large classpath. -->
    <target name="BuildAll"
-       depends="-Init, -Prep, WindowsJoverseerLauncher,WindowsUpdaterLauncher,GatherDependents"
+       depends="-Init, -Prep, WindowsJoverseerLauncher,WindowsUpdaterLauncher,GatherDependents,GatherDependentsWindowsOnly"
        description="Complete rebuild">
        <echo message="Build finished."/>
    </target>
@@ -194,7 +194,7 @@ companyName="Game Systems International" internalName="jOverseer" originalFilena
             <zipfileset dir="${dist}" includes="update.jar" prefix="update"/>
         </zip>
 	</target>
-	<target name="windowsCompleteNoJavaZip" depends="GatherDependents,WindowsJoverseerLauncher,WindowsUpdaterLauncher,WindowsIcon">
+	<target name="windowsCompleteNoJavaZip" depends="GatherDependents,GatherDependentsWindowsOnly,WindowsJoverseerLauncher,WindowsUpdaterLauncher,WindowsIcon">
 		<copy tofile="${dist}\jide-common.jar" file="${dist}\jide-common-windows.jar" overwrite="true"/>
 		<loadfile property="joverseer.version" srcFile="${dist}/version"/>
 		<zip destfile="${dist}/joverseer-nojava-${joverseer.version}.zip">
@@ -216,13 +216,13 @@ companyName="Game Systems International" internalName="jOverseer" originalFilena
 			<zipfileset dir="${dist}" includes="default.layout" prefix="layout"/>
 		</zip>
 	</target>
-	<target name="windowsCompleteWithJavaZip" depends="GatherDependents,windowsCompleteNoJavaZip,customJRE">
+	<target name="windowsCompleteWithJavaZip" depends="GatherDependents,GatherDependentsWindowsOnly,windowsCompleteNoJavaZip,customJRE">
 		<copy tofile="${dist}/joverseer-withjava-${joverseer.version}.zip" file="${dist}/joverseer-nojava-${joverseer.version}.zip" overwrite="true"/>
 		<zip destfile="${dist}/joverseer-nojava-${joverseer.version}.zip">
 			<zipfileset dir="${dist}/jre" prefix="jre"/>
 		</zip>
 	</target>
-	<target name="windowsInstaller" depends="GatherDependents,WindowsJoverseerLauncher,WindowsUpdaterLauncher,WindowsIcon,customJRE">
+	<target name="windowsInstaller" depends="GatherDependents,GatherDependentsWindowsOnly,WindowsJoverseerLauncher,WindowsUpdaterLauncher,WindowsIcon,customJRE">
 		<property name="iss.dir">C:\Program Files (x86)\Inno Setup 5</property>
 		<copy tofile="${dist}\jide-common.jar" file="${dist}\jide-common-windows.jar" overwrite="true"/>
 		<loadfile property="joverseer.version" srcFile="${dist}/version"/>
@@ -233,7 +233,7 @@ companyName="Game Systems International" internalName="jOverseer" originalFilena
 		</exec>
 	</target>
 	<!-- note java 8 doesn't support -native option, so we use java 9+ -->
-	<target name="jpackager" depends="GatherDependents,WindowsJoverseerLauncher,WindowsUpdaterLauncher,WindowsIcon">
+	<target name="jpackager" depends="GatherDependents,GatherDependentsWindowsOnly,WindowsJoverseerLauncher,WindowsUpdaterLauncher,WindowsIcon">
 		<exec executable="jpackage" failonerror="true">
 			<arg value="-deploy"/>
 			<arg value="-native msi"/>
@@ -338,6 +338,28 @@ companyName="Game Systems International" internalName="jOverseer" originalFilena
 		  <fileset file="${dist}/update.jar"/>
 		</copy>
 	</target>
+
+	<target name="LinuxBYOJavaTar" depends="LinuxCommonFiles">
+	  <tar destfile="joverseer.tar">
+		<tarfileset dir="${dist}" prefix="joverseer/">
+		  <exclude name="joverseer.sh"/>
+		</tarfileset>		  
+		<tarfileset dir="${dist}" prefix="joverseer/" filemode="755">
+		  <include name="joverseer.sh"/>
+		</tarfileset>
+	  </tar>
+	  <gzip destfile="${dist}/joverseer-BYOJ-${joverseer.version}.tar.gz" src="joverseer.tar"/>
+	  <delete file="joverseer.tar"/>
+	</target>
+	
+	<target name="LinuxCommonFiles" depends="GatherDependents,JoverseerJar">
+	  <copy file="${src}/Linux/unix-launcher.sh" tofile="${dist}/joverseer.sh" flatten="true"/>
+	  <chmod file="${dist}/joverseer.sh" perm="ugo+rx"/>
+		<mkdir dir="${dist}/update"/>
+		<copy todir="${dist}/update">
+		  <fileset file="${dist}/update.jar"/>
+		</copy>
+    </target>
 	<!-- don't include jide-common.jar in update, since we now have platform specific versions -->
 	<target name="betaupdatezip" depends="WindowsJoverseerLauncher,WindowsUpdaterLauncher">
         <zip destfile="${dist}/latestbetaupdate.zip">
@@ -381,6 +403,14 @@ companyName="Game Systems International" internalName="jOverseer" originalFilena
 	<loadfile property="joverseer.version" srcFile="${dist}/version"/>
     <xslt in="${res.dir}/ctx/jideApplicationContext.xml" out="${dist}/version" style="${src}/makeFeed.xsl"/>
 	</target>
+
+	<target name="GatherDependentsWindowsOnly">
+		<copy todir="${dist}" file="${src}/joverseer.bat">
+		</copy>
+		<copy todir="${dist}" file="${src}/joverseerupdater.bat">
+		</copy>
+		<copy todir="${dist}" file="${src}/joverseer-no3D.bat"></copy>
+	</target>
 	
 	<target name="GatherDependents">
 		<copy todir="${dist}" flatten="true">
@@ -403,11 +433,6 @@ companyName="Game Systems International" internalName="jOverseer" originalFilena
    			</path>
 			<path refid="runtime.jars.path"/>
 		</copy>
-		<copy todir="${dist}" file="${src}/joverseer.bat">
-		</copy>
-		<copy todir="${dist}" file="${src}/jOverseerUpdater.bat">
-		</copy>
-		<copy todir="${dist}" file="${src}/joverseer-no3D.bat"></copy>
 	</target>
 
 	<target name="resolveJDK" depends="resolveJDK-windows,resolveJDK-mac,resolveJDK-linux">

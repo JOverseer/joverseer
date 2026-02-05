@@ -1,0 +1,8 @@
+Section: games
+Priority: optional
+Architecture: all
+Maintainer: Dave Spring <gsi@gamesystems.com>
+Description: Middle-Earth PBM Player aid
+ A GUI to help players of Middle-Earth Play-By-(e)Mail manage results and create orders.
+Depends:
+Homepage: https://gamesystems.com/gamingsoftware/

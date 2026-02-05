@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=jOverseer
+Comment=Review Play-By-Mail results and make orders
+Path=/usr/bin/joverseer
+Categories=Games
+Keywords=PBM
+Terminal=false
+Exec=~/joverseer/unix-launcher.sh %F
+Icon=/usr/share/doc/joverseer/joverseer.svg
+StartupNotify=true

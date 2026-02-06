@@ -89,10 +89,9 @@ for:
   install:
     - sudo apt -y install ant ant-contrib
     - echo $SHELL
-    - /usr/libexec/java_home -V
     - java --version
-    - export JAVA_HOME=`/usr/libexec/java_home -v13.*`
-    - java --version
+    - echo $JAVA_HOME
+    - echo $ANT_HOME
     - pwd
     - ls -F
     - curl -L https://downloads.sourceforge.net/project/launch4j/launch4j-3/3.50/launch4j-3.50-linux-x64.tgz --output launch4j.tgz

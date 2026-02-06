@@ -8,7 +8,8 @@ branches:
   only:
     - master
     - release
-    - hotfix-moveArmySubEditor
+# and while testing linux build again.
+    - Linux-build
 skip_tags: true
 shallow_clone: true
 

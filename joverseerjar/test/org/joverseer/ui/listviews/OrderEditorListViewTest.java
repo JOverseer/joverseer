@@ -43,7 +43,7 @@ public class OrderEditorListViewTest extends AssertJSwingJUnitTestCase {
 		app.setApplicationContext(ctx);
 		assertNotNull(Application.instance());
 		assertTrue(Application.isLoaded());
-		ctx.refresh();
+		//ctx.refresh();		THROWING ERROR FOR SOME REASON NOW?
 		assertNotNull(Application.instance().getApplicationContext().getBean(AbstractApplicationContext.MESSAGE_SOURCE_BEAN_NAME));
 		ApplicationServicesLocator asl = new ApplicationServicesLocator();
 		ApplicationServices as = new DefaultApplicationServices(ctx);

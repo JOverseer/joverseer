@@ -15,11 +15,36 @@
  */
 package org.joverseer.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.Dialog;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,7 +52,13 @@ import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
+import org.joverseer.tools.BugReport;
+import org.joverseer.ui.views.Messages;
+import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationLauncher;
+import org.springframework.richclient.command.AbstractCommand;
+import org.springframework.richclient.command.ActionCommand;
+import org.springframework.richclient.dialog.ApplicationDialog;
 
 import com.jidesoft.plaf.LookAndFeelFactory;
 /**
@@ -48,7 +79,6 @@ public class JOverseerJIDEClient {
 	public static String[] cmdLineArgs;
 
 	private static final Log _logger = LogFactory.getLog(JOverseerJIDEClient.class);
-
 	/**
 	 * Main routine for the simple sample application.
 	 * 
@@ -57,6 +87,9 @@ public class JOverseerJIDEClient {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws Exception {
 		try {
+			Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
+			    showErrorDialog(throwable);
+			});
 			
 			SimpleDateFormat format = new SimpleDateFormat("M-d_HHmmss");
 			FileAppender fileAppender = new FileAppender(new SimpleLayout(), getLogFilename());
@@ -79,6 +112,7 @@ public class JOverseerJIDEClient {
 //		    
 			
 			System.setProperty("java.util.Arrays.useLegacyMergeSort", "true"); // until sorting bug fixed.
+			//System.setProperty( "sun.java2d.uiScale", "1.0" );
 			
 			cmdLineArgs = args; // save as global
 			// now do the command line switches needed before we do much more.
@@ -119,8 +153,11 @@ public class JOverseerJIDEClient {
 			
 			
 			com.jidesoft.utils.Lm.verifyLicense("Marios Skounakis", "JOverseer", "L1R4Nx7vEp0nMbsoaHdH7nkRrx5F.dO");
-			LookAndFeelFactory.installDefaultLookAndFeelAndExtension();
-			LookAndFeelFactory.installJideExtension(LookAndFeelFactory.XERTO_STYLE);
+
+			if(!System.getProperty("os.name").contains("Mac")) {
+				LookAndFeelFactory.installDefaultLookAndFeelAndExtension();
+				LookAndFeelFactory.installJideExtension(LookAndFeelFactory.XERTO_STYLE);
+			}
 			
 
 /*			try {
@@ -184,4 +221,69 @@ public class JOverseerJIDEClient {
 			_logger.error("Exception on AWT Event Thread", e);
 		}
 	}
+	
+    public static void showErrorDialog(Throwable t) {
+    	t.printStackTrace();
+    	JDialog dialog = new JDialog(null, Messages.getString("standardMessages.Error.title"), Dialog.ModalityType.APPLICATION_MODAL);
+    	
+    	JPanel panel = new JPanel(new BorderLayout(0, 16));
+    	
+		JTextArea area = new JTextArea(Messages.getString("jOverseerCrashOccurred.message"));
+		area.setEditable(false);
+		area.setWrapStyleWord(true);
+		area.setCaretColor(UIManager.getColor("Panel.background"));
+		panel.add(area, BorderLayout.CENTER);
+		
+		JPanel buttonPannel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		panel.add(buttonPannel, BorderLayout.PAGE_END);
+		
+		JButton createFile = new JButton(Messages.getString("saveDiagnostics.label"));
+		createFile.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				BugReport br = new BugReport();
+				try {
+					String location = br.zipReport(getStackTrace(t), true);
+					if(location != null) {
+				        JOptionPane.showMessageDialog(
+				            null,
+				            new JLabel(Messages.getString("diagnosticFile.success")),
+				            Messages.getString("diagnosticFile.success.title"),
+				            JOptionPane.INFORMATION_MESSAGE
+				        );
+				        Application.instance().close();
+					}
+				} catch (IOException e2) {
+			        JOptionPane.showMessageDialog(
+			            null,
+			            new JLabel(Messages.getString("diagnosticFile.fail")),
+			            Messages.getString("jOverseerCrashOccurred.message"),
+			            JOptionPane.ERROR_MESSAGE
+			        );
+				}
+			}
+		});
+		
+		buttonPannel.add(createFile);
+		
+		dialog.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				Application.instance().close();
+			}
+		});
+		
+		dialog.setContentPane(panel);
+		dialog.pack();
+		dialog.setLocationRelativeTo(null);
+		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		dialog.setVisible(true);
+    }
+    
+    private static String getStackTrace(Throwable t) {
+    	StringWriter sw = new StringWriter();
+    	t.printStackTrace(new PrintWriter(sw));
+    	String sStackTrace = sw.toString();
+        return sStackTrace;
+    }
 }

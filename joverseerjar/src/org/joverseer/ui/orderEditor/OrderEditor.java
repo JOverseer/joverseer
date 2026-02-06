@@ -1,6 +1,5 @@
 package org.joverseer.ui.orderEditor;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
@@ -22,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,11 +34,7 @@ import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
-import org.joverseer.tools.OrderParameterValidator;
-import org.joverseer.tools.OrderValidationResult;
-import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
-import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.GraphicUtils;
@@ -129,6 +125,13 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		}
 		return this.gm;
 	}
+	
+//	private GameHolder getGameHolder() {
+//		Game g = this.gameHolder.getGame();
+//		if (!Game.isInitialized(g))
+//			return null;
+//		return this.gameHolder;
+//	}
 
 	/**
 	 * Refresh the order combo box to show orders valid for the selected
@@ -140,10 +143,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		if (order != null) {
 			c = order.getCharacter();
 		}
-		this.orderCombo.setModel(createOrderCombo(c,getGameMetadata()));
+		this.orderCombo.setModel(createOrderCombo(c,this.gameHolder));
 	}
 	// useful utility function
-	public static ComboBoxListModelAdapter createOrderCombo(Character c,GameMetadata gm) {
+	public static ComboBoxListModelAdapter createOrderCombo(Character c, GameHolder gh) {
+		GameMetadata gm = gh.getGame().getMetadata();
 		Container<OrderMetadata> orderMetadata = gm.getOrders();
 
 		ListListModel orders = new ListListModel();
@@ -155,6 +159,10 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 						|| om.orderAllowedDueToUncoverSecretsSNA(c)
 						|| om.orderAllowedDueToScoutingSNA(c)) {
 						orders.add(om.getNumber() + " " + om.getCode()); //$NON-NLS-1$
+					} else if(om.getSkillRequirement().equals("MM")) {
+						if(artifactTrading(c, gh) || mightPickUpArtifact(c)) {
+							orders.add(om.getNumber() + " " + om.getCode()); //$NON-NLS-1$
+						}
 					}
 				} else {
 					orders.add(om.getNumber() + " " + om.getCode()); //$NON-NLS-1$
@@ -164,7 +172,34 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		SortedListModel slm = new SortedListModel(orders);
 		return new ComboBoxListModelAdapter(slm);
 	}
+	
+	/*
+	 * Checks if another character is sending them an artifact, which is important because it would allow them to cast a spell this turn
+	 */
+	public static boolean artifactTrading(Character c, GameHolder gh) {
+		for(Character otherChar: gh.getGame().getTurn().getCharactersAtHex(c.getHexNo())) {
+			for(Order o : otherChar.getOrders()) {
+				if(!o.isBlank()) {
+					if(o.getOrderNo() == 360) {
+						if(o.getParameters().contains(c.getId())) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
 
+	public static boolean mightPickUpArtifact(Character c) {
+		for(Order o : c.getOrders()) {
+			if(!o.isBlank()) {
+				if(o.getOrderNo() == 285 || o.getOrderNo() == 796 || o.getOrderNo() == 900) return true;
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	protected JComponent createFormControl() {
 		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
@@ -280,7 +315,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 		this.chkDraw = new JCheckBox(Messages.getString("OrderEditor.56")); //$NON-NLS-1$
 		this.chkDraw.setPreferredSize(new Dimension(60, 18));
-		this.chkDraw.setBackground(Color.white);
+		this.chkDraw.setBackground(UIManager.getColor("Panel.background"));
 		glb.append(this.chkDraw, 3, 1);
 		this.chkDraw.addActionListener(new ActionListener() {
 
@@ -361,11 +396,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 		glb.nextLine();
 		glb.append(this.subeditorPanel = new JPanel(), 2, 1);
-		this.subeditorPanel.setBackground(Color.white);
+		this.subeditorPanel.setBackground(UIManager.getColor("Panel.background"));
 		glb.nextLine();
 
 		this.myPanel = glb.getPanel();
-		this.myPanel.setBackground(Color.white);
+		this.myPanel.setBackground(UIManager.getColor("Panel.background"));
 
 		this.descriptionLabel.setVisible(true);
 		this.description.setVisible(true);
@@ -492,15 +527,15 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			return;
 		o.setNoAndCode(this.orderCombo.getSelectedItem().toString());
 		o.setParameters(this.parametersInternal.getText());
-		
 		//remove order checker data for this order if present
-		OrderResultContainer container = OrderResultContainer.instance();
+		OrderResultContainer container = this.gameHolder.getGame().getTurn().getOrderResults().getResultCont();
 		if (container.getResultTypeForOrder(o)!=null) {
 			container.removeResultsForOrder(o);
 		}
+		container.overrideResultForNation(o.getCharacter().getNationNo(), false);
 		
-		// validateOrder();
 		// throw an order changed event
+		this.gameHolder.getGame().getTurn().getOrderResults().getResultCont().removeResultsForOrder(o);
 		JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
 		// Point selectedHex = new Point(o.getCharacter().getX(),
 		// o.getCharacter().getY());
@@ -518,6 +553,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		o.setParameters(this.parametersInternal.getText());
 		this.currentOrderNoAndCode = ""; //$NON-NLS-1$
 		// throw an order changed event
+		this.gameHolder.getGame().getTurn().getOrderResults().getResultCont().removeResultsForOrder(o);
 		JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
 		// Point selectedHex = new Point(o.getCharacter().getX(),
 		// o.getCharacter().getY());
@@ -624,41 +660,41 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 	}
 
-	protected void addValidationResult(Order o, OrderValidationResult res, Integer paramI) {
-		if (res == null)
-			return;
-		OrderResultContainer cont = OrderResultContainer.instance();
-		String e = ""; //$NON-NLS-1$
-		if (paramI != null) {
-			e = Messages.getString("OrderEditor.245") + paramI + ": "; //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		e += res.getMessage();
-		if (res.getLevel() == OrderValidationResult.ERROR) {
-			OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Error);
-			cont.addResult(or);
-		} else if (res.getLevel() == OrderValidationResult.WARNING) {
-			OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Warning);
-			cont.addResult(or);
-		} else if (res.getLevel() == OrderValidationResult.INFO) {
-			OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Info);
-			cont.addResult(or);
+//	protected void addValidationResult(Order o, OrderValidationResult res, Integer paramI) {
+//		if (res == null)
+//			return;
+//		OrderResultContainer cont = this.gameHolder.getGame().getTurn().getOrderResults().getResultCont();
+//		String e = ""; //$NON-NLS-1$
+//		if (paramI != null) {
+//			e = Messages.getString("OrderEditor.245") + paramI + ": "; //$NON-NLS-1$ //$NON-NLS-2$
+//		}
+//		e += res.getMessage();
+//		if (res.getLevel() == OrderValidationResult.ERROR) {
+//			OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Error);
+//			cont.addResult(or);
+//		} else if (res.getLevel() == OrderValidationResult.WARNING) {
+//			OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Warning);
+//			cont.addResult(or);
+//		} else if (res.getLevel() == OrderValidationResult.INFO) {
+//			OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Info);
+//			cont.addResult(or);
+//
+//		}
+//
+//	}
 
-		}
-
-	}
-
-	public void validateOrder() {
-		Order o = (Order) getFormObject();
-		OrderParameterValidator opv = new OrderParameterValidator();
-		OrderValidationResult ovr = opv.checkOrder(o);
-		addValidationResult(o, ovr, null);
-		for (int i = 0; i <= o.getLastParamIndex(); i++) {
-			ovr = opv.checkParam(o, i);
-			if (ovr != null) {
-				addValidationResult(o, ovr, i);
-			}
-		}
-	}
+//	public void validateOrder() {
+//		Order o = (Order) getFormObject();
+//		OrderParameterValidator opv = new OrderParameterValidator();
+//		OrderValidationResult ovr = opv.checkOrder(o);
+//		addValidationResult(o, ovr, null);
+//		for (int i = 0; i <= o.getLastParamIndex(); i++) {
+//			ovr = opv.checkParam(o, i);
+//			if (ovr != null) {
+//				addValidationResult(o, ovr, i);
+//			}
+//		}
+//	}
 
 	public ArrayList<JComponent> getSubeditorComponents() {
 		return this.subeditorComponents;

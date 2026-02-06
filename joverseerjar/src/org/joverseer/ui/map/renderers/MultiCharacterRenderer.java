@@ -72,13 +72,16 @@ public class MultiCharacterRenderer extends AbstractBaseRenderer {
         
         if (i>0 && simpleColors) return;
         
-        int ii = i % 12;
-        int jj = i / 12;
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.charSize");
+        double mod = Double.parseDouble(pval2)/6.0;
+        
+        int ii = i % (int)Math.round(12.0 * (1.0 - (mod/2.0)));
+        int jj = i / (int)Math.round(12.0 * (1.0 - (mod/2.0)));
 
         int dx = this.mapMetadata.getGridCellWidth() * 1 / 4;
         int dy = this.mapMetadata.getGridCellHeight();
-        int w = this.mapMetadata.getGridCellWidth() / 3;
-        int h = this.mapMetadata.getGridCellHeight() / 3;
+        int w = (int) Math.round((this.mapMetadata.getGridCellWidth() / 3) * (1.0 + mod));
+        int h = (int) Math.round((this.mapMetadata.getGridCellHeight() / 3) * (1.0 + mod));
 
         //todo make decision based on allegiance, not nation no
 //      if (c.getNationNo() > 10) {

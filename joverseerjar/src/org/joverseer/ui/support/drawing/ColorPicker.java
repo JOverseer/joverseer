@@ -6,13 +6,17 @@ import java.util.Locale;
 
 import org.joverseer.JOApplication;
 import org.joverseer.domain.NationRelations;
+import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.CustomColourSetsManager;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.PLaFHelper;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.richclient.application.Application;
 
 /**
@@ -25,6 +29,8 @@ public class ColorPicker implements ApplicationListener {
     Hashtable color1 = new Hashtable();
     Hashtable color2 = new Hashtable();
     Hashtable colors = new Hashtable();
+    
+    public boolean useCustom = false;
 
     private MessageSource colorSource = null;
     //injected dependency
@@ -45,9 +51,32 @@ public class ColorPicker implements ApplicationListener {
     }
 
     public Color getColor1(int nationNo) {
+    	GameMetadata gm = this.gameHolder.getGame().getMetadata();
+    	String pval = PreferenceRegistry.instance().getPreferenceValue("map.nationColors");
+    	if(this.useCustom || pval.equals("custom")) {
+    		String fileName = gm.getColourSet();
+    		
+    		if (fileName != null) {
+    			
+	    		if (CustomColourSetsManager.getColourSets().size() != 0) {
+	    			if(CustomColourSetsManager.doesSetExist(fileName)) {
+			    		//fileName = String.valueOf(this.gameHolder.getGame().getMetadata().getGameNo());
+			    		
+			    		String colourString = CustomColourSetsManager.getColor1(fileName, nationNo);
+			    		if (colourString == "NO_NATION") colourString = "#000001";
+			    		else if (colourString == null) colourString = CustomColourSetsManager.getColor1(String.valueOf(gm.getGameNo()), nationNo);
+			    		//if (colourString == null) colourString = "#000001";
+			    		Color c = Color.decode(colourString);
+		
+			    		if(c != null) return c;
+	    			}
+	    		}
+    		}
+    	}
+    	
     	String key = String.valueOf(nationNo);
+    	
     	if (nationNo != 0) { // if known nation, get its allegiance, else keep key=0 to return color for unknown
-    		String pval = PreferenceRegistry.instance().getPreferenceValue("map.nationColors");
 	    	if (pval.equals("allegiance")) {
 	        	NationRelations nr = this.gameHolder.getGame().getTurn().getNationRelations(nationNo);
 	        	key = nr.getAllegiance().toString();
@@ -73,9 +102,31 @@ public class ColorPicker implements ApplicationListener {
     }
 
     public Color getColor2(int nationNo) {
+    	GameMetadata gm = this.gameHolder.getGame().getMetadata();
+    	String pval = PreferenceRegistry.instance().getPreferenceValue("map.nationColors");
+    	if(this.useCustom || pval.equals("custom")) {
+    		String fileName = gm.getColourSet();
+    		if (fileName != null) {
+    			
+	    		if (CustomColourSetsManager.getColourSets().size() != 0) {
+	    			if(CustomColourSetsManager.doesSetExist(fileName)) {
+		    		
+			    		//fileName = String.valueOf(this.gameHolder.getGame().getMetadata().getGameNo());
+			    		
+			    		String colourString = CustomColourSetsManager.getColor2(fileName, nationNo);
+			    		if (colourString == "NO_NATION") colourString = "#000001";
+			    		if (colourString == null) colourString = CustomColourSetsManager.getColor2(String.valueOf(gm.getGameNo()), nationNo);
+			    		//if (colourString == null) colourString = "#000001";
+			    		Color c = Color.decode(colourString);
+		
+			    		if(c != null) return c;
+	    			}
+	    		}
+    		}
+    	}
+    	
     	String key = String.valueOf(nationNo);
     	if (nationNo != 0) { // if known nation, get its allegiance, else keep key=0 to return color for unknown
-	    	String pval = PreferenceRegistry.instance().getPreferenceValue("map.nationColors");
 	        if (pval.equals("allegiance")) {
 	        	NationRelations nr = this.gameHolder.getGame().getTurn().getNationRelations(nationNo);
 	        	key = nr.getAllegiance().toString();
@@ -101,13 +152,37 @@ public class ColorPicker implements ApplicationListener {
     }
 
     public Color getColor(String color) {
+    	if(PLaFHelper.isDarkMode()) {
+    		try {
+    			Color c = this.getColorSubroutine(color + ".dark");
+    			return c;
+    		} catch(NoSuchMessageException e) {}
+    	}
+    	return this.getColorSubroutine(color);
+    }
+    
+    private Color getColorSubroutine(String color) throws NoSuchMessageException {
         if (!this.colors.containsKey(color)) {
             String colorStr = getColorSource().getMessage(color + ".color", null, Locale.getDefault());
             this.colors.put(color, Color.decode(colorStr));
         }
         return (Color)this.colors.get(color);
     }
+    
+    public Color forceCustomColor1(int nationNo) {
+    	this.useCustom = true;
+    	Color c = this.getColor1(nationNo);
+    	this.useCustom = false;
+    	return c;
+    }
 
+    public Color forceCustomColor2(int nationNo) {
+    	this.useCustom = true;
+    	Color c = this.getColor2(nationNo);
+    	this.useCustom = false;
+    	return c;
+    }
+    
     @Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {

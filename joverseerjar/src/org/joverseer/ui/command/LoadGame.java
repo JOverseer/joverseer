@@ -134,8 +134,17 @@ public class LoadGame extends ActionCommand {
                 }
                 RecentGames rgs = new RecentGames();
                 String dueDate = PlayerInfo.getDueDateDefaulted(g.getTurn(g.getMaxTurn()).getPlayerInfo(g.getMetadata().getNationNo()),"unknown");
-                boolean ordersSent = g.getTurn().getPlayerInfo(g.getMetadata().getNationNo()).getOrdersSentOn() != null;
-        		Date ordersSentOn = g.getTurn().getPlayerInfo(g.getMetadata().getNationNo()).getOrdersSentOn();
+                
+        		Date ordersSentOn;
+        		boolean ordersSent;
+        		if(g.getTurn().getPlayerInfo(g.getMetadata().getNationNo()) != null) {
+        			ordersSent = g.getTurn().getPlayerInfo(g.getMetadata().getNationNo()).getOrdersSentOn() != null;
+        			ordersSentOn = g.getTurn().getPlayerInfo(g.getMetadata().getNationNo()).getOrdersSentOn();
+        		} else {
+        			ordersSent = false;
+        			ordersSentOn = null;
+        		}
+
         		String ordersSentStr;
         		if(ordersSentOn == null) ordersSentStr = null;
         		else {

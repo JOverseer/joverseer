@@ -1031,6 +1031,7 @@ public class Combat implements Serializable, IHasMapLocation {
     	}
    		
    		//PopCenter Relations;
+   		if(this.getSide2Pc() == null) return;
    		for (int i = 0; i < MAX_ARMIES && this.side1[i] != null; i++) {
    			this.autoDetectCombatArmyRelations(1, i, true);
    		}

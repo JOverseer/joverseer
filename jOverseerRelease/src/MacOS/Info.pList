@@ -44,8 +44,8 @@
 	<key>JVMOptions</key>
 	<array>
 	  <string>-Xmx512m</string>
-	  <string>-Dswing.systemlaf=javax.swing.plaf.metal.MetalLookAndFeel</string>
-	  <string>-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel</string>
+	  <string>-Dswing.systemlaf=com.formdev.flatlaf.FlatLightLaf</string>
+	  <string>-Dswing.defaultlaf=com.formdev.flatlaf.FlatLightLaf</string>
 	</array>
 	
 </dict>

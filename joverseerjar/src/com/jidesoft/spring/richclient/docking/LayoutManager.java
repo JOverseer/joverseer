@@ -39,7 +39,7 @@ public class LayoutManager {
 
 	private static final String PAGE_LAYOUT = "page_{0}_layout_{1}";
 	
-	private static boolean isValidLayout(DockingManager manager, String pageLayout){
+	public static boolean isValidLayout(DockingManager manager, String pageLayout){
 		return manager.isLayoutAvailable(pageLayout) && 
 				manager.isLayoutDataVersionValid(pageLayout);
 		
@@ -95,6 +95,26 @@ public class LayoutManager {
 		}
 	}
 	
+	public static boolean loadPageLayoutData(DockingManager manager, String pageId, Perspective perspective, String name){
+		manager.beginLoadLayoutData();
+        try {
+        	String path =getSaveLayoutDirectory();
+			manager.setUsePref(false);
+			manager.setLayoutDirectory(path); // must be after setting false
+			if(isValidLayout(manager, name)){
+				manager.loadLayoutDataFrom(name);
+				logger.info("Used existing layout " + path);
+// expected normal exit.
+				return true;
+			}
+        } catch (Exception exc) { 
+                
+			logger.info("Failed, falling back on default load method");
+
+        }
+        return loadPageLayoutData(manager, pageId, perspective);
+	}
+	
 	/**
 	 * Saves the current page layout.
 	 * 
@@ -103,11 +123,16 @@ public class LayoutManager {
 	 */
 	public static void savePageLayoutData(DockingManager manager, String pageId, String perspectiveId){
 		logger.info("Saving layout for page "+pageId);
-		manager.setUsePref(false);
-		manager.setLayoutDirectory(getSaveLayoutDirectory()); // must be after setting false
-		manager.saveLayoutDataAs(getPageLayoutId(pageId, perspectiveId));
+		savePageLayoutData(manager, getPageLayoutId(pageId, perspectiveId));
 		
 	}
+	
+	public static void savePageLayoutData(DockingManager manager, String name){
+		manager.setUsePref(false);
+		manager.setLayoutDirectory(getSaveLayoutDirectory()); // must be after setting false
+		manager.saveLayoutDataAs(name);		
+	}
+	
 	private static String getSaveLayoutDirectory()
 	{
 		String path = "";

@@ -1,6 +1,5 @@
 package org.joverseer.ui.viewers;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
@@ -10,6 +9,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.TransferHandler;
+import javax.swing.UIManager;
 
 import org.joverseer.domain.Artifact;
 import org.joverseer.metadata.domain.ArtifactInfo;
@@ -118,7 +118,7 @@ public class ArtifactViewer extends ObjectViewer {
         this.infoSource.setBorder(null);
 
         JPanel panel = glb.getPanel();
-        panel.setBackground(Color.white);
+        panel.setBackground(UIManager.getColor("Panel.background"));
         return panel;
     }
 

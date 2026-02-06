@@ -12,11 +12,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
 
+import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -162,8 +164,11 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 	}
 
 	public void renderRoad(Graphics2D g, HexSideEnum side, int x, int y) {
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.roadSize");
+        int mod = Integer.parseInt(pval2);
+		
 		Stroke s = g.getStroke();
-		Stroke r = new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+		Stroke r = new BasicStroke(4 + mod, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		Point sideCenter = getSideCenter(side);
 		Point center = new Point(this.hexCenter);
 		sideCenter.translate(x, y);
@@ -176,8 +181,11 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 	}
 
 	public void renderMajorRiver(Graphics2D g, HexSideEnum side, int x, int y) {
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.riverSize");
+        int mod = Integer.parseInt(pval2);
+		
 		Stroke s = g.getStroke();
-		Stroke r = new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+		Stroke r = new BasicStroke(4 + mod, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		Polygon sp = getSidePolygon(side);
 		sp.translate(x, y);
 		g.setColor(getMajorRiverColor());
@@ -188,8 +196,11 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 	}
 
 	public void renderMinorRiver(Graphics2D g, HexSideEnum side, int x, int y) {
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.riverSize");
+        int mod = Integer.parseInt(pval2);
+		
 		Stroke s = g.getStroke();
-		Stroke r = new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+		Stroke r = new BasicStroke(3 + mod, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		Polygon sp = getSidePolygon(side);
 		sp.translate(x, y);
 		g.setColor(getMinorRiverColor());
@@ -199,8 +210,11 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 	}
 
 	public void renderBridge(Graphics2D g, HexSideEnum side, int x, int y) {
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.bridgeSize");
+        int mod = Integer.parseInt(pval2);
+		
 		Stroke s = g.getStroke();
-		Stroke r = new BasicStroke(6);
+		Stroke r = new BasicStroke(6 + mod);
 		Point sideCenter = getSideCenter(side);
 		Point center = new Point(this.hexCenter);
 		Point start = new Point((center.x + 2 * sideCenter.x) / 3, (center.y + 2 * sideCenter.y) / 3);
@@ -213,8 +227,11 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 	}
 
 	public void renderFord(Graphics2D g, HexSideEnum side, int x, int y) {
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.bridgeSize");
+        int mod = Integer.parseInt(pval2);
+		
 		Stroke s = g.getStroke();
-		Stroke r = new BasicStroke(6);
+		Stroke r = new BasicStroke(6 + mod);
 		Point sideCenter = getSideCenter(side);
 		Point center = new Point(this.hexCenter);
 		Point start = new Point((center.x + 2 * sideCenter.x) / 3, (center.y + 2 * sideCenter.y) / 3);
@@ -234,7 +251,8 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 			throw new IllegalArgumentException(obj.toString());
 		}
 
-		Hex hex = (Hex) obj;
+		Hex hex = GameHolder.instance().getGame().getMetadata().getHex(((Hex) obj).getHexNo());
+		
 		if (!this.mapMetadata.withinMapRange(hex))
 			return;
 
@@ -252,7 +270,7 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 //      g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 //      g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 //      g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        
+
 		if (this.useTexture) {
 			BufferedImage img = getImage(hex.getTerrain().toString() + ".terrain", this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize(), this.mapMetadata.getGridCellHeight() * this.mapMetadata.getHexSize());
 			if (img != null) {

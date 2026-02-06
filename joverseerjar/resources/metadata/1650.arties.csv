@@ -4,7 +4,7 @@
 4;Ring of Impersonation;None;Agent;25;;S.Gondor
 5;Ring of Barahir;Good;Command;35;;Arthedain
 6;Ring of Axardil;None;Command;10;Access to Teleport;N.Gondor
-7;Nazguaga;Evil;Mage;30;Access to Dark Summons;
+7;Nazgauga;Evil;Mage;30;Access to Dark Summons;
 8;Lorglîn;None;Mage;15;;Noldo
 9;Elenya;None;Stealth;15;;
 10;Dwarven Ring of Power;None;Command;40;;Dwarves
@@ -20,7 +20,7 @@
 20;Staff of the Serpent;None;Mage;10;;Ice King
 21;Staff of Earthmastery;None;Mage;20;Access to Conjuring Ways;
 22;Rauzgnagli;Evil;Combat;1750;;
-23;Nedelhach;None;Combat;750;;
+23;Neldelhach;None;Combat;750;;
 24;Ghostbane;None;Combat;750;;Dunlendings
 25;Staff of Bronze;None;Mage;20;;Ice King
 26;Mallorn Staff;None;Mage;25;;Noldo
@@ -57,9 +57,9 @@
 57;Helm of Isildur;None;Command;20;;N.Gondor
 58;Helm of the Dark;Evil;Command;15;;Dark Lts.
 59;Gaerennon;None;Command;20;;Noldo
-60;Durin's Armor and Shield;None;Command;15;;Dwarves
+60;Durin's Armor/Shield;None;Command;15;;Dwarves
 61;Dragon Helm of Dor-Lomin;None;Command;15;;
-62;Dragon Helm and Armour;Evil;Mage;30;;Dragon Lord
+62;Dragon Helm/Armor;Evil;Mage;30;;Dragon Lord
 63;Cu-Saggha-brath;None;Command;10;;Rhudaur
 64;Bracers of the Mists;None;Stealth;30;;Sinda
 65;Angbor;None;Command;10;;
@@ -87,7 +87,7 @@
 87;Morlhach;Evil;Combat;500;;Dark Lts.
 88;Macirille;None;Combat;750;;
 89;Macilromen;None;Combat;1000;;Noldo
-90;Helkaluin;None;Combat;1250;;Noldo
+90;Helkaluine;None;Combat;1250;;Noldo
 91;Gordur;Good;Combat;500;;Noldo
 92;Horse-tamer;None;Combat;500;;Long Rider
 93;Gurthdur;Good;Combat;500;;Noldo
@@ -105,12 +105,12 @@
 105;Culok;None;Combat;500;;
 106;Cubragol;None;Combat;500;;Noldo
 107;Curaran;None;Combat;500;;Noldo
-108;Craig-olf-ti;None;Combat;500;;
+108;Craig-olf-Ti;None;Combat;500;;
 109;Cloud Bow;None;Combat;750;;Cloud Lord
 110;Cirmegil;None;Combat;500;;
 111;Believer's Bane;None;Combat;500;;Fire King
 112;Burning Blade;Evil;Combat;500;;Fire King
-113;Ar-Sil;Good;Combat;750;;
+113;Ar-sil;Good;Combat;750;;
 114;Angian;Good;Combat;500;;S.Gondor
 115;Fire Mace;None;Combat;750;;Witch-King
 116;Blood Spike;None;Combat;750;;Witch-King
@@ -161,7 +161,7 @@
 161;Erivagil;None;Combat;1500;;Radagast
 162;Glosovagil;None;Combat;1500;;Saruman
 163;Mirror of Galadriel;Good;Mage;40;;Galadriel
-164;Tintelpe;Good;Combat;1750;;
+164;Tintelpë;Good;Combat;1750;;
 165;Cuiviegurth;Evil;Combat;750;;
 166;Calris;Evil;Combat;750;;
 167;Aedring;Good;Combat;1000;;
@@ -177,7 +177,7 @@
 177;Calninque;Good;Combat;1500;;
 178;Cubeleg;None;Combat;750;;
 179;Durcarak;Evil;Combat;1250;;
-180;Fuinrako;Evil;Combat;2000;Access to Teleport;
+180;Fuinrauko;Evil;Combat;2000;Access to Teleport;
 181;Herugrim;Good;Combat;1000;;Eothraim
 182;Morgurth;None;Combat;1000;;
 183;Silmaruth;None;Combat;2000;;

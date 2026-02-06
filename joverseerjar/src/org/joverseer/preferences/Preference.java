@@ -29,6 +29,7 @@ public class Preference {
 	public static String TYPE_TEXT = "text";
 	public static String TYPE_CHECKBOX = "check";
 	public static String TYPE_LAF = "LookAndFeel";
+	public static String TYPE_SLIDER = "slider";
 
     String key;
     String type = TYPE_DROPDOWN;

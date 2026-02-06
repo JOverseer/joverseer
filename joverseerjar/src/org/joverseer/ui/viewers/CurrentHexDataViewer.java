@@ -1,15 +1,25 @@
 package org.joverseer.ui.viewers;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Artifact;
@@ -55,6 +65,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 	JPanel panel;
 	JPanel mainPanel;
 	JPanel popCenterPanel;
+	JSeparator sep;
 	PopulationCenterViewer popCenterViewer;
 	JPanel hexInfoPanel;
 	HexInfoViewer hexInfoViewer;
@@ -84,7 +95,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 
 	@Override
 	protected JComponent createControl() {
-		this.background = Color.white;
+		this.background = UIManager.getColor("Panel.background");
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		this.popCenterViewer = new PopulationCenterViewer(FormModelHelper.createFormModel(new PopulationCenter()),this.gameHolder);
 		this.popCenterPanel = new JPanel();
@@ -103,7 +114,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 			this.armyViewers.add(va);
 			JPanel cp = new JPanel();
 			cp.add(va.getControl());
-			cp.setBackground(Color.white);
+			cp.setBackground(this.background);
 			this.armyPanels.add(cp);
 			tlb.cell(cp, "align=left"); //$NON-NLS-1$
 			tlb.row();
@@ -113,7 +124,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 		tlb.separator(Messages.getString("CurrentHexDataViewer.Characters")); //$NON-NLS-1$
 		tlb.row();
 		for (int i = 0; i < 50; i++) {
-			CharacterViewer vc = new CharacterViewer(FormModelHelper.createFormModel(new Character()),this.gameHolder);
+			CharacterViewer vc = new CharacterViewer(FormModelHelper.createFormModel(new Character()),this.gameHolder, this);
 			this.characterViewers.add(vc);
 			JPanel cp = new JPanel();
 			cp.add(vc.getControl());
@@ -184,16 +195,30 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 		tlb.row();
 		tlb.cell(this.hexInfoPanel, "align=left"); //$NON-NLS-1$
 		tlb.row();
+		tlb.cell(this.sep = new JSeparator());
 		this.hexInfoPanel.setVisible(false);
 		this.hexInfoPanel.setBackground(this.background);
 
 		this.panel = tlb.getPanel();
 		this.panel.setBackground(this.background);
-		this.panel.setPreferredSize(new Dimension(240, 3000));
 		this.scp = new JScrollPane(this.panel);
-		this.scp.setPreferredSize(new Dimension(240, 1500));
 		this.scp.getVerticalScrollBar().setUnitIncrement(32);
-		return this.scp;
+		this.scp.getHorizontalScrollBar().setUnitIncrement(32);
+		
+		JPanel p1 = new JPanel(new BorderLayout());
+		p1.add(this.scp, BorderLayout.CENTER);
+		return p1;
+	}
+	
+	//Checks if component is visible, used to check if component at bottom of pane is scrollable to
+	public static boolean isComponentVisible(JScrollPane scrollPane, JComponent component) {
+	    Rectangle viewRect = new Rectangle(scrollPane.getViewport().getView().getPreferredSize());
+	    Rectangle compBounds = component.getBounds();
+	    
+	    Point compLocation = SwingUtilities.convertPoint(component.getParent(), compBounds.getLocation(), scrollPane.getViewport().getView());
+	    Rectangle compRectInView = new Rectangle(compLocation, compBounds.getSize());
+
+	    return viewRect.intersects(compRectInView);
 	}
 
 	private void showPopCenter(PopulationCenter pc) {
@@ -315,6 +340,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 	}
 
 	private void refresh(Point p) {
+		this.panel.setPreferredSize(null);
 		if (p == null) {
 			hideHexInfo();
 			hidePopCenter();
@@ -398,8 +424,32 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 		for (Encounter obj : encounters) {
 			showEncounter(obj);
 		}
-
+	    
+		this.resetScrollPane();
 		this.scp.getVerticalScrollBar().setValue(0);
+	}
+	
+	public void resetScrollPane() {
+		SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			public void run() {
+				boolean change = false;
+				
+				if(!isComponentVisible(CurrentHexDataViewer.this.scp, CurrentHexDataViewer.this.sep)) change = true;
+		        while (!isComponentVisible(CurrentHexDataViewer.this.scp, CurrentHexDataViewer.this.sep)) {
+		        	CurrentHexDataViewer.this.panel.setPreferredSize(new Dimension((int)CurrentHexDataViewer.this.panel.getPreferredSize().getWidth(), (int)CurrentHexDataViewer.this.panel.getPreferredSize().getHeight()+32));
+		        }
+		        
+		        
+		        if (change) {
+		        	CurrentHexDataViewer.this.scp.revalidate();
+		        	CurrentHexDataViewer.this.scp.getVerticalScrollBar().setValue(CurrentHexDataViewer.this.scp.getVerticalScrollBar().getValue()+1);
+		        	CurrentHexDataViewer.this.scp.getVerticalScrollBar().setValue(CurrentHexDataViewer.this.scp.getVerticalScrollBar().getValue()-1);
+
+		        }
+			}
+		});
+
 	}
 
 	@Override
@@ -453,8 +503,22 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 				}
 								
 			}
+			if(e.isLifecycleEvent(LifecycleEventsEnum.ThemeChangeEvent)) {
+				removeBordersFromTextFields(this.getControl());
+			}
 		}
 	}
+	
+    public static void removeBordersFromTextFields(JComponent component) {
+        for (Component comp : component.getComponents()) {
+            if (comp instanceof JTextField) {
+                ((JTextField) comp).setBorder(null);
+                ((JTextField) comp).setOpaque(false);
+            } else if (comp instanceof JComponent) {
+                removeBordersFromTextFields((JComponent) comp); // recursive call
+            }
+        }
+    }
 
 	protected void selectCharacter(Character c) {
 		for (int i = 0; i < this.characterViewers.size(); i++) {

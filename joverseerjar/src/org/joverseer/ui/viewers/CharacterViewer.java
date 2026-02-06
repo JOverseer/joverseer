@@ -12,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,6 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 import org.joverseer.JOApplication;
@@ -77,6 +79,7 @@ import org.joverseer.ui.support.commands.ShowInfoSourcePopupCommand;
 import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.controls.TableUtils;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.joverseer.ui.support.transferHandlers.ArtifactInfoExportTransferHandler;
@@ -90,7 +93,6 @@ import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
@@ -148,9 +150,12 @@ public class CharacterViewer extends ObjectViewer {
 	ActionCommand addRefuseChallengesCommand = new AddOrderCommand(215, ""); //$NON-NLS-1$
 	ActionCommand editCharacterCommand = new EditCharacterCommand();
 	ActionCommand sendOrdersByChatCommand = new SendOrdersByChatCommand();
+	
+	CurrentHexDataViewer parentViewer;
 
-	public CharacterViewer(FormModel formModel,GameHolder gameHolder) {
+	public CharacterViewer(FormModel formModel,GameHolder gameHolder, CurrentHexDataViewer ref) {
 		super(formModel, FORM_PAGE,gameHolder);
+		this.parentViewer = ref;
 	}
 
 	@Override
@@ -186,7 +191,7 @@ public class CharacterViewer extends ObjectViewer {
 			tlb.row();
 		}
 		JPanel pnl = tlb.getPanel();
-		pnl.setBackground(Color.white);
+		pnl.setBackground(UIManager.getColor("Panel.background"));
 		this.orderPanel.add(pnl);
 	}
 
@@ -319,7 +324,7 @@ public class CharacterViewer extends ObjectViewer {
 			}
 
 			((BeanTableModel) this.artifactsTable.getModel()).setRows(artis);
-			this.artifactsTable.setPreferredSize(new Dimension((180/16)*this.uiSizes.getHeight4(), this.uiSizes.getHeight4() * artis.size()));
+//			this.artifactsTable.setPreferredSize(new Dimension((180/16)*this.uiSizes.getHeight4(), this.uiSizes.getHeight5() * artis.size()));
 			TableUtils.setTableColumnWidths(this.artifactsTable, new int[] { 10, 120, 40 });
 
 			ArrayList<SpellProficiency> spells = new ArrayList<SpellProficiency>();
@@ -327,7 +332,7 @@ public class CharacterViewer extends ObjectViewer {
 				spells.addAll(c.getSpells());
 			}
 			((BeanTableModel) this.spellsTable.getModel()).setRows(spells);
-			this.spellsTable.setPreferredSize(new Dimension(this.spellsTable.getWidth(), this.uiSizes.getHeight4() * spells.size()));
+//			this.spellsTable.setPreferredSize(new Dimension(this.spellsTable.getWidth(), this.uiSizes.getHeight5() * spells.size()));
 			TableUtils.setTableColumnWidths(this.spellsTable, new int[] { 10, 120, 40 });
 			Container<Company> companies = game.getTurn().getCompanies();
 			Company company = companies.findFirstByProperty("commander", c.getName()); //$NON-NLS-1$
@@ -337,7 +342,6 @@ public class CharacterViewer extends ObjectViewer {
 				this.companyMembersTextBox.setText(Messages.getString("CharacterViewer.CompanyColon") + members); //$NON-NLS-1$
 				this.companyMembersTextBox.setCaretPosition(0);
 				this.companyMembersTextBox.setVisible(true);
-				this.companyMembersTextBox.setFont(GraphicUtils.getFont(this.companyMembersTextBox.getFont().getName(), Font.ITALIC, this.companyMembersTextBox.getFont().getSize()));
 			} else {
 				// check if he is travelling with a company or an army...
 				boolean found = false;
@@ -346,7 +350,6 @@ public class CharacterViewer extends ObjectViewer {
 						this.companyMembersTextBox.setVisible(true);
 						this.companyMembersTextBox.setText(Messages.getString("CharacterViewer.InCompany", new Object[] {comp.getCommander()})); //$NON-NLS-1$ //$NON-NLS-2$
 						this.companyMembersTextBox.setCaretPosition(0);
-						this.companyMembersTextBox.setFont(GraphicUtils.getFont(this.companyMembersTextBox.getFont().getName(), Font.ITALIC, this.companyMembersTextBox.getFont().getSize()));
 						found = true;
 						break;
 					}
@@ -359,7 +362,6 @@ public class CharacterViewer extends ObjectViewer {
 								this.companyMembersTextBox.setVisible(true);
 								this.companyMembersTextBox.setText(Messages.getString("CharacterViewer.InArmy", new Object[] {a.getCommanderName()})); //$NON-NLS-1$ //$NON-NLS-2$
 								this.companyMembersTextBox.setCaretPosition(0);
-								this.companyMembersTextBox.setFont(GraphicUtils.getFont(this.companyMembersTextBox.getFont().getName(), Font.ITALIC, this.companyMembersTextBox.getFont().getSize()));
 								found = true;
 								break;
 							}
@@ -433,6 +435,7 @@ public class CharacterViewer extends ObjectViewer {
 				this.order3.setEnabledButton(true);
 				this.btnCharDetails.setToolTipText(null);
 			}
+			this.parentViewer.resetScrollPane();
 		}
 
 	}
@@ -550,7 +553,7 @@ public class CharacterViewer extends ObjectViewer {
 		glb.nextLine();
 
 		glb.append(this.artifactsTable = new JTable(), 2, 1);
-		this.artifactsTable.setPreferredSize(this.uiSizes.newDimension(150/20, this.uiSizes.getHeight5()));
+//		this.artifactsTable.setPreferredSize(this.uiSizes.newDimension(150/20, this.uiSizes.getHeight5()));
 		final ArtifactInfoTableModel tableModel = new ArtifactInfoTableModel(this.getMessageSource(),this.gameHolder,PreferenceRegistry.instance()) {
 
 			/**
@@ -616,7 +619,6 @@ public class CharacterViewer extends ObjectViewer {
 		glb.nextLine();
 
 		glb.append(this.spellsTable = new JTable(), 2, 1);
-		this.spellsTable.setPreferredSize(this.uiSizes.newDimension(150/12, this.uiSizes.getHeight3()));
 		final ItemTableModel spellModel = new ItemTableModel(SpellProficiency.class, this.getMessageSource(),this.gameHolder,PreferenceRegistry.instance()) {
 
 			/**
@@ -683,18 +685,24 @@ public class CharacterViewer extends ObjectViewer {
 		glb.nextLine();
 
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
+		JPanel tempOrderPanel = new JPanel();
+		tempOrderPanel.setLayout(new BoxLayout(tempOrderPanel, BoxLayout.Y_AXIS));
 		this.order1 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())),this.gameHolder);
-		tlb.cell(this.order1comp = this.order1.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
-		tlb.row();
+//		tlb.cell(this.order1comp = this.order1.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
+//		tlb.row();
+		tempOrderPanel.add(this.order1comp = this.order1.createFormControl());
 		this.order2 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())),this.gameHolder);
-		tlb.cell(this.order2comp = this.order2.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
-		tlb.row();
+//		tlb.cell(this.order2comp = this.order2.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
+//		tlb.row();
+		tempOrderPanel.add(this.order2comp = this.order2.createFormControl());
 		this.order3 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())),this.gameHolder);
-		tlb.cell(this.order3comp = this.order3.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
-		tlb.row();
+//		tlb.cell(this.order3comp = this.order3.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
+//		tlb.row();
+		tempOrderPanel.add(this.order3comp = this.order3.createFormControl());
 		this.orderPanel = new JPanel();
-		this.orderPanel.add(tlb.getPanel());
-		this.orderPanel.setBackground(Color.white);
+//		this.orderPanel.add(tlb.getPanel());
+		this.orderPanel.add(tempOrderPanel);
+		this.orderPanel.setBackground(UIManager.getColor("Panel.background"));
 		this.orderPanel.setBorder(border);
 		glb.append(this.orderPanel, 2, 1);
 		glb.append(this.swapOrdersIconCmd = new JLabelButton(new ImageIcon(imgSource.getImage("swapOrders.icon")))); //$NON-NLS-1$
@@ -719,7 +727,7 @@ public class CharacterViewer extends ObjectViewer {
 		tlb = new TableLayoutBuilder();
 		tlb.cell(this.notesViewer.createFormControl(), "colspec=left:285px"); //$NON-NLS-1$
 		JPanel notesPanel = tlb.getPanel();
-		notesPanel.setBackground(Color.white);
+		notesPanel.setBackground(UIManager.getColor("Panel.background"));
 		glb.append(notesPanel, 6, 1);
 
 		// notes = new JTextArea();
@@ -805,7 +813,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		});
 
-		panel.setBackground(Color.white);
+		panel.setBackground(UIManager.getColor("Panel.background"));
 		return panel;
 	}
 
@@ -929,6 +937,7 @@ public class CharacterViewer extends ObjectViewer {
 					c.getOrders()[i].setParameters(this.params);
 					setFormObject(getFormObject());
 					CharacterViewer.this.showOrders = true;
+					CharacterViewer.this.gameHolder.getGame().getTurn().getOrderResults().getResultCont().removeResultsForOrder(c.getOrders()[i]);
 					JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, c.getOrders()[i], this);
 					return;
 				}
@@ -983,7 +992,7 @@ public class CharacterViewer extends ObjectViewer {
 			final EditCharacterForm form = new EditCharacterForm(formModel,CharacterViewer.this.gameHolder);
 			FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-			TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+			CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 				@Override
 				protected void onAboutToShow() {
 				}

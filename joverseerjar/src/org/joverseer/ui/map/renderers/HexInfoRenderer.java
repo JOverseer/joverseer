@@ -22,6 +22,7 @@ import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.drawing.ColorPicker;
 
 /**
@@ -137,9 +138,19 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         } else if (map == MapOptionValuesEnum.NationMapNone) {
         	visible = true;
         } else {
-            int nationNo = Integer.parseInt((String)map);
-            NationMapRange nmr = (NationMapRange)game.getMetadata().getNationMapRanges().findFirstByProperty("nationNo", nationNo);
-        	visible = nmr.containsHex(hex);
+        	int ind = ((String)map).indexOf("-") + 1;
+        	String pre = ((String)map).substring(0, ind);
+        	String num = ((String)map).substring(ind);
+        	if(pre.equals(Messages.getString("MapOptionsView.RegionOption"))) {
+	            int number = Integer.parseInt(num);
+	            NationMapRange nmr = (NationMapRange)game.getMetadata().getNationMapRanges().findFirstByProperty("nationNo", number);
+	        	visible = nmr.containsHex(hex);
+        	}
+        	if(pre.equals(Messages.getString("MapOptionsView.NationOption"))) {
+	            int number = Integer.parseInt(num);
+	            HexInfo hexInfo = game.getTurn().getHexInfo(hex.getHexNo());
+	        	visible = hexInfo.getVisible() && hexInfo.getNationSources().contains(Integer.valueOf(number));
+        	}
         }
         
         boolean repaintNumber = false;

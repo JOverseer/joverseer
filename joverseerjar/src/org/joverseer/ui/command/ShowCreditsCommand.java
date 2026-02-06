@@ -1,6 +1,7 @@
 package org.joverseer.ui.command;
 
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.joverseer.ui.views.CreditsForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.core.io.Resource;
@@ -8,7 +9,6 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
 /**
@@ -28,7 +28,7 @@ public class ShowCreditsCommand  extends ActionCommand {
         final CreditsForm form = new CreditsForm(formModel);
         FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-        TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+        CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
             @Override
 			protected void onAboutToShow() {
             }

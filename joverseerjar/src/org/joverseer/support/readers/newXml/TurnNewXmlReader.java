@@ -1046,7 +1046,7 @@ public class TurnNewXmlReader implements Runnable {
 
 	private void updateDoubleAgents(Game game1) throws Exception {
 		Container daws = this.turnInfo.getDoubleAgents();
-		DoubleAgentInfoSource dais = new DoubleAgentInfoSource(this.turnInfo.getTurnNo(), this.turnInfo.getNationNo());
+		DoubleAgentInfoSource dais = new DoubleAgentInfoSource(game1.getMaxTurn(), this.turnInfo.getNationNo());
 		Container cs = this.turn.getContainer(TurnElementsEnum.Character);
 		for (DoubleAgentWrapper daw : (ArrayList<DoubleAgentWrapper>) daws.getItems()) {
 			Character c = (Character) cs.findFirstByProperty("name", daw.getName());
@@ -1123,7 +1123,7 @@ public class TurnNewXmlReader implements Runnable {
 				}
 				a.setNationAllegiance(allegiance);
 				a.setInformationSource(InformationSourceEnum.exhaustive);
-				a.setInfoSource(new PdfTurnInfoSource(this.turnInfo.getTurnNo(), this.turnInfo.getNationNo()));
+				a.setInfoSource(new PdfTurnInfoSource(game1.getMaxTurn(), this.turnInfo.getNationNo()));
 				a.setElement(ArmyElementType.Warships, asw.getWarships());
 				a.setElement(ArmyElementType.Transports, asw.getTransports());
 				armies.addItem(a);

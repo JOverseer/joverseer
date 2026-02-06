@@ -1,5 +1,6 @@
 package org.joverseer.tools.turnReport;
 
+import java.awt.Color;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,6 +49,8 @@ import org.joverseer.tools.infoCollectors.artifacts.ArtifactInfoCollector;
 import org.joverseer.tools.infoCollectors.artifacts.ArtifactWrapper;
 import org.joverseer.tools.infoCollectors.characters.AdvancedCharacterWrapper;
 import org.joverseer.tools.infoCollectors.characters.CharacterInfoCollector;
+import org.joverseer.ui.support.PLaFHelper;
+import org.joverseer.ui.support.drawing.ColorPicker;
 
 public class TurnReportCollector {
 
@@ -1569,14 +1572,26 @@ public class TurnReportCollector {
 			ret += "<i> - " + comments + "</i><br/>";
 		if (reports.size() == 0)
 			return ret + "-" + "<br/>";
-		ret += "<table style='border-style:solid; border-width:1px' cellspacing=0 cellpadding=2>";
+		
+		if (PLaFHelper.isDarkMode()) ret += "<table style='border-style:solid; border-width:0.25px; color:#CCCCCC' cellspacing=0 cellpadding=2>";
+		else ret += "<table style='border-style:solid; border-width:1px' cellspacing=0 cellpadding=2>";
+		
 		for (int i = 0; i < reports.size(); i++) {
 			BaseReportObject bro = reports.get(i);
-			String color = "#DDFFDD";
-			if (bro.getModification().equals(ObjectModificationType.Lost))
-				color = "#FFDDDD";
-			if (bro.getModification().equals(ObjectModificationType.Modified))
-				color = "#FFFFDD";
+			ColorPicker cp = ColorPicker.getInstance();
+			Color c = cp.getColor("TurnReport.modified");
+			String color = String.format("#%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue());
+			//String color = "#815f28";
+			if (bro.getModification().equals(ObjectModificationType.Lost)) {
+				c = cp.getColor("TurnReport.lost");
+				color =  String.format("#%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue());
+				//color = "#510404";
+			}
+			if (bro.getModification().equals(ObjectModificationType.Modified)) {
+				c = cp.getColor("TurnReport.default");
+				color =  String.format("#%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue());
+			}
+				//color = "#27391C";
 			ret += "<tr style='background-color:" + color + ";'>" + bro.getHtmlString() + "</tr>";
 		}
 		ret += "</table>";
@@ -1637,6 +1652,8 @@ public class TurnReportCollector {
 			losses.put(s, 0);
 		}
 		int taxBaseDelta = 0;
+		int modifDelta = 0;
+		
 		for (BaseReportObject bro : pops) {
 			PopCenterReport pcr = (PopCenterReport) bro;
 			if (pcr.getModification().equals(ObjectModificationType.Gained) && pcr.getPc() != null && pcr.getPc().getSize().equals(PopulationCenterSizeEnum.camp) && pcr.isCreated()) {
@@ -1655,9 +1672,11 @@ public class TurnReportCollector {
 			} else if (pcr.getModification().equals(ObjectModificationType.Modified) && pcr.getPrevPc() != null) {
 				int pcTaxBase = Math.max(pcr.getPc().getSize().getCode() - 1, 0);
 				int prevTaxBase = Math.max(pcr.getPrevPc().getSize().getCode() - 1, 0);
+				modifDelta += pcTaxBase - prevTaxBase;
 				taxBaseDelta += pcTaxBase - prevTaxBase;
 			}
 		}
+		String mstr = Integer.toString(modifDelta);
 		String gstr = "";
 		String lstr = "";
 		for (PopulationCenterSizeEnum s : PopulationCenterSizeEnum.values()) {
@@ -1670,7 +1689,7 @@ public class TurnReportCollector {
 			if (l > 0)
 				lstr += (lstr.equals("") ? "" : ", ") + s.getRenderString() + ": " + l;
 		}
-		return "<div style='font-family:Tahoma; font-size:11pt'><b>" + "Camps created: " + campsCreated + "<br/>" + "Gains: " + gstr + "<br/>" + "Losses: " + lstr + "<br/>" + "Tax base delta: " + taxBaseDelta + "</b></div>";
+		return "<div style='font-family:Tahoma; font-size:11pt'><b>" + "Camps created: " + campsCreated + "<br/>" + "Gains: " + gstr + "<br/>" + "Size increased/reduced: " + mstr + "<br/>" + "Losses: " + lstr + "<br/>" + "Tax base delta: " + taxBaseDelta + "</b></div>";
 	}
 	
 	public String getHighlights(Turn t) {
@@ -1872,6 +1891,9 @@ public class TurnReportCollector {
 				e.printStackTrace();
 			}
 			ret += "<br/><i>Green: positive events<br/>Red: negative events<br/>Yellow: other</i>";
+			
+			ret = ret.replaceAll("<table style='border-style:solid; border-width:1px'", "<table style='border-style:solid; border-width:1px; border-color:black; color:black'");
+			
 			return ret;
 		} catch (Exception exc) {
 			exc.printStackTrace();

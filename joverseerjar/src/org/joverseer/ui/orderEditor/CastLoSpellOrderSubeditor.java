@@ -1,6 +1,5 @@
 package org.joverseer.ui.orderEditor;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -75,7 +74,6 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
         tlb1.row();
 
         this.secondParamPanel = new JPanel();
-        this.secondParamPanel.setBackground(Color.white);
         tlb1.cell(this.secondParamPanel, "colspan=2");
         tlb1.row();
 
@@ -181,7 +179,6 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
 
             this.currentComp = this.components.get(1);
             this.currentCompPanel = tlb1.getPanel();
-            this.currentCompPanel.setBackground(Color.white);
             this.secondParamPanel.add(this.currentCompPanel);
             this.secondParamPanel.updateUI();
         }

@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.util.Locale;
 
 import javax.swing.JTable;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.JOApplication;
@@ -15,6 +16,7 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.listviews.AdvancedArtifactTableModel;
+import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.SortableTableModel;
@@ -43,8 +45,10 @@ public class AllegianceColorCellRenderer extends DefaultTableCellRenderer {
         String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.bgColor");
         if (pval.equals("none")) return c;
         if (isSelected) {
+        	c.setForeground(Color.white);
             return c;
         }
+        c.setForeground(UIManager.getColor("Table.foreground"));
         int objRow = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
         Object obj = this.tableModel.getRow(objRow);
         
@@ -67,10 +71,11 @@ public class AllegianceColorCellRenderer extends DefaultTableCellRenderer {
             if (nr != null && nationNo > 0) {
             	allegiance = nr.getAllegiance();
             }
-            MessageSource colorSource = JOApplication.getColorSource();
-            String colorKey = allegiance != null ? "Listview." + allegiance.toString() + ".color" : "ListView.unknownAllegiance.color";
-            Color bg = Color.decode(colorSource.getMessage(colorKey, new Object[] {}, Locale.getDefault()));
+            //MessageSource colorSource = JOApplication.getColorSource();
+            String colorKey = allegiance != null ? "Listview." + allegiance.toString() : "ListView.unknownAllegiance";
+            Color bg = ColorPicker.getInstance().getColor(colorKey);
             c.setBackground(bg);
+            //c.setForeground(Color.black);
             return c;
         } else {
             return c;

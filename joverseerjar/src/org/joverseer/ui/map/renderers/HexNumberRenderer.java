@@ -1,6 +1,8 @@
 package org.joverseer.ui.map.renderers;
 
 import org.joverseer.metadata.domain.Hex;
+import org.joverseer.preferences.PreferenceRegistry;
+
 import java.awt.*;
 
 /**
@@ -31,38 +33,42 @@ public class HexNumberRenderer extends AbstractBaseRenderer {
         Hex hex = (Hex)obj;
         if (!this.mapMetadata.withinMapRange(hex)) return;
         //set font size based on cell width:
-        switch (this.mapMetadata.getGridCellWidth()) {
-        case 6:
-        	this.fontSize = 4;
-        	break;
-        case 7:
-        	this.fontSize = 5;
-        	break;
-        case 9:
-        	this.fontSize = 6;
-        	break;
-        case 11:
-        	this.fontSize = 7;
-        	break;
-        case 13:
-        	this.fontSize = 8;
-        	break;
-        case 15:
-        	this.fontSize = 9;
-        	break;
-        case 17:
-        	this.fontSize = 10;
-        	break;
-        case 19:
-        	this.fontSize = 11;
-        	break;
-        case 21:
-        	this.fontSize = 12;
-        	break;
-        case 23:
-        	this.fontSize = 13;
-        	break;
-        }
+//        switch (this.mapMetadata.getGridCellWidth()) {
+//        case 6:
+//        	this.fontSize = 4;
+//        	break;
+//        case 7:
+//        	this.fontSize = 5;
+//        	break;
+//        case 9:
+//        	this.fontSize = 6;
+//        	break;
+//        case 11:
+//        	this.fontSize = 7;
+//        	break;
+//        case 13:
+//        	this.fontSize = 8;
+//        	break;
+//        case 15:
+//        	this.fontSize = 9;
+//        	break;
+//        case 17:
+//        	this.fontSize = 10;
+//        	break;
+//        case 19:
+//        	this.fontSize = 11;
+//        	break;
+//        case 21:
+//        	this.fontSize = 12;
+//        	break;
+//        case 23:
+//        	this.fontSize = 13;
+//        	break;
+//        }
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.hexNumSize");
+        int mod = Integer.parseInt(pval2);
+        
+        this.fontSize = Math.round(this.mapMetadata.getGridCellWidth() / 2f) + 1 + mod;
         //Font f = new Font(this.fontName, this.fontStyle, this.mapMetadata.getGridCellWidth() < 10 ? 7 : this.fontSize);
         
         Font f = new Font(this.fontName, this.fontStyle, this.fontSize);

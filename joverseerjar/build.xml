@@ -209,7 +209,7 @@
 				<attribute name="Main-Class"
 					value="org.joverseer.ui.JOverseerJIDEClient" />
 				<attribute name="Class-Path"
-					value=". update.jar txt2xml.jar orderchecker.jar spring-beans.jar spring-binding-1.0.5.jar spring-context.jar spring-context-support.jar spring-core.jar spring-richclient-full-1.0.0.jar swingx-0.8.0.jar jide-action.jar jide-beaninfo.jar jide-common-patched.jar jide-components.jar jide-dialogs.jar jide-dock.jar jide-grids.jar FontBox-0.1.0-dev.jar PDFBox-0.7.3.jar commons-httpclient-3.0.1.jar looks-2.0.4.jar forms-1.0.7.jar log4j-1.2.12.jar commons-logging-1.1.jar commons-beanutils-1.7.0.jar commons-collections-3.1.jar junit-3.8.1.jar commons-digester-1.7.jar jdom.jar scope-bin.jar commons-codec-1.3.jar skinlf-1.2.11.jar" />
+					value=". update.jar txt2xml.jar orderchecker.jar spring-beans.jar spring-binding-1.0.5.jar spring-context.jar spring-context-support.jar spring-core.jar spring-richclient-full-1.0.0.jar swingx-0.8.0.jar jide-action.jar jide-beaninfo.jar jide-common-patched.jar jide-components.jar jide-dialogs.jar jide-dock.jar jide-grids.jar FontBox-0.1.0-dev.jar PDFBox-0.7.3.jar commons-httpclient-3.0.1.jar looks-2.0.4.jar forms-1.0.7.jar log4j-1.2.12.jar commons-logging-1.1.jar commons-beanutils-1.7.0.jar commons-collections-3.1.jar junit-3.8.1.jar commons-digester-1.7.jar jdom.jar scope-bin.jar commons-codec-1.3.jar skinlf-1.2.11.jar flatlaf-3.0.jar" />
 				<section name="joverseer">
 					<attribute name="Specification-Title" value="JOverseer" />
 					<attribute name="Specification-Version"

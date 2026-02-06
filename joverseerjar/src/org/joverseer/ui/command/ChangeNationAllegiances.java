@@ -4,11 +4,11 @@ import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.joverseer.ui.views.EditNationAllegiancesForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
 /**
@@ -31,7 +31,7 @@ public class ChangeNationAllegiances extends ActionCommand {
 		final EditNationAllegiancesForm form = new EditNationAllegiancesForm(formModel);
 		FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-		TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+		CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 			@Override
 			protected void onAboutToShow() {
 				form.setFormObject(g);

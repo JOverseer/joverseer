@@ -53,7 +53,7 @@ public class JideApplicationWindowCloseListener extends WindowAdapter{
 	@Override
 	public void windowClosing(WindowEvent event) {
 		if(this.saveLayoutOnClose){
-			((JideApplicationWindow)this.window).saveLayoutData();
+			((JideApplicationWindow)this.window).saveLayoutData(null);
 		}
 		this.window.close();
 	}

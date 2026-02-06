@@ -172,6 +172,8 @@
 					class="org.joverseer.ui.command.RestoreDefaultLayoutCommand" />
 				<bean
 					class="org.joverseer.ui.command.RestoreSimpleLayoutCommand" />
+				<bean
+					class="org.joverseer.ui.command.RestoreCustomLayoutCommand" />
 			</list>
 		</property>
 	</bean>
@@ -302,18 +304,57 @@
 				</bean>
 				<value>separator</value>
 				<bean class="org.joverseer.ui.command.ShowTipOfTheDayCommand" />
-				<bean class="org.joverseer.ui.command.ShowMapHelpCommand" >
-					<property name="link">
-					<value>https://github.com/JOverseer/joverseer/wiki/MapInfo</value></property>
-				</bean>
-				<bean class="org.joverseer.ui.command.ShowMEWebsiteCommand" >
-					<property name="link">
-					<value>https://www.gamesystems.com</value></property>
+				<bean id="usefulLinksMenu"
+					class="org.springframework.richclient.command.CommandGroupFactoryBean">
+					<property name="members">
+						<list>
+							<bean class="org.joverseer.ui.command.ShowMapHelpCommand" >
+								<property name="link">
+								<value>https://github.com/JOverseer/joverseer/wiki/MapInfo</value></property>
+							</bean>
+							<bean class="org.joverseer.ui.command.ShowMEWebsiteCommand" >
+								<property name="link">
+								<value>https://www.gamesystems.com</value></property>
+							</bean>
+							<bean class="org.joverseer.ui.command.ShowLinkCommand" >
+								<property name="link">
+								<value>https://gamesystems.com/materials/</value></property>
+								<property name="id">
+								<value>showRulebook</value></property>
+							</bean>
+							<bean class="org.joverseer.ui.command.ShowLinkCommand" >
+								<property name="link">
+								<value>https://gamesystems.com/contact/</value></property>
+								<property name="id">
+								<value>showContactPage</value></property>
+							</bean>
+							<bean class="org.joverseer.ui.command.ShowLinkCommand" >
+								<property name="link">
+								<value>https://gamesystems.com/category/advice/</value></property>
+								<property name="id">
+								<value>showHelpAndAdvice</value></property>
+							</bean>
+							<bean class="org.joverseer.ui.command.ShowLinkCommand" >
+								<property name="link">
+								<value>https://gamesystems.com/add-credit/</value></property>
+								<property name="id">
+								<value>showAddCredit</value></property>
+							</bean>
+							<bean class="org.joverseer.ui.command.ShowLinkCommand" >
+								<property name="link">
+								<value>https://wiki.mepbm.com/</value></property>
+								<property name="id">
+								<value>showWikiWebsite</value></property>
+							</bean>
+						</list>
+					</property>
 				</bean>
 				<bean class="org.joverseer.ui.command.ShowCreditsCommand" />
 				<bean class="org.joverseer.ui.command.ShowChangelogCommand" />
 				<value>separator</value>
-				<bean class="org.joverseer.ui.command.GatherSupportDataCommand" />
+				<bean class="org.joverseer.ui.command.GatherSupportDataCommand" >
+					<constructor-arg index="0" ref="gameHolder" />
+				</bean>
 				<value>separator</value>
 				<bean class="org.joverseer.ui.command.CheckForUpdatesCommand" />
 				<value>separator</value>
@@ -327,7 +368,7 @@
 		to generate an about box from the configured application data in the application 
 		context. -->
 	<bean id="aboutCommand"
-		class="org.springframework.richclient.command.support.AboutCommand">
+		class="org.joverseer.ui.command.AboutCommand">
 	</bean>
 
 	<bean id="utilMenu"
@@ -572,6 +613,14 @@
 						<value>true</value>
 					</property>
 					<property name="group">
+						<value>Display.Map Scale</value>
+					</property>
+				</bean>
+				<bean class="org.joverseer.ui.command.EditPreferencesCommand">
+					<property name="enabled">
+						<value>true</value>
+					</property>
+					<property name="group">
 						<value>Economy Calculator</value>
 					</property>
 				</bean>
@@ -625,6 +674,8 @@
 				</bean>
 				<value>separator</value>
 				<ref bean="restoreLayoutMenu" />
+				<bean
+					class="org.joverseer.ui.command.SaveCustomLayoutCommand" />
 			</list>
 		</property>
 	</bean>

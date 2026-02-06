@@ -35,12 +35,9 @@ public class RAResultWrapper implements OrderResult {
 		GameMetadata gm = game.getMetadata(); 
 		for(ArtifactWrapper aw:getArtifacts()) {
 			ai = gm.findFirstArtifactByName(aw.getName());
-			if (ai != null && ai.getNo() == 0) {
-				ai.setNo(aw.getId());
-				String power2 = ai.getPower2();
-				if (power2.isEmpty() || power2.contains("Unknown")) {
-					ai.setPower(1, aw.latent);
-				}
+			if (ai != null) {
+				if(ai.getNo() == 0) ai.setNo(aw.getId());
+				ai.setPower(1, aw.latent);
 			} else {
 				if (ai == null) {
 					// referencing an artifact that we don't know about.

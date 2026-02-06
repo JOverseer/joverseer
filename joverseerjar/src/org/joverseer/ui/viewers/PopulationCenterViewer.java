@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import org.joverseer.JOApplication;
 import org.joverseer.domain.ClimateEnum;
@@ -47,6 +48,7 @@ import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.commands.ShowInfoSourcePopupCommand;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.joverseer.ui.views.EditPopulationCenterForm;
 import org.springframework.binding.form.FormModel;
@@ -56,7 +58,6 @@ import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
@@ -288,6 +289,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 
 	@Override
 	protected JComponent createFormControl() {
+		Color col = UIManager.getColor("Panel.background");
 		getFormModel().setValidating(false);
 		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
 		glb.setDefaultInsets(new Insets(0, 0, 0, 5));
@@ -299,6 +301,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 		c.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
 		c.setFont(new Font(c.getFont().getName(), Font.BOLD, c.getFont().getSize()));
 		c.setBorder(null);
+		c.setOpaque(false);
 
 		glb.append(this.sizeFort = new JTextField());
 		c = this.sizeFort;
@@ -349,8 +352,10 @@ public class PopulationCenterViewer extends ObjectViewer {
 		for (ProductEnum p : ProductEnum.values()) {
 			JTextField tf = new JTextField();
 			tf.setBorder(null);
-			tf.setPreferredSize(this.uiSizes.newDimension(28/16, this.uiSizes.getHeight4()));
+			//tf.setPreferredSize(this.uiSizes.newDimension(28/16, this.uiSizes.getHeight4()));
+			
 			tf.setFont(f);
+			tf.setColumns(4);
 			tlb.cell(tf);
 			this.production.put(p, tf);
 		}
@@ -358,8 +363,9 @@ public class PopulationCenterViewer extends ObjectViewer {
 		for (ProductEnum p : ProductEnum.values()) {
 			JTextField tf = new JTextField();
 			tf.setBorder(null);
-			tf.setPreferredSize(this.uiSizes.newDimension(28/16, this.uiSizes.getHeight4()));
+			//tf.setPreferredSize(this.uiSizes.newDimension(28/16, this.uiSizes.getHeight4()));
 			tf.setFont(f);
+			tf.setColumns(4);
 			tlb.cell(tf);
 			this.stores.put(p, tf);
 		}
@@ -368,20 +374,20 @@ public class PopulationCenterViewer extends ObjectViewer {
 		tlb.cell(this.lostThisTurn = new JTextField());
 		this.lostThisTurn.setBorder(null);
 		this.lostThisTurn.setFont(GraphicUtils.getFont(this.lostThisTurn.getFont().getName(), Font.ITALIC, this.lostThisTurn.getFont().getSize()));
-		this.lostThisTurn.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
+		this.lostThisTurn.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight4()));
 
 		tlb.row();
 		tlb.cell(this.turnInfo = new JTextField());
 		this.turnInfo.setBorder(null);
 		this.turnInfo.setFont(GraphicUtils.getFont(this.lostThisTurn.getFont().getName(), Font.ITALIC, this.lostThisTurn.getFont().getSize()));
-		this.turnInfo.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
+		this.turnInfo.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight4()));
 
 		JPanel pnl = tlb.getPanel();
-		pnl.setBackground(Color.white);
+		pnl.setBackground(col);
 		glb.append(pnl, 2, 1);
 
 		JPanel panel = glb.getPanel();
-		panel.setBackground(Color.white);
+		panel.setBackground(col);
 		return panel;
 	}
 
@@ -496,7 +502,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 			final EditPopulationCenterForm form = new EditPopulationCenterForm(formModel,PopulationCenterViewer.this.gameHolder);
 			FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-			TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+			CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 
 				@Override
 				protected void onAboutToShow() {

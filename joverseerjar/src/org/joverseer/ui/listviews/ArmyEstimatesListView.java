@@ -1,7 +1,6 @@
 package org.joverseer.ui.listviews;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -131,7 +130,6 @@ public class ArmyEstimatesListView extends ItemListView {
 			this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		}
 
-		this.table.getTableHeader().setBackground(Color.WHITE);
 		this.table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(this.tableModel));
 		this.table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(this.tableModel));
 		this.table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer(this.tableModel));
@@ -170,11 +168,9 @@ public class ArmyEstimatesListView extends ItemListView {
 			lb.row();
 		}
 		JPanel pnl = lb.getPanel();
-		pnl.setBackground(Color.WHITE);
 		tlb.cell(pnl, "colspec=left:30px valign=top"); //$NON-NLS-1$
 
 		JPanel p = tlb.getPanel();
-		p.setBackground(Color.WHITE);
 
 		MultilineTableCellRenderer r = new MultilineTableCellRenderer();
 		r.setWrapStyleWord(true);

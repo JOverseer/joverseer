@@ -1,7 +1,9 @@
 package org.joverseer.ui.listviews;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +14,7 @@ import java.awt.event.MouseMotionListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -24,6 +27,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.joverseer.JOApplication;
 import org.joverseer.domain.CharacterDeathReasonEnum;
@@ -36,6 +40,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.ui.BaseView;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.UISizes;
 import org.joverseer.ui.listviews.filters.AndFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.listviews.renderers.DeathReasonEnumRenderer;
@@ -65,6 +70,7 @@ import org.springframework.richclient.table.TableUtils;
 public abstract class BaseItemListView extends BaseView implements ApplicationListener, MouseListener, MouseMotionListener,InitializingBean {
 
 	PreferenceRegistry preferenceRegistry;
+	UISizes uiS;
 
 	public PreferenceRegistry getPreferenceRegistry() {
 		return this.preferenceRegistry;
@@ -100,6 +106,7 @@ public abstract class BaseItemListView extends BaseView implements ApplicationLi
 
 	public BaseItemListView(Class<?> tableModelClass) {
 		this.tableModelClass = tableModelClass;
+		this.uiS = new UISizes();
 	}
 
 	/**
@@ -230,7 +237,7 @@ public abstract class BaseItemListView extends BaseView implements ApplicationLi
 		AbstractListViewFilter[][] filterLists = getFilters();
 
 		boolean hasFilters = false;
-		TableLayoutBuilder lb = new TableLayoutBuilder();
+		JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		if (filterLists != null) {
 			for (AbstractListViewFilter[] filterList : filterLists) {
 				JComboBox filter = new JComboBox(filterList);
@@ -243,17 +250,16 @@ public abstract class BaseItemListView extends BaseView implements ApplicationLi
 							setItems();
 					}
 				});
-				filter.setPreferredSize(new Dimension(150, 20));
+				filter.setPreferredSize(this.uiS.getComboBoxDimension());
 				filter.setOpaque(true);
-				lb.cell(filter, "colspec=left:150px");
-				lb.gapCol();
+				p.add(filter);
 			}
 			hasFilters = true;
 		}
 		if (hasTextFilter()) {
 			hasFilters = true;
 			this.textFilterField = new JTextField();
-			this.textFilterField.setPreferredSize(new Dimension(150, 20));
+			this.textFilterField.setPreferredSize(this.uiS.getComboBoxDimension());
 			this.textFilterField.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -261,12 +267,10 @@ public abstract class BaseItemListView extends BaseView implements ApplicationLi
 						setItems();
 				}
 			});
-			lb.cell(this.textFilterField, "colspec=left:150px");
-			lb.gapCol();
+			p.add(this.textFilterField);
 		}
 
 		if (hasFilters) {
-			JPanel p = lb.getPanel();
 			p.setOpaque(true);
 
 			return p;
@@ -303,25 +307,26 @@ public abstract class BaseItemListView extends BaseView implements ApplicationLi
 
 		this.tableModel = this.createBeanTableModel();
 
-		TableLayoutBuilder tlb = new TableLayoutBuilder();
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		
 		JPanel fp = createFilterPanel();
 		if (fp != null) {
-			tlb.cell(fp, "align=left");
-			tlb.row();
+			mainPanel.add(fp, BorderLayout.PAGE_START);
 		}
 
 		setItems();
 
 		// create the JTable instance
 		this.table = createTable();
-		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.table, columnWidths());
+		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.table, columnWidths(), this.uiS);
+		Color background = UIManager.getColor("Panel.background");
 
 		String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");
 		if (pval.equals("yes")) {
 			this.table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		}
 
-		this.table.getTableHeader().setBackground(Color.WHITE);
+		this.table.getTableHeader().setBackground(background);
 		this.table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(this.tableModel));
 		this.table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(this.tableModel));
 		this.table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer(this.tableModel));
@@ -336,20 +341,17 @@ public abstract class BaseItemListView extends BaseView implements ApplicationLi
 		scrollPane.getViewport().setBackground(this.table.getBackground());
 		scrollPane.setPreferredSize(new Dimension(1200, 1200));
 		scrollPane.addMouseListener(this);
-		tlb.cell(scrollPane);
+		mainPanel.add(scrollPane, BorderLayout.CENTER);
 
-		TableLayoutBuilder lb = new TableLayoutBuilder();
+		JPanel buttonP = new JPanel();
+		buttonP.setLayout(new BoxLayout(buttonP, BoxLayout.Y_AXIS));
 		for (JComponent compo : getButtons()) {
-			lb.cell(compo, "colspec=left:30px valign=top");
-			lb.relatedGapRow();
-			lb.row();
+			buttonP.add(compo);
 		}
-		JPanel pnl = lb.getPanel();
-		pnl.setBackground(Color.WHITE);
-		tlb.cell(pnl, "colspec=left:30px valign=top");
-		JPanel p = tlb.getPanel();
-		p.setBackground(Color.WHITE);
-		return p;
+		buttonP.setBackground(background);
+		mainPanel.add(buttonP, BorderLayout.EAST);
+		
+		return mainPanel;
 	}
 
 	protected void refreshFilters() {

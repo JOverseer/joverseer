@@ -33,4 +33,5 @@ public enum TurnElementsEnum implements Serializable {
     Diplo,
     ArtifactUser,
     NotepadInfo,
+    OrderResults,
 }

@@ -149,9 +149,9 @@ public class RecentGames {
 	        	if(shouldDeleteRecentGame(rg)) rgisToRemove.add(rg);
 	        }
 	        rgis.removeAll(rgisToRemove);
-	        
-	        rgiStr = getRecentGameInfoString(rgis);
         }
+        
+        rgiStr = getRecentGameInfoString(rgis);
         
         Preferences.userNodeForPackage(JOverseerJIDEClient.class).put("recentGames", rgiStr);
     }
@@ -212,8 +212,9 @@ public class RecentGames {
         }
         
         public boolean pastDueDate() {
-        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d yyyy");
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d yyyy").withLocale(Locale.ENGLISH);
             LocalDate dueDateD = LocalDate.parse(toTitleCase(this.dueDate), formatter);
+            
             LocalDate now = LocalDate.now();
             
             return now.isEqual(dueDateD) || now.isBefore(dueDateD);

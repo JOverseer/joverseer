@@ -2,6 +2,7 @@ package org.joverseer.ui.views;
 
 import java.util.Hashtable;
 
+import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -62,6 +63,7 @@ public class EditNationAllegiancesForm extends ScalableAbstractForm {
 		tlb.gapCol();
 		tlb.cell(new JLabel(Messages.getString("editNationAllegiancesForm.Eliminated")));
 		tlb.gapCol();
+		tlb.cell((JComponent) Box.createHorizontalStrut(10));
 		tlb.relatedGapRow();
 
 		for (int i = 0; i < 10; i++) {

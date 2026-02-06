@@ -1152,7 +1152,7 @@ public class Rule
             			this.parentOrder.addError(this.parentChar + " is not in a company.");
             		}
             		else {
-            			this.parentOrder.addInfo(this.parentChar + " leaved " + cLeave.getCommander() + "'s company.");
+            			this.parentOrder.addInfo(this.parentChar + " left " + cLeave.getCommander() + "'s company.");
             			cLeave.removeCharacter(this.parentChar.getId());
             		}
             		
@@ -2105,17 +2105,11 @@ public class Rule
                 int amounts[] = army.getTroopContent(this.parentOrder.getOrder());
                 int cavalry = amounts[0] + amounts[1];
                 int grunts = amounts[2] + amounts[3] + amounts[4] + amounts[5];
-                int cavships = cavalry != 0 ? cavalry / 150 : 0;
-                if(cavalry % 150 > 0)
-                {
-                    cavships++;
-                }
-                int gruntships = grunts != 0 ? grunts / 250 : 0;
-                if(grunts % 250 > 0)
-                {
-                    gruntships++;
-                }
-                int ships = cavships + gruntships;
+                
+                double cavships = cavalry != 0 ? ((double)cavalry) / 150.0 : 0;
+                double gruntships = grunts != 0 ? ((double)grunts) / 250.0 : 0;
+                int ships = (int) Math.ceil(cavships + gruntships);
+                
                 String msg = "NAVY:Does " + this.parentChar + "'s navy have enough " + "transports? (needs " + ships + ")";
                 addAdditionalInfo(msg, false);
                 if(army.getFoodRequired() == 0)
@@ -2812,7 +2806,7 @@ public class Rule
 
 /**
  * 
- * RANK,"Char, Rank, Min, Type","Char = 0 or param #.  Rank 0 = command, 1 = agent, 2 = emissary, 3 = mage.  Min = minimum rank required. Type 0 = normal, 1 = new PC.  Checks that the specified character has a rank greater than the minimum."
+ * RANK,"Char, Rank, Min, Type","Char = 0 or param #.  Rank 0 = command, 1 = agent, 2 = emissary, 3 = mage, 4 = any, 5 = none.  Min = minimum rank required. Type 0 = normal, 1 = new PC.  Checks that the specified character has a rank greater than the minimum + if duplicate skill orders."
  * @param charParam
  * @param rank
  * @param min
@@ -2826,6 +2820,7 @@ public class Rule
     	final int EMISSARY=2;
     	final int MAGE=3;
     	final int ANY=4;
+    	final int NONE=5;
     	boolean onlyOne = false;
     	boolean atCapitalReq = false;
         if(charParam == -1)
@@ -2915,6 +2910,9 @@ public class Rule
             	}
             	break;
             	
+            case NONE:
+            	break;
+            	
             default:
                 return "Invalid rank type (" + rank + ") for RANK check!";
             }
@@ -2929,6 +2927,15 @@ public class Rule
                 }
             }
             if (onlyOne) {
+            	int[] movementOrders = {810, 820, 830, 840, 850, 860, 870, 825};
+            	boolean isMovement = false;
+            	for(int i = 0; i < movementOrders.length; i++) {
+            		if(this.parentOrder.getOrder() == movementOrders[i]) {
+            			isMovement = true;
+            			break;
+            		}
+            	}
+            	
             	int firstMatch = this.parentChar.indexOfOrderMatching(this.order);
             	// now we know the index of our current order.
             	// we can check for duplicate :)
@@ -2942,7 +2949,14 @@ public class Rule
             			errorMsg = "Can't have a duplicate order";
             			this.parentOrder.addError(errorMsg);
             			break;
-            		} else if (rank != ANY) {
+            		} else if (isMovement) {
+                    	for(int j = 0; j < movementOrders.length; j++) {
+                    		if(otherOrder == movementOrders[i]) {
+                    			this.parentOrder.addError("Two skill, spell or movement orders");
+                    			break;
+                    		}
+                    	}
+            		} else if (rank != ANY && rank != NONE) {
             			//check the major statistic for the order.
             			//by seeing if there's a rank rule for it and what the restriction is!
             			Ruleset otherRuleSet = this.main.getRuleSet().getRulesForOrder(otherOrder, false);
@@ -2955,7 +2969,7 @@ public class Rule
             						if (otherRank == rank) {
             							if (otherRule.convertParameter(4) != 0) {
             								// same skill and marked as exclusive
-            								this.parentOrder.addError("Duplicate order skill");
+            								this.parentOrder.addError("Two skill, spell or movement orders");
             								break;
             							}
             						}
@@ -2977,6 +2991,31 @@ public class Rule
         }
         return null;
     }
+    
+    /*
+     * Checks if character has a duplicate skill order that isn't linked to the ranks (command, agent etc). Move orders and spells checked
+     */
+//    private String processSkillOrder() {
+//    	int[] movementOrders = {810, 820, 830, 840, 850, 860, 870, 825};
+//    	
+//		Ruleset otherRuleSet = this.main.getRuleSet().getRulesForOrder(otherOrder, false);
+//		if (otherRuleSet != null) {
+//			Rule otherRule;
+//			for(int j=0;j<otherRuleSet.size();j++) {
+//				otherRule = (Rule) otherRuleSet.get(j);
+//				if (otherRule.getName().equalsIgnoreCase("RANK")) {
+//					int otherRank = otherRule.convertParameter(1);
+//					if (otherRank == rank) {
+//						if (otherRule.convertParameter(4) != 0) {
+//							// same skill and marked as exclusive
+//							this.parentOrder.addError("Duplicate order skill");
+//							break;
+//						}
+//					}
+//				}
+//			}
+//		}
+//    }
 
     private String processSetCommander()
     {

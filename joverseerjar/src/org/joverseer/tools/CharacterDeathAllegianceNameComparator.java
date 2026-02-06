@@ -25,11 +25,14 @@ public class CharacterDeathAllegianceNameComparator implements Comparator<Charac
 	public int compare(Character c1, Character c2) {
 		int i;
 		i = compareDeath(c1, c2);
-		if (i != 0)
+		if (i != 0) {
 			return i;
+		}
 		i = compareAllegiance(c1, c2);
-		if (i != 0)
+		if (i != 0) {
 			return i;
+		}
+		
 		String pval = PreferenceRegistry.instance().getPreferenceValue("currentHexView.sortCharacters");
 		if (pval != null && pval.equals("allegianceNationName")) {
 			i = compareNation(c1, c2);
@@ -69,6 +72,7 @@ public class CharacterDeathAllegianceNameComparator implements Comparator<Charac
 		Turn t = g.getTurn();
 		if (t == null)
 			return 0;
+		
 		NationRelations nr1 = t.getNationRelations(c1.getNationNo());
 		NationRelations nr2 = t.getNationRelations(c2.getNationNo());
 		NationRelations nr = t.getNationRelations(g.getMetadata().getNationNo());
@@ -78,10 +82,10 @@ public class CharacterDeathAllegianceNameComparator implements Comparator<Charac
 			return -1;
 		if (nr1.getAllegiance() == nr2.getAllegiance())
 			return 0;
-		if (nr1.getAllegiance().equals(NationAllegianceEnum.Neutral))
-			return 1;
 		if (nr1.getAllegiance() == nr.getAllegiance())
 			return -1;
+		if (nr1.getAllegiance().equals(NationAllegianceEnum.Neutral))
+			return 1;
 		return 1;
 	}
 }

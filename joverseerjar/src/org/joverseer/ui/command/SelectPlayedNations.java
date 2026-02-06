@@ -7,12 +7,12 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.joverseer.ui.views.EditPlayedNationsForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
 /**
@@ -44,7 +44,7 @@ public class SelectPlayedNations extends ActionCommand {
 		FormBackedDialogPage page = new FormBackedDialogPage(form);
 		page.setTitle(Messages.getString("editPlayedNationsForm.title"));	
 		
-		TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+		CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 			@Override
 			protected void onAboutToShow() {
 				form.setFormObject(g);

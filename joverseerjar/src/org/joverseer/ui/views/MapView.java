@@ -1,12 +1,14 @@
 package org.joverseer.ui.views;
 
-import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.AffineTransform;
+
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -17,6 +19,7 @@ import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.PLaFHelper;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.support.AbstractView;
@@ -83,15 +86,17 @@ public class MapView extends AbstractView implements ApplicationListener {
 
 		});
 		this.mapPanel.setPreferredSize(new Dimension(1000, 2500));
-		this.mapPanel.setBackground(Color.white);
 		this.scp.setPreferredSize(new Dimension(800, 500));
 		MapMetadata mm = MapMetadata.instance();
 		this.scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize() * 2);
 		this.scp.getHorizontalScrollBar().setUnitIncrement(mm.getGridCellWidth() * mm.getHexSize() * 2);
+//		this.scp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
 		// Add introduction image to explain to new players what to do
 		ImageSource is = JOApplication.getImageSource();
-		Image mapIntro = is.getImage("map.intro");
+		Image mapIntro;
+		if(!PLaFHelper.isDarkMode()) mapIntro = is.getImage("map.intro");
+		else mapIntro = is.getImage("map.dark.intro");
 		if (mapIntro != null) {
 			this.introLabel = new JLabel(new ImageIcon(mapIntro));
 			this.mapPanel.add(this.introLabel);
@@ -130,6 +135,7 @@ public class MapView extends AbstractView implements ApplicationListener {
 				this.mapPanel.updateUI();
 				// expand shr
 				Rectangle vr = this.mapPanel.getVisibleRect();
+				
 
 				vr.x = shr.x - (vr.width - shr.width) / 2;
 				vr.y = shr.y - (vr.height - shr.height) / 2;
@@ -148,14 +154,30 @@ public class MapView extends AbstractView implements ApplicationListener {
 			break;
 		case MapMetadataChangedEvent:
 			MapMetadata mm = MapMetadata.instance();
-			this.mapPanel.setPreferredSize(new Dimension(mm.getGridCellWidth() * mm.getHexSize() * (mm.getMaxMapColumn() + 1), mm.getGridCellHeight() * mm.getHexSize() * mm.getMaxMapRow()));
+			this.mapPanel.setPreferredSize(getRealMapDimension(mm));
+			//this.mapPanel.setPreferredSize(new Dimension(w * (mm.getHexSize()) * (mm.getMaxMapColumn() + 1), mm.getGridCellHeight() * mm.getHexSize() * mm.getMaxMapRow()));
 			this.scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize() * 2);
 			this.scp.getHorizontalScrollBar().setUnitIncrement(mm.getGridCellWidth() * mm.getHexSize() * 2);
 			this.mapPanel.invalidateAndReset();
 			this.mapPanel.updateUI();
 			this.scp.updateUI();
+			
+			this.mapPanel.revalidate();
+			this.scp.getVerticalScrollBar().setValue(this.scp.getVerticalScrollBar().getValue()-1);			
+
 			break;
 		}
+	}
+	
+	private Dimension getRealMapDimension(MapMetadata mm) {
+		Point p =this.mapPanel.getHexLocation((mm.getMaxMapColumn()), mm.getMaxMapRow());
+	    double[] scales = this.mapPanel.getScaleTransformation();
+
+	    int logicalX = (int) (p.x / scales[0]) + Math.round(mm.getGridCellWidth() * mm.getHexSize() * 3);
+	    int logicalY = (int) (p.y / scales[1]) + Math.round((mm.getGridCellHeight() * mm.getHexSize()) * 2);
+		//Point p = this.mapPanel.getHexFromPoint(p1);
+		
+		return new Dimension(logicalX, logicalY);
 	}
 
 }

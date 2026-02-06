@@ -1,6 +1,5 @@
 package org.joverseer.ui.viewers;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +14,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 import org.joverseer.JOApplication;
 import org.joverseer.domain.HexInfo;
@@ -174,12 +174,12 @@ public class HexInfoViewer extends ObjectViewer {
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		tlb.cell(this.notesViewer.createFormControl(), "colspec=left:240px"); //$NON-NLS-1$
 		JPanel notesPanel = tlb.getPanel();
-		notesPanel.setBackground(Color.white);
+		notesPanel.setBackground(UIManager.getColor("Panel.background"));
 		lb.append(notesPanel, 8, 1);
 		lb.nextLine();
 
 		JPanel panel = lb.getPanel();
-		panel.setBackground(Color.WHITE);
+		panel.setBackground(UIManager.getColor("Panel.background"));
 		return panel;
 	}
 

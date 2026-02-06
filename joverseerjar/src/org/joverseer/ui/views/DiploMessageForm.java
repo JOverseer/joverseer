@@ -21,6 +21,7 @@ import javax.swing.text.Document;
 
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.PLaFHelper;
 import org.joverseer.ui.support.controls.DualJListSelector;
 import org.joverseer.ui.support.controls.NationDualListSelector;
 import org.joverseer.ui.support.controls.NationJList;
@@ -31,6 +32,8 @@ import org.joverseer.domain.Diplo;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.ui.BaseView;
+import org.joverseer.ui.command.ExportDiploCommand;
+
 import javax.swing.BoxLayout;
 
 import java.awt.BorderLayout;
@@ -54,6 +57,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 	JButton btSave;
 	JButton btNationSave;
 	JButton btReload;
+	JButton btExportDiplo;
 	JTextArea diplomaticMess;
 	Diplo inputDiplo = null;
 	NationJList nationList;
@@ -74,12 +78,12 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 	protected JComponent createControl() {
 		this.panel = new JPanel();
 		this.panel.setLayout(new BorderLayout());
-		this.panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		//this.panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		JPanel diploPanel = new JPanel();
 		diploPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		this.panel.add(diploPanel, BorderLayout.PAGE_START);		
+		this.panel.add(diploPanel, BorderLayout.CENTER);		
 
 		JPanel nationPanel = new JPanel();
 		diploPanel.add(nationPanel);
@@ -152,7 +156,11 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		
 		this.lbDiploReminder = new JLabel("");
 		this.lbDiploReminder.setAlignmentX(Component.LEFT_ALIGNMENT);
-		buttonPanel.add(this.lbDiploReminder);		
+		buttonPanel.add(this.lbDiploReminder);	
+		
+		JPanel pnl = new JPanel();
+		pnl.setLayout(new BoxLayout(pnl, BoxLayout.X_AXIS));
+		pnl.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		this.btSave = new JButton(Messages.getString("DiploMessageForm.SaveMessageButton"));
 		this.btSave.setHorizontalAlignment(SwingConstants.LEFT);
@@ -165,7 +173,20 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 	        	  saveMessage();
 	          }
 			});
-		buttonPanel.add(this.btSave);
+		this.btExportDiplo = new JButton("Submit Diplo");
+		ExportDiploCommand ep = new ExportDiploCommand(this.gameHolder);
+		this.btExportDiplo.setEnabled(false);
+		this.btExportDiplo.addActionListener(new ActionListener() {
+			
+	          @Override
+				public void actionPerformed(ActionEvent e) {
+	        	  ep.execute();
+	          }
+	    });
+		
+		pnl.add(this.btSave);
+		pnl.add(this.btExportDiplo);
+		buttonPanel.add(pnl);
 		
 		this.btReload = new JButton(Messages.getString("DiploMessageForm.ReloadButton"));
 		this.btReload.setHorizontalAlignment(SwingConstants.LEFT);
@@ -283,7 +304,9 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 	 * @param len: Current character count 
 	 */
 	private void updateLiveLabel(int len) {
-		String colour = "black";
+		String colour;
+		if(PLaFHelper.isDarkMode()) colour = "white";
+		else colour = "black";
 		String charCount = len + "/" + Integer.toString(Diplo.charPerNation * this.nationsCount);
 		
 		//This if statement changes label red or black depending on if user is over char limit, as well as uncapping the limit if indicated in xml file by '-1'
@@ -349,6 +372,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
      */
     private void loadDiplo(boolean gameChange) {
     	Turn t = this.gameHolder.getGame().getTurn();
+    	this.btExportDiplo.setEnabled(true);
 
     	if (t.getNationDiplo(this.getGame().getMetadata().getNationNo()) != null) {	//If diplo exists in save file, then get it
     		this.inputDiplo = t.getNationDiplo(this.gameHolder.getGame().getMetadata().getNationNo());
@@ -389,6 +413,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
         if (t.getPlayerInfo().size() != 0) {
         	if (!t.getPlayerInfo(this.gameHolder.getGame().getMetadata().getNationNo()).isDiploDue()) {
         		this.lbDiploReminder.setText(Messages.getString("DiploMessageForm.DiploReminderLabel"));
+        		this.btExportDiplo.setEnabled(false);
       		}
         	else this.lbDiploReminder.setText("");
         }
@@ -404,7 +429,6 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
         }
         else {
         	this.diplomaticMess.setText(this.inputDiplo.getMessage());
-
         }
         
         this.updateLiveLabel(this.diplomaticMess.getText().length());	//Call to refresh alot of the other components in UI

@@ -96,6 +96,7 @@ public class TurnPdfReader implements Runnable {
     String contents;
     PDDocument document;
     boolean errorOccurred = false;
+	boolean turnWarining = false;
     
     public TurnPdfReader(Game game, String filename) {
         this.game = game;
@@ -552,7 +553,8 @@ public class TurnPdfReader implements Runnable {
                 getMonitor().subTaskStarted(exc.getMessage());
             }
             logger.error(exc);
-            exc.printStackTrace();
+//            exc.printStackTrace();
+            if(exc.getMessage().equals("Can only import pdfs for last turn.")) this.turnWarining = true;
             // do nothing
         }
     }
@@ -563,8 +565,7 @@ public class TurnPdfReader implements Runnable {
     		throw new Exception("Failed to parse pdf file.");
     	}
         if (this.turnInfo.getTurnNo() < game1.getMaxTurn()) {
-            //todo fix
-        	this.errorOccurred = true;
+			getMonitor().worked(100);
             throw new Exception("Can only import pdfs for last turn.");
         }
         

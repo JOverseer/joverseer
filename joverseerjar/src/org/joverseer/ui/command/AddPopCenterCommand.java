@@ -16,12 +16,12 @@ import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.UserInfoSource;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.views.EditPopulationCenterForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
 public class AddPopCenterCommand extends ActionCommand {
@@ -58,7 +58,7 @@ public class AddPopCenterCommand extends ActionCommand {
 		final EditPopulationCenterForm form = new EditPopulationCenterForm(formModel,this.gameHolder);
 		FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-		TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+		CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
 
 			@Override
 			protected void onAboutToShow() {

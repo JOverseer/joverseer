@@ -9,10 +9,10 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.combatCalculator.CombatForm;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 
 /**
  * Shows the combat calculator
@@ -49,7 +49,7 @@ public class ShowCombatCalculatorCommand extends ActionCommand {
         final CombatForm form = JOApplication.getCombatFormHolder().getCombatForm();
         FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-        TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+        CustomTitledPageApplicationDialog dialog = new CustomTitledPageApplicationDialog(page) {
             @Override
 			protected void onAboutToShow() {
                 form.setFormObject(ShowCombatCalculatorCommand.this.combat);

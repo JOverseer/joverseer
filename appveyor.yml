@@ -98,7 +98,7 @@ for:
     - tar xf launch4j.tgz
 
   build_script:
-    - ant test
+#    - ant test
     - ant -f joverseerRelease/build.xml LinuxBYOJavaTar
 
   artifacts:

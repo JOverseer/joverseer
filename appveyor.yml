@@ -99,7 +99,7 @@ for:
 
   build_script:
 #    - ant test
-    - ant -f joverseerRelease/build.xml LinuxBYOJavaTar
+    - ant -f jOverseerRelease/build.xml LinuxBYOJavaTar
 
   artifacts:
     - path: jOverseerRelease/dist/joverseer-BYOJ-*.tar.gz

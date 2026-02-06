@@ -99,6 +99,7 @@ for:
 
   build_script:
 #    - ant test
+    - ant BuildJoverseerJar
     - ant -f jOverseerRelease/build.xml LinuxBYOJavaTar
 
   artifacts:

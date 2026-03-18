@@ -1,20 +1,20 @@
 ## Description ##
 
-JOverseer is a desktop application which aims to assist players of the Middle Earth PBM game (http://www.middleearthgames.com).
+JOverseer is a desktop application which aims to assist players of the Middle Earth PBM game (http://www.gamesystems.com).
 
 ![joverseer screenshot](../../wiki/images/jov.joverseer.jpg)
 
 **Downloading**
 
 As GoogleCode has shut down, the source code is now hosted here at http://www.github.com.
-At the moment downloads for the runnable program will be found at http://www.middleearthgames.com/gamingsoftware/.
+At the moment downloads for the runnable program will be found at http://www.gamesystems.com/gamingsoftware/.
 For user convenience, there are installers for MacOS and Windows although they are not certified or available on the relevant 'Store'.
 
-**The latest version is 1.16.17, released on April 17, 2020.**
+**The latest version is 1.19.01, released on September 11, 2025.**
 
 **Updating**
 Version 1.0.12 and later includes some better updating technology.
-To spot new versions, the updater will visit the RSS feed http://www.middleearthgames.com/software/joverseer/feed.xml once a week.
+To spot new versions, the updater will visit the RSS feed http://www.gamesystems.com/software/joverseer/feed.xml once a week.
 If it finds a new version, then it will notify you, show you what's changed and ask if you want to update. If you do, then it will download and install it.
 Updates are currently about 2MB instead of the 15MB for the full install.
 
@@ -51,7 +51,7 @@ To ask questions, offer suggestions, or report bugs please use the [JOverseer Ya
   * the Spring RCP (http://www.springframework.org/spring-rcp)
   * JIDE (http://www.jidesoft.com)
   * JIDE Spring Rich Client Integration (https://jide-springrcp.dev.java.net/)
-  * PDFBox (http://www.pdfboxorg)
+  * PDFBox (http://www.pdfbox.org)
   * txt2xml (http://txt2xml.sourceforge.net)
   * the Eclipse icon set (http://www.eclipse.org)
   * Apache Digester
@@ -59,6 +59,7 @@ To ask questions, offer suggestions, or report bugs please use the [JOverseer Ya
 **Developed by:**
 
   * Marios Skounakis
+  * Sam Terrett
   * Dave Spring (current maintainer)
 
 **Special thanks to:**

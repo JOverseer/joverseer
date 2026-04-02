@@ -101,9 +101,14 @@ for:
 #    - ant test
     - ant BuildJoverseerJar
     - ant -f jOverseerRelease/build.xml LinuxBYOJavaTar
+    - cd jOverseerRelease && sh src/Linux/packagedeb.sh
+    - pwd
+    - ls -F
 
   artifacts:
     - path: jOverseerRelease/dist/joverseer-BYOJ-*.tar.gz
       name: Linux-Bring-Your-Own-Java
+    - path: jOverseerRelease/joverseer-*.deb
+      name: Debian installer
 
 

@@ -120,7 +120,7 @@ public class HexWrapper {
 		addElementToSides(hex, HexSideElementEnum.Road, getSidesFromInteger(getRoads()));
 		addElementToSides(hex, HexSideElementEnum.MinorRiver, getSidesFromInteger(getMinorRivers()));
 		addElementToSides(hex, HexSideElementEnum.MajorRiver, getSidesFromInteger(getMajorRivers()));
-		hex.setTerrain(XMLTerrainToEnum(terrain));
+		hex.setTerrain(XMLTerrainToEnum(this.terrain));
 	}
 
 	protected void addElementToSides(Hex hex, HexSideElementEnum element, ArrayList<HexSideEnum> sides) {

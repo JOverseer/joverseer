@@ -36,7 +36,6 @@ import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.ClimateModifier;
-import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.metadata.domain.TerrainModifier;

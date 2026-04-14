@@ -313,7 +313,6 @@ public class AdvancedCharacterListView extends BaseItemListView {
 		return new int[] { 96, 48, 48, 48, 48, 48, 48, 48, 48, 48, 32, 32, 32, 32, 32, 32, 120, 48, 96, 48, 32, 48, 32 };
 	}
 
-	@SuppressWarnings("serial")
 	@Override
 	protected JComponent createControlImpl() {
 		JComponent c = super.createControlImpl();

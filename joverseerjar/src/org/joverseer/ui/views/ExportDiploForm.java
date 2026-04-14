@@ -43,8 +43,8 @@ import org.joverseer.game.Game;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.GamePreference;
+import org.joverseer.support.StringUtils;
 import org.joverseer.ui.ScalableAbstractForm;
-import org.joverseer.ui.command.OpenGameDirTree;
 import org.joverseer.ui.support.dialogs.CustomTitledPageApplicationDialog;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.support.dialogs.InputDialog;
@@ -209,18 +209,9 @@ public class ExportDiploForm extends ScalableAbstractForm {
 		fileChooser.setApproveButtonText(getMessage("standardActions.Save"));
 		fileChooser.setSelectedFile(new File(fname));
 		
-		String orderPathPref = PreferenceRegistry.instance().getPreferenceValue("submitOrders.defaultFolder");
-		String lastDir = "";
-		if ("importDir".equals(orderPathPref)) {
-			lastDir = GamePreference.getValueForPreference("importDir", OpenGameDirTree.class);
-		} else {
-			lastDir = GamePreference.getValueForPreference("orderDir", ExportOrdersForm.class);
-		}
-		if (lastDir == null) {
-			lastDir = GamePreference.getValueForPreference("importDir", OpenGameDirTree.class);
-		}
-		if (lastDir != null) {
-			fileChooser.setCurrentDirectory(new File(lastDir));
+		GamePreference.LastDirTuple lastDir = GamePreference.determineLastDir(PreferenceRegistry.instance().getPreferenceValue("submitOrders.defaultFolder"));
+		if (lastDir.lastDir != null) {
+			fileChooser.setCurrentDirectory(new File(lastDir.lastDir));
 		}
 		if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) != JFileChooser.APPROVE_OPTION) {
 			this.sent = false;
@@ -228,7 +219,7 @@ public class ExportDiploForm extends ScalableAbstractForm {
 		}
 		try {
 			File file = fileChooser.getSelectedFile();
-			if ("importDir".equals(orderPathPref)) {
+			if (lastDir.usesImportDir) {
 				GamePreference.setValueForPreference("orderDir", file.getParent(), ExportOrdersForm.class);
 			}
 			FileWriter f = new FileWriter(file);
@@ -241,7 +232,7 @@ public class ExportDiploForm extends ScalableAbstractForm {
 			}
 			
 			String txt = "Begindiplo;\n" + fname + ";\n" + pi.getSecret()  + ";\n\nFrom nations: " + String.join(", ", nationsNoList) + "\n\n" + diploTxt + "\n\n" + "Enddiplo";
-			txt = txt.replace("\n", System.getProperty("line.separator"));
+			txt = StringUtils.replaceLFwithEOL(txt);
 			f.write(txt);
 			f.close();
 			
@@ -255,8 +246,8 @@ public class ExportDiploForm extends ScalableAbstractForm {
 	}
 	
 	private void sendDiploFile(String email, String name, String acct, File file) throws HttpException, IOException {
-		String url = "http://www.meturn.com/cgi-bin/HUpload.exe";
-		final PostMethod filePost = new PostMethod(url);
+		String prefEndpoint = PreferenceRegistry.instance().getPreferenceValue("submitOrders.url");
+		final PostMethod filePost = new PostMethod(prefEndpoint+"/cgi-bin/HUpload.exe");
 		Part[] parts = { new StringPart("emailaddr", email), new StringPart("name", name), new StringPart("account", acct), new FilePart(file.getName(), file) };
 		filePost.setRequestEntity(new MultipartRequestEntity(parts, filePost.getParams()));
 		HttpClient client = new HttpClient();
@@ -271,7 +262,7 @@ public class ExportDiploForm extends ScalableAbstractForm {
 				@Override
 				protected void onAboutToShow() {
 					try {
-						((HTMLDocument) frm.getJEditorPane().getDocument()).setBase(new URI("http://www.meturn.com/").toURL());
+						((HTMLDocument) frm.getJEditorPane().getDocument()).setBase(new URI(prefEndpoint).toURL());
 						frm.getJEditorPane().getEditorKit().read(filePost.getResponseBodyAsStream(), frm.getJEditorPane().getDocument(), 0);
 						this.setDescription(this.getMessage("ExportDiploForm.DiploSentByMETURNSuccessMessage", new Object[] { file }));
 						this.setTitlePaneTitle(Messages.getString("submitDiploResultsForm.title"));

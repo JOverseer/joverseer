@@ -318,7 +318,6 @@ public class EconomyCalculator extends BaseView implements ApplicationListener, 
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	@SuppressWarnings("serial")
 	@Override
 	protected JComponent createControl() {
 		TableLayoutBuilder lb = new TableLayoutBuilder();

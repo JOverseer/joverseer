@@ -15,9 +15,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileWriter;
-import java.net.URI;
-import java.net.URL;
-import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,6 +57,7 @@ import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.GamePreference;
 import org.joverseer.support.PropertyComparator;
+import org.joverseer.support.StringUtils;
 import org.joverseer.tools.OrderParameterValidator;
 import org.joverseer.tools.OrderValidationResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResult;
@@ -67,7 +65,6 @@ import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.ScalableAbstractForm;
-import org.joverseer.ui.command.OpenGameDirTree;
 import org.joverseer.ui.command.RunOrdercheckerCommand;
 import org.joverseer.ui.command.SaveGame;
 import org.joverseer.ui.support.controls.CheckBoxList;
@@ -221,7 +218,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 			public void itemStateChanged(ItemEvent e) {
 				// TODO Auto-generated method stub
 				ExportOrdersForm.this.orderCheckNations();
-				ExportOrdersForm.this.arrowAction("reset");
+				ExportOrdersForm.this.arrowAction(ArrowActions.RESET);
 			}
 		};
 		
@@ -302,11 +299,11 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		ctc.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ExportOrdersForm.this.arrowAction("reset");
+				ExportOrdersForm.this.arrowAction(ArrowActions.RESET);
 				String s = "";
 				for (int i = 0; i < ExportOrdersForm.this.numberOfControlledNations; i++) {
 					s += (ExportOrdersForm.this.orders.getText());
-					if (i != ExportOrdersForm.this.numberOfControlledNations - 1) ExportOrdersForm.this.arrowAction("forward");
+					if (i != ExportOrdersForm.this.numberOfControlledNations - 1) ExportOrdersForm.this.arrowAction(ArrowActions.FORWARD);
 				}
 				StringSelection stringSelection = new StringSelection(s);
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -359,7 +356,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		this.backBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ExportOrdersForm.this.arrowAction("back");
+				ExportOrdersForm.this.arrowAction(ArrowActions.BACKWARD);
 			}
 		});
 
@@ -368,7 +365,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		this.fwdBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ExportOrdersForm.this.arrowAction("forward");
+				ExportOrdersForm.this.arrowAction(ArrowActions.FORWARD);
 			}
 		});
 		
@@ -413,15 +410,20 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		return oPanel;
 	}
 	
+	private enum ArrowActions {RESET,BACKWARD,FORWARD}; 
+
 	/**
 	 * Used to cycle through the selected nations, adjusting all values accordingly
 	 * @param type: 3 options "back", "forward" and "reset"
 	 */
-	private void arrowAction(String type) {
-		if(type.equals("back")) this.index = this.index - 1;
-		else if(type.equals("forward")) this.index = this.index + 1;
-		else if(type.equals("reset")) this.index = 0;
-		else return;
+	private void arrowAction(ArrowActions action) {
+		switch (action) {
+		case BACKWARD: this.index = this.index - 1; break;
+		case FORWARD:  this.index = this.index + 1; break;
+		case RESET: this.index = 0; break; 
+		default:
+			return;
+		}
 		this.setNationLabel(this.index);
 		this.setOrderText();
 		this.setPlayerInfoItems();
@@ -456,36 +458,40 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		}
 	}
 
+	private void setVerSentFile(String ver,String sent,String file) {
+		this.lblVersionValue.setText(ver);
+    	this.lblSentValue.setText(sent);
+    	this.lblFileValue.setText(file);
+	}
+	private void changeSentFileVisibility(boolean visible) {
+		this.lblFileValue.setVisible(visible);
+        this.lblSentValue.setVisible(visible);
+		this.lblFile.setVisible(visible);
+        this.lblSent.setVisible(visible);
+	}
+	
 	private void setPlayerInfoItems() {
 		Game g = this.gameHolder.getGame();
-		if (g!=null) {
-			int nationNo = getSelectedNationNo();
-			PlayerInfo pi = g.getTurn().getPlayerInfo(nationNo);
-			if (pi == null) return;
-            Date d = pi.getOrdersSentOn();
-            if (d == null) {
-    			this.lblVersionValue.setText(String.valueOf(pi.getTurnVersion()));
-            	this.lblSentValue.setText("");
-            	this.lblFileValue.setText("");
-        		this.lblFileValue.setVisible(false);
-                this.lblSentValue.setVisible(false);
-        		this.lblFile.setVisible(false);
-                this.lblSent.setVisible(false);
-            } else {
-            	this.lblSentValue.setText(new SimpleDateFormat().format(d));
-    			this.lblVersionValue.setText(" " + String.valueOf(pi.getTurnVersion()));
-    			String file = String.valueOf(pi.getLastOrderFile());
-    			final int truncate=40;
-    			if (file.length() > truncate) {
-    				file = "..." + file.substring(file.length() -truncate -1);
-    			}
-    			this.lblFileValue.setText(file);
-        		this.lblFileValue.setVisible(true);
-                this.lblSentValue.setVisible(true);
-        		this.lblFile.setVisible(true);
-                this.lblSent.setVisible(true);
-            }
+		if (g==null) {
+			return;
 		}
+		int nationNo = getSelectedNationNo();
+		PlayerInfo pi = g.getTurn().getPlayerInfo(nationNo);
+		if (pi == null)
+			return;
+		Date d = pi.getOrdersSentOn();
+		if (d == null) {
+			setVerSentFile(String.valueOf(pi.getTurnVersion()), "", "");
+			changeSentFileVisibility(false);
+			return;
+		}
+		String file = String.valueOf(pi.getLastOrderFile());
+		final int truncate = 40;
+		if (file.length() > truncate) {
+			file = "..." + file.substring(file.length() - truncate - 1);
+		}
+		setVerSentFile(" " + String.valueOf(pi.getTurnVersion()), new SimpleDateFormat().format(d), file);
+		changeSentFileVisibility(true);
 	}
 
 	private void generateOrders(OrderFileGenerator gen) {
@@ -507,16 +513,30 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	}
 
 	
-	String serverResponse;
+	final static JFileChooser InitFileChooserDialog(int nationNo,int version,boolean isShadow,int gameNo) {
+		String shadowOrd = "";
+		if (isShadow) shadowOrd = "SHADOW";
+		String fname = String.format("me%02dv%d%s.%03d", nationNo, version, shadowOrd, gameNo);
+		final JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileFilter(new FileNameExtensionFilter("Game " + Integer.toString(gameNo), Integer.toString(gameNo)));
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+		fileChooser.setSelectedFile(new File(fname));
+		return fileChooser;
+	}
+
+	String serverResponse;	
 	/**
 	 *
 	 * @param send
 	 * @return false if cancelled.
+	 * 
+	 * TODO: spaghetti code ftw
 	 */
 	private boolean saveAndSendOrders(boolean send) {
 		boolean sendAll = false;
 		if (this.chkDontCloseOnFinish.isSelected()) {
-			this.arrowAction("reset");;
+			this.arrowAction(ArrowActions.RESET);;
 			sendAll = true;
 		}
 		try {
@@ -528,46 +548,30 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 					return isOK;
 				if (!checkOrderValidity())
 					return isNotOK;
+				
 				Game g = this.gameHolder.getGame();
 				int nationNo = getSelectedNationNo();
 				PlayerInfo pi = g.getTurn().getPlayerInfo(nationNo);
 				
-				//Adds 'shad' onto filename if checkbox ticked
-				String shadowOrd = "";
-				if (this.chkShadowOrder.isSelected()) shadowOrd = "SHADOW";
-				
-				String fname = String.format("me%02dv%d%s.%03d", getSelectedNationNo(), pi.getTurnVersion(), shadowOrd, g.getMetadata().getGameNo());
-				final JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setFileFilter(new FileNameExtensionFilter("Game " + Integer.toString(g.getMetadata().getGameNo()), Integer.toString(g.getMetadata().getGameNo())));
-				fileChooser.setAcceptAllFileFilterUsed(false);
-				fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+				final JFileChooser fileChooser = InitFileChooserDialog(nationNo, pi.getTurnVersion(), this.chkShadowOrder.isSelected(), g.getMetadata().getGameNo());
 				fileChooser.setApproveButtonText(getMessage("standardActions.SaveAs"));
-				fileChooser.setSelectedFile(new File(fname));
 		
-				String orderPathPref = PreferenceRegistry.instance().getPreferenceValue("submitOrders.defaultFolder");
-				String lastDir = "";
-				if ("importDir".equals(orderPathPref)) {
-					lastDir = GamePreference.getValueForPreference("importDir", OpenGameDirTree.class);
-				} else {
-					lastDir = GamePreference.getValueForPreference("orderDir", ExportOrdersForm.class);
-				}
-				if (lastDir == null) {
-					lastDir = GamePreference.getValueForPreference("importDir", OpenGameDirTree.class);
-				}
-				if (lastDir != null) {
-					fileChooser.setCurrentDirectory(new File(lastDir));
+				GamePreference.LastDirTuple lastDir = GamePreference.determineLastDir(PreferenceRegistry.instance().getPreferenceValue("submitOrders.defaultFolder"));
+				if (lastDir.lastDir != null) {
+					fileChooser.setCurrentDirectory(new File(lastDir.lastDir));
 				}
 				if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) != JFileChooser.APPROVE_OPTION) {
 					return isNotOK;
 				}
 				File file = fileChooser.getSelectedFile();
-				if ("importDir".equals(orderPathPref)) {
+				if (lastDir.usesImportDir) {
+					// so if we used the import directory, then save it as a new orderDir
 					GamePreference.setValueForPreference("orderDir", file.getParent(), ExportOrdersForm.class);
 				}
+				
 				FileWriter f = new FileWriter(file);
 				OrderFileGenerator gen = new OrderFileGenerator();
-				String txt = gen.generateOrderFile(g, g.getTurn(), getSelectedNationNo());
-				txt = txt.replace("\n", System.getProperty("line.separator"));
+				String txt = StringUtils.replaceLFwithEOL(gen.generateOrderFile(g, g.getTurn(), getSelectedNationNo()));
 				f.write(txt);
 				f.close();
 				pi.setLastOrderFile(file.getAbsolutePath());
@@ -583,13 +587,13 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 				} 
 				if (sendAll) {
 					if(this.index + 1 == this.numberOfControlledNations) break;
-					this.arrowAction("forward");
+					this.arrowAction(ArrowActions.FORWARD);
 				}
 			} while (sendAll);
 			if(send){
 				String prefMethod = PreferenceRegistry.instance().getPreferenceValue("submitOrders.method");
 				Game g = this.gameHolder.getGame();
-				if (sendAll) this.arrowAction("reset");
+				if (sendAll) this.arrowAction(ArrowActions.RESET);
 
 				String email = null;
 				this.serverResponse = "";
@@ -647,14 +651,10 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 						if (acct == null)
 							acct = "null";
 						String prefEndpoint = PreferenceRegistry.instance().getPreferenceValue("submitOrders.url");
-//						String url = "http://www.meturn.com/cgi-bin/HUpload.exe";
-//						String url = "http://18.168.101.186/cgi-bin/HUpload.exe";
-//						String url = "http://localhost/";
 						final PostMethod filePost = new PostMethod(prefEndpoint+"/cgi-bin/HUpload.exe");
 						Part[] parts = { new StringPart("emailaddr", email), new StringPart("name", name), new StringPart("account", acct), new FilePart(file.getName(), file) };
 						filePost.setRequestEntity(new MultipartRequestEntity(parts, filePost.getParams()));
-						// final GetMethod filePost = new
-						// GetMethod("http://www.meturn.com/");
+
 						HttpClient client = new HttpClient();
 						client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
 						BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
@@ -663,6 +663,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 							status = client.executeMethod(filePost);
 						} catch (java.net.ConnectException conEx) {
 							//TODO: log this error.
+							this.logger.error(String.format("Status: %d",status ));
 							status = HttpStatus.SC_SERVICE_UNAVAILABLE;
 						}
 						if (status == HttpStatus.SC_OK) {
@@ -695,15 +696,15 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 					}
 					if (sendAll) {
 						if(this.index + 1 == this.numberOfControlledNations) break;
-						this.arrowAction("forward");
+						this.arrowAction(ArrowActions.FORWARD);
 					}
 					this.getControl().setCursor(Cursor.getDefaultCursor());
 				} while(sendAll);
 
 				String temp = "<br/>";
-				this.arrowAction("reset");
+				this.arrowAction(ArrowActions.RESET);
 				for (int i = 0; i < this.numberOfControlledNations; i++) {
-					if (i != 0) this.arrowAction("forward");
+					if (i != 0) this.arrowAction(ArrowActions.FORWARD);
 					temp += g.getMetadata().getNationByNum(this.getSelectedNationNo()) + ": ";
 					temp += successes[i] ? "Success" : "Not Sent";
 					temp += "<br/>";

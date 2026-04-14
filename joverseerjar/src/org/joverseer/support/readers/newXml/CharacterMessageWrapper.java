@@ -431,7 +431,7 @@ public class CharacterMessageWrapper {
 					aw = rrw.getArtifactMatching(art);
 				}
 				if (parts.length > 1) {
-					String allegiance = parts[1].trim(); // still includes tag
+					// unused: String allegiance = parts[1].trim(); // still includes tag
 					if (parts.length> 2) {
 						if (parts.length > 3) {
 							parts[2] = parts[2].concat(" " + parts[3]);

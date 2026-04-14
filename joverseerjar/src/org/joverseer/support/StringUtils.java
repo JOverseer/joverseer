@@ -21,6 +21,12 @@ import org.joverseer.support.info.InfoUtils;
 public class StringUtils extends org.springframework.util.StringUtils {
 
 	/**
+	 * replaces \n with platform separator
+	 */
+	public static String replaceLFwithEOL(String str) {
+		return str.replace("\n", System.getProperty("line.separator"));
+	}
+	/**
 	 * Removes all new line (\r\n or \n) sequences from the given string
 	 */
 	public static String removeAllNewline(String str) {

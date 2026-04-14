@@ -7,7 +7,18 @@
 			helper program.</description>
 		<language>en</language>
 				<item>
-			<title>1.19.02-rc2</title>
+			<title>1.19.02-rc4</title>
+			<pubDate>14 April 2026</pubDate>
+			<description>
+VERSION 1.19.02-rc4
+---------------
+	* Fix: Some problems recognising recent games.
+	* Fix: Initial terrain modifiers for all game scenarios have been corrected. 
+	* Fix: Some corner-cases when submitting orders to the new server.
+	 			</description>
+		</item>	
+				<item>
+			<title>1.19.02-rc3</title>
 			<pubDate>3 October 2025</pubDate>
 			<description>
 VERSION 1.19.02-rc3

@@ -23,7 +23,7 @@ public class CustomColourSetsManager {
 		
 		File f = new File(dir);
 
-		String[] ls = f.list(filter);
+		//unused: String[] ls = f.list(filter);
 		
 		if (defaultName == null) return removeNameEndList(f.list(filter));
 		

@@ -30,6 +30,7 @@ public class PLaFHelper {
 	HashMap<String,String> plaf = new HashMap();
 	
 	public PLaFHelper() {
+		@SuppressWarnings("unused")
 		UIManager.LookAndFeelInfo[] builtinPlafInfos;
 		builtinPlafInfos = UIManager.getInstalledLookAndFeels();
 		//this.plaf.put("Default", "Default");

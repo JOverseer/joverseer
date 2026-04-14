@@ -3,6 +3,8 @@ package org.joverseer.support;
 import java.util.prefs.Preferences;
 
 import org.joverseer.game.Game;
+import org.joverseer.ui.command.OpenGameDirTree;
+import org.joverseer.ui.views.ExportOrdersForm;
 
 /**
  * Implements a preference that primarily depends on the Game In other words,
@@ -38,4 +40,32 @@ public class GamePreference {
 		Preferences prefs = Preferences.userNodeForPackage(clazz);
 		prefs.put(key, value);
 	}
+
+	public static class LastDirTuple {
+		public String lastDir;
+		public boolean usesImportDir;
+		public LastDirTuple() {
+			this.lastDir = "";
+			this.usesImportDir = false;
+		}
+	}
+	/**
+	 * @param orderPathPref
+	 * @return
+	 */
+	public static LastDirTuple determineLastDir(String orderPathPref) {
+		final String DEFAULT_PROPERTY = "importDir"; 
+		LastDirTuple result= new LastDirTuple(); 
+		if (DEFAULT_PROPERTY.equals(orderPathPref)) {
+			result.lastDir =GamePreference.getValueForPreference(DEFAULT_PROPERTY, OpenGameDirTree.class);
+			result.usesImportDir = true;
+		} else {
+			result.lastDir = GamePreference.getValueForPreference("orderDir", ExportOrdersForm.class);
+		}
+		if (result.lastDir == null) {
+			result.lastDir = GamePreference.getValueForPreference(DEFAULT_PROPERTY, OpenGameDirTree.class);
+		}
+		return result;
+	}
+
 }

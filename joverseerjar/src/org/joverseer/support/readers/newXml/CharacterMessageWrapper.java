@@ -481,15 +481,15 @@ public class CharacterMessageWrapper {
 				if (hc != null)
 					a.getElements().add(new ArmyElement(ArmyElementType.HeavyCavalry, Integer.parseInt(hc)));
 				if (lc != null)
-					a.getElements().add(new ArmyElement(ArmyElementType.LightCavalry, Integer.parseInt(hc)));
+					a.getElements().add(new ArmyElement(ArmyElementType.LightCavalry, Integer.parseInt(lc)));
 				if (hi != null)
-					a.getElements().add(new ArmyElement(ArmyElementType.HeavyInfantry, Integer.parseInt(hc)));
+					a.getElements().add(new ArmyElement(ArmyElementType.HeavyInfantry, Integer.parseInt(hi)));
 				if (li != null)
-					a.getElements().add(new ArmyElement(ArmyElementType.LightInfantry, Integer.parseInt(hc)));
+					a.getElements().add(new ArmyElement(ArmyElementType.LightInfantry, Integer.parseInt(li)));
 				if (ar != null)
-					a.getElements().add(new ArmyElement(ArmyElementType.Archers, Integer.parseInt(hc)));
+					a.getElements().add(new ArmyElement(ArmyElementType.Archers, Integer.parseInt(ar)));
 				if (ma != null)
-					a.getElements().add(new ArmyElement(ArmyElementType.MenAtArms, Integer.parseInt(hc)));
+					a.getElements().add(new ArmyElement(ArmyElementType.MenAtArms, Integer.parseInt(ma)));
 			}
 			result.addArmy(a);
 

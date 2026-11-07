@@ -43,6 +43,18 @@ public class Main
     private ArtifactList artifacts;
     private Data data;
     private OCDialog window;
+    // 31 Oct 2026 troop rules (light troops recruit at 1.5x and need no food). Default off = classic rules.
+    private boolean newTroopRules = false;
+
+    public boolean isNewTroopRules()
+    {
+        return this.newTroopRules;
+    }
+
+    public void setNewTroopRules(boolean value)
+    {
+        this.newTroopRules = value;
+    }
     public static void main(String argv[])
     {
         try

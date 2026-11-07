@@ -52,7 +52,14 @@ public class PopCenter
     private int loyalty;
     private boolean hidden;
     private boolean newpc;
+    // Classic rules: the pool is in troops (size x 100). 31 Oct 2026 rules: the pool is in sixths of a troop
+    // (size x 100 x 6) and each troop uses it at its own rate (see RECRUIT_SIXTHS).
     private int troopsAvailable;
+    private boolean newTroopRules;
+    // Indexed by Army troop type: HC, LC, HI, LI, AR, MA. HC/HI 6, LC/LI 4 (x1.5), AR/MA 3 (x2).
+    private static final int RECRUIT_SIXTHS[] = {
+        6, 4, 6, 4, 3, 3
+    };
     private int possibleDestruction;
     private int possibleCapture;
     private int possibleInfluence;
@@ -125,7 +132,8 @@ public class PopCenter
 
     void initStateInformation(Nation theNation,Main main)
     {
-        this.troopsAvailable = getMaximumTroops();
+        this.newTroopRules = main != null && main.isNewTroopRules();
+        this.troopsAvailable = this.newTroopRules ? getMaximumTroops() * 6 : getMaximumTroops();
         this.possibleDestruction = 9999;
         this.possibleCapture = 9999;
         this.possibleInfluence = 9999;
@@ -152,6 +160,40 @@ public class PopCenter
     {
         this.troopsAvailable -= amount;
         return this.troopsAvailable;
+    }
+
+    private int recruitSixths(int type)
+    {
+        if(!this.newTroopRules || type < 0 || type >= RECRUIT_SIXTHS.length)
+        {
+            return 1;
+        }
+        return RECRUIT_SIXTHS[type];
+    }
+
+    /**
+     * Takes amount troops of this type from the pool (classic: troops; 31 Oct 2026 rules: sixths, each type at its
+     * own rate) and returns how many more troops of that type can still be recruited this turn, negative when the
+     * order went over the limit.
+     */
+    int reduceTroopLimit(int amount, int type)
+    {
+        if(!this.newTroopRules)
+        {
+            return reduceTroopLimit(amount);
+        }
+        this.troopsAvailable -= amount * recruitSixths(type);
+        return this.troopsAvailable < 0 ? -1 : this.troopsAvailable / recruitSixths(type);
+    }
+
+    /** The most troops of this type a centre of this size supplies in a turn from an empty pool. */
+    int getMaximumTroops(int type)
+    {
+        if(!this.newTroopRules)
+        {
+            return getMaximumTroops();
+        }
+        return getMaximumTroops() * 6 / recruitSixths(type);
     }
 
     int getFoodProvided()

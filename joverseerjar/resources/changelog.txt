@@ -1,5 +1,6 @@
 VERSION 1.19.01
 ---------------
+	* Enh: Order Checker: new preference (Preferences -> Order Editor) 'Checker: New Light Troop rules' for the 31 Oct 2026 rules: light troops recruit at 1.5x, archers and men-at-arms at 2x, light troops need no food. Off by default.
 	* Enh: Map Icons can now be resized in Preferences -> Map Scale.
 	* Enh: Text Size also can now be changed in Preferences -> Windows Display.
 	* Enh: New Custom Layout! Save your current layout and it is saved as 'Custom Layout'

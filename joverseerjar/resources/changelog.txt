@@ -1,6 +1,6 @@
 VERSION 1.19.01
 ---------------
-	* Enh: Order Checker: new preference (Preferences -> Order Editor) to use the 31 Oct 2026 troop rules: light troops recruit at 1.5x, light troops need no food. Off by default.
+	* Enh: Order Checker: new preference (Preferences -> Order Editor) 'Checker: New Light Troop rules' for the 31 Oct 2026 rules: light troops recruit at 1.5x, archers and men-at-arms at 2x, light troops need no food. Off by default.
 	* QA: Order Checker: fewer false alarms. Lost-list, purchase-amount and 'troops still available' remarks are now information; recruiting over a population centre's limit is a warning showing what will be recruited; Move/Join (870) warns instead of failing when the target may move or hire first; relations orders 180/185 only fail when relations are already at the limit (never in all-vs-all games).
 	* Fix: Order Checker: Conjure Mounts with no amount is accepted (conjures the maximum); Name Character (725) accepts up to 30 points in 10s; Guard Character/Release/Custody/Imprison/Execute/Ransom Demand check agent rank; Abandon Ships, Ransom Offer, Sell Nation Product, Transfer Nation Product, Increase/Reduce Caravan Prices check the character is at the capital; Siege Population Center checks command rank; duplicate movement orders are detected.
 	* Fix: Order Checker no longer crashes on a hostage character with unknown status.

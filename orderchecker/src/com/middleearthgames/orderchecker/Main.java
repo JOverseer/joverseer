@@ -55,6 +55,97 @@ public class Main
     {
         this.newTroopRules = value;
     }
+
+    /**
+     * All-vs-all game: no nation has a Free People or Dark Servant allegiance (every supplied alignment is Neutral),
+     * so alignment says nothing about hostility. A single Neutral nation in a team game does not count.
+     */
+    public boolean isAllVsAll()
+    {
+        if(this.nation == null)
+        {
+            return false;
+        }
+        for(int n = 1; n <= 25; n++)
+        {
+            int alignment = getNationAlignment(n);
+            if(alignment == 1 || alignment == 2)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * The relation levels (0 Hated .. 4 Friendly) the issuing nation may hold towards the target given the two
+     * allegiances (rulebook I-4; Fourth Age module P; KB relations-allowed-by-allegiance). Returns {floor, ceiling}.
+     * Precision first: the desktop's alignment data is not reliable for Neutral nations (1650 has none) or for
+     * all-vs-all games, so only Free People / Dark Servant pairs are banded, and only when all of the issuer's
+     * current relations to Free People / Dark Servant nations already fit the bands (otherwise the supplied
+     * alignments do not describe this game). Everything else is only limited by Friendly/Hated.
+     */
+    public int[] getRelationLimits(int targetNation)
+    {
+        final int[] open = { 0, 4 };
+        int issuerNo = this.nation.getNation();
+        int issuer = getNationAlignment(issuerNo);
+        int target = getNationAlignment(targetNation);
+        if(isAllVsAll() || (issuer != 1 && issuer != 2) || (target != 1 && target != 2))
+        {
+            return open;
+        }
+        int gameType = this.data.getGameType();
+        boolean fourthAge = gameType == 2;
+        if(!fourthAge && gameType != 0 && gameType != 1)
+        {
+            return open;
+        }
+        for(int n = 1; n <= 25; n++)
+        {
+            int alignment = getNationAlignment(n);
+            Relations.NationRelationsEnum r = getRelationTo(n);
+            if(n == issuerNo || r == null || (alignment != 1 && alignment != 2))
+            {
+                continue;
+            }
+            boolean same = alignment == issuer;
+            int level = r.ordinal();
+            boolean fits;
+            if(fourthAge)
+            {
+                fits = same ? level != 0 : level != 4;
+            } else
+            {
+                fits = same ? level >= 2 : level <= 2;
+            }
+            if(!fits)
+            {
+                return open;
+            }
+        }
+        boolean same = target == issuer;
+        if(fourthAge)
+        {
+            return same ? new int[] { 1, 4 } : new int[] { 0, 3 };
+        }
+        return same ? new int[] { 2, 4 } : new int[] { 0, 2 };
+    }
+
+    public static String getAllegianceName(int alignment)
+    {
+        return alignment == 1 ? "Free People" : (alignment == 2 ? "Dark Servant" : "Neutral");
+    }
+
+    /** The issuing nation's relation to another nation as shown in the turn file, or null when unknown. */
+    public Relations.NationRelationsEnum getRelationTo(int nationNumber)
+    {
+        if(this.nation == null || nationNumber < 0 || nationNumber >= 26)
+        {
+            return null;
+        }
+        return this.nation.getRelations().getRelationsFor(nationNumber);
+    }
     public static void main(String argv[])
     {
         try

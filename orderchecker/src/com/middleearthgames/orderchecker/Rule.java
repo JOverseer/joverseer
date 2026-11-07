@@ -24,6 +24,11 @@ public class Rule
     public static final int STATE_ARTIFACT = 5;
     public static final int STATE_COMPANY = 6;
     public static final String STATE_REQ = "state";
+    /**
+     * The first combat order. Orders resolve in ascending number (KB orders-resolve-in-numeric-order) and a battle can
+     * only move the capital once combat orders have run, so below this number "not at the capital" is certain.
+     */
+    static final int FIRST_COMBAT_ORDER = 230;
     @SuppressWarnings("unused")
 	private static String stateDesc[] = {
         "Army", "PC", "Army Loc", "Char Army", "Char Loc", "Artifact", "Company"
@@ -949,7 +954,15 @@ public class Rule
             {
                 if(character.getLocation(this.parentOrder.getOrder()) != 0)
                 {
-                    this.parentOrder.addError(character + " is not at " + this.main.locationStr(location) + ".");
+                    if(this.order == 870 && charParam != 0)
+                    {
+                        // MovJoin: the target may move (or hire) earlier this turn; the move happens regardless.
+                        this.parentOrder.addWarning(character + " is not at " + this.main.locationStr(location)
+                                + " at turn start (unless the target moves or is hired (770) this turn).");
+                    } else
+                    {
+                        this.parentOrder.addError(character + " is not at " + this.main.locationStr(location) + ".");
+                    }
                 }
             } else
             if(state == 4)
@@ -1301,7 +1314,13 @@ public class Rule
             case 2: // '\002'
                 if(!armyCO && !navyCO)
                 {
-                    this.parentOrder.addError(character + " is not an army or navy CO.");
+                    if(this.order == 870)
+                    {
+                        this.parentOrder.addWarning(character + " is not an army or navy CO at turn start (unless the target moves or is hired (770) this turn).");
+                    } else
+                    {
+                        this.parentOrder.addError(character + " is not an army or navy CO.");
+                    }
                 }
                 break;
 
@@ -1436,7 +1455,13 @@ public class Rule
             case 5: // '\005'
                 if(armyCO || navyCO || companyCO)
                 {
-                    this.parentOrder.addError(character + " is an army, " + "navy, or company commander.");
+                    if(this.order == 870)
+                    {
+                        this.parentOrder.addWarning(character + " is an army, navy, or company commander (unless it gives up command earlier this turn).");
+                    } else
+                    {
+                        this.parentOrder.addError(character + " is an army, " + "navy, or company commander.");
+                    }
                 }
                 break;
 
@@ -1964,34 +1989,34 @@ public class Rule
                 }
                 setProcessState(STATE_ARMY);
             }
+            if(type < 0 || type > 2)
+            {
+                return "Invalid commodity type (" + type + ") for MAGEAMT!";
+            }
             int quantity = this.parentOrder.getParameterNumber(amtParam);
+            int maxQuantity = this.parentChar.getNaturalMageRank() * max;
+            // KB conjure-mounts-max-amount: a blank amount, 0, or more than the maximum all conjure the maximum.
             if(quantity == -1)
             {
-                this.parentOrder.addError("Could not determine the quantity.");
-                return null;
-            }
-            int maxQuantity = this.parentChar.getNaturalMageRank() * max;
+                String amountText = this.parentOrder.getParameterString(amtParam);
+                if(amountText == null || amountText.trim().length() == 0 || amountText.trim().equals("-"))
+                {
+                    this.parentOrder.addInfo("No amount given: the maximum of " + maxQuantity + " will be conjured.");
+                    quantity = maxQuantity;
+                } else
+                {
+                    this.parentOrder.addError("Could not determine the quantity.");
+                    return null;
+                }
+            } else
+            if(quantity == 0)
+            {
+                this.parentOrder.addInfo("An amount of 0 conjures the maximum of " + maxQuantity + ".");
+                quantity = maxQuantity;
+            } else
             if(quantity > maxQuantity)
             {
-                String commodity = "";
-                switch(type)
-                {
-                case 0: // '\0'
-                    commodity = "Mounts";
-                    break;
-
-                case 1: // '\001'
-                    commodity = "Food";
-                    break;
-
-                case 2: // '\002'
-                    commodity = "Men-at-Arms";
-                    break;
-
-                default:
-                    return "Invalid commodity type (" + type + ") for MAGEAMT!";
-                }
-                this.parentOrder.addError("Maximum of " + maxQuantity + " " + commodity + " was exceeded.");
+                this.parentOrder.addInfo("Only " + maxQuantity + " can be conjured; the maximum will be conjured.");
                 quantity = maxQuantity;
             }
             if(type == 2)
@@ -2028,8 +2053,8 @@ public class Rule
             String nationName = this.main.getNation().getNationName(nationNumber);
             if(this.main.isNeutral(nationNumber) && type != 2)
             {
-                this.parentOrder.addWarning(nationName + " is a neutral nation.");
-                return null;
+                // information only; the relation limits for a Neutral target are checked below
+                this.parentOrder.addInfo(nationName + " is a neutral nation.");
             }
             String nationMsg = nationName + " (";
             int alignment = this.main.getNationAlignment(nationNumber);
@@ -2051,13 +2076,25 @@ public class Rule
                 return "Invalid nation alignment (" + alignment + ") for NATION!";
             }
             this.parentOrder.addHelp(nationMsg);
+            // 180 (type 0) improves relations, 185 (type 1) worsens them. The only rulebook-style failure is a
+            // relation already at the limit for the pair's allegiances (Main.getRelationLimits); in an all-vs-all game (every
+            // nation Neutral) only the Friendly/Hated limits apply. Alignment-based remarks are information only.
+            Relations.NationRelationsEnum relation = this.main.getRelationTo(nationNumber);
+            int[] limits = this.main.getRelationLimits(nationNumber);
+            int issuerAlignment = this.main.getNationAlignment(this.main.getNation().getNation());
             switch(type)
             {
             case 0: // '\0'
                 this.main.getNation();
+                if(this.order == 180 && relation != null && relation.ordinal() >= limits[1])
+                {
+                    this.parentOrder.addError("Relations with " + nationName + " are already " + relation
+                            + ", the best allowed between " + Main.getAllegianceName(issuerAlignment) + " and "
+                            + Main.getAllegianceName(this.main.getNationAlignment(nationNumber)) + " nations.");
+                } else
                 if(this.main.isEnemy(this.parentChar.getNation(), nationNumber))
                 {
-                    this.parentOrder.addError(nationName + " is an enemy nation.");
+                    this.parentOrder.addInfo(nationName + " is an enemy nation.");
                 }
                 break;
 
@@ -2066,9 +2103,59 @@ public class Rule
 
             case 1: // '\001'
                 this.main.getNation();
+                if(this.order == 185 && relation != null && relation.ordinal() <= limits[0])
+                {
+                    this.parentOrder.addError("Relations with " + nationName + " are already " + relation
+                            + ", the worst allowed between " + Main.getAllegianceName(issuerAlignment) + " and "
+                            + Main.getAllegianceName(this.main.getNationAlignment(nationNumber)) + " nations.");
+                } else
+                if(this.order == 235)
+                {
+                    // Attack Nation: only nations the issuer dislikes or hates may be attacked (rulebook 235). Orders
+                    // resolve in numeric order, so this nation's 180/185 on the same target resolve first (KB
+                    // orders-resolve-in-numeric-order): each 185 lowers the relation a level, each 180 raises it one.
+                    // Unknown relation: no remark.
+                    if(relation != null)
+                    {
+                        int downgrades = 0;
+                        int upgrades = 0;
+                        Vector ownOrders = this.main.getNation().getOrderList();
+                        for(int i = 0; i < ownOrders.size(); i++)
+                        {
+                            Order other = (Order)ownOrders.get(i);
+                            if(other.getParameterNumber(1) != nationNumber)
+                            {
+                                continue;
+                            }
+                            if(other.getOrder() == 185)
+                            {
+                                downgrades++;
+                            } else
+                            if(other.getOrder() == 180)
+                            {
+                                upgrades++;
+                            }
+                        }
+                        int level = relation.ordinal();
+                        if(level <= 1)
+                        {
+                            if(upgrades > 0 && level + upgrades >= 2)
+                            {
+                                this.parentOrder.addWarning(nationName + " may no longer be Disliked or Hated after this turn's Upgrade Relations.");
+                            }
+                        } else
+                        if(downgrades >= level - 1)
+                        {
+                            this.parentOrder.addWarning(nationName + " is " + relation + "; it can only be attacked if this turn's Downgrade Relations succeed.");
+                        } else
+                        {
+                            this.parentOrder.addError(nationName + " is " + relation + ", not Disliked or Hated, so it cannot be attacked.");
+                        }
+                    }
+                } else
                 if(this.main.isFriend(this.parentChar.getNation(), nationNumber))
                 {
-                    this.parentOrder.addError(nationName + " is an allied nation.");
+                    this.parentOrder.addInfo(nationName + " is an allied nation.");
                 }
                 break;
 
@@ -2281,6 +2368,11 @@ public class Rule
                         this.parentOrder.addError(Character.getRankName(i) + " rank less " + "than 10 specified.");
                         return null;
                     }
+                    if(ranks[i] % 10 != 0)
+                    {
+                        this.parentOrder.addError(Character.getRankName(i) + " rank must be 0, 10, 20 or 30.");
+                        return null;
+                    }
                     if(ranks[i] > 30)
                     {
                         this.parentOrder.addError(Character.getRankName(i) + " rank of more " + "than 30 specified.");
@@ -2292,13 +2384,21 @@ public class Rule
                     }
                 }
 
-                if(sum != 30)
+                if(sum > 30)
                 {
-                    this.parentOrder.addError("Spend 30 points on ranks, current total is " + sum + ".");
+                    this.parentOrder.addError("Spend at most 30 points on ranks, current total is " + sum + ".");
                 } else
+                if(sum > 0)
                 {
                     desc.delete(desc.length() - 2, desc.length());
                     this.parentOrder.addHelp("Creating new character: " + desc + ".");
+                    if(sum < 30)
+                    {
+                        this.parentOrder.addInfo("The " + (30 - sum) + " unallocated points are added to the command rank.");
+                    }
+                } else
+                {
+                    this.parentOrder.addInfo("No ranks specified: all 30 points go to the command rank.");
                 }
             }
         }
@@ -2745,7 +2845,7 @@ public class Rule
             }
             if(quantity <= 100 && units == 0)
             {
-                this.parentOrder.addWarning("# of units is expected, make sure you are not specifying a percentage.");
+                this.parentOrder.addInfo("# of units is expected, make sure you are not specifying a percentage.");
             }
             String msg;
             switch(type)
@@ -2847,6 +2947,12 @@ public class Rule
         }
         if(this.phase == 2)
         {
+            if(atCapitalReq && waitForPartialState(STATE_CHARACTER_LOCATION))
+            {
+                // An earlier move order (e.g. 810/870 to the capital) fixes where the character is when this order
+                // resolves; wait for it before judging "at capital" (nothing has been reported yet on this pass).
+                return STATE_REQ;
+            }
             Character character = this.parentOrder.extractCharacter(charParam, false);
             if(character == null)
             {
@@ -2951,7 +3057,7 @@ public class Rule
             			break;
             		} else if (isMovement) {
                     	for(int j = 0; j < movementOrders.length; j++) {
-                    		if(otherOrder == movementOrders[i]) {
+                    		if(otherOrder == movementOrders[j]) {
                     			this.parentOrder.addError("Two skill, spell or movement orders");
                     			break;
                     		}
@@ -2985,7 +3091,19 @@ public class Rule
                  int capital = this.main.getNation().getCapital();
                  int location=this.parentChar.getLocation(this.parentOrder.getOrder());
                  if (capital != location) {
-                	 this.parentOrder.addError("Must be at capital");
+                	 if (this.parentOrder.getOrder() < FIRST_COMBAT_ORDER) {
+                		 // Nothing can have moved the capital yet: failure is certain from the turn-start state.
+                		 if (!this.parentOrder.getErrorResults().contains("Must be at capital")) {
+                			 this.parentOrder.addError("Must be at capital");
+                		 }
+                	 } else {
+                		 // A battle earlier in the turn can capture or relocate the capital, which this checker cannot see.
+                		 String warning = this.parentChar + " is not at the capital (" + capital
+                				 + "); the order needs the nation's capital, so it will fail unless the capital moves here this turn (e.g. after a battle).";
+                		 if (!this.parentOrder.getWarnResults().contains(warning)) {
+                			 this.parentOrder.addWarning(warning);
+                		 }
+                	 }
                  }
             }
         }
@@ -3213,7 +3331,7 @@ public class Rule
                 this.parentOrder.addHelp(this.parentChar + " has the prerequisite for " + spell1 + ".");
                 if(this.main.getSpellList().isSpellInLostList(spell1.getSpellNumber()))
                 {
-                    this.parentOrder.addWarning(spell1 + " is part of a lost list.");
+                    this.parentOrder.addInfo(spell1 + " is part of a lost list.");
                 }
                 this.parentChar.addSpell(Integer.valueOf(spell1.getSpellNumber()), spell1.getName());
             }
@@ -3557,8 +3675,12 @@ public class Rule
             }
             setProcessState(STATE_ARMY);
             setProcessState(STATE_CHARACTER_ARMY);
+            // The population centre supplies at most its per-turn allowance; an order over it is cut down to what is
+            // left (KB pc-recruit-hire-cap-per-turn), it does not fail.
+            int available = pc.getTroopsAvailable(type);
+            int recruited = pc.recruitTroops(amount, type);
             int amounts[] = new int[6];
-            amounts[type] = amount;
+            amounts[type] = recruited;
             Army army = null;
             if(this.parentChar.isCommanderInArmy(this.parentOrder.getOrder()))
             {
@@ -3579,20 +3701,16 @@ public class Rule
                 }
                 this.main.getNation().addArmy(army);
             }
-            int left = pc.reduceTroopLimit(amount, type);
-            if(left > 0)
+            if(recruited < amount)
             {
-                this.parentOrder.addWarning(pc + " still has " + left + " troops available.");
+                this.parentOrder.addWarning(pc + " can supply only " + available + " " + Army.getTroopName(type)
+                        + "; the order will recruit " + recruited + ". " + pc.getRecruitLimitDescription(type));
             } else
-            if(left < 0)
             {
-                if(this.main.isNewTroopRules())
+                int left = pc.getTroopsAvailable(type);
+                if(left > 0)
                 {
-                    this.parentOrder.addError(pc + " is out of troops!  Maximum " + pc.getMaximumTroops(type) + " "
-                            + Army.getTroopName(type) + " available (light 1.5x, archers/men-at-arms 2x, shared pool).");
-                } else
-                {
-                    this.parentOrder.addError(pc + " is out of troops!  Maximum " + pc.getMaximumTroops() + " available.");
+                    this.parentOrder.addInfo(pc + " still has " + left + " troops available.");
                 }
             }
         }

@@ -171,19 +171,15 @@ public class PopCenter
         return RECRUIT_SIXTHS[type];
     }
 
-    /**
-     * Takes amount troops of this type from the pool (classic: troops; 31 Oct 2026 rules: sixths, each type at its
-     * own rate) and returns how many more troops of that type can still be recruited this turn, negative when the
-     * order went over the limit.
-     */
-    int reduceTroopLimit(int amount, int type)
+    /** How many more troops of this type the centre can supply this turn (the pool is shared by all types). */
+    int getTroopsAvailable(int type)
     {
+        int pool = Math.max(0, this.troopsAvailable);
         if(!this.newTroopRules)
         {
-            return reduceTroopLimit(amount);
+            return pool;
         }
-        this.troopsAvailable -= amount * recruitSixths(type);
-        return this.troopsAvailable < 0 ? -1 : this.troopsAvailable / recruitSixths(type);
+        return pool / recruitSixths(type);
     }
 
     /** The most troops of this type a centre of this size supplies in a turn from an empty pool. */
@@ -194,6 +190,25 @@ public class PopCenter
             return getMaximumTroops();
         }
         return getMaximumTroops() * 6 / recruitSixths(type);
+    }
+
+    /** Takes up to amount troops of this type from the pool and returns how many were actually supplied. */
+    int recruitTroops(int amount, int type)
+    {
+        int given = Math.max(0, Math.min(amount, getTroopsAvailable(type)));
+        this.troopsAvailable -= this.newTroopRules ? given * recruitSixths(type) : given;
+        return given;
+    }
+
+    String getRecruitLimitDescription(int type)
+    {
+        if(!this.newTroopRules)
+        {
+            return "A " + getSizeName(this.size).toLowerCase() + " supplies at most " + getMaximumTroops() + " troops a turn.";
+        }
+        return "A " + getSizeName(this.size).toLowerCase() + " supplies at most " + getMaximumTroops(Army.TYPE_LIGHT_CAVALRY)
+                + " light troops a turn (" + getMaximumTroops(Army.TYPE_HEAVY_CAVALRY) + " heavy / "
+                + getMaximumTroops(Army.TYPE_ARCHERS) + " archers or men-at-arms), shared between all types.";
     }
 
     int getFoodProvided()

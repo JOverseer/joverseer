@@ -383,7 +383,7 @@ public class OrdercheckerProxy {
 			}
 			if (mc.getNation() == nation.getNation()) {
 				if (mc.getOrders().size() < ch.getNumberOfOrders()) {
-					if (!ch.getHostage()) { 
+					if (!Boolean.TRUE.equals(ch.getHostage())) { 
 						mc.addOrder(new Order(mc,Order.NO_ORDER));
 					}
 				}

@@ -20,6 +20,9 @@ public class Army
     static final int ARCHERS = 4;
     static final int MEN_AT_ARMS = 5;
     static final int TROOP_TYPES_COUNT = 6;
+    static final int TYPE_HEAVY_CAVALRY = HEAVY_CAVALRY;
+    static final int TYPE_LIGHT_CAVALRY = LIGHT_CAVALRY;
+    static final int TYPE_ARCHERS = ARCHERS;
     private static final String troopTypes[] = {
         "HC", "LC", "HI", "LI", "AR", "MA"
     };

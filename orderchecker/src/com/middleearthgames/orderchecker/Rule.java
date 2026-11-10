@@ -3579,14 +3579,21 @@ public class Rule
                 }
                 this.main.getNation().addArmy(army);
             }
-            int left = pc.reduceTroopLimit(amount);
+            int left = pc.reduceTroopLimit(amount, type);
             if(left > 0)
             {
                 this.parentOrder.addWarning(pc + " still has " + left + " troops available.");
             } else
             if(left < 0)
             {
-                this.parentOrder.addError(pc + " is out of troops!  Maximum " + pc.getMaximumTroops() + " available.");
+                if(this.main.isNewTroopRules())
+                {
+                    this.parentOrder.addError(pc + " is out of troops!  Maximum " + pc.getMaximumTroops(type) + " "
+                            + Army.getTroopName(type) + " available (light 1.5x, archers/men-at-arms 2x, shared pool).");
+                } else
+                {
+                    this.parentOrder.addError(pc + " is out of troops!  Maximum " + pc.getMaximumTroops() + " available.");
+                }
             }
         }
         return null;

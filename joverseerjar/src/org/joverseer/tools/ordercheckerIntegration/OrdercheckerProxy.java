@@ -30,6 +30,7 @@ import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.springframework.richclient.image.ImageSource;
@@ -100,7 +101,12 @@ public class OrdercheckerProxy {
 		}
 	}
 
+	/** Preference key: use the 31 Oct 2026 troop rules (light troops recruit at 1.5x and eat no food) in the checker. */
+	public static final String NEW_TROOP_RULES_PREF = "orderchecker.newTroopRules"; //$NON-NLS-1$
+
 	public void runOrderchecker() {
+		// Read on every run so a change in Preferences applies to the next check without a restart.
+		Main.main.setNewTroopRules("yes".equals(PreferenceRegistry.instance().getPreferenceValue(NEW_TROOP_RULES_PREF))); //$NON-NLS-1$
 		Main.main.setRuleSet(new Ruleset());
 		ImportRulesCsv rules = new ImportRulesCsv("ruleset.csv", Main.main.getRuleSet());
 		boolean result = rules.getRules();
@@ -503,8 +509,9 @@ public class OrdercheckerProxy {
 				if (commander != null) {
 					Army army = t.getArmy(commander);
 					if (army != null) {
-						if (army.computeFed() != null) {
-							request.setSelected(army.computeFed());
+						Boolean fed = computeFedForChecker(army);
+						if (fed != null) {
+							request.setSelected(fed);
 						}
 					}
 				}
@@ -531,6 +538,65 @@ public class OrdercheckerProxy {
 		} catch (Exception exc) {
 			exc.printStackTrace();
 		}
+	}
+
+	/**
+	 * Food an army eats under the checker's rule set. Classic rules use the app-wide figure
+	 * (Army.computeFoodConsumption); under the 31 Oct 2026 troop rules light cavalry and light infantry eat
+	 * nothing and heavy cavalry still eats 2. Kept local to the checker: the app-wide figure is shared with the
+	 * rest of the application and must not change with a checker preference.
+	 */
+	static Integer computeFoodConsumptionForChecker(Army army) {
+		if (!Main.main.isNewTroopRules()) {
+			return army.computeFoodConsumption();
+		}
+		if (army.getElements().size() == 0)
+			return Integer.valueOf(0);
+		int ret = 0;
+		for (ArmyElement ae : army.getElements()) {
+			String t = ae.getArmyElementType().getType();
+			if ("LC".equals(t) || "LI".equals(t))
+				continue;
+			ret += ae.getNumber() * ae.getArmyElementType().foodConsumption();
+		}
+		return ret;
+	}
+
+	/** Army.computeFed with the checker's food rates (identical to it when the new troop rules are off). */
+	static Boolean computeFedForChecker(Army army) {
+		if (!Main.main.isNewTroopRules()) {
+			return army.computeFed();
+		}
+		if (army.isFed() != null) {
+			return army.isFed();
+		}
+		Integer foodConsumption = computeFoodConsumptionForChecker(army);
+		Integer pcFood = 0;
+		if (foodConsumption != null && army.getFood() != null) {
+			Turn turn = GameHolder.instance().getGame().getTurn();
+			PopulationCenter pc = (PopulationCenter) turn.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[] { "x", "y" }, new Object[] { army.getX(), army.getY() });
+			if (pc != null && pc.getNationNo() > 0 && pc.getNationNo() < 26) {
+				NationRelations r = (NationRelations) turn.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", pc.getNationNo());
+				if (pc.getNationNo() == army.getNationNo() || (r != null && r.getRelationsFor(army.getNationNo()) == NationRelationsEnum.Friendly)) {
+					pcFood = pc.getFoodCapacity();
+				}
+				if (pcFood > 0) {
+					int totalFoodNeeded = 0;
+					for (Army a : (ArrayList<Army>) turn.getContainer(TurnElementsEnum.Army).findAllByProperties(new String[] { "x", "y" }, new Object[] { army.getX(), army.getY() })) {
+						if (a.getNationNo() == pc.getNationNo() || (r != null && r.getRelationsFor(a.getNationNo()) == NationRelationsEnum.Friendly)) {
+							totalFoodNeeded += computeFoodConsumptionForChecker(a);
+						}
+					}
+					// light-only armies eat nothing, so the shared total can be 0
+					if (totalFoodNeeded > 0) {
+						pcFood = Math.round(pcFood * foodConsumption / totalFoodNeeded);
+					}
+					army.setFoodFromPop(pcFood);
+				}
+			}
+			return ((army.getFood() + pcFood) > foodConsumption && army.getFood() > 0);
+		}
+		return null;
 	}
 
 	public HashMap<com.middleearthgames.orderchecker.Order, org.joverseer.domain.Order> getOrderMap() {

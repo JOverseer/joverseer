@@ -307,10 +307,30 @@ public class Army
         {
             throw new RuntimeException("getFoodRequirement:  no troops");
         }
+        boolean newRules = Main.main != null && Main.main.isNewTroopRules();
+        return foodRequirement(amounts, newRules);
+    }
+
+    /**
+     * Food an army with these troops eats per turn. Classic: every troop 1, heavy and light cavalry double.
+     * 31 Oct 2026 rules: heavy cavalry 2; light cavalry and light infantry none; heavy infantry, archers,
+     * men-at-arms 1 (KB light-troops-no-food-2026-10).
+     */
+    static int foodRequirement(int amounts[], boolean newRules)
+    {
         int totalFood = 0;
         for(int i = 0; i < TROOP_TYPES_COUNT; i++)
         {
             int troops1 = amounts[i];
+            if(newRules)
+            {
+                if(i == LIGHT_CAVALRY || i == LIGHT_INFANTRY)
+                {
+                    continue;
+                }
+                totalFood += (i == HEAVY_CAVALRY) ? troops1 * 2 : troops1;
+                continue;
+            }
             totalFood += troops1;
             if(i == 0 || i == 1)
             {

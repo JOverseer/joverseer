@@ -1597,6 +1597,30 @@
 				
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
+						<value>orderchecker.newTroopRules</value>
+					</property>
+					<property name="description">
+						<value>Checker: New Light Troop rules</value>
+					</property>
+					<property name="group">
+						<value>Order Editor</value>
+					</property>
+					<property name="type">
+						<value>check</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
+						</list>
+					</property>
+				</bean>
+
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
 						<value>defaultPage.importResults</value>
 					</property>
 					<property name="description">

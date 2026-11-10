@@ -79,7 +79,7 @@
 			<test name="com.middleearthgames.orderchecker.MapTest">
 				<formatter type="plain"/>
 			</test>
-			<test name="com.middleearthgames.orderchecker.LightTroopRulesTest">
+			<test name="com.middleearthgames.orderchecker.LegacyCheckerPatchTest">
 				<formatter type="plain"/>
 			</test>
 		</junit>

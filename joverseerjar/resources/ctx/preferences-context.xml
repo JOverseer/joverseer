@@ -1750,7 +1750,7 @@
 						<value>text</value>
 					</property>
 					<property name="defaultValue">
-						<value>me@middleearthgames.com</value>
+						<value>gsi@gamesystems.com</value>
 					</property>
 				</bean>
 				<bean class="org.joverseer.preferences.Preference">

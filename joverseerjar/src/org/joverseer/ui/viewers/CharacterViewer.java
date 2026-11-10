@@ -1077,9 +1077,22 @@ public class CharacterViewer extends ObjectViewer {
 		this.showSpellsCommand.setEnabled(c != null && c.getSpells().size() > 0);
 		this.showResultsCommand.setEnabled(c != null && c.getOrderResults() != null && !c.getOrderResults().equals("")); //$NON-NLS-1$
 
-		CommandGroup quickOrders = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("quickOrdersCommandGroup", new Object[] { new AddRefuseChallengeCommand(), "separator", new AddReconCommand(), "separator", new AddCreateCampCommand(), new AddInfYourCommand(), new AddInfOtherCommand(), new AddImprovePopCommand(), "separator", new AddPrenticeCommand() }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		CommandGroup quickOrders = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("quickOrdersCommandGroup", new Object[] { //$NON-NLS-1$
+				new AddRefuseChallengeCommand(), "separator",  //$NON-NLS-1$
+				new AddReconCommand(), "separator",  //$NON-NLS-1$
+				new AddCreateCampCommand(), new AddInfYourCommand(), new AddInfOtherCommand(), new AddImprovePopCommand(), "separator", //$NON-NLS-1$ 
+				new AddPrenticeCommand()
+		});
 
-		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyCommandGroup", new Object[] { this.showArtifactsCommand, this.showSpellsCommand, this.showOrdersCommand, this.showResultsCommand, "separator", this.editCharacterCommand, "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", this.deleteCharacterCommand, "separator", new AddEditNoteCommand(c,this.gameHolder), "separator", quickOrders, "separator", new ShowPreviousStatsCommand(), new ShowInfoSourcePopupCommand(c.getInfoSource()), "separator", this.sendOrdersByChatCommand }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyCommandGroup", new Object[] { //$NON-NLS-1$  
+				this.showArtifactsCommand, this.showSpellsCommand, this.showOrdersCommand, this.showResultsCommand, "separator", //$NON-NLS-1$  
+				this.editCharacterCommand, "separator", //$NON-NLS-1$  
+				showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", //$NON-NLS-1$  
+				this.deleteCharacterCommand, "separator", //$NON-NLS-1$ 
+				new AddEditNoteCommand(c,this.gameHolder), 
+				"separator", quickOrders, "separator", //$NON-NLS-1$ 
+				new ShowPreviousStatsCommand(), new ShowInfoSourcePopupCommand(c.getInfoSource())
+		});
 		return group.createPopupMenu();
 	}
 

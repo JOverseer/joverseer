@@ -11,7 +11,7 @@ import java.net.URL;
  * it just looks for the first &lt;item&gt; and assumes the title is the version number.
  */
 public class UpdateChecker {
-//    private final static String RSSfeed = "https://www.middleearthgames.com/software/joverseer/feed.xml";
+//    private final static String RSSfeed = "https://www.gamesystems.com/software/joverseer/feed.xml";
     private static String data;
     //[deprecated]
     // Mixes getting the version, with interpretation of the version number.

@@ -185,7 +185,7 @@ public class CharacterMessageWrapper {
 			if (or == null)
 				or = getRCOrderResult(line);
 			if (or == null)
-				getPerceiveNationalityResult(line, gm);
+				or = getPerceiveNationalityResult(line, gm);
 			if (or == null)
 				or = getDivineNationForces(line, infoSource, gm);
 			if (or == null)

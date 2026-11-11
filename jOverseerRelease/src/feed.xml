@@ -3,9 +3,43 @@
 	<channel>
 		<title>Overseer releases</title>
 		<link>https://www.gamesystems.com/software/joverseer/feed.xml</link>
-		<description>The latest version of jOverseer, the Middle-Earth PBM game
-			helper program.</description>
+		<description>The latest version of jOverseer, the Middle-Earth PBM game helper program.</description>
 		<language>en</language>
+		<item>
+			<title>1.19.02</title>
+			<pubDate>10 November 2026</pubDate>
+			<description>
+	* Enh: Order Checker: new preference (Preferences -> Order Editor) 'Checker: New Light Troop rules' for the 31 Oct 2026 rules:
+	       light troops recruit at 1.5x, archers and men-at-arms at 2x, light troops need no food. Off by default.
+	* QA: Order Checker: fewer false alarms. Lost-list, purchase-amount and 'troops still available' remarks are now information;
+	       recruiting over a population centre's limit is a warning showing what will be recruited;
+	       Move/Join (870) warns instead of failing when the target may move or hire first;
+	       relations orders 180/185 only fail when relations are already at the limit (never in all-vs-all games).
+	* Fix: Order Checker: Conjure Mounts with no amount is accepted (conjures the maximum);
+	       Name Character (725) accepts up to 30 points in 10s; 
+	       Guard Character/Release/Custody/Imprison/Execute/Ransom Demand check agent rank; 
+	       Abandon Ships, Ransom Offer, Sell Nation Product, Transfer Nation Product, Increase/Reduce Caravan Prices check the character is at the capital;
+	       Siege Population Center checks command rank; 
+	       Duplicate movement orders are detected.
+	* Fix: Order Checker no longer crashes on a hostage character with unknown status.
+	* Fix: Initial terrain modifiers for all game scenarios have been corrected. 
+	* Fix: Some corner-cases when submitting orders to the new server.
+	* Fix: Consolidated character history was confused when encountering a 'reincarnated' character. Now most recent information wins.
+    * Fix: JOverseer safely closes when updating (asks if you want to save game).
+	* Fix: Artifact table now properly updates powers 1 and 2 when RA done.
+	* Fix: Scout Army results notices all troop types.
+	* Fix: Some problems recognising recent games.
+	* Fix: Some specific Recon errors when parsing in info.
+	* Enh: Initial support for Out Of the East (OOE) game module.
+	* Enh: You can now delete turn 0, which refreshes the game and loads base data again.
+	* Enh: When importing turn 0 files, you can now delete old imports.
+	* Enh: Preference for default view on opening game, CHV or Notepad.
+	* Enh: Double clicking on row in Team Economy Table takes you to nation capital.
+	* Enh: Indication that orders are being sent ('Waiting' cursor).
+	* Enh: Divine Nation Forces order results are now recognised.
+	* Enh: Percieve Nationality order results are now recognised.
+			</description>
+		</item>	
 		<item>
 			<title>1.19.01</title>
 			<pubDate>11 September 2025</pubDate>
